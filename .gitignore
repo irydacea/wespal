@@ -1,0 +1,5 @@
+*.o
+*.user
+moc_*
+qrc_*
+morningstar
