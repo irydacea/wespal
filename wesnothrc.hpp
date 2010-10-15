@@ -78,16 +78,6 @@ public:
 			, min_(min)
 	{}
 
-	/**
-	 * Constructor, which expects three reference RGB colors.
-	 * @param v STL vector with the three reference colors in order.
-	 */
-	color_range(const QVector<QRgb>& v)
-			: mid_(v.size()     ? v[0] : 0x00808080)
-			, max_(v.size() > 1 ? v[1] : 0x00FFFFFF)
-			, min_(v.size() > 2 ? v[2] : 0x00000000)
-	{}
-
 	/** Default constructor. */
 	color_range() : mid_(0x00808080), max_(0x00FFFFFF), min_(0x00000000)
 	{}

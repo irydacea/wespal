@@ -166,14 +166,13 @@ void MainWindow::do_open()
 
 	// Refresh UI
 	this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
+	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 	refresh_previews();
 }
 
 void MainWindow::refresh_previews()
 {
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
-
-	rc_map cvt_map = recolor_range(mos_color_range_from_id(1), mos_pal_magenta);
+	rc_map cvt_map = recolor_range(mos_color_range_from_id(0), mos_pal_magenta);
 
 	rc_image(img_original_, img_transview_, cvt_map);
 

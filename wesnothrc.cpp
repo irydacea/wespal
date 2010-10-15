@@ -43,11 +43,11 @@ QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QList<QRgb>& 
 	short min_blue = qBlue(new_range.min());
 
 	// Map first color in vector to exact new color
-	QRgb temp_rgb = old_rgb.empty() ? 0 : old_rgb.front();
+	QRgb temp_rgb = old_rgb.empty() ? 0 : old_rgb[0];
 	short old_r = qRed(temp_rgb);
 	short old_g = qGreen(temp_rgb);
 	short old_b = qBlue(temp_rgb);
-	short reference_avg = (old_r + old_g + old_b) / 3;
+	short reference_avg = ((old_r + old_g + old_b) / 3);
 
 	for(QList<QRgb>::const_iterator temp_rgb2 = old_rgb.begin();
 		  temp_rgb2 != old_rgb.end(); ++temp_rgb2)
@@ -56,7 +56,7 @@ QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QList<QRgb>& 
 		short old_g = qGreen(*temp_rgb2);
 		short old_b = qBlue(*temp_rgb2);
 
-		const short old_avg = (old_r + old_g +  old_b) / 3;
+		const short old_avg = ((old_r + old_g + old_b) / 3);
 		 // Calculate new color
 		QRgb new_r, new_g, new_b;
 
@@ -79,11 +79,11 @@ QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QList<QRgb>& 
 			// Would imply old_avg > reference_avg = 255
 		 }
 
-		if(new_r>255) new_r=255;
-		if(new_g>255) new_g=255;
-		if(new_b>255) new_b=255;
+		if(new_r > 255) new_r=255;
+		if(new_g > 255) new_g=255;
+		if(new_b > 255) new_b=255;
 
-		map_rgb[*temp_rgb2] = qRgba(0, new_r, new_g, new_b);
+		map_rgb[*temp_rgb2] = qRgba(new_r, new_g, new_b, 0);
 	}
 
 	return map_rgb;

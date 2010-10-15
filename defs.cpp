@@ -15,7 +15,7 @@ QString mos_color_range_id_to_name(int n)
 		n = 1;
 	}
 
-	return mos_color_range_names.at(n);
+	return mos_color_range_names.at(n-1);
 }
 
 const color_range& mos_color_range_from_id(int n)
@@ -24,7 +24,7 @@ const color_range& mos_color_range_from_id(int n)
 		n = 1;
 	}
 
-	return mos_color_ranges.at(n);
+	return mos_color_ranges.at(n-1);
 }
 
 static struct _defs_ctor_ {

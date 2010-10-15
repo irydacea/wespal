@@ -28,10 +28,10 @@ namespace {
 		return qRed(c1) == qRed(c2) && qGreen(c1) == qGreen(c2) && qBlue(c1) == qBlue(c2);
 	}
 
-	inline QRgb rc_single_color(QRgb key, QRgb newcolor)
+	inline QRgb rc_single_color(QRgb newcolor, QRgb oldcolor)
 	{
 		// FIXME: optimization
-		return qRgba(qRed(newcolor), qGreen(newcolor), qBlue(newcolor), qAlpha(key));
+		return qRgba(qRed(newcolor), qGreen(newcolor), qBlue(newcolor), qAlpha(oldcolor));
 	}
 }
 
@@ -49,7 +49,7 @@ bool rc_image(const QImage &input, QImage &output, const rc_map &cvt_map)
 			QRgb color = output.pixel(x, y);
 			foreach(QRgb key, cvt_map.keys()) {
 				if(rgb_equals(key, color)) {
-					output.setPixel(x, y, rc_single_color(key, color));
+					output.setPixel(x, y, rc_single_color(cvt_map[key], color));
 				}
 			}
 		}
