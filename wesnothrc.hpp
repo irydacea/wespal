@@ -19,34 +19,18 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-/** @file color_range.hpp */
+/** @file wesnothrcc.hpp */
 
-/*
- * NOTE:
- *
- * This is a more minimal version of the color range code in mainline Wesnoth. Most
- * notably, minimap marker colors are unsupported and absent in this version.
- */
-
-#ifndef COLOR_RANGE_H_INCLUDED
-#define COLOR_RANGE_H_INCLUDED
-
-//These macros interfere with MS VC++
-#ifdef _MSC_VER
-	#undef max
-	#undef min
-#endif
-
-#include "util.hpp"
-
-#include <string>
-#include <vector>
+#ifndef WESNOTHRC_HPP_INCLUDED
+#define WESNOTHRC_HPP_INCLUDED
 
 #include <QColor>
 #include <QMap>
+#include <QString>
+#include <QVector>
 
 /** Convert comma separated string into rgb values. */
-std::vector<uint32_t> string2rgb(std::string s);
+QVector<QRgb> string2rgb(QString s);
 
 /**
  * A color range definition is made of four reference RGB colors, used
@@ -70,49 +54,80 @@ std::vector<uint32_t> string2rgb(std::string s);
 class color_range
 {
 public:
-  /**
-   * Constructor, which expects three reference RGB colors.
-   * @param mid Average color shade.
-   * @param max Maximum (highlight) color shade
-   * @param min Minimum color shade
-   */
-  color_range(uint32_t mid , uint32_t max = 0x00FFFFFF , uint32_t min = 0x00000000):mid_(mid),max_(max),min_(min){};
+	/**
+	 * Copy constructor.
+	 */
+	color_range(const color_range& o)
+			: mid_(o.mid_)
+			, max_(o.max_)
+			, min_(o.min_)
+	{}
 
-  /**
-   * Constructor, which expects three reference RGB colors.
-   * @param v STL vector with the three reference colors in order.
-   */
-  color_range(const std::vector<uint32_t>& v)
-	: mid_(v.size()     ? v[0] : 0x00808080),
-	  max_(v.size() > 1 ? v[1] : 0x00FFFFFF),
-	  min_(v.size() > 2 ? v[2] : 0x00000000)
-  {
-  };
+	/**
+	 * Constructor, which expects three reference RGB colors.
+	 * @param mid Average color shade.
+	 * @param max Maximum (highlight) color shade
+	 * @param min Minimum color shade
+	 */
+	color_range(
+		QRgb mid,
+		QRgb max = 0x00FFFFFF,
+		QRgb min = 0x00000000)
+			: mid_(mid)
+			, max_(max)
+			, min_(min)
+	{}
 
-  /** Default constructor. */
-  color_range() : mid_(0x00808080), max_(0x00FFFFFF), min_(0x00000000) {};
+	/**
+	 * Constructor, which expects three reference RGB colors.
+	 * @param v STL vector with the three reference colors in order.
+	 */
+	color_range(const QVector<QRgb>& v)
+			: mid_(v.size()     ? v[0] : 0x00808080)
+			, max_(v.size() > 1 ? v[1] : 0x00FFFFFF)
+			, min_(v.size() > 2 ? v[2] : 0x00000000)
+	{}
 
-  /** Average color shade. */
-  uint32_t mid() const{return(mid_);};
-  /** Maximum color shade. */
-  uint32_t max() const{return(max_);};
-  /** Minimum color shade. */
-  uint32_t min() const{return(min_);};
+	/** Default constructor. */
+	color_range() : mid_(0x00808080), max_(0x00FFFFFF), min_(0x00000000)
+	{}
 
-  bool operator<(const color_range& b) const
-  {
-	if(mid_ != b.mid()) return(mid_ < b.mid());
-	if(max_ != b.max()) return(max_ < b.max());
-	return(min_ < b.min());
-  }
+	/** Average color shade. */
+	QRgb mid() const{ return mid_; }
+	/** Maximum color shade. */
+	QRgb max() const{ return max_; }
+	/** Minimum color shade. */
+	QRgb min() const{ return min_; }
 
-  bool operator==(const color_range& b) const
-  {
-	return(mid_ == b.mid() && max_ == b.max() && min_ == b.min());
-  }
+	bool operator<(const color_range& b) const
+	{
+		if(mid_ != b.mid()) {
+			return(mid_ < b.mid());
+		}
+		if(max_ != b.max()) {
+			return(max_ < b.max());
+		}
+		return(min_ < b.min());
+	}
+
+	bool operator==(const color_range& b) const
+	{
+		return(mid_ == b.mid() && max_ == b.max() && min_ == b.min());
+	}
+
+	color_range& operator=(const color_range& o)
+	{
+		if(&o != this) {
+			mid_ = o.mid_;
+			max_ = o.max_;
+			min_ = o.min_;
+		}
+
+		return *this;
+	}
 
 private:
-  uint32_t mid_ , max_ , min_;
+	QRgb mid_ , max_ , min_;
 };
 
 typedef QMap<QRgb, QRgb> rc_map;
@@ -125,7 +140,7 @@ typedef QMap<QRgb, QRgb> rc_map;
  * @return A STL map of colors, with the keys being source palette elements, and the values
  *         are the result of applying the color range conversion on it.
  */
-rc_map recolor_range(const color_range& new_rgb, const std::vector<uint32_t>& old_rgb);
+rc_map recolor_range(const color_range& new_rgb, const QVector<QRgb>& old_rgb);
 
 #endif
 
