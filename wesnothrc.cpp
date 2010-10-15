@@ -27,7 +27,7 @@
 
 #include "wesnothrc.hpp"
 
-QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QVector<QRgb>& old_rgb){
+QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QList<QRgb>& old_rgb){
 	QMap<QRgb, QRgb> map_rgb;
 
 	short new_red  = (new_range.mid() & 0x00FF0000)>>16;
@@ -41,13 +41,13 @@ QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QVector<QRgb>
 	short min_blue = (new_range.min() & 0x000000FF)    ;
 
 	// Map first color in vector to exact new color
-	QRgb temp_rgb = old_rgb.empty() ? 0 : old_rgb[0];
+	QRgb temp_rgb = old_rgb.empty() ? 0 : old_rgb.front();
 	short old_r = (temp_rgb & 0x00FF0000)>>16;
 	short old_g = (temp_rgb & 0x0000FF00)>>8;
 	short old_b = (temp_rgb & 0x000000FF);
 	short reference_avg = ((old_r + old_g + old_b) / 3);
 
-	for(QVector<QRgb>::const_iterator temp_rgb2 = old_rgb.begin();
+	for(QList<QRgb>::const_iterator temp_rgb2 = old_rgb.begin();
 		  temp_rgb2 != old_rgb.end(); ++temp_rgb2)
 	{
 		short old_r=((*temp_rgb2) & 0X00FF0000)>>16;

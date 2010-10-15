@@ -140,7 +140,7 @@ typedef QMap<QRgb, QRgb> rc_map;
  * @return A STL map of colors, with the keys being source palette elements, and the values
  *         are the result of applying the color range conversion on it.
  */
-rc_map recolor_range(const color_range& new_rgb, const QVector<QRgb>& old_rgb);
+rc_map recolor_range(const color_range& new_rgb, const QList<QRgb>& old_rgb);
 
 #endif
 
