@@ -201,7 +201,6 @@ void MainWindow::do_save()
 void MainWindow::do_close()
 {
 	this->close();
-	QCoreApplication::quit();
 }
 
 void MainWindow::do_about()
