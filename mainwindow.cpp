@@ -28,6 +28,10 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
+namespace {
+	struct no_initial_file {};
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
 	ui(new Ui::MainWindow),
@@ -146,10 +150,20 @@ void MainWindow::on_action_Quit_triggered()
 	do_close();
 }
 
+bool MainWindow::initial_open()
+{
+	try {
+		this->do_open();
+	}
+	catch(no_initial_file const&) {
+		return false;
+	}
+
+	return true;
+}
+
 void MainWindow::do_open()
 {
-	this->setEnabled(false);
-
 	QString path_temp = QFileDialog::getOpenFileName(
 		this,
 		tr("Choose source image"),
@@ -157,32 +171,30 @@ void MainWindow::do_open()
 		tr("PNG image (*.png);;All files (*)")
 	);
 
-	if(path_temp.isNull()) {
+	if(path_temp.isNull() && img_original_.isNull()) {
+		// it's null if we've just setup the window
+		throw no_initial_file();
+	}
+
+	QImage img_temp(path_temp);
+	if(img_temp.isNull()) {
+		QMessageBox::information(
+				this, tr("Morning Star"), tr("Could not load %1.").arg(path_temp)
+				);
 		if(img_original_.isNull()) {
-			// it's null if we've just setup the window
-			do_close();
+			throw no_initial_file();
 		}
-	}
-	else {
-		QImage img_temp(path_temp);
-		if(img_temp.isNull()) {
-			QMessageBox::information(
-					this, tr("Morning Star"), tr("Could not load %1.").arg(path_temp)
-					);
-			return;
-		}
-
-		img_path_ = path_temp;
-		// We want to work on actual ARGB data
-		img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
-
-		// Refresh UI
-		this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
-		ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
-		refresh_previews();
+		return;
 	}
 
-	this->setEnabled(true);
+	img_path_ = path_temp;
+	// We want to work on actual ARGB data
+	img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
+
+	// Refresh UI
+	this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
+	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
+	refresh_previews();
 }
 
 void MainWindow::refresh_previews()

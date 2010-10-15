@@ -38,7 +38,7 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-	void do_open();
+	bool initial_open();
 
 protected:
     void changeEvent(QEvent *e);
@@ -62,6 +62,7 @@ private:
 
 	void do_save();
 	void do_close();
+	void do_open();
 	void do_about();
 
 	void refresh_previews();

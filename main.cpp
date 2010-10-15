@@ -25,7 +25,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-	w.show();
-	w.do_open();
-    return a.exec();
+	if(w.initial_open()) {
+		w.show();
+		return a.exec();
+	}
+
+	return 1;
 }
