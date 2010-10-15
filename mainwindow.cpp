@@ -18,6 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+#include "defs.hpp"
 #include "mainwindow.hpp"
 #include "rc_qt4.hpp"
 #include "ui_mainwindow.h"
@@ -172,7 +173,11 @@ void MainWindow::refresh_previews()
 {
 	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 
-	//rc_image(img_original_, img_preview_,
+	rc_map cvt_map = recolor_range(mos_color_range_from_id(1), mos_pal_magenta);
+
+	rc_image(img_original_, img_transview_, cvt_map);
+
+	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_));
 }
 
 void MainWindow::do_save()
