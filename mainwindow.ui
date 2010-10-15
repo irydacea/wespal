@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>660</width>
-    <height>273</height>
+    <height>279</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>10</y>
       <width>201</width>
-      <height>181</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -35,7 +35,7 @@
        <x>10</x>
        <y>10</y>
        <width>181</width>
-       <height>161</height>
+       <height>181</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -112,117 +112,22 @@
       <x>220</x>
       <y>80</y>
       <width>221</width>
-      <height>161</height>
+      <height>131</height>
      </rect>
     </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
     <widget class="QWidget" name="page_3">
-     <widget class="QWidget" name="gridLayoutWidget">
+     <widget class="QListWidget" name="listRanges">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
         <width>221</width>
-        <height>133</height>
+        <height>131</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="chkTc1">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="text">
-          <string>Red</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="chkTc2">
-         <property name="text">
-          <string>Blue</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="chkTc3">
-         <property name="text">
-          <string>Green</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QCheckBox" name="chkTc4">
-         <property name="text">
-          <string>Purple</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QCheckBox" name="chkTc5">
-         <property name="text">
-          <string>Orange</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QCheckBox" name="chkTc6">
-         <property name="text">
-          <string>Black</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QCheckBox" name="chkTc7">
-         <property name="text">
-          <string>White</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QCheckBox" name="chkTc8">
-         <property name="text">
-          <string>Brown</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QCheckBox" name="chkTc9">
-         <property name="text">
-          <string>Teal</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="page_4">
@@ -259,7 +164,7 @@
       <x>450</x>
       <y>10</y>
       <width>201</width>
-      <height>181</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -274,7 +179,7 @@
        <x>10</x>
        <y>10</y>
        <width>181</width>
-       <height>161</height>
+       <height>181</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -298,7 +203,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>210</y>
+      <y>220</y>
       <width>166</width>
       <height>25</height>
      </rect>

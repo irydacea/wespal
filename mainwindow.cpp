@@ -48,6 +48,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->cbxNewPal->addItem(tr("TC Flag"));
 	ui->cbxNewPal->addItem(tr("TC Ellipse"));
 
+	ui->listRanges->addItems(mos_color_range_names);
+
+	for(int n = 0; n < ui->listRanges->count(); ++n) {
+		QListWidgetItem *i = ui->listRanges->item(n);
+		i->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		i->setCheckState(Qt::Checked);
+
+		// FIXME: why am I doing this just to capitalize the names?...
+		i->setText(
+			i->text().toUpper().left(1) +
+			i->text().right(i->text().length() - 1)
+		);
+
+	}
+
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
 	toggle_page2(false);
@@ -89,15 +104,7 @@ void MainWindow::on_radPal_clicked()
 
 void MainWindow::toggle_page1(bool newstate)
 {
-	ui->chkTc1->setEnabled(newstate);
-	ui->chkTc2->setEnabled(newstate);
-	ui->chkTc3->setEnabled(newstate);
-	ui->chkTc4->setEnabled(newstate);
-	ui->chkTc5->setEnabled(newstate);
-	ui->chkTc6->setEnabled(newstate);
-	ui->chkTc7->setEnabled(newstate);
-	ui->chkTc8->setEnabled(newstate);
-	ui->chkTc9->setEnabled(newstate);
+	ui->listRanges->setEnabled(newstate);
 }
 
 void MainWindow::toggle_page2(bool newstate)
@@ -172,7 +179,7 @@ void MainWindow::do_open()
 
 void MainWindow::refresh_previews()
 {
-	rc_map cvt_map = recolor_range(mos_color_range_from_id(0), mos_pal_magenta);
+	rc_map cvt_map = recolor_range(mos_color_range_from_id(1), mos_pal_magenta);
 
 	rc_image(img_original_, img_transview_, cvt_map);
 
