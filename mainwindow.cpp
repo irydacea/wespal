@@ -61,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
 			i->text().right(i->text().length() - 1)
 		);
 
+		// Reset selection to #1
+		ui->listRanges->setItemSelected(i, n == 0);
 	}
 
 	ui->radRc->setChecked(true);
@@ -144,7 +146,6 @@ void MainWindow::on_action_Quit_triggered()
 	do_close();
 }
 
-
 void MainWindow::do_open()
 {
 	QString path_temp = QFileDialog::getOpenFileName(
@@ -179,8 +180,7 @@ void MainWindow::do_open()
 
 void MainWindow::refresh_previews()
 {
-	rc_map cvt_map = recolor_range(mos_color_range_from_id(1), mos_pal_magenta);
-
+	rc_map cvt_map = recolor_range(mos_color_range_from_id(ui->listRanges->currentIndex().row() + 1), mos_pal_magenta);
 	rc_image(img_original_, img_transview_, cvt_map);
 
 	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_));
@@ -221,4 +221,9 @@ void MainWindow::do_about()
 
 	msg.setText(text);
 	msg.exec();
+}
+
+void MainWindow::on_listRanges_itemClicked(QListWidgetItem* /*item*/)
+{
+	refresh_previews();
 }

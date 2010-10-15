@@ -24,6 +24,7 @@
 #include <QAbstractButton>
 #include <QMainWindow>
 #include <QPicture>
+#include <QListWidgetItem>
 
 namespace Ui {
     class MainWindow;
@@ -58,7 +59,8 @@ private:
 	void refresh_previews();
 
 private slots:
-	void on_action_Quit_triggered();
+	void on_listRanges_itemClicked(QListWidgetItem* item);
+ void on_action_Quit_triggered();
  void on_action_Open_triggered();
  void on_buttonBox_clicked(QAbstractButton* button);
  void on_actionAbout_Morning_Star_triggered();
