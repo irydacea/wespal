@@ -19,6 +19,7 @@
 //
 
 #include "mainwindow.hpp"
+#include "rc_qt4.hpp"
 #include "ui_mainwindow.h"
 #include "version.hpp"
 
@@ -164,8 +165,14 @@ void MainWindow::do_open()
 
 	// Refresh UI
 	this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
+	refresh_previews();
+}
+
+void MainWindow::refresh_previews()
+{
 	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 
+	//rc_image(img_original_, img_preview_,
 }
 
 void MainWindow::do_save()

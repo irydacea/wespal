@@ -55,6 +55,8 @@ private:
 	void do_open();
 	void do_about();
 
+	void refresh_previews();
+
 private slots:
 	void on_action_Quit_triggered();
  void on_action_Open_triggered();
