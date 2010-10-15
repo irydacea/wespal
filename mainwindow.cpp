@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	toggle_page2(false);
 	toggle_page1(true);
 
-	this->do_open();
+	//this->do_open();
 }
 
 MainWindow::~MainWindow()
@@ -148,34 +148,41 @@ void MainWindow::on_action_Quit_triggered()
 
 void MainWindow::do_open()
 {
+	this->setEnabled(false);
+
 	QString path_temp = QFileDialog::getOpenFileName(
 		this,
 		tr("Choose source image"),
 		source_path_,
-		tr("Portable Network Graphics format (*.png);;All files (*)")
+		tr("PNG image (*.png);;All files (*)")
 	);
 
-	if(path_temp.isEmpty() && img_original_.isNull()) {
-		// it's null if we've just setup the window
-		do_close();
+	if(path_temp.isNull()) {
+		if(img_original_.isNull()) {
+			// it's null if we've just setup the window
+			do_close();
+		}
+	}
+	else {
+		QImage img_temp(path_temp);
+		if(img_temp.isNull()) {
+			QMessageBox::information(
+					this, tr("Morning Star"), tr("Could not load %1.").arg(path_temp)
+					);
+			return;
+		}
+
+		img_path_ = path_temp;
+		// We want to work on actual ARGB data
+		img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
+
+		// Refresh UI
+		this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
+		ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
+		refresh_previews();
 	}
 
-	QImage img_temp(path_temp);
-	if(img_temp.isNull()) {
-		QMessageBox::information(
-			this, tr("Morning Star"), tr("Could not load %1.").arg(path_temp)
-		);
-		return;
-	}
-
-	img_path_ = path_temp;
-	// We want to work on actual ARGB data
-	img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
-
-	// Refresh UI
-	this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
-	refresh_previews();
+	this->setEnabled(true);
 }
 
 void MainWindow::refresh_previews()
@@ -194,6 +201,7 @@ void MainWindow::do_save()
 void MainWindow::do_close()
 {
 	this->close();
+	QCoreApplication::quit();
 }
 
 void MainWindow::do_about()

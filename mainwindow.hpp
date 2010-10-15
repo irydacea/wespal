@@ -21,6 +21,8 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include "wesnothrc.hpp"
+
 #include <QAbstractButton>
 #include <QMainWindow>
 #include <QPicture>
@@ -36,6 +38,8 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+	void do_open();
+
 protected:
     void changeEvent(QEvent *e);
 
@@ -48,12 +52,16 @@ private:
 	QImage img_original_;
 	QImage img_transview_;
 
+	color_range recolor_crg_;
+	QList<QRgb> recolor_pal_;
+
+	bool using_color_ranges_;
+
 	void toggle_page1(bool newstate);
 	void toggle_page2(bool newstate);
 
 	void do_save();
 	void do_close();
-	void do_open();
 	void do_about();
 
 	void refresh_previews();
