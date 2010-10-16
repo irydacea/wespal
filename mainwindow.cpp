@@ -327,10 +327,6 @@ void MainWindow::do_save_color_ranges()
 		return;
 	}
 
-	ui->cbxKeyPal->addItem(tr("TC Magenta"));
-	ui->cbxKeyPal->addItem(tr("TC Flag"));
-	ui->cbxKeyPal->addItem(tr("TC Ellipse"));
-
 	QString palname = current_pal_name();
 	QList<QRgb> *paldata = current_pal_data();
 	QMap<QString, rc_map> rc_jobs;
