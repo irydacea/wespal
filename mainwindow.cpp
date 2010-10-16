@@ -202,7 +202,17 @@ void MainWindow::do_open()
 
 void MainWindow::refresh_previews()
 {
-	rc_map cvt_map = recolor_range(mos_color_range_from_id(ui->listRanges->currentIndex().row() + 1), mos_pal_magenta);
+	rc_map cvt_map;
+
+	if(ui->staFunctionOpts->currentIndex()) {
+		;
+	}
+	else {
+		QList<QRgb> *key_pal = current_pal_data();
+		cvt_map = recolor_range(
+			mos_color_range_from_id(ui->listRanges->currentIndex().row() + 1), *key_pal);
+	}
+
 	rc_image(img_original_, img_transview_, cvt_map);
 
 	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_));
@@ -255,6 +265,46 @@ void MainWindow::on_listRanges_itemClicked(QListWidgetItem* /*item*/)
 	refresh_previews();
 }
 
+QString MainWindow::current_pal_name() const
+{
+	QString ret;
+	const int choice = ui->cbxKeyPal->currentIndex();
+	Q_ASSERT(choice >= 0 && choice <= 2);
+
+	switch(choice) {
+	case 2:
+		ret = "ellipse_red";
+		break;
+	case 1:
+		ret = "flag_green";
+		break;
+	default:
+		ret = "magenta";
+		break;
+	}
+	return ret;
+}
+
+QList<QRgb> *MainWindow::current_pal_data() const
+{
+	QList<QRgb> *ret;
+	const int choice = ui->cbxKeyPal->currentIndex();
+	Q_ASSERT(choice >= 0 && choice <= 2);
+
+	switch(choice) {
+	case 2:
+		ret = &mos_pal_ellipse_red;
+		break;
+	case 1:
+		ret = &mos_pal_flag_green;
+		break;
+	default:
+		ret = &mos_pal_magenta;
+		break;
+	}
+	return ret;
+}
+
 void MainWindow::do_save_single_recolor()
 {
 
@@ -281,25 +331,10 @@ void MainWindow::do_save_color_ranges()
 	ui->cbxKeyPal->addItem(tr("TC Flag"));
 	ui->cbxKeyPal->addItem(tr("TC Ellipse"));
 
-	QString palname;
-	QList<QRgb> *paldata;
+	QString palname = current_pal_name();
+	QList<QRgb> *paldata = current_pal_data();
 	QMap<QString, rc_map> rc_jobs;
 	QListWidget *list = this->ui->listRanges;
-
-	int palndx = ui->cbxKeyPal->currentIndex();
-	Q_ASSERT(palndx >= 0 && palndx <= 2);
-
-	switch(ui->cbxKeyPal->currentIndex()) {
-	case 2:
-		palname = "ellipse_red";
-		paldata = &mos_pal_ellipse_red;
-	case 1:
-		palname = "flag_green";
-		paldata = &mos_pal_flag_green;
-	default:
-		palname = "magenta";
-		paldata = &mos_pal_magenta;
-	}
 
 	QStringList existing;
 

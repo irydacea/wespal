@@ -73,6 +73,9 @@ private:
 
 	void refresh_previews();
 
+	QString current_pal_name() const;
+	QList<QRgb> *current_pal_data() const;
+
 private slots:
 	void on_listRanges_itemClicked(QListWidgetItem* item);
  void on_action_Quit_triggered();
