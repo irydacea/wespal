@@ -201,6 +201,8 @@ void MainWindow::do_open()
 	this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
 	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 	refresh_previews();
+
+	source_path_ = QFileInfo(img_path_).absolutePath();
 }
 
 void MainWindow::refresh_previews()
