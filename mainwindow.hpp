@@ -27,6 +27,7 @@
 #include <QMainWindow>
 #include <QPicture>
 #include <QListWidgetItem>
+#include <QStringList>
 
 namespace Ui {
     class MainWindow;
@@ -39,6 +40,8 @@ public:
     ~MainWindow();
 
 	bool initial_open();
+
+	QStringList do_run_jobs(QMap<QString, rc_map> &jobs);
 
 protected:
     void changeEvent(QEvent *e);
@@ -64,6 +67,9 @@ private:
 	void do_close();
 	void do_open();
 	void do_about();
+
+	void do_save_color_ranges();
+	void do_save_single_recolor();
 
 	void refresh_previews();
 
