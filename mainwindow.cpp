@@ -321,9 +321,9 @@ void MainWindow::do_save_color_ranges()
 	);
 
 	if(base.isNull()) {
-		QMessageBox::information(
+		/*QMessageBox::information(
 			this, tr("Morning Star"), tr("Could not save the current job.")
-		);
+		);*/
 		return;
 	}
 
@@ -395,4 +395,9 @@ QStringList MainWindow::do_run_jobs(QMap<QString, rc_map> &jobs)
 
 	this->setEnabled(true);
 	return failed;
+}
+
+void MainWindow::on_action_Save_triggered()
+{
+	do_save();
 }

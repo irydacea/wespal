@@ -77,7 +77,8 @@ private:
 	QList<QRgb> *current_pal_data() const;
 
 private slots:
-	void on_listRanges_itemClicked(QListWidgetItem* item);
+	void on_action_Save_triggered();
+ void on_listRanges_itemClicked(QListWidgetItem* item);
  void on_action_Quit_triggered();
  void on_action_Open_triggered();
  void on_buttonBox_clicked(QAbstractButton* button);
