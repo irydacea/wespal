@@ -74,10 +74,12 @@ private:
 	void refresh_previews();
 
 	QString current_pal_name() const;
-	QList<QRgb> *current_pal_data() const;
+	QList<QRgb> *current_pal_data(bool palette_switch_mode = false) const;
 
 private slots:
-	void on_action_Save_triggered();
+	void on_cbxNewPal_currentIndexChanged(int index);
+ void on_cbxKeyPal_currentIndexChanged(int index);
+ void on_action_Save_triggered();
  void on_listRanges_itemClicked(QListWidgetItem* item);
  void on_action_Quit_triggered();
  void on_action_Open_triggered();

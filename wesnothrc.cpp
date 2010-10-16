@@ -89,4 +89,15 @@ QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QList<QRgb>& 
 	return map_rgb;
 }
 
+QMap<QRgb, QRgb> recolor_palettes(const QList<QRgb> &key, const QList<QRgb> &new_values)
+{
+	rc_map map;
+
+	for(int n = 0; n < qMin(key.count(), new_values.count()); ++n) {
+		map[key.at(n)] = new_values.at(n);
+	}
+
+	return map;
+}
+
 // kate: indent-mode normal; encoding utf-8; space-indent off; indent-width 4;

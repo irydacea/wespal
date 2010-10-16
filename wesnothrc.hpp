@@ -132,6 +132,8 @@ typedef QMap<QRgb, QRgb> rc_map;
  */
 rc_map recolor_range(const color_range& new_rgb, const QList<QRgb>& old_rgb);
 
+rc_map recolor_palettes(const QList<QRgb>& key, const QList<QRgb>& new_values);
+
 #endif
 
 // kate: indent-mode normal; encoding utf-8; space-indent off; indent-width 4;

@@ -102,6 +102,7 @@ void MainWindow::on_radRc_clicked()
 	ui->staFunctionOpts->setCurrentIndex(0);
 	toggle_page1(true);
 	toggle_page2(false);
+	refresh_previews();
 }
 
 void MainWindow::on_radPal_clicked()
@@ -109,6 +110,7 @@ void MainWindow::on_radPal_clicked()
 	ui->staFunctionOpts->setCurrentIndex(1);
 	toggle_page1(false);
 	toggle_page2(true);
+	refresh_previews();
 }
 
 void MainWindow::toggle_page1(bool newstate)
@@ -203,12 +205,13 @@ void MainWindow::do_open()
 void MainWindow::refresh_previews()
 {
 	rc_map cvt_map;
+	QList<QRgb> *key_pal = current_pal_data();
 
 	if(ui->staFunctionOpts->currentIndex()) {
-		;
+		QList<QRgb> *target_pal = current_pal_data(true);
+		cvt_map = recolor_palettes(*key_pal, *target_pal);
 	}
 	else {
-		QList<QRgb> *key_pal = current_pal_data();
 		cvt_map = recolor_range(
 			mos_color_range_from_id(ui->listRanges->currentIndex().row() + 1), *key_pal);
 	}
@@ -285,10 +288,10 @@ QString MainWindow::current_pal_name() const
 	return ret;
 }
 
-QList<QRgb> *MainWindow::current_pal_data() const
+QList<QRgb> *MainWindow::current_pal_data(bool palette_switch_mode) const
 {
 	QList<QRgb> *ret;
-	const int choice = ui->cbxKeyPal->currentIndex();
+	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
 	Q_ASSERT(choice >= 0 && choice <= 2);
 
 	switch(choice) {
@@ -400,4 +403,14 @@ QStringList MainWindow::do_run_jobs(QMap<QString, rc_map> &jobs)
 void MainWindow::on_action_Save_triggered()
 {
 	do_save();
+}
+
+void MainWindow::on_cbxKeyPal_currentIndexChanged(int /*index*/)
+{
+	refresh_previews();
+}
+
+void MainWindow::on_cbxNewPal_currentIndexChanged(int /*index*/)
+{
+	refresh_previews();
 }
