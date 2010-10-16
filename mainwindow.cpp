@@ -184,9 +184,11 @@ void MainWindow::do_open()
 
 	QImage img_temp(path_temp);
 	if(img_temp.isNull()) {
-		QMessageBox::information(
+		if(path_temp.isNull() != true) {
+			QMessageBox::information(
 				this, tr("Morning Star"), tr("Could not load %1.").arg(path_temp)
-				);
+			);
+		}
 		if(img_original_.isNull()) {
 			throw no_initial_file();
 		}
