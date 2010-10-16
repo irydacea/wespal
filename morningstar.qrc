@@ -1,1 +1,7 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/">
+        <file>rsrc/application-exit.png</file>
+        <file>rsrc/document-open.png</file>
+        <file>rsrc/document-save-as.png</file>
+    </qresource>
+</RCC>
