@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>656</width>
-    <height>275</height>
+    <width>660</width>
+    <height>281</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -240,7 +240,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>656</width>
+     <width>660</width>
      <height>21</height>
     </rect>
    </property>
@@ -323,7 +323,9 @@
   <tabstop>cbxKeyPal</tabstop>
   <tabstop>radRc</tabstop>
   <tabstop>radPal</tabstop>
+  <tabstop>listRanges</tabstop>
   <tabstop>cbxNewPal</tabstop>
+  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
   <include location="morningstar.qrc"/>
