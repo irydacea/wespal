@@ -68,12 +68,14 @@ private:
 	void do_open();
 	void do_about();
 
-	void do_save_color_ranges();
-	void do_save_single_recolor();
+	bool confirm_existing_files(QStringList& paths);
+
+	QStringList do_save_color_ranges(QString& base);
+	QStringList do_save_single_recolor(QString& base);
 
 	void refresh_previews();
 
-	QString current_pal_name() const;
+	QString current_pal_name(bool palette_switch_mode = false) const;
 	QList<QRgb> *current_pal_data(bool palette_switch_mode = false) const;
 
 private slots:

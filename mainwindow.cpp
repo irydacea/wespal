@@ -31,6 +31,7 @@
 
 namespace {
 	struct no_initial_file {};
+	struct canceled_job    {};
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -223,11 +224,38 @@ void MainWindow::refresh_previews()
 
 void MainWindow::do_save()
 {
-	if(ui->staFunctionOpts->currentIndex()) {
-		do_save_single_recolor();
+	QString base = QFileDialog::getExistingDirectory(
+		this,
+		tr("Choose an output directory"),
+		QFileInfo(img_path_).absolutePath(),
+		QFileDialog::ShowDirsOnly
+	);
+
+	if(base.isNull()) {
+		return;
 	}
-	else {
-		do_save_color_ranges();
+
+	QStringList failed;
+
+	try {
+		if(ui->staFunctionOpts->currentIndex()) {
+			failed = do_save_single_recolor(base);
+		}
+		else {
+			failed = do_save_color_ranges(base);
+		}
+
+		if(failed.isEmpty() != true) {
+			QMessageBox::information(
+					this, tr("Morning Star"), tr("The following files could not be saved correctly:<br>%1").arg(failed.join("<br>")));
+		}
+		else {
+			QMessageBox::information(
+					this, tr("Morning Star"), tr("Job successfully saved.")
+					);
+		}
+	} catch(const canceled_job&) {
+		;
 	}
 }
 
@@ -268,10 +296,10 @@ void MainWindow::on_listRanges_itemClicked(QListWidgetItem* /*item*/)
 	refresh_previews();
 }
 
-QString MainWindow::current_pal_name() const
+QString MainWindow::current_pal_name(bool palette_switch_mode) const
 {
 	QString ret;
-	const int choice = ui->cbxKeyPal->currentIndex();
+	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
 	Q_ASSERT(choice >= 0 && choice <= 2);
 
 	switch(choice) {
@@ -308,28 +336,39 @@ QList<QRgb> *MainWindow::current_pal_data(bool palette_switch_mode) const
 	return ret;
 }
 
-void MainWindow::do_save_single_recolor()
+bool MainWindow::confirm_existing_files(QStringList& paths)
 {
-
+	return QMessageBox::question(
+			this,
+			tr("Morning Star"),
+			tr("The following files already exist. Do you want to overwrite them?<br><br>%1").arg(paths.join("<br>")),
+			QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes;
 }
 
-void MainWindow::do_save_color_ranges()
+QStringList MainWindow::do_save_single_recolor(QString &base)
 {
-	QFileInfo fi(img_path_);
-	QString base = QFileDialog::getExistingDirectory(
-		this,
-		tr("Choose an output directory"),
-		fi.absolutePath(),
-		QFileDialog::ShowDirsOnly
-	);
+	QString palname = current_pal_name();
+	QList<QRgb> *paldata = current_pal_data();
+	QString newpalname = current_pal_name(true);
+	QList<QRgb> *newpaldata = current_pal_data(true);
+	QMap<QString, rc_map> rc_job;
 
-	if(base.isNull()) {
-		/*QMessageBox::information(
-			this, tr("Morning Star"), tr("Could not save the current job.")
-		);*/
-		return;
+	QString path = base + "/" + QFileInfo(img_path_).completeBaseName();
+	path += QString("-PAL-") + palname + "-" + newpalname + ".png";
+
+	rc_job[path] = recolor_palettes(*paldata, *newpaldata);
+
+	QStringList paths(path);
+
+	if(QFileInfo(path).exists() && !confirm_existing_files(paths)) {
+		throw canceled_job();
 	}
 
+	return do_run_jobs(rc_job);
+}
+
+QStringList MainWindow::do_save_color_ranges(QString &base)
+{
 	QString palname = current_pal_name();
 	QList<QRgb> *paldata = current_pal_data();
 	QMap<QString, rc_map> rc_jobs;
@@ -339,9 +378,9 @@ void MainWindow::do_save_color_ranges()
 
 	for(int k = 0; k < list->count(); ++k) {
 		if(list->item(k)->checkState() == Qt::Checked) {
-			QString path = base + "/" + fi.completeBaseName();
+			QString path = base + "/" + QFileInfo(img_path_).completeBaseName();
 			path += QString("-RC-") + palname + "-";
-			path += QString::number(k + 1) + "-" + mos_color_range_id_to_name(k) + ".png";
+			path += QString::number(k + 1) + "-" + mos_color_range_id_to_name(k + 1) + ".png";
 
 			rc_jobs[path] = recolor_range(mos_color_range_from_id(k), *paldata);
 
@@ -351,28 +390,11 @@ void MainWindow::do_save_color_ranges()
 		}
 	}
 
-	if(!existing.isEmpty()) {
-		if(QMessageBox::question(
-			this,
-			tr("Morning Star"),
-			tr("The following files already exist. Do you want to overwrite them?<br><br>%1").arg(existing.join("<br>")),
-			QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-		{
-			return;
-		}
+	if(!existing.isEmpty() && !confirm_existing_files(existing)) {
+		throw canceled_job();
 	}
 
-	QStringList failed = do_run_jobs(rc_jobs);
-
-	if(failed.isEmpty() != true) {
-		QMessageBox::information(
-			this, tr("Morning Star"), tr("The following files could not be saved correctly:<br>%1").arg(failed.join("<br>")));
-	}
-	else {
-		QMessageBox::information(
-			this, tr("Morning Star"), tr("Job successfully saved.")
-		);
-	}
+	return do_run_jobs(rc_jobs);
 }
 
 QStringList MainWindow::do_run_jobs(QMap<QString, rc_map> &jobs)
