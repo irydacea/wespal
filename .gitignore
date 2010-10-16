@@ -2,5 +2,6 @@
 *.user
 moc_*
 qrc_*
+ui_*
 morningstar
 Makefile
