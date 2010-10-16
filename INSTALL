@@ -1,0 +1,18 @@
+Since I've got no packagers to help at the moment, the only way to install for
+now is from source. Since I've been working only with Qt Creator so far,
+there's no specific build recipe other than the project file
+('morningstar.pro'), which you are expected to use to generate a Makefile using
+QMake.
+
+To do this, just make sure you have Qt4's development files and QMake installed
+(package 'qt4-qmake' on Debian and Ubuntu), and type the command as follows:
+
+$ qmake morningstar.pro
+
+NOTE: If you have Qt3's version of QMake installed, you may have to explicitly
+use 'qmake-qt4' instead to avoid confusing the generator and messing up the
+sources.
+
+Once QMake generates the Makefile, just issue 'make' and wait for compilation
+to finish. The binary 'morningstar' will appear in the source dir, and you can
+now run it from there -- no installation is required.
