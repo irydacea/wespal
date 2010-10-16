@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>658</width>
-    <height>277</height>
+    <width>656</width>
+    <height>275</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,6 +52,9 @@
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
@@ -197,6 +200,9 @@
      <property name="text">
       <string/>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
    </widget>
    <widget class="QDialogButtonBox" name="buttonBox">
@@ -234,7 +240,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>658</width>
+     <width>656</width>
      <height>21</height>
     </rect>
    </property>
