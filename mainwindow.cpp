@@ -44,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	this->setFixedSize(this->size());
+
 	ui->progressBar->hide();
 
 	ui->previewOriginal->setBackgroundRole(QPalette::Base);
