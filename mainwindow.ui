@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>281</height>
+    <width>677</width>
+    <height>296</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,12 @@
       <width>201</width>
       <height>201</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -39,7 +45,7 @@
       </rect>
      </property>
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -74,12 +80,19 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Palette key:</string>
+        <string>Palette &amp;key:</string>
+       </property>
+       <property name="buddy">
+        <cstring>cbxKeyPal</cstring>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="cbxKeyPal"/>
+      <widget class="QComboBox" name="cbxKeyPal">
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -118,6 +131,12 @@
       <height>131</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
@@ -150,7 +169,10 @@
           <bool>true</bool>
          </property>
          <property name="text">
-          <string>New palette:</string>
+          <string>New &amp;palette:</string>
+         </property>
+         <property name="buddy">
+          <cstring>cbxNewPal</cstring>
          </property>
         </widget>
        </item>
@@ -170,6 +192,12 @@
       <height>201</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
@@ -186,7 +214,7 @@
       </rect>
      </property>
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -209,7 +237,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>220</y>
+      <y>230</y>
       <width>166</width>
       <height>25</height>
      </rect>
@@ -222,7 +250,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
+      <y>230</y>
       <width>471</width>
       <height>23</height>
      </rect>
@@ -234,13 +262,29 @@
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>210</y>
+      <width>641</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::HLine</enum>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>660</width>
+     <width>677</width>
      <height>21</height>
     </rect>
    </property>
@@ -278,7 +322,7 @@
   </widget>
   <action name="action_Open">
    <property name="icon">
-    <iconset resource="morningstar.qrc">
+    <iconset>
      <normaloff>:/rsrc/document-open.png</normaloff>:/rsrc/document-open.png</iconset>
    </property>
    <property name="text">
@@ -290,7 +334,7 @@
   </action>
   <action name="action_Quit">
    <property name="icon">
-    <iconset resource="morningstar.qrc">
+    <iconset>
      <normaloff>:/rsrc/application-exit.png</normaloff>:/rsrc/application-exit.png</iconset>
    </property>
    <property name="text">
@@ -307,7 +351,7 @@
   </action>
   <action name="action_Save">
    <property name="icon">
-    <iconset resource="morningstar.qrc">
+    <iconset>
      <normaloff>:/rsrc/document-save-as.png</normaloff>:/rsrc/document-save-as.png</iconset>
    </property>
    <property name="text">
@@ -327,8 +371,6 @@
   <tabstop>cbxNewPal</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources>
-  <include location="morningstar.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

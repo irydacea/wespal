@@ -44,21 +44,27 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	this->setFixedSize(this->size());
+	//this->setFixedSize(this->size());
 
 	ui->progressBar->hide();
 
 	ui->previewOriginal->setBackgroundRole(QPalette::Base);
 
+	ui->cbxKeyPal->clear();
 	ui->cbxKeyPal->addItem(tr("TC Magenta"));
 	ui->cbxKeyPal->addItem(tr("TC Flag"));
 	ui->cbxKeyPal->addItem(tr("TC Ellipse"));
+	ui->cbxKeyPal->setCurrentIndex(0);
 
+	ui->cbxNewPal->clear();
 	ui->cbxNewPal->addItem(tr("TC Magenta"));
 	ui->cbxNewPal->addItem(tr("TC Flag"));
 	ui->cbxNewPal->addItem(tr("TC Ellipse"));
+	ui->cbxNewPal->setCurrentIndex(0);
 
+	ui->listRanges->clear();
 	ui->listRanges->addItems(mos_color_range_names);
+	ui->listRanges->setCurrentRow(0);
 
 	for(int n = 0; n < ui->listRanges->count(); ++n) {
 		QListWidgetItem *i = ui->listRanges->item(n);
