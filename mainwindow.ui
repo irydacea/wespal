@@ -6,64 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
-    <height>296</height>
+    <width>661</width>
+    <height>293</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Morning Star</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>201</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLabel" name="previewOriginal">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>181</width>
-       <height>181</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </widget>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
@@ -89,8 +39,8 @@
      </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="cbxKeyPal">
-       <property name="currentIndex">
-        <number>-1</number>
+       <property name="whatsThis">
+        <string>Selects the original palette for transformation.</string>
        </property>
       </widget>
      </item>
@@ -108,6 +58,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QRadioButton" name="radRc">
+       <property name="whatsThis">
+        <string>Selects color range-based (a.k.a. &quot;team color&quot;) recoloring.</string>
+       </property>
        <property name="text">
         <string>Color range (TC)</string>
        </property>
@@ -115,6 +68,9 @@
      </item>
      <item>
       <widget class="QRadioButton" name="radPal">
+       <property name="toolTip">
+        <string>Selects palette switching mode, to replace original colors with new ones using a color values list instead of ranges.</string>
+       </property>
        <property name="text">
         <string>Palette switch</string>
        </property>
@@ -150,6 +106,12 @@
         <height>131</height>
        </rect>
       </property>
+      <property name="whatsThis">
+       <string>Allows to select color ranges to apply. Click on an item to preview the transformation to the right.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="page_4">
@@ -177,60 +139,14 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QComboBox" name="cbxNewPal"/>
+        <widget class="QComboBox" name="cbxNewPal">
+         <property name="whatsThis">
+          <string>You an choose the replacement palette in this box.</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
-    </widget>
-   </widget>
-   <widget class="QFrame" name="frame_2">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>10</y>
-      <width>201</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QLabel" name="previewRc">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>181</width>
-       <height>181</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
     </widget>
    </widget>
    <widget class="QDialogButtonBox" name="buttonBox">
@@ -262,20 +178,79 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="Line" name="line">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>210</y>
+      <y>220</y>
       <width>641</width>
-      <height>16</height>
+      <height>2</height>
      </rect>
     </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="previewOriginal">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>201</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="whatsThis">
+     <string>This is the original image's preview.</string>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::HLine</enum>
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="previewRc">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>10</y>
+      <width>201</width>
+      <height>201</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="whatsThis">
+     <string>This is a preview of a single transformation of the original image.</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -284,7 +259,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>677</width>
+     <width>661</width>
      <height>21</height>
     </rect>
    </property>
@@ -322,7 +297,7 @@
   </widget>
   <action name="action_Open">
    <property name="icon">
-    <iconset>
+    <iconset resource="morningstar.qrc">
      <normaloff>:/rsrc/document-open.png</normaloff>:/rsrc/document-open.png</iconset>
    </property>
    <property name="text">
@@ -334,7 +309,7 @@
   </action>
   <action name="action_Quit">
    <property name="icon">
-    <iconset>
+    <iconset resource="morningstar.qrc">
      <normaloff>:/rsrc/application-exit.png</normaloff>:/rsrc/application-exit.png</iconset>
    </property>
    <property name="text">
@@ -351,7 +326,7 @@
   </action>
   <action name="action_Save">
    <property name="icon">
-    <iconset>
+    <iconset resource="morningstar.qrc">
      <normaloff>:/rsrc/document-save-as.png</normaloff>:/rsrc/document-save-as.png</iconset>
    </property>
    <property name="text">
@@ -371,6 +346,8 @@
   <tabstop>cbxNewPal</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="morningstar.qrc"/>
+ </resources>
  <connections/>
 </ui>
