@@ -299,11 +299,6 @@ void MainWindow::do_about()
 	msg.exec();
 }
 
-void MainWindow::on_listRanges_itemClicked(QListWidgetItem* /*item*/)
-{
-	refresh_previews();
-}
-
 QString MainWindow::current_pal_name(bool palette_switch_mode) const
 {
 	QString ret;
@@ -446,6 +441,11 @@ void MainWindow::on_cbxKeyPal_currentIndexChanged(int /*index*/)
 }
 
 void MainWindow::on_cbxNewPal_currentIndexChanged(int /*index*/)
+{
+	refresh_previews();
+}
+
+void MainWindow::on_listRanges_itemSelectionChanged()
 {
 	refresh_previews();
 }
