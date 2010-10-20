@@ -1,0 +1,16 @@
+Version 0.1.1:
+ * Preliminary production name: “Wesnoth RCX” (a.k.a. RCX).
+ * Made the main window resizable again — now widgets expand or shrink
+   accordingly.
+ * Added generated file paths to completed job reports.
+ * Fixed some glitches with selection changes in the color ranges listbox.
+ * Minor UI improvements or revisions.
+
+Version 0.1.0.1:
+ * Fixed a bogus message when canceling the Open action.
+ * Made the window non-resizable since widgets don’t adjust to it yet.
+ * Previews are now centered.
+ * Correctly remember the path to the currently opened file.
+
+Version 0.1.0:
+ * Initial version.
