@@ -5,3 +5,6 @@ qrc_*
 ui_*
 morningstar
 Makefile
+*.h
+*.tar
+*.tar.*
