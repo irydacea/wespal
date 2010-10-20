@@ -192,7 +192,7 @@ void MainWindow::do_open()
 	if(img_temp.isNull()) {
 		if(path_temp.isNull() != true) {
 			QMessageBox::information(
-				this, tr("Morning Star"), tr("Could not load %1.").arg(path_temp)
+				this, tr("Wesnoth RCX"), tr("Could not load %1.").arg(path_temp)
 			);
 		}
 		if(img_original_.isNull()) {
@@ -206,7 +206,7 @@ void MainWindow::do_open()
 	img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
-	this->setWindowTitle(QString(img_path_ + " - ") + tr("Morning Star"));
+	this->setWindowTitle(tr("Wesnoth RCX") + QString(" - " + img_path_));
 	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 	refresh_previews();
 
@@ -256,13 +256,13 @@ void MainWindow::do_save()
 		}
 
 		QMessageBox::information(
-				this, tr("Morning Star"), tr("Job successfully saved. The following files have been generated:<br><br>%1").arg(succeeded.join("<br>"))
+				this, tr("Wesnoth RCX"), tr("Job successfully saved. The following files have been generated:<br><br>%1").arg(succeeded.join("<br>"))
 				);
 	} catch(const canceled_job&) {
 		;
 	} catch(const QStringList& failed) {
 		QMessageBox::information(
-				this, tr("Morning Star"), tr("The following files could not be saved correctly:<br><br>%1").arg(failed.join("<br>")));
+				this, tr("Wesnoth RCX"), tr("The following files could not be saved correctly:<br><br>%1").arg(failed.join("<br>")));
 	}
 }
 
@@ -276,7 +276,7 @@ void MainWindow::do_about()
 	QMessageBox msg;
 
 	QString text =
-		tr("<b>Codename <i>Morning Star</i> %1</b>").arg(mos_version) + "<br><br>";
+		tr("<b>Wesnoth RCX %1</b>").arg(mos_version) + "<br><br>";
 
 	text += tr("Built with Qt %1.").arg(QT_VERSION_STR) + "<br>";
 	text += tr("Copyright &copy; 2008, 2009, 2010 by Ignacio R. Morelle.") + "<br>";
@@ -343,7 +343,7 @@ bool MainWindow::confirm_existing_files(QStringList& paths)
 {
 	return QMessageBox::question(
 			this,
-			tr("Morning Star"),
+			tr("Wesnoth RCX"),
 			tr("The following files already exist. Do you want to overwrite them?<br><br>%1").arg(paths.join("<br>")),
 			QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes;
 }
