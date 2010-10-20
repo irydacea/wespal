@@ -46,8 +46,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//this->setFixedSize(this->size());
 
-	ui->progressBar->hide();
-
 	ui->previewOriginal->setBackgroundRole(QPalette::Base);
 
 	ui->cbxKeyPal->clear();
