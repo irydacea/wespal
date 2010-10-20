@@ -1,3 +1,5 @@
+Version 0.1.1+git:
+
 Version 0.1.1:
  * Preliminary production name: “Wesnoth RCX” (a.k.a. RCX).
  * Made the main window resizable again — now widgets expand or shrink
