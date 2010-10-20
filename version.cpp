@@ -20,4 +20,4 @@
 
 #include "version.hpp"
 
-QString mos_version = "0.1.0.1+git";
+QString mos_version = "0.1.1";
