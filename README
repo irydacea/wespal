@@ -1,0 +1,44 @@
+Wesnoth RCX (codename “Morning Star”) — Read-Me
+-----------------------------------------------
+
+This is a Qt4-based application for recoloring Wesnoth graphics using the
+game’s color range-based Team Coloring algorithm, or optionally palette-based
+recoloring.
+
+Born from the same source as Wesnoth-TC [1], RCX is intended to be as
+user-friendly as possible in order to appeal to the artists and enthusiasts in
+the audience.
+
+
+Installing
+----------
+
+Please see the INSTALL file for installation instructions.
+
+
+Usage
+-----
+
+To start RCX, just run the “morningstar” executable. You’ll be asked to choose
+a file to open. Once done, you’ll be presented the complete user interface,
+where you can preview your file after applying a recolor transformation with
+different settings and, optionally, generate new image files with your changes.
+
+Currently only the three main source palettes (TC magenta, flag green and
+ellipse red) are supported, along with the 9 team color ranges used in mainline
+Wesnoth. Support for custom ranges and palettes is planned to be added in the
+future.
+
+
+Reporting bugs
+--------------
+
+All bugs in Wesnoth RCX should be reported by email to <shadowm@wesnoth.org> —
+please include “[RCX]” in your message’s subject line to speed up the process,
+since I occasionally ignore my email inbox unless there are messages with
+unusually descriptive subjects. ;-)
+
+
+Have lots of fun!
+
+Ignacio R. Morelle a.k.a. “shadowmaster”
