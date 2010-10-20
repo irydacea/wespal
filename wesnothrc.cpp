@@ -1,5 +1,5 @@
 //
-// wesnoth-tc - Wesnoth Team-Colorizer
+// codename Morning Star
 // src/color_range.cpp - Recoloring mechanism (implementation)
 //
 // Copyright (C) 2003-2008 by the Battle for Wesnoth Project <www.wesnoth.org>

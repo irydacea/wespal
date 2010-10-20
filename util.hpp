@@ -1,5 +1,5 @@
 //
-// wesnoth-tc - Wesnoth Team-Colorizer
+// codename Morning Star
 // src/util.hpp - Utility defines and methods
 //
 // Copyright (C) 2003-2008 by the Battle for Wesnoth Project <www.wesnoth.org>

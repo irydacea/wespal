@@ -1,5 +1,5 @@
 //
-// wesnoth-tc - Wesnoth Team-Colorizer
+// codename Morning Star
 // src/rc_qt4.cpp - Qt4 painting device recoloring implementation
 //
 // Copyright (C) 2008, 2009, 2010 by Ignacio R. Morelle <shadowm@wesnoth.org>
