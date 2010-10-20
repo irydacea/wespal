@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Morning Star</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="morningstar.qrc">
+    <normaloff>:/rsrc/app.png</normaloff>:/rsrc/app.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0" rowspan="3">

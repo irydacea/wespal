@@ -295,6 +295,7 @@ void MainWindow::do_about()
 	);
 
 	msg.setText(text);
+	msg.setIconPixmap(QPixmap(":/rsrc/app.png"));
 	msg.exec();
 }
 
