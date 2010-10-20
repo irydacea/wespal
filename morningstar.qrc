@@ -3,5 +3,6 @@
         <file>rsrc/application-exit.png</file>
         <file>rsrc/document-open.png</file>
         <file>rsrc/document-save-as.png</file>
+        <file>rsrc/app.png</file>
     </qresource>
 </RCC>
