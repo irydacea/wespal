@@ -27,10 +27,6 @@
 #include <QColor>
 #include <QMap>
 #include <QString>
-#include <QVector>
-
-/** Convert comma separated string into rgb values. */
-QVector<QRgb> string2rgb(QString s);
 
 /**
  * A color range definition is made of four reference RGB colors, used
