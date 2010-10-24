@@ -24,6 +24,8 @@
 #include "wesnothrc.hpp"
 
 #include <QAbstractButton>
+#include <QDropEvent>
+#include <QDragEnterEvent>
 #include <QMainWindow>
 #include <QPicture>
 #include <QListWidgetItem>
@@ -45,6 +47,8 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+	void dragEnterEvent(QDragEnterEvent *e);
+	void dropEvent(QDropEvent *e);
 
 private:
     Ui::MainWindow *ui;

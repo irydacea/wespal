@@ -28,6 +28,7 @@
 #include <QFileDialog>
 #include <QImageWriter>
 #include <QMessageBox>
+#include <QUrl>
 
 namespace {
 	struct no_initial_file {};
@@ -102,6 +103,47 @@ void MainWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *e)
+{
+	if(e->mimeData()->hasImage() || e->mimeData()->hasUrls())
+		e->acceptProposedAction();
+}
+
+void MainWindow::dropEvent(QDropEvent *e)
+{
+	QImage newimg;
+	QString newpath = "";
+
+	if(e->mimeData()->hasImage()) {
+		newimg = qvariant_cast<QImage>(e->mimeData()->imageData());
+	}
+	else if(e->mimeData()->hasUrls()) {
+		newpath = e->mimeData()->urls().front().path();
+		newimg.load(newpath);
+	}
+
+	if(newimg.isNull()) {
+		return;
+	}
+
+	img_original_ = newimg.convertToFormat(QImage::Format_ARGB32);
+
+	// Refresh UI
+	if(newpath.isEmpty() != true) {
+		img_path_ = newpath;
+		this->setWindowTitle(tr("Wesnoth RCX") + " - " + img_path_);
+		source_path_ = QFileInfo(img_path_).absolutePath();
+	}
+	else {
+		this->setWindowTitle(tr("Wesnoth RCX") + " - " + tr("Dropped file"));
+	}
+
+	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
+	refresh_previews();
+
+	e->acceptProposedAction();
 }
 
 void MainWindow::on_radRc_clicked()
