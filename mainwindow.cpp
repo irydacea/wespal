@@ -116,6 +116,8 @@ void MainWindow::dropEvent(QDropEvent *e)
 	QImage newimg;
 	QString newpath = "";
 
+	e->acceptProposedAction();
+
 	if(e->mimeData()->hasImage()) {
 		newimg = qvariant_cast<QImage>(e->mimeData()->imageData());
 	}
@@ -142,8 +144,6 @@ void MainWindow::dropEvent(QDropEvent *e)
 
 	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 	refresh_previews();
-
-	e->acceptProposedAction();
 }
 
 void MainWindow::on_radRc_clicked()
