@@ -391,7 +391,7 @@ void MainWindow::do_about()
 	);
 
 	msg.setText(text);
-	msg.setIconPixmap(QPixmap(":/rsrc/app.png"));
+	msg.setIconPixmap(QPixmap(":/rsrc/rcx-icon.png"));
 	msg.exec();
 }
 
