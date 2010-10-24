@@ -26,10 +26,12 @@
 
 #include <QDesktopServices> // viva la integration!
 #include <QFileDialog>
+#include <QIcon>
 #include <QImageReader>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QStyle>
 #include <QUrl>
 #include <QWhatsThis>
 
@@ -58,9 +60,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	save->setWhatsThis(tr("Saves the current recolor job."));
 	close->setWhatsThis(tr("Abandons the current job and exits."));
 
-	//this->setFixedSize(this->size());
-
-	ui->previewOriginal->setBackgroundRole(QPalette::Base);
+	ui->action_Open->setIcon(this->style()->standardIcon(QStyle::SP_DialogOpenButton, 0, dynamic_cast<QWidget*>(ui->action_Open)));
+	ui->action_Save->setIcon(this->style()->standardIcon(QStyle::SP_DialogSaveButton, 0, dynamic_cast<QWidget*>(ui->action_Save)));
+	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, 0, dynamic_cast<QWidget*>(ui->action_Quit)));
 
 	ui->cbxKeyPal->clear();
 	ui->cbxKeyPal->addItem(tr("TC Magenta"));
