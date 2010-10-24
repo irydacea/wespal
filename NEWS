@@ -1,4 +1,8 @@
 Version 0.1.1+git:
+ * Added support for BMP, PSD* and XCF* files (* indicates an option that
+   depends on Qt4's build-time configuration.)
+ * Drop support for image files and data from other applications.
+ * Minor UI improvements or revisions.
 
 Version 0.1.1:
  * Preliminary production name: “Wesnoth RCX” (a.k.a. RCX).
