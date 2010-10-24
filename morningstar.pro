@@ -6,13 +6,11 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     wesnothrc.cpp \
-    util.cpp \
     defs.cpp \
     version.cpp \
     rc_qt4.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
-    util.hpp \
     defs.hpp \
     version.hpp \
     rc_qt4.hpp
