@@ -41,7 +41,7 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-	bool initial_open();
+	bool initial_open(const QString& initial_file);
 
 	QStringList do_run_jobs(QMap<QString, rc_map> &jobs);
 
@@ -69,7 +69,7 @@ private:
 
 	void do_save();
 	void do_close();
-	void do_open();
+	void do_open(const QString& initial_file = QString());
 	void do_about();
 
 	bool confirm_existing_files(QStringList& paths);

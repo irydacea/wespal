@@ -205,10 +205,10 @@ void MainWindow::on_action_Quit_triggered()
 	do_close();
 }
 
-bool MainWindow::initial_open()
+bool MainWindow::initial_open(const QString &initial_file)
 {
 	try {
-		this->do_open();
+		this->do_open(initial_file);
 	}
 	catch(no_initial_file const&) {
 		return false;
@@ -252,14 +252,20 @@ QString MainWindow::supported_file_patterns() const
 	return ret;
 }
 
-void MainWindow::do_open()
+void MainWindow::do_open(const QString &initial_file)
 {
-	QString path_temp = QFileDialog::getOpenFileName(
-		this,
-		tr("Choose source image"),
-		source_path_,
-		supported_file_patterns()
-	);
+	QString path_temp;
+	if(initial_file.isNull() || initial_file.isEmpty()) {
+		path_temp = QFileDialog::getOpenFileName(
+			this,
+			tr("Choose source image"),
+			source_path_,
+			supported_file_patterns()
+		);
+	}
+	else {
+		path_temp = initial_file;
+	}
 
 	if(path_temp.isNull() && img_original_.isNull()) {
 		// it's null if we've just setup the window

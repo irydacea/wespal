@@ -24,8 +24,14 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-	if(w.initial_open()) {
+	QString initial_file = "";
+	QStringList argvq = a.arguments();
+
+	if(argvq.count() > 1)
+		initial_file = argvq.last();
+
+	MainWindow w;
+	if(w.initial_open(initial_file)) {
 		w.show();
 		return a.exec();
 	}
