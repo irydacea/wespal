@@ -240,7 +240,7 @@
      <normaloff>:/rsrc/document-open.png</normaloff>:/rsrc/document-open.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Open</string>
+    <string>&amp;Open...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
