@@ -82,6 +82,8 @@ private:
 	QString current_pal_name(bool palette_switch_mode = false) const;
 	QList<QRgb> *current_pal_data(bool palette_switch_mode = false) const;
 
+	QString supported_file_patterns() const;
+
 private slots:
 	void on_listRanges_itemSelectionChanged();
  void on_cbxNewPal_currentIndexChanged(int index);

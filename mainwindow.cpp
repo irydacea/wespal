@@ -26,6 +26,7 @@
 
 #include <QDesktopServices> // viva la integration!
 #include <QFileDialog>
+#include <QImageReader>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QUrl>
@@ -216,13 +217,48 @@ bool MainWindow::initial_open()
 	return true;
 }
 
+QString MainWindow::supported_file_patterns() const
+{
+	QString ret;
+	QList<QByteArray> supported_fmts = QImageReader::supportedImageFormats();
+	bool have_xcf = false;
+	bool have_psd = false;
+
+	foreach(QByteArray str, supported_fmts) {
+		QString qstr(str);
+		if(qstr == "XCF") {
+			have_xcf = true;
+		}
+		else if(qstr == "PSD") {
+			have_psd = true;
+		}
+	}
+
+	ret += tr("All Supported Files") + " (*.png *.bmp";
+	if(have_xcf) { ret += " *.xcf"; }
+	if(have_psd) { ret += " *.psd"; }
+
+	ret += ");;" + tr("PNG image") + " (*.png);;" + tr("Windows BMP image");
+	ret += " (*.bmp);;";
+
+	if(have_xcf)
+		ret += tr("GIMP image") + " (*.xcf);;";
+
+	if(have_psd)
+		ret += tr("Photoshop image") + " (*.psd);;";
+
+	ret += tr("All files") + " (*)";
+
+	return ret;
+}
+
 void MainWindow::do_open()
 {
 	QString path_temp = QFileDialog::getOpenFileName(
 		this,
 		tr("Choose source image"),
 		source_path_,
-		tr("PNG image (*.png);;All files (*)")
+		supported_file_patterns()
 	);
 
 	if(path_temp.isNull() && img_original_.isNull()) {
