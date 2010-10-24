@@ -29,7 +29,9 @@
 #include <QImageReader>
 #include <QImageWriter>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QUrl>
+#include <QWhatsThis>
 
 namespace {
 	struct no_initial_file {};
@@ -45,6 +47,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	img_transview_()
 {
     ui->setupUi(this);
+
+	QAction* const act_whatsthis = QWhatsThis::createAction(this);
+	ui->menu_Help->insertAction(ui->actionAbout_Morning_Star, act_whatsthis);
+	ui->menu_Help->insertSeparator(ui->actionAbout_Morning_Star);
+
+	QPushButton* const save = ui->buttonBox->button(QDialogButtonBox::Save);
+	QPushButton* const close = ui->buttonBox->button(QDialogButtonBox::Close);
+
+	save->setWhatsThis(tr("Saves the current recolor job."));
+	close->setWhatsThis(tr("Abandons the current job and exits."));
 
 	//this->setFixedSize(this->size());
 
