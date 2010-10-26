@@ -483,7 +483,7 @@ QStringList MainWindow::do_save_color_ranges(QString &base)
 			path += QString("-RC-") + palname + "-";
 			path += QString::number(k + 1) + "-" + mos_color_range_id_to_name(k + 1) + ".png";
 
-			rc_jobs[path] = recolor_range(mos_color_range_from_id(k), *paldata);
+			rc_jobs[path] = recolor_range(mos_color_range_from_id(k + 1), *paldata);
 
 			if(QFileInfo(path).exists()) {
 				existing.push_back(path);
