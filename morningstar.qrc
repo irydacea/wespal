@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>rsrc/application-exit.png</file>
-        <file>rsrc/document-open.png</file>
-        <file>rsrc/document-save-as.png</file>
         <file>rsrc/app.png</file>
         <file>rsrc/rcx-icon.png</file>
     </qresource>

@@ -247,10 +247,6 @@
    <addaction name="menu_Help"/>
   </widget>
   <action name="action_Open">
-   <property name="icon">
-    <iconset resource="morningstar.qrc">
-     <normaloff>:/rsrc/document-open.png</normaloff>:/rsrc/document-open.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Open...</string>
    </property>
@@ -259,10 +255,6 @@
    </property>
   </action>
   <action name="action_Quit">
-   <property name="icon">
-    <iconset resource="morningstar.qrc">
-     <normaloff>:/rsrc/application-exit.png</normaloff>:/rsrc/application-exit.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -276,10 +268,6 @@
    </property>
   </action>
   <action name="action_Save">
-   <property name="icon">
-    <iconset resource="morningstar.qrc">
-     <normaloff>:/rsrc/document-save-as.png</normaloff>:/rsrc/document-save-as.png</iconset>
-   </property>
    <property name="text">
     <string>&amp;Save...</string>
    </property>
