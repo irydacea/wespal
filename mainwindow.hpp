@@ -57,11 +57,6 @@ private:
 	QImage img_original_;
 	QImage img_transview_;
 
-	color_range recolor_crg_;
-	QList<QRgb> recolor_pal_;
-
-	bool using_color_ranges_;
-
 	void toggle_page1(bool newstate);
 	void toggle_page2(bool newstate);
 
