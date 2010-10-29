@@ -44,7 +44,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
 	ui(new Ui::MainWindow),
 	img_path_(),
-	source_path_(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation)),
 	img_original_(),
 	img_transview_()
 {
@@ -151,7 +150,6 @@ void MainWindow::dropEvent(QDropEvent *e)
 	if(newpath.isEmpty() != true) {
 		img_path_ = newpath;
 		this->setWindowTitle(tr("Wesnoth RCX") + " - " + img_path_);
-		source_path_ = QFileInfo(img_path_).absolutePath();
 	}
 	else {
 		this->setWindowTitle(tr("Wesnoth RCX") + " - " + tr("Dropped file"));
@@ -269,11 +267,18 @@ QString MainWindow::supported_file_patterns() const
 void MainWindow::do_open(const QString &initial_file)
 {
 	QString path_temp;
+	QString start_dir;
+
 	if(initial_file.isNull() || initial_file.isEmpty()) {
+		if(img_path_.isEmpty())
+			start_dir = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
+		else
+			start_dir = QFileInfo(img_path_).absolutePath();
+
 		path_temp = QFileDialog::getOpenFileName(
 			this,
 			tr("Choose source image"),
-			source_path_,
+			start_dir,
 			supported_file_patterns()
 		);
 	}
@@ -307,8 +312,6 @@ void MainWindow::do_open(const QString &initial_file)
 	this->setWindowTitle(tr("Wesnoth RCX") + QString(" - " + img_path_));
 	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 	refresh_previews();
-
-	source_path_ = QFileInfo(img_path_).absolutePath();
 }
 
 void MainWindow::refresh_previews()

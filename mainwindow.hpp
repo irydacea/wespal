@@ -52,7 +52,6 @@ private:
     Ui::MainWindow *ui;
 
 	QString img_path_;
-	QString source_path_;
 
 	QImage img_original_;
 	QImage img_transview_;
