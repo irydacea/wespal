@@ -79,14 +79,14 @@ private:
 
 private slots:
 	void on_listRanges_itemSelectionChanged();
- void on_cbxNewPal_currentIndexChanged(int index);
- void on_cbxKeyPal_currentIndexChanged(int index);
- void on_action_Save_triggered();
- void on_action_Quit_triggered();
- void on_action_Open_triggered();
- void on_buttonBox_clicked(QAbstractButton* button);
- void on_actionAbout_Morning_Star_triggered();
- void on_radPal_clicked();
+	void on_cbxNewPal_currentIndexChanged(int index);
+	void on_cbxKeyPal_currentIndexChanged(int index);
+	void on_action_Save_triggered();
+	void on_action_Quit_triggered();
+	void on_action_Open_triggered();
+	void on_buttonBox_clicked(QAbstractButton* button);
+	void on_actionAbout_Morning_Star_triggered();
+	void on_radPal_clicked();
 	void on_radRc_clicked();
 };
 
