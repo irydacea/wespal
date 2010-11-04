@@ -60,6 +60,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	initialize_specs();
+	update_ui_from_specs();
+
 	QAction* const act_whatsthis = QWhatsThis::createAction(this);
 	ui->menu_Help->insertAction(ui->actionAbout_Morning_Star, act_whatsthis);
 	ui->menu_Help->insertSeparator(ui->actionAbout_Morning_Star);
@@ -73,8 +76,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->action_Open->setIcon(this->style()->standardIcon(QStyle::SP_DialogOpenButton, 0, dynamic_cast<QWidget*>(ui->action_Open)));
 	ui->action_Save->setIcon(this->style()->standardIcon(QStyle::SP_DialogSaveButton, 0, dynamic_cast<QWidget*>(ui->action_Save)));
 	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, 0, dynamic_cast<QWidget*>(ui->action_Quit)));
-
-
 
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
@@ -448,7 +449,7 @@ QString MainWindow::current_pal_name(bool palette_switch_mode) const
 {
 	QString ret;
 	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
-	Q_ASSERT(choice >= 0 && choice <= 2);
+	//Q_ASSERT(choice >= 0 && choice <= 2);
 
 	switch(choice) {
 	case 2:
@@ -468,7 +469,7 @@ QList<QRgb> *MainWindow::current_pal_data(bool palette_switch_mode) const
 {
 	QList<QRgb> *ret;
 	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
-	Q_ASSERT(choice >= 0 && choice <= 2);
+	//Q_ASSERT(choice >= 0 && choice <= 2);
 
 	switch(choice) {
 	case 2:
