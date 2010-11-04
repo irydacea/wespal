@@ -21,6 +21,8 @@
 #ifndef SPECS_HPP
 #define SPECS_HPP
 
+#include "wesnothrc.hpp"
+
 #include <QString>
 
 template< typename T >
@@ -57,5 +59,8 @@ struct labeled_spec
 		return *this;
 	}
 };
+
+typedef labeled_spec< color_range > range_spec;
+typedef labeled_spec< QList<QRgb> > pal_spec;
 
 #endif // SPECS_HPP

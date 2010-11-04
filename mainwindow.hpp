@@ -51,9 +51,6 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 
-	typedef labeled_spec< color_range > range_spec;
-	typedef labeled_spec< QList<QRgb> > pal_spec;
-
 	QList< range_spec > color_ranges_;
 	QList< pal_spec   > palettes_;
 
