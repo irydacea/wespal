@@ -8,12 +8,15 @@ SOURCES += main.cpp \
     wesnothrc.cpp \
     defs.cpp \
     version.cpp \
-    rc_qt4.cpp
+    rc_qt4.cpp \
+    customranges.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \
     version.hpp \
     rc_qt4.hpp \
-    specs.hpp
-FORMS += mainwindow.ui
+    specs.hpp \
+    customranges.hpp
+FORMS += mainwindow.ui \
+    customranges.ui
 RESOURCES += morningstar.qrc
