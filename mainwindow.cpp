@@ -56,7 +56,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow),
 	img_path_(),
 	img_original_(),
-	img_transview_()
+	img_transview_(),
+	zoom_(1.0f)
 {
     ui->setupUi(this);
 
@@ -81,6 +82,17 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->staFunctionOpts->setCurrentIndex(0);
 	toggle_page2(false);
 	toggle_page1(true);
+
+	ui->cbxZoomFactor->addItems(
+		QStringList()
+			<< "50%"
+			<< "100%"
+			<< "200%"
+			<< "400%"
+			<< "800%"
+	);
+
+	ui->cbxZoomFactor->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow()
@@ -192,7 +204,6 @@ void MainWindow::dropEvent(QDropEvent *e)
 		this->setWindowTitle(tr("Wesnoth RCX") + " - " + tr("Dropped file"));
 	}
 
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 	refresh_previews();
 }
 
@@ -347,7 +358,6 @@ void MainWindow::do_open(const QString &initial_file)
 
 	// Refresh UI
 	this->setWindowTitle(tr("Wesnoth RCX") + QString(" - " + img_path_));
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
 	refresh_previews();
 }
 
@@ -370,7 +380,11 @@ void MainWindow::refresh_previews()
 
 	rc_image(img_original_, img_transview_, cvt_map);
 
-	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_));
+	const int sw = this->img_original_.width() * zoom_;
+	const int sh = this->img_original_.height() * zoom_;
+
+	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_).scaled(sw, sh));
+	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_).scaled(sw, sh));
 }
 
 void MainWindow::do_save()
@@ -563,4 +577,40 @@ void MainWindow::on_cbxNewPal_currentIndexChanged(int /*index*/)
 void MainWindow::on_listRanges_itemSelectionChanged()
 {
 	refresh_previews();
+}
+
+void MainWindow::on_cbxZoomFactor_currentIndexChanged(int index)
+{
+	switch(index) {
+	case 0:
+		zoom_ = 0.5f; break;
+	case 2:
+		zoom_ = 2.0f; break;
+	case 3:
+		zoom_ = 4.0f; break;
+	case 4:
+		zoom_ = 8.0f; break;
+	default:
+		zoom_ = 1.0f;
+	}
+
+	this->refresh_previews();
+}
+
+void MainWindow::on_tbZoomIn_clicked()
+{
+	QComboBox& zoombox = *(ui->cbxZoomFactor);
+	const int ci = zoombox.currentIndex();
+	if(ci < zoombox.count()) {
+		zoombox.setCurrentIndex(ci + 1);
+	}
+}
+
+void MainWindow::on_tbZoomOut_clicked()
+{
+	QComboBox& zoombox = *(ui->cbxZoomFactor);
+	const int ci = zoombox.currentIndex();
+	if(ci > 0) {
+		zoombox.setCurrentIndex(ci - 1);
+	}
 }

@@ -66,6 +66,8 @@ private:
 	QImage img_original_;
 	QImage img_transview_;
 
+	float zoom_;
+
 	void toggle_page1(bool newstate);
 	void toggle_page2(bool newstate);
 
@@ -87,6 +89,9 @@ private:
 	QString supported_file_patterns() const;
 
 private slots:
+	void on_tbZoomOut_clicked();
+ void on_tbZoomIn_clicked();
+ void on_cbxZoomFactor_currentIndexChanged(int index);
 	void on_listRanges_itemSelectionChanged();
 	void on_cbxNewPal_currentIndexChanged(int index);
 	void on_cbxKeyPal_currentIndexChanged(int index);
