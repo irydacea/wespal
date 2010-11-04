@@ -158,6 +158,8 @@ void MainWindow::update_ui_from_specs()
 		// Reset selection to #1
 		cranges.setItemSelected(i, n == 0);
 	}
+
+	cranges.setCurrentRow(0);
 }
 
 void MainWindow::changeEvent(QEvent *e)
