@@ -1,3 +1,6 @@
+Version 0.1.3+git:
+ * Implemented basic zoom support.
+
 Version 0.1.3:
  * Fix an off-by-one bug causing problems with the TC recolor jobs.
 
