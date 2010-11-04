@@ -268,7 +268,15 @@
     </property>
     <addaction name="actionAbout_Morning_Star"/>
    </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="actionColor_ranges"/>
+    <addaction name="action_Palettes"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menu_Tools"/>
    <addaction name="menu_Help"/>
   </widget>
   <action name="action_Open">
@@ -298,6 +306,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionColor_ranges">
+   <property name="text">
+    <string>Custom color &amp;ranges...</string>
+   </property>
+  </action>
+  <action name="action_Palettes">
+   <property name="text">
+    <string>Custom &amp;palettes...</string>
    </property>
   </action>
  </widget>
