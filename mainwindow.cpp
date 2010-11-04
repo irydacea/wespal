@@ -45,7 +45,7 @@ namespace {
 			return str;
 
 		QString ret = str.toUpper().left(1);
-		ret += str.right(ret.length() - 1);
+		ret += str.right(str.length() - 1);
 
 		return ret;
 	}
@@ -138,13 +138,7 @@ void MainWindow::update_ui_from_specs()
 		QListWidgetItem *i = cranges.item(n);
 		i->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		i->setCheckState(Qt::Checked);
-
-		// FIXME: why am I doing this just to capitalize the names?...
-		i->setText(
-			i->text().toUpper().left(1) +
-			i->text().right(i->text().length() - 1)
-		);
-
+		i->setText(capitalize(i->text()));
 		// Reset selection to #1
 		cranges.setItemSelected(i, n == 0);
 	}
