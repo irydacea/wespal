@@ -48,6 +48,7 @@ protected:
     void changeEvent(QEvent *e);
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dropEvent(QDropEvent *e);
+	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 
 	typedef labeled_spec< color_range > range_spec;
@@ -69,6 +70,9 @@ private:
 
 	float zoom_;
 	bool ignore_drops_;
+	bool drag_use_rc_;
+	bool drag_start_;
+	QPoint drag_start_pos_;
 
 	void toggle_page1(bool newstate);
 	void toggle_page2(bool newstate);
