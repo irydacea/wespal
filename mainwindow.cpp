@@ -371,7 +371,7 @@ void MainWindow::refresh_previews()
 	}
 	else {
 		cvt_map = recolor_range(
-			mos_color_range_from_id(ui->listRanges->currentIndex().row() + 1), *key_pal);
+			color_ranges_.at(ui->listRanges->currentIndex().row()).def, *key_pal);
 	}
 
 	rc_image(img_original_, img_transview_, cvt_map);
@@ -504,9 +504,9 @@ QStringList MainWindow::do_save_color_ranges(QString &base)
 		if(list->item(k)->checkState() == Qt::Checked) {
 			QString path = base + "/" + QFileInfo(img_path_).completeBaseName();
 			path += QString("-RC-") + palname + "-";
-			path += QString::number(k + 1) + "-" + mos_color_range_id_to_name(k + 1) + ".png";
+			path += QString::number(k + 1) + "-" + color_ranges_.at(k).id + ".png";
 
-			rc_jobs[path] = recolor_range(mos_color_range_from_id(k + 1), *paldata);
+			rc_jobs[path] = recolor_range(color_ranges_.at(k).def, *paldata);
 
 			if(QFileInfo(path).exists()) {
 				existing.push_back(path);
