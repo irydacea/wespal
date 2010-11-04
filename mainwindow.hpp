@@ -22,6 +22,7 @@
 #define MAINWINDOW_HPP
 
 #include "wesnothrc.hpp"
+#include "specs.hpp"
 
 #include <QAbstractButton>
 #include <QDropEvent>
@@ -47,6 +48,15 @@ protected:
     void changeEvent(QEvent *e);
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dropEvent(QDropEvent *e);
+
+	typedef labeled_spec< color_range > range_spec;
+	typedef labeled_spec< QList<QRgb> > pal_spec;
+
+	QList< range_spec > color_ranges_;
+	QList< pal_spec   > palettes_;
+
+	void initialize_specs();
+	void update_ui_from_specs();
 
 private:
     Ui::MainWindow *ui;

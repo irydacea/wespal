@@ -38,6 +38,17 @@
 namespace {
 	struct no_initial_file {};
 	struct canceled_job    {};
+
+	QString capitalize(const QString& str)
+	{
+		if(str.isEmpty())
+			return str;
+
+		QString ret = str.toUpper().left(1);
+		ret += str.right(ret.length() - 1);
+
+		return ret;
+	}
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -63,17 +74,62 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->action_Save->setIcon(this->style()->standardIcon(QStyle::SP_DialogSaveButton, 0, dynamic_cast<QWidget*>(ui->action_Save)));
 	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, 0, dynamic_cast<QWidget*>(ui->action_Quit)));
 
-	ui->cbxKeyPal->clear();
-	ui->cbxKeyPal->addItem(tr("TC Magenta"));
-	ui->cbxKeyPal->addItem(tr("TC Flag"));
-	ui->cbxKeyPal->addItem(tr("TC Ellipse"));
-	ui->cbxKeyPal->setCurrentIndex(0);
 
-	ui->cbxNewPal->clear();
-	ui->cbxNewPal->addItem(tr("TC Magenta"));
-	ui->cbxNewPal->addItem(tr("TC Flag"));
-	ui->cbxNewPal->addItem(tr("TC Ellipse"));
-	ui->cbxNewPal->setCurrentIndex(0);
+
+	ui->radRc->setChecked(true);
+	ui->staFunctionOpts->setCurrentIndex(0);
+	toggle_page2(false);
+	toggle_page1(true);
+
+	//this->do_open();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::initialize_specs()
+{
+	color_ranges_.clear();
+	palettes_.clear();
+
+	/* The main 9 color ranges. */
+
+	for(int i = 1; i < 10; ++i) {
+		QString const& id = mos_color_range_id_to_name(i);
+		color_ranges_.push_back(range_spec(
+			mos_color_range_from_id(i),
+			id,
+			capitalize(id)
+		));
+	}
+
+	/* The main 3 palettes. */
+
+	palettes_
+		<< pal_spec(mos_pal_magenta, "magenta", tr("Magenta TC"))
+		<< pal_spec(mos_pal_flag_green, "flag_green", tr("Green flag TC"))
+		<< pal_spec(mos_pal_ellipse_red, "ellipse_red", tr("Red ellipse TC"));
+
+}
+
+void MainWindow::update_ui_from_specs()
+{
+	QComboBox& ckeys = *(ui->cbxKeyPal);
+	QComboBox& cpals = *(ui->cbxNewPal);
+	QListWidget& cranges = *(ui->listRanges);
+
+	ckeys.clear();
+	cpals.clear();
+
+	foreach(const pal_spec& p, palettes_) {
+		cpals.addItem(p.name);
+		ckeys.addItem(p.name);
+	}
+
+	ckeys.setCurrentIndex(0);
+	cpals.setCurrentIndex(0);
 
 	ui->listRanges->clear();
 	ui->listRanges->addItems(mos_color_range_names);
@@ -93,18 +149,6 @@ MainWindow::MainWindow(QWidget *parent) :
 		// Reset selection to #1
 		ui->listRanges->setItemSelected(i, n == 0);
 	}
-
-	ui->radRc->setChecked(true);
-	ui->staFunctionOpts->setCurrentIndex(0);
-	toggle_page2(false);
-	toggle_page1(true);
-
-	//this->do_open();
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::changeEvent(QEvent *e)

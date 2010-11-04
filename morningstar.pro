@@ -13,6 +13,7 @@ HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \
     version.hpp \
-    rc_qt4.hpp
+    rc_qt4.hpp \
+    specs.hpp
 FORMS += mainwindow.ui
 RESOURCES += morningstar.qrc
