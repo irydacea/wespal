@@ -4,6 +4,9 @@ moc_*
 qrc_*
 ui_*
 morningstar
+morningstar.exe
+wesnoth-rcx
+wesnoth-rcx.exe
 Makefile
 *.h
 *.tar
