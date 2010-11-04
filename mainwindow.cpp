@@ -81,8 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->staFunctionOpts->setCurrentIndex(0);
 	toggle_page2(false);
 	toggle_page1(true);
-
-	//this->do_open();
 }
 
 MainWindow::~MainWindow()
@@ -137,7 +135,7 @@ void MainWindow::update_ui_from_specs()
 	ui->listRanges->setCurrentRow(0);
 
 	for(int n = 0; n < ui->listRanges->count(); ++n) {
-		QListWidgetItem *i = ui->listRanges->item(n);
+		QListWidgetItem *i = cranges.item(n);
 		i->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		i->setCheckState(Qt::Checked);
 
@@ -148,7 +146,7 @@ void MainWindow::update_ui_from_specs()
 		);
 
 		// Reset selection to #1
-		ui->listRanges->setItemSelected(i, n == 0);
+		cranges.setItemSelected(i, n == 0);
 	}
 }
 
@@ -361,11 +359,14 @@ void MainWindow::do_open(const QString &initial_file)
 
 void MainWindow::refresh_previews()
 {
+	if(this->img_original_.isNull())
+		return;
+
 	rc_map cvt_map;
-	QList<QRgb> *key_pal = current_pal_data();
+	QList<QRgb> const *key_pal = current_pal_data();
 
 	if(ui->staFunctionOpts->currentIndex()) {
-		QList<QRgb> *target_pal = current_pal_data(true);
+		QList<QRgb> const *target_pal = current_pal_data(true);
 		cvt_map = recolor_palettes(*key_pal, *target_pal);
 	}
 	else {
@@ -447,42 +448,16 @@ void MainWindow::do_about()
 
 QString MainWindow::current_pal_name(bool palette_switch_mode) const
 {
-	QString ret;
 	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
-	//Q_ASSERT(choice >= 0 && choice <= 2);
-
-	switch(choice) {
-	case 2:
-		ret = "ellipse_red";
-		break;
-	case 1:
-		ret = "flag_green";
-		break;
-	default:
-		ret = "magenta";
-		break;
-	}
-	return ret;
+	Q_ASSERT(choice >= 0 && choice < palettes_.size());
+	return palettes_.at(choice).id;
 }
 
-QList<QRgb> *MainWindow::current_pal_data(bool palette_switch_mode) const
+QList<QRgb> const *MainWindow::current_pal_data(bool palette_switch_mode) const
 {
-	QList<QRgb> *ret;
 	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
-	//Q_ASSERT(choice >= 0 && choice <= 2);
-
-	switch(choice) {
-	case 2:
-		ret = &mos_pal_ellipse_red;
-		break;
-	case 1:
-		ret = &mos_pal_flag_green;
-		break;
-	default:
-		ret = &mos_pal_magenta;
-		break;
-	}
-	return ret;
+	Q_ASSERT(choice >= 0 && choice < palettes_.size());
+	return &(palettes_.at(choice).def);
 }
 
 bool MainWindow::confirm_existing_files(QStringList& paths)
@@ -497,9 +472,9 @@ bool MainWindow::confirm_existing_files(QStringList& paths)
 QStringList MainWindow::do_save_single_recolor(QString &base)
 {
 	QString palname = current_pal_name();
-	QList<QRgb> *paldata = current_pal_data();
+	QList<QRgb> const *paldata = current_pal_data();
 	QString newpalname = current_pal_name(true);
-	QList<QRgb> *newpaldata = current_pal_data(true);
+	QList<QRgb> const *newpaldata = current_pal_data(true);
 	QMap<QString, rc_map> rc_job;
 
 	QString path = base + "/" + QFileInfo(img_path_).completeBaseName();
@@ -519,7 +494,7 @@ QStringList MainWindow::do_save_single_recolor(QString &base)
 QStringList MainWindow::do_save_color_ranges(QString &base)
 {
 	QString palname = current_pal_name();
-	QList<QRgb> *paldata = current_pal_data();
+	QList<QRgb> const *paldata = current_pal_data();
 	QMap<QString, rc_map> rc_jobs;
 	QListWidget *list = this->ui->listRanges;
 

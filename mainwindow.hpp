@@ -82,7 +82,7 @@ private:
 	void refresh_previews();
 
 	QString current_pal_name(bool palette_switch_mode = false) const;
-	QList<QRgb> *current_pal_data(bool palette_switch_mode = false) const;
+	QList<QRgb> const *current_pal_data(bool palette_switch_mode = false) const;
 
 	QString supported_file_patterns() const;
 
