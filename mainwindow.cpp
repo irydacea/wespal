@@ -601,7 +601,7 @@ void MainWindow::on_tbZoomIn_clicked()
 {
 	QComboBox& zoombox = *(ui->cbxZoomFactor);
 	const int ci = zoombox.currentIndex();
-	if(ci < zoombox.count()) {
+	if(ci + 1 < zoombox.count()) {
 		zoombox.setCurrentIndex(ci + 1);
 	}
 }
