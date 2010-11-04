@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-09-30T09:42:03
 # -------------------------------------------------
-TARGET = morningstar
+TARGET = wesnoth-rcx
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
