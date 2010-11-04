@@ -57,7 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	img_path_(),
 	img_original_(),
 	img_transview_(),
-	zoom_(1.0f)
+	zoom_(1.0f),
+	ignore_drops_(false)
 {
     ui->setupUi(this);
 
@@ -168,6 +169,29 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+	if(event->button() == Qt::LeftButton) {
+		const bool use_rc = ui->previewRc->geometry().contains(event->pos());
+		if(!use_rc && !ui->previewOriginal->geometry().contains(event->pos()))
+			return;
+
+		QDrag *d = new QDrag(this);
+		QMimeData *m = new QMimeData();
+
+		if(use_rc)
+			m->setImageData(this->img_transview_);
+		else
+			m->setImageData(this->img_original_);
+
+		d->setMimeData(m);
+
+		ignore_drops_ = true;
+		d->exec();
+		ignore_drops_ = false;
+	}
+}
+
 void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 {
 	if(e->mimeData()->hasImage() || e->mimeData()->hasUrls())
@@ -176,6 +200,9 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 
 void MainWindow::dropEvent(QDropEvent *e)
 {
+	if(ignore_drops_)
+		return;
+
 	QImage newimg;
 	QString newpath = "";
 

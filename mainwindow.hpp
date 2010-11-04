@@ -48,6 +48,7 @@ protected:
     void changeEvent(QEvent *e);
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dropEvent(QDropEvent *e);
+	void mousePressEvent(QMouseEvent *event);
 
 	typedef labeled_spec< color_range > range_spec;
 	typedef labeled_spec< QList<QRgb> > pal_spec;
@@ -67,6 +68,7 @@ private:
 	QImage img_transview_;
 
 	float zoom_;
+	bool ignore_drops_;
 
 	void toggle_page1(bool newstate);
 	void toggle_page2(bool newstate);
