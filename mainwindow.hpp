@@ -92,7 +92,8 @@ private:
 	QString supported_file_patterns() const;
 
 private slots:
-	void on_tbZoomOut_clicked();
+	void on_actionColor_ranges_triggered();
+ void on_tbZoomOut_clicked();
  void on_tbZoomIn_clicked();
  void on_cbxZoomFactor_currentIndexChanged(int index);
 	void on_listRanges_itemSelectionChanged();

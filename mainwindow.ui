@@ -23,7 +23,7 @@
    <string>Wesnoth RCX</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="morningstar.qrc">
+   <iconset>
     <normaloff>:/rsrc/app.png</normaloff>:/rsrc/app.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -337,8 +337,6 @@
   <tabstop>cbxNewPal</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources>
-  <include location="morningstar.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

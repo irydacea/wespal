@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Customize color ranges</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -64,7 +64,7 @@
     <string>&amp;Add</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="cmdEdit">
+  <widget class="QPushButton" name="cmdUpdate">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -74,7 +74,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&amp;Edit</string>
+    <string>&amp;Update</string>
    </property>
   </widget>
   <widget class="QPushButton" name="cmdDelete">
@@ -238,7 +238,7 @@
   <zorder>buttonBox</zorder>
   <zorder>rangesList</zorder>
   <zorder>cmdAdd</zorder>
-  <zorder>cmdEdit</zorder>
+  <zorder>cmdUpdate</zorder>
   <zorder>cmdDelete</zorder>
   <zorder>line</zorder>
  </widget>

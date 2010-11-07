@@ -19,6 +19,7 @@
 //
 
 #include "defs.hpp"
+#include "customranges.hpp"
 #include "mainwindow.hpp"
 #include "rc_qt4.hpp"
 #include "ui_mainwindow.h"
@@ -651,4 +652,10 @@ void MainWindow::on_tbZoomOut_clicked()
 	if(ci > 0) {
 		zoombox.setCurrentIndex(ci - 1);
 	}
+}
+
+void MainWindow::on_actionColor_ranges_triggered()
+{
+	CustomRanges dlg(this);
+	dlg.exec();
 }
