@@ -36,6 +36,11 @@ struct labeled_spec
 	QString		id;		/**< Internal id.       */
 	QString		name;	/**< Translatable name. */
 
+	/** Default constructor */
+	labeled_spec()
+		: def(), id(), name()
+	{}
+
 	/** List constructor. */
 	labeled_spec(const labeled_type& _def, const QString& _id, const QString& _name)
 		: def(_def)

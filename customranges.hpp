@@ -38,7 +38,9 @@ private:
 	bool ignore_serializing_events_;
 
 private slots:
-	void on_leId_textChanged(QString );
+	void on_cmdDelete_clicked();
+ void on_cmdAdd_clicked();
+ void on_leId_textChanged(QString );
  void on_leName_textChanged(QString );
  void on_leMin_textChanged(QString );
  void on_leMax_textChanged(QString );

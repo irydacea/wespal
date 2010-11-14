@@ -2,6 +2,7 @@
 #include "ui_customranges.h"
 
 #include <QColorDialog>
+#include <QMessageBox>
 
 CustomRanges::CustomRanges(QWidget *parent) :
     QDialog(parent),
@@ -25,6 +26,9 @@ void CustomRanges::post_setup()
 	}
 
 	ui->cmdUpdate->setEnabled(false);
+	ui->rangesList->setCurrentRow(0);
+
+	deserialize_range(range_spec()); // clear input widgets
 }
 
 void CustomRanges::serialize_range(range_spec &range)
@@ -93,15 +97,62 @@ void CustomRanges::on_tbMin_clicked()
 	}
 }
 
+void CustomRanges::on_cmdAdd_clicked()
+{
+	range_spec nr;
+	serialize_range(nr);
+
+	if(nr.id.isEmpty()) {
+		QMessageBox::warning(
+			this, tr("Wesnoth RCX"),
+			tr("You need to specify a valid, non-empty identifier."));
+		return;
+	}
+	else {
+		foreach(const range_spec& r, ranges_) {
+			if(r.id == nr.id) {
+				QMessageBox::warning(
+					this, tr("Wesnoth RCX"),
+					tr("You cannot specify multiple ranges with the same identifier."));
+				return;
+			}
+		}
+	}
+
+	ranges_.push_back(nr);
+
+	QListWidget& l = *ui->rangesList;
+	QListWidgetItem* i = new QListWidgetItem(nr.name + QString(" [") + nr.id+ QString("]"));
+	i->setSelected(true);
+	// Adds the listbox item and clears the input widgets
+	l.addItem(i);
+	deserialize_range(range_spec());
+}
+
 void CustomRanges::on_cmdUpdate_clicked()
 {
 	QListWidget& l = *ui->rangesList;
 	if(!l.count())
 		return;
 
-	serialize_range(ranges_[l.currentRow()]);
+	range_spec& r = ranges_[l.currentRow()];
+
+	serialize_range(r);
+	l.currentItem()->setText(r.name + QString(" [") + r.id + QString("]"));
 
 	ui->cmdUpdate->setEnabled(false);
+}
+
+void CustomRanges::on_cmdDelete_clicked()
+{
+	QListWidget& l = *ui->rangesList;
+	if(!l.count())
+		return;
+	QListWidgetItem* i = l.currentItem();
+
+	ranges_.removeAt(l.currentRow());
+	l.setCurrentRow(l.currentRow() - 1);
+	l.removeItemWidget(i);
 }
 
 void CustomRanges::on_leAvg_textChanged(QString)
@@ -128,3 +179,4 @@ void CustomRanges::on_leId_textChanged(QString)
 {
 	ui->cmdUpdate->setEnabled(true);
 }
+
