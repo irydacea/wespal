@@ -148,11 +148,9 @@ void CustomRanges::on_cmdDelete_clicked()
 	QListWidget& l = *ui->rangesList;
 	if(!l.count())
 		return;
-	QListWidgetItem* i = l.currentItem();
 
 	ranges_.removeAt(l.currentRow());
-	l.setCurrentRow(l.currentRow() - 1);
-	l.removeItemWidget(i);
+	l.takeItem(l.currentRow());
 }
 
 void CustomRanges::on_leAvg_textChanged(QString)
