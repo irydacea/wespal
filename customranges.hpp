@@ -12,15 +12,11 @@ namespace Ui {
 class CustomRanges : public QDialog {
     Q_OBJECT
 public:
-    CustomRanges(QWidget *parent = 0);
+	CustomRanges(QWidget *parent, QList<range_spec>& initial_ranges);
     ~CustomRanges();
 
 	const QList<range_spec> ranges() const {
 		return ranges_;
-	}
-
-	void set_ranges(QList<range_spec> ranges) {
-		ranges_ = ranges;
 	}
 
 protected:
@@ -38,7 +34,8 @@ private:
 	bool ignore_serializing_events_;
 
 private slots:
-	void on_cmdDelete_clicked();
+	void on_rangesList_itemSelectionChanged();
+ void on_cmdDelete_clicked();
  void on_cmdAdd_clicked();
  void on_leId_textChanged(QString );
  void on_leName_textChanged(QString );

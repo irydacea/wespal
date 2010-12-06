@@ -4,10 +4,10 @@
 #include <QColorDialog>
 #include <QMessageBox>
 
-CustomRanges::CustomRanges(QWidget *parent) :
+CustomRanges::CustomRanges(QWidget *parent, QList<range_spec>& initial_ranges) :
     QDialog(parent),
 	ui(new Ui::CustomRanges),
-	ranges_(),
+	ranges_(initial_ranges),
 	ignore_serializing_events_(false)
 {
     ui->setupUi(this);
@@ -22,13 +22,18 @@ CustomRanges::~CustomRanges()
 void CustomRanges::post_setup()
 {
 	foreach(const range_spec& r, ranges_) {
-		deserialize_range(r);
+		ui->rangesList->addItem(new QListWidgetItem(r.name));
 	}
 
 	ui->cmdUpdate->setEnabled(false);
 	ui->rangesList->setCurrentRow(0);
 
-	deserialize_range(range_spec()); // clear input widgets
+	if(ranges_.count()) {
+		deserialize_range(ranges_.front());
+	}
+	else {
+		deserialize_range(range_spec()); // clear input widgets
+	}
 }
 
 void CustomRanges::serialize_range(range_spec &range)
@@ -53,6 +58,9 @@ void CustomRanges::deserialize_range(range_spec const& range)
 	ui->leAvg->setText(avg.name());
 	ui->leMax->setText(max.name());
 	ui->leMin->setText(min.name());
+
+	ui->leId->setText(range.id);
+	ui->leName->setText(range.name);
 
 	ignore_serializing_events_ = false;
 }
@@ -178,3 +186,7 @@ void CustomRanges::on_leId_textChanged(QString)
 	ui->cmdUpdate->setEnabled(true);
 }
 
+void CustomRanges::on_rangesList_itemSelectionChanged()
+{
+	deserialize_range(ranges_.at(ui->rangesList->currentRow()));
+}
