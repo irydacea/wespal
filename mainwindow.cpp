@@ -656,8 +656,9 @@ void MainWindow::on_tbZoomOut_clicked()
 
 void MainWindow::on_actionColor_ranges_triggered()
 {
-	QList<range_spec> custom_ranges = color_ranges_;
-	CustomRanges dlg(this, custom_ranges);
+	CustomRanges dlg(this, color_ranges_);
 	dlg.exec();
-	custom_ranges = dlg.ranges();
+	color_ranges_ = dlg.ranges();
+
+	refresh_previews();
 }
