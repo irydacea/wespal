@@ -58,7 +58,7 @@ protected:
 	QList< pal_spec   > user_palettes_;
 
 	void initialize_specs();
-	void update_ui_from_specs();
+	void update_ui_from_specs();	
 
 private:
     Ui::MainWindow *ui;

@@ -50,6 +50,25 @@ namespace {
 
 		return ret;
 	}
+
+	class ObjectLock
+	{
+	public:
+		ObjectLock(QObject& o)
+			: o_(o)
+			, initial_state_(o.blockSignals(true))
+		{
+		}
+
+		~ObjectLock()
+		{
+			o_.blockSignals(initial_state_);
+		}
+
+	private:
+		QObject& o_;
+		bool initial_state_;
+	};
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -65,6 +84,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	drag_start_pos_()
 {
     ui->setupUi(this);
+
+	ObjectLock l(*this);
 
 	initialize_specs();
 	update_ui_from_specs();
@@ -409,7 +430,7 @@ void MainWindow::do_open(const QString &initial_file)
 
 void MainWindow::refresh_previews()
 {
-	if(this->img_original_.isNull())
+	if(this->img_original_.isNull() || this->signalsBlocked())
 		return;
 
 	rc_map cvt_map;
@@ -683,7 +704,11 @@ void MainWindow::on_actionColor_ranges_triggered()
 
 	user_ranges_ = dlg.ranges();
 
-	initialize_specs();
-	update_ui_from_specs();
+	{
+		ObjectLock l(*this);
+		initialize_specs();
+		update_ui_from_specs();
+	}
+
 	refresh_previews();
 }
