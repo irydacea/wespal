@@ -306,7 +306,7 @@
    </widget>
    <widget class="QMenu" name="menu_Tools">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>&amp;Tools</string>
