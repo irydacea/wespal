@@ -54,6 +54,9 @@ protected:
 	QList< range_spec > color_ranges_;
 	QList< pal_spec   > palettes_;
 
+	QList< range_spec > user_ranges_;
+	QList< pal_spec   > user_palettes_;
+
 	void initialize_specs();
 	void update_ui_from_specs();
 

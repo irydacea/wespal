@@ -121,6 +121,10 @@ void MainWindow::initialize_specs()
 		));
 	}
 
+	/* User defined ranges. */
+
+	color_ranges_ << user_ranges_;
+
 	/* The main 3 palettes. */
 
 	palettes_
@@ -128,6 +132,9 @@ void MainWindow::initialize_specs()
 		<< pal_spec(mos_pal_flag_green, "flag_green", tr("Green flag TC"))
 		<< pal_spec(mos_pal_ellipse_red, "ellipse_red", tr("Red ellipse TC"));
 
+	/* User defined palettes. */
+
+	palettes_ << user_palettes_;
 }
 
 void MainWindow::update_ui_from_specs()
@@ -668,9 +675,11 @@ void MainWindow::update_zoom_buttons()
 
 void MainWindow::on_actionColor_ranges_triggered()
 {
-	CustomRanges dlg(this, color_ranges_);
+	CustomRanges dlg(this, user_ranges_);
 	dlg.exec();
-	color_ranges_ = dlg.ranges();
+	user_ranges_ = dlg.ranges();
 
+	initialize_specs();
+	update_ui_from_specs();
 	refresh_previews();
 }
