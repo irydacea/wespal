@@ -18,6 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
+#include "appconfig.hpp"
 #include "defs.hpp"
 #include "customranges.hpp"
 #include "mainwindow.hpp"
@@ -711,4 +712,6 @@ void MainWindow::on_actionColor_ranges_triggered()
 	}
 
 	refresh_previews();
+
+	mos_config_save(user_ranges_, user_palettes_);
 }

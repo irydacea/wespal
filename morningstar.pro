@@ -9,14 +9,16 @@ SOURCES += main.cpp \
     defs.cpp \
     version.cpp \
     rc_qt4.cpp \
-    customranges.cpp
+    customranges.cpp \
+    appconfig.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \
     version.hpp \
     rc_qt4.hpp \
     specs.hpp \
-    customranges.hpp
+    customranges.hpp \
+    appconfig.hpp
 FORMS += mainwindow.ui \
     customranges.ui
 RESOURCES += morningstar.qrc
