@@ -677,6 +677,10 @@ void MainWindow::on_actionColor_ranges_triggered()
 {
 	CustomRanges dlg(this, user_ranges_);
 	dlg.exec();
+
+	if(dlg.result() == QDialog::Rejected)
+		return;
+
 	user_ranges_ = dlg.ranges();
 
 	initialize_specs();
