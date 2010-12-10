@@ -1,6 +1,7 @@
 Version 0.2.0:
 
 Version 0.1.4:
+ * Complete drag-and-drop support.
  * Implemented basic zoom support.
 
 Version 0.1.3:
