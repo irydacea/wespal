@@ -128,7 +128,7 @@
          <string>Selects color range-based (a.k.a. &quot;team color&quot;) recoloring.</string>
         </property>
         <property name="text">
-         <string>Color range (TC)</string>
+         <string>Color &amp;range (TC)</string>
         </property>
        </widget>
       </item>
@@ -144,7 +144,7 @@
          <string>Selects palette switching mode, to replace original colors with new ones using a color values list instead of ranges.</string>
         </property>
         <property name="text">
-         <string>Palette switch</string>
+         <string>Palette &amp;switch</string>
         </property>
        </widget>
       </item>
