@@ -155,7 +155,11 @@ void MainWindow::update_ui_from_specs()
 	cpals.setCurrentIndex(0);
 
 	ui->listRanges->clear();
-	ui->listRanges->addItems(mos_color_range_names);
+
+	foreach(const range_spec& r, color_ranges_) {
+		ui->listRanges->addItem(r.name);
+	}
+
 	ui->listRanges->setCurrentRow(0);
 
 	for(int n = 0; n < ui->listRanges->count(); ++n) {
