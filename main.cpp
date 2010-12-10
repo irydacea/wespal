@@ -20,6 +20,7 @@
 
 #include <QtGui/QApplication>
 #include "mainwindow.hpp"
+#include "version.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,10 @@ int main(int argc, char *argv[])
 
 	if(argvq.count() > 1)
 		initial_file = argvq.last();
+
+	QCoreApplication::setApplicationName("Morning Star");
+	QCoreApplication::setOrganizationName("Wesnoth");
+	QCoreApplication::setApplicationVersion(mos_version);
 
 	MainWindow w;
 	if(w.initial_open(initial_file)) {
