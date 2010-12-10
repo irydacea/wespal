@@ -477,15 +477,15 @@ void MainWindow::do_about()
 	text += "&lt;shadowm@wesnoth.org&gt;<br><br>";
 
 	text += tr(
-		"This program is free software; you can redistribute it and/or modify<br>"
-		"it under the terms of the GNU General Public License as published by<br>"
-		"the Free Software Foundation; either version 2 of the License, or<br>"
+		"This program is free software; you can redistribute it and/or modify "
+		"it under the terms of the GNU General Public License as published by "
+		"the Free Software Foundation; either version 2 of the License, or "
 		"(at your option) any later version.<br>"
 		"<br>"
-		"This program is distributed in the hope that it will be useful, but<br>"
-		"<b>WITHOUT ANY WARRANTY</b>; without even the implied warranty of<br>"
-		"<b>MERCHANTABILITY</b> or <b>FITNESS FOR A PARTICULAR PURPOSE</b>.<br>"
-		"See the GNU General Public License for more details.<br>"
+		"This program is distributed in the hope that it will be useful, but "
+		"<b>WITHOUT ANY WARRANTY</b>; without even the implied warranty of "
+		"<b>MERCHANTABILITY</b> or <b>FITNESS FOR A PARTICULAR PURPOSE</b>. "
+		"See the GNU General Public License for more details."
 	);
 
 	msg.setText(text);
