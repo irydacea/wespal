@@ -154,21 +154,17 @@ void MainWindow::update_ui_from_specs()
 	ckeys.setCurrentIndex(0);
 	cpals.setCurrentIndex(0);
 
-	ui->listRanges->clear();
+	cranges.clear();
 
 	foreach(const range_spec& r, color_ranges_) {
-		ui->listRanges->addItem(r.name);
-	}
+		cranges.addItem(r.name);
 
-	ui->listRanges->setCurrentRow(0);
-
-	for(int n = 0; n < ui->listRanges->count(); ++n) {
-		QListWidgetItem *i = cranges.item(n);
+		QListWidgetItem *i = cranges.item(cranges.count() - 1);
 		i->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 		i->setCheckState(Qt::Checked);
 		i->setText(capitalize(i->text()));
 		// Reset selection to #1
-		cranges.setItemSelected(i, n == 0);
+		cranges.setItemSelected(i, cranges.count() == 1);
 	}
 
 	cranges.setCurrentRow(0);
