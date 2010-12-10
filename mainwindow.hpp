@@ -91,6 +91,8 @@ private:
 
 	QString supported_file_patterns() const;
 
+	void update_zoom_buttons();
+
 private slots:
 	void on_actionColor_ranges_triggered();
  void on_tbZoomOut_clicked();

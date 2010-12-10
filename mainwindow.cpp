@@ -643,6 +643,8 @@ void MainWindow::on_tbZoomIn_clicked()
 	if(ci + 1 < zoombox.count()) {
 		zoombox.setCurrentIndex(ci + 1);
 	}
+
+	update_zoom_buttons();
 }
 
 void MainWindow::on_tbZoomOut_clicked()
@@ -652,6 +654,16 @@ void MainWindow::on_tbZoomOut_clicked()
 	if(ci > 0) {
 		zoombox.setCurrentIndex(ci - 1);
 	}
+
+	update_zoom_buttons();
+}
+
+void MainWindow::update_zoom_buttons()
+{
+	QComboBox& zoombox = *(ui->cbxZoomFactor);
+
+	ui->tbZoomOut->setEnabled( zoombox.currentIndex() != 0 );
+	ui->tbZoomIn->setEnabled(  zoombox.currentIndex() != zoombox.count() - 1 );
 }
 
 void MainWindow::on_actionColor_ranges_triggered()
