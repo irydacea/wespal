@@ -88,6 +88,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ObjectLock l(*this);
 
+	mos_config_load(user_ranges_, user_palettes_);
+
 	initialize_specs();
 	update_ui_from_specs();
 
