@@ -26,10 +26,44 @@
 
 void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes)
 {
+	QSettings s;
+
 
 }
 
 void mos_config_save(const QList<range_spec>& ranges, const QList<pal_spec>& palettes)
 {
+	QSettings s;
+
+	s.beginWriteArray("color_ranges");
+	for(int i = 0; i < ranges.size(); ++i) {
+		s.setArrayIndex(i);
+		s.setValue("id", ranges.at(i).id);
+		s.setValue("name", ranges.at(i).name);
+		// Definition
+		s.setValue("avg", ranges.at(i).def.mid());
+		s.setValue("max", ranges.at(i).def.max());
+		s.setValue("min", ranges.at(i).def.min());
+	}
+	s.endArray();
+
+	s.beginWriteArray("palettes");
+	for(int i = 0; i < palettes.size(); ++i) {
+		s.setArrayIndex(i);
+		s.setValue("id", palettes.at(i).id);
+		s.setValue("name", palettes.at(i).name);
+
+		QString csv;
+
+		foreach(QRgb v, palettes.at(i).def) {
+			if(!csv.isEmpty())
+				csv += ',';
+			csv += QString::number(v);
+		}
+
+		s.setValue("values", csv);
+	}
+
+	s.endArray();
 
 }
