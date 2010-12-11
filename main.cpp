@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 
 	QCoreApplication::setApplicationName("Morning Star");
 	QCoreApplication::setOrganizationName("Wesnoth");
+	QCoreApplication::setOrganizationDomain("wesnoth.org");
 	QCoreApplication::setApplicationVersion(mos_version);
 
 	MainWindow w;
