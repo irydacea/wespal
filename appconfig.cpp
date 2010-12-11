@@ -23,12 +23,43 @@
 #include <QSettings>
 #include <QMessageBox>
 
-
 void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes)
 {
 	QSettings s;
 
+	const int nranges = s.beginReadArray("color_ranges");
 
+	for(int i = 0; i < nranges; ++i) {
+		s.setArrayIndex(i);
+		const color_range r(
+			s.value("avg").toUInt(),
+			s.value("max").toUInt(),
+			s.value("min").toUInt());
+		ranges.push_back(range_spec(
+			r, s.value("id").toString(), s.value("name").toString()
+		));
+	}
+
+	s.endArray();
+
+	const int npals = s.beginReadArray("palettes");
+
+	for(int i = 0; i < npals; ++i) {
+		s.setArrayIndex(i);
+
+		const QStringList vals = s.value("values").toStringList();
+		QList<QRgb> rgblist;
+
+		foreach(const QString& v, vals) {
+			rgblist.push_back(v.toUInt());
+		}
+
+		palettes.push_back(pal_spec(
+			rgblist, s.value("id").toString(), s.value("name").toString()
+		));
+	}
+
+	s.endArray();
 }
 
 void mos_config_save(const QList<range_spec>& ranges, const QList<pal_spec>& palettes)
