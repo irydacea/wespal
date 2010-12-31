@@ -2,7 +2,7 @@
 // codename Morning Star
 // src/rc_qt4.cpp - Qt4 painting device recoloring implementation
 //
-// Copyright (C) 2008, 2009, 2010 by Ignacio R. Morelle <shadowm@wesnoth.org>
+// Copyright (C) 2008, 2009, 2010, 2011 by Ignacio R. Morelle <shadowm@wesnoth.org>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
