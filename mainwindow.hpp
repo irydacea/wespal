@@ -80,6 +80,7 @@ private:
 	void do_save();
 	void do_close();
 	void do_open(const QString& initial_file = QString());
+	void do_reload();
 	void do_about();
 
 	bool confirm_existing_files(QStringList& paths);
@@ -97,7 +98,8 @@ private:
 	void update_zoom_buttons();
 
 private slots:
-	void on_actionColor_ranges_triggered();
+	void on_action_Reload_triggered();
+ void on_actionColor_ranges_triggered();
  void on_tbZoomOut_clicked();
  void on_tbZoomIn_clicked();
  void on_cbxZoomFactor_currentIndexChanged(int index);

@@ -23,7 +23,7 @@
    <string>Wesnoth RCX</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="morningstar.qrc">
+   <iconset>
     <normaloff>:/rsrc/app.png</normaloff>:/rsrc/app.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -286,7 +286,7 @@
      <x>0</x>
      <y>0</y>
      <width>567</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -295,6 +295,8 @@
     </property>
     <addaction name="action_Open"/>
     <addaction name="action_Save"/>
+    <addaction name="separator"/>
+    <addaction name="action_Reload"/>
     <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
@@ -360,6 +362,14 @@
     <string>Custom &amp;palettes...</string>
    </property>
   </action>
+  <action name="action_Reload">
+   <property name="text">
+    <string>Reloa&amp;d</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
@@ -370,8 +380,6 @@
   <tabstop>cbxNewPal</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources>
-  <include location="morningstar.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

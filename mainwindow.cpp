@@ -103,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->action_Open->setIcon(this->style()->standardIcon(QStyle::SP_DialogOpenButton, 0, dynamic_cast<QWidget*>(ui->action_Open)));
 	ui->action_Save->setIcon(this->style()->standardIcon(QStyle::SP_DialogSaveButton, 0, dynamic_cast<QWidget*>(ui->action_Save)));
+	ui->action_Reload->setIcon(this->style()->standardIcon(QStyle::SP_BrowserReload, 0, dynamic_cast<QWidget*>(ui->action_Reload)));
 	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, 0, dynamic_cast<QWidget*>(ui->action_Quit)));
 
 	ui->radRc->setChecked(true);
@@ -333,6 +334,11 @@ void MainWindow::on_action_Quit_triggered()
 	do_close();
 }
 
+void MainWindow::on_action_Reload_triggered()
+{
+	do_reload();
+}
+
 bool MainWindow::initial_open(const QString &initial_file)
 {
 	try {
@@ -426,6 +432,20 @@ void MainWindow::do_open(const QString &initial_file)
 
 	// Refresh UI
 	this->setWindowTitle(tr("Wesnoth RCX") + QString(" - " + img_path_));
+	refresh_previews();
+}
+
+void MainWindow::do_reload()
+{
+	QImage img(img_path_);
+	if(img.isNull()) {
+		QMessageBox::critical(this, tr("Wesnoth RCX"), tr("Could not reload %1.").arg(img_path_));
+		return;
+	}
+
+	img_original_ = img.convertToFormat(QImage::Format_ARGB32);
+
+	// Refresh UI
 	refresh_previews();
 }
 
