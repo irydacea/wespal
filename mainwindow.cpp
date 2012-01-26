@@ -416,7 +416,7 @@ void MainWindow::do_open(const QString &initial_file)
 	QImage img_temp(path_temp);
 	if(img_temp.isNull()) {
 		if(path_temp.isNull() != true) {
-			QMessageBox::information(
+			QMessageBox::critical(
 				this, tr("Wesnoth RCX"), tr("Could not load %1.").arg(path_temp)
 			);
 		}
@@ -504,7 +504,7 @@ void MainWindow::do_save()
 	} catch(const canceled_job&) {
 		;
 	} catch(const QStringList& failed) {
-		QMessageBox::information(
+		QMessageBox::critical(
 				this, tr("Wesnoth RCX"), tr("The following files could not be saved correctly:<br><br>%1").arg(failed.join("<br>")));
 	}
 }
