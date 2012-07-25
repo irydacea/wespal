@@ -75,6 +75,10 @@ private:
 	bool drag_start_;
 	QPoint drag_start_pos_;
 
+	void update_window_title(const QString& open_filename) {
+		this->setWindowTitle(tr("Wesnoth RCX") + " - " + open_filename);
+	}
+
 	void toggle_page1(bool newstate);
 	void toggle_page2(bool newstate);
 

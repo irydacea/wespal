@@ -285,10 +285,10 @@ void MainWindow::dropEvent(QDropEvent *e)
 	// Refresh UI
 	if(newpath.isEmpty() != true) {
 		img_path_ = newpath;
-		this->setWindowTitle(tr("Wesnoth RCX") + " - " + img_path_);
+		update_window_title(img_path_);
 	}
 	else {
-		this->setWindowTitle(tr("Wesnoth RCX") + " - " + tr("Dropped file"));
+		update_window_title(tr("Dropped file"));
 	}
 
 	refresh_previews();
@@ -449,7 +449,7 @@ void MainWindow::do_open(const QString &initial_file)
 	img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
-	this->setWindowTitle(tr("Wesnoth RCX") + QString(" - " + img_path_));
+	update_window_title(img_path_);
 	refresh_previews();
 }
 
