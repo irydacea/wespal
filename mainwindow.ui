@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>426</height>
+    <height>410</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,12 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>440</width>
+    <height>410</height>
+   </size>
   </property>
   <property name="acceptDrops">
    <bool>true</bool>
@@ -26,206 +32,10 @@
    <iconset resource="morningstar.qrc">
     <normaloff>:/rsrc/app.png</normaloff>:/rsrc/app.png</iconset>
   </property>
-  <widget class="QWidget" name="centralWidget">
+  <widget class="QWidget" name="grid">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0" rowspan="3">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <item>
-       <layout class="QFormLayout" name="formLayout">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::ExpandingFieldsGrow</enum>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Palette &amp;key:</string>
-          </property>
-          <property name="buddy">
-           <cstring>cbxKeyPal</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QComboBox" name="cbxKeyPal">
-          <property name="whatsThis">
-           <string>Selects the original palette for transformation.</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QRadioButton" name="radRc">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="whatsThis">
-           <string>Selects color range-based (a.k.a. &quot;team color&quot;) recoloring.</string>
-          </property>
-          <property name="text">
-           <string>Color &amp;range (TC)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="radPal">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Selects palette switching mode, to replace original colors with new ones using a color values list instead of ranges.</string>
-          </property>
-          <property name="text">
-           <string>Palette &amp;switch</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QStackedWidget" name="staFunctionOpts">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>120</height>
-         </size>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="page_3">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <widget class="QListWidget" name="listRanges">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>171</width>
-            <height>101</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="whatsThis">
-           <string>Allows to select color ranges to apply. Click on an item to preview the transformation to the right.</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <zorder>listRanges</zorder>
-         <zorder></zorder>
-        </widget>
-        <widget class="QWidget" name="page_4">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinimumSize</enum>
-          </property>
-          <item row="0" column="0">
-           <layout class="QFormLayout" name="formLayout_2">
-            <item row="0" column="1">
-             <widget class="QComboBox" name="cbxNewPal">
-              <property name="whatsThis">
-               <string>You an choose the replacement palette in this box.</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="lblNewPal">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>New &amp;palette:</string>
-              </property>
-              <property name="buddy">
-               <cstring>cbxNewPal</cstring>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="5" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QToolButton" name="tbZoomOut">
-        <property name="whatsThis">
-         <string>Reduces the zoom level.</string>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="cbxZoomFactor">
-        <property name="whatsThis">
-         <string>Allows to choose the view's zoom level.</string>
-        </property>
-        <property name="editable">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="tbZoomIn">
-        <property name="whatsThis">
-         <string>Increases the zoom level.</string>
-        </property>
-        <property name="text">
-         <string>+</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDialogButtonBox" name="buttonBox">
-        <property name="standardButtons">
-         <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+     <layout class="QHBoxLayout" name="hlPreviews" stretch="1,1">
       <item>
        <widget class="QScrollArea" name="previewOriginalContainer">
         <property name="whatsThis">
@@ -250,7 +60,7 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>1</y>
+           <y>0</y>
            <width>270</width>
            <height>162</height>
           </rect>
@@ -303,8 +113,8 @@
         <widget class="QWidget" name="scrollAreaWidgetContents_3">
          <property name="geometry">
           <rect>
-           <x>-20</x>
-           <y>1</y>
+           <x>0</x>
+           <y>0</y>
            <width>271</width>
            <height>162</height>
           </rect>
@@ -329,6 +139,205 @@
           </property>
          </widget>
         </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="0" rowspan="3">
+     <layout class="QHBoxLayout" name="hlOptions" stretch="1,0,1">
+      <item>
+       <spacer name="hpaddingLeft">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="vlOptions" stretch="0,0,1">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QRadioButton" name="radRc">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="whatsThis">
+             <string>Selects color range-based (a.k.a. &quot;team color&quot;) recoloring.</string>
+            </property>
+            <property name="text">
+             <string>Color &amp;range (TC)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radPal">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Selects palette switching mode, to replace original colors with new ones using a color values list instead of ranges.</string>
+            </property>
+            <property name="text">
+             <string>Palette &amp;switch</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QFormLayout" name="flKeyPal">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblKeyPal">
+            <property name="text">
+             <string>Palette &amp;key:</string>
+            </property>
+            <property name="buddy">
+             <cstring>cbxKeyPal</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cbxKeyPal">
+            <property name="whatsThis">
+             <string>Selects the original palette for transformation.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="staFunctionOpts">
+          <property name="maximumSize">
+           <size>
+            <width>203</width>
+            <height>120</height>
+           </size>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="pageRcRanges">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QListWidget" name="listRanges">
+              <property name="whatsThis">
+               <string>Allows to select color ranges to apply. Click on an item to preview the transformation to the right.</string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="pageRcPal">
+           <layout class="QGridLayout" name="gridLayout_2">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinimumSize</enum>
+            </property>
+            <item row="0" column="0">
+             <layout class="QFormLayout" name="flRcPal">
+              <item row="0" column="1">
+               <widget class="QComboBox" name="cbxNewPal">
+                <property name="whatsThis">
+                 <string>You an choose the replacement palette in this box.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="lblNewPal">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="text">
+                 <string>New &amp;palette:</string>
+                </property>
+                <property name="buddy">
+                 <cstring>cbxNewPal</cstring>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="hpaddingRight">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item row="5" column="0">
+     <layout class="QHBoxLayout" name="hlCommands">
+      <item>
+       <widget class="QToolButton" name="tbZoomOut">
+        <property name="whatsThis">
+         <string>Reduces the zoom level.</string>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbxZoomFactor">
+        <property name="whatsThis">
+         <string>Allows to choose the view's zoom level.</string>
+        </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="tbZoomIn">
+        <property name="whatsThis">
+         <string>Increases the zoom level.</string>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
+        </property>
        </widget>
       </item>
      </layout>
