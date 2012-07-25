@@ -28,6 +28,7 @@
 #include <QDropEvent>
 #include <QDragEnterEvent>
 #include <QMainWindow>
+#include <QScrollBar>
 #include <QStringList>
 
 namespace Ui {

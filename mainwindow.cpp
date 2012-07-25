@@ -121,6 +121,24 @@ MainWindow::MainWindow(QWidget *parent) :
 	);
 
 	ui->cbxZoomFactor->setCurrentIndex(1);
+
+	ui->previewOriginal->setBackgroundRole(QPalette::Base);
+	ui->previewRc->setBackgroundRole(QPalette::Base);
+	ui->previewOriginalContainer->setBackgroundRole(QPalette::Dark);
+	ui->previewRcContainer->setBackgroundRole(QPalette::Dark);
+
+	QObject::connect(
+		ui->previewOriginalContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+		ui->previewRcContainer->horizontalScrollBar(), SLOT(setValue(int)));
+	QObject::connect(
+		ui->previewRcContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
+		ui->previewOriginalContainer->horizontalScrollBar(), SLOT(setValue(int)));
+	QObject::connect(
+		ui->previewOriginalContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
+		ui->previewRcContainer->verticalScrollBar(), SLOT(setValue(int)));
+	QObject::connect(
+		ui->previewRcContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
+		ui->previewOriginalContainer->verticalScrollBar(), SLOT(setValue(int)));
 }
 
 MainWindow::~MainWindow()
@@ -468,11 +486,16 @@ void MainWindow::refresh_previews()
 
 	rc_image(img_original_, img_transview_, cvt_map);
 
-	const int sw = this->img_original_.width() * zoom_;
-	const int sh = this->img_original_.height() * zoom_;
+	const QSize& scaled_size = img_original_.size() * zoom_;
 
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_).scaled(sw, sh));
-	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_).scaled(sw, sh));
+	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_).scaled(scaled_size));
+	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_).scaled(scaled_size));
+
+	ui->previewOriginal->resize(scaled_size);
+	ui->previewRc->resize(scaled_size);
+
+	ui->previewOriginal->parentWidget()->adjustSize();
+	ui->previewRc->parentWidget()->adjustSize();
 }
 
 void MainWindow::do_save()
