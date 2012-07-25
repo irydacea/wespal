@@ -27,6 +27,7 @@
 #include <QAbstractButton>
 #include <QDropEvent>
 #include <QDragEnterEvent>
+#include <QFileInfo>
 #include <QMainWindow>
 #include <QScrollBar>
 #include <QStringList>
@@ -76,7 +77,17 @@ private:
 	QPoint drag_start_pos_;
 
 	void update_window_title(const QString& open_filename) {
-		this->setWindowTitle(tr("Wesnoth RCX") + " - " + open_filename);
+		QString display_string;
+
+		if(open_filename.isEmpty()) {
+			this->setWindowFilePath("");
+			display_string = tr("Dropped file");
+		} else {
+			this->setWindowFilePath(open_filename);
+			display_string = QFileInfo(open_filename).fileName();
+		}
+
+		this->setWindowTitle(display_string + QString().fromUtf8(" \342\200\224 ") + "Wesnoth RCX");
 	}
 
 	void toggle_page1(bool newstate);

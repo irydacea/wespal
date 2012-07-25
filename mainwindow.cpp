@@ -288,7 +288,7 @@ void MainWindow::dropEvent(QDropEvent *e)
 		update_window_title(img_path_);
 	}
 	else {
-		update_window_title(tr("Dropped file"));
+		update_window_title("");
 	}
 
 	refresh_previews();
