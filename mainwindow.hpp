@@ -123,7 +123,7 @@ private slots:
  void on_tbZoomOut_clicked();
  void on_tbZoomIn_clicked();
  void on_cbxZoomFactor_currentIndexChanged(int index);
-	void on_listRanges_itemSelectionChanged();
+	void on_listRanges_currentRowChanged(int currentRow);
 	void on_cbxNewPal_currentIndexChanged(int index);
 	void on_cbxKeyPal_currentIndexChanged(int index);
 	void on_action_Save_triggered();

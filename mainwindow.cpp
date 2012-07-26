@@ -732,7 +732,7 @@ void MainWindow::on_cbxNewPal_currentIndexChanged(int /*index*/)
 	refresh_previews();
 }
 
-void MainWindow::on_listRanges_itemSelectionChanged()
+void MainWindow::on_listRanges_currentRowChanged(int /*currentRow*/)
 {
 	refresh_previews();
 }
