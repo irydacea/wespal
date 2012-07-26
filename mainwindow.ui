@@ -186,7 +186,7 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="toolTip">
+            <property name="whatsThis">
              <string>Selects palette switching mode, to replace original colors with new ones using a color values list instead of ranges.</string>
             </property>
             <property name="text">
@@ -229,7 +229,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="pageRcRanges">
            <property name="sizePolicy">
@@ -239,6 +239,9 @@
             </sizepolicy>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
+            <property name="margin">
+             <number>0</number>
+            </property>
             <item row="0" column="0">
              <widget class="QListWidget" name="listRanges">
               <property name="whatsThis">
@@ -255,6 +258,9 @@
            <layout class="QGridLayout" name="gridLayout_2">
             <property name="sizeConstraint">
              <enum>QLayout::SetMinimumSize</enum>
+            </property>
+            <property name="margin">
+             <number>0</number>
             </property>
             <item row="0" column="0">
              <layout class="QFormLayout" name="flRcPal">
