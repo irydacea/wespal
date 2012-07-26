@@ -315,7 +315,7 @@
          <string>Reduces the zoom level.</string>
         </property>
         <property name="text">
-         <string>-</string>
+         <string>−</string>
         </property>
        </widget>
       </item>

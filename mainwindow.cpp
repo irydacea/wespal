@@ -591,26 +591,26 @@ void MainWindow::do_about()
 	QMessageBox msg;
 
 	QString text =
-		tr("<b>Wesnoth RCX %1</b>").arg(mos_version) + "<br><br>";
+		tr("<h3>Wesnoth RCX %1</h3>").arg(mos_version);
 
-	text += tr("Built with Qt %1.").arg(QT_VERSION_STR) + "<br>";
-	text += tr("Copyright &copy; 2008 - 2012 by Ignacio Riquelme Morelle.") + "<br>";
-	text += "&lt;shadowm@wesnoth.org&gt;<br><br>";
+	text += "<p>" + tr("Built with Qt %1.").arg(QT_VERSION_STR) + "<br>";
+	text += tr("Copyright &copy; 2008 &#8211; 2012 by Ignacio Riquelme Morelle.") + "<br>";
+	text += "&lt;shadowm@wesnoth.org&gt;</p>";
 
-	text += tr(
-		"This program is free software; you can redistribute it and/or modify "
+	text += "<p>" +
+		tr("This program is free software; you can redistribute it and/or modify "
 		"it under the terms of the GNU General Public License as published by "
 		"the Free Software Foundation; either version 2 of the License, or "
-		"(at your option) any later version.<br>"
-		"<br>"
-		"This program is distributed in the hope that it will be useful, but "
+		"(at your option) any later version.") + "</p><p>" +
+		tr("This program is distributed in the hope that it will be useful, but "
 		"<b>WITHOUT ANY WARRANTY</b>; without even the implied warranty of "
 		"<b>MERCHANTABILITY</b> or <b>FITNESS FOR A PARTICULAR PURPOSE</b>. "
-		"See the GNU General Public License for more details."
-	);
+		"See the GNU General Public License for more details.") + "</p>";
 
 	msg.setText(text);
 	msg.setIconPixmap(QPixmap(":/rsrc/rcx-icon.png"));
+	msg.setWindowIcon(this->windowIcon());
+	msg.setWindowTitle(tr("Wesnoth RCX"));
 	msg.exec();
 }
 
