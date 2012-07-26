@@ -241,7 +241,7 @@ void MainWindow::update_recent_files_menu()
 	for(int k = 0; k < recent_file_acts_.size(); ++k) {
 		QAction& act = *recent_file_acts_[k];
 		if(k < recent.size()) {
-			act.setText(recent[k]);
+			act.setText(QString("&%1 %2").arg(k + 1).arg(QFileInfo(recent[k]).fileName()));
 			act.setData(recent[k]);
 			act.setEnabled(true);
 			act.setVisible(true);
