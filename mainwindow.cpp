@@ -106,6 +106,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->action_Reload->setIcon(this->style()->standardIcon(QStyle::SP_BrowserReload, 0, dynamic_cast<QWidget*>(ui->action_Reload)));
 	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, 0, dynamic_cast<QWidget*>(ui->action_Quit)));
 
+	for(unsigned k = 0; k < mos_max_recent_files(); ++k) {
+		QAction* act = new QAction(this);
+
+		act->setVisible(false);
+
+		QObject::connect(act, SIGNAL(triggered()), this, SLOT(on_action_Recent_triggered()));
+
+		ui->menu_File->insertAction(ui->action_RecentPlaceholder, act);
+		recent_file_acts_.push_back(act);
+	}
+
+	ui->action_RecentPlaceholder->setVisible(false);
+
+	update_recent_files_menu();
+
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
 	toggle_page2(false);
@@ -209,6 +224,32 @@ void MainWindow::update_ui_from_specs()
 	}
 
 	cranges.setCurrentRow(0);
+}
+
+void MainWindow::on_action_Recent_triggered()
+{
+	QAction* act = qobject_cast<QAction*>(sender());
+	if(act) {
+		this->do_open(act->data().toString());
+	}
+}
+
+void MainWindow::update_recent_files_menu()
+{
+	const QStringList& recent = mos_recent_files();
+
+	for(int k = 0; k < recent_file_acts_.size(); ++k) {
+		QAction& act = *recent_file_acts_[k];
+		if(k < recent.size()) {
+			act.setText(recent[k]);
+			act.setData(recent[k]);
+			act.setEnabled(true);
+			act.setVisible(true);
+		} else {
+			act.setEnabled(false);
+			act.setVisible(false);
+		}
+	}
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -438,9 +479,13 @@ void MainWindow::do_open(const QString &initial_file)
 				this, tr("Wesnoth RCX"), tr("Could not load %1.").arg(path_temp)
 			);
 		}
+
 		if(img_original_.isNull()) {
 			throw no_initial_file();
 		}
+
+		mos_remove_recent_file(path_temp);
+
 		return;
 	}
 
@@ -449,6 +494,8 @@ void MainWindow::do_open(const QString &initial_file)
 	img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
+	mos_add_recent_file(img_path_);
+	update_recent_files_menu();
 	update_window_title(img_path_);
 	refresh_previews();
 }

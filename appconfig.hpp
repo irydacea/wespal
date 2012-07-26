@@ -24,8 +24,15 @@
 #include "specs.hpp"
 
 #include <QList>
+#include <QStringList>
 
 void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes);
 void mos_config_save(const QList<range_spec>& ranges, const QList<pal_spec>& palettes);
+
+QStringList mos_recent_files();
+void mos_add_recent_file(const QString& filepath);
+void mos_remove_recent_file(const QString& filepath);
+
+unsigned mos_max_recent_files();
 
 #endif // APPCONFIG_HPP

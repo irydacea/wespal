@@ -23,6 +23,10 @@
 #include <QSettings>
 #include <QMessageBox>
 
+namespace {
+	const unsigned max_recent_files = 4;
+}
+
 void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes)
 {
 	QSettings s;
@@ -97,4 +101,40 @@ void mos_config_save(const QList<range_spec>& ranges, const QList<pal_spec>& pal
 
 	s.endArray();
 
+}
+
+unsigned mos_max_recent_files()
+{
+	return max_recent_files;
+}
+
+QStringList mos_recent_files()
+{
+	return QSettings().value("recent_files").toStringList();
+}
+
+void mos_add_recent_file(const QString& filepath)
+{
+	QSettings s;
+
+	QStringList recent = s.value("recent_files").toStringList();
+	recent.removeAll(filepath);
+
+	recent.push_front(filepath);
+
+	while(recent.size() > max_recent_files) {
+		recent.pop_back();
+	}
+
+	s.setValue("recent_files", recent);
+}
+
+void mos_remove_recent_file(const QString& filepath)
+{
+	QSettings s;
+
+	QStringList recent = s.value("recent_files").toStringList();
+	recent.removeAll(filepath);
+
+	s.setValue("recent_files", recent);
 }

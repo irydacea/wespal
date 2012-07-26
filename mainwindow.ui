@@ -362,6 +362,8 @@
     <addaction name="separator"/>
     <addaction name="action_Reload"/>
     <addaction name="separator"/>
+    <addaction name="action_RecentPlaceholder"/>
+    <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -432,6 +434,26 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="action_RecentPlaceholder">
+   <property name="text">
+    <string>&lt;Recent files&gt;</string>
+   </property>
+  </action>
+  <action name="action_Recent2">
+   <property name="text">
+    <string>Recent file #2</string>
+   </property>
+  </action>
+  <action name="action_Recent3">
+   <property name="text">
+    <string>Recent file #3</string>
+   </property>
+  </action>
+  <action name="action_Recent4">
+   <property name="text">
+    <string>Recent file #4</string>
    </property>
   </action>
  </widget>

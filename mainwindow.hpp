@@ -76,6 +76,10 @@ private:
 	bool drag_start_;
 	QPoint drag_start_pos_;
 
+	QVector<QAction*> recent_file_acts_;
+
+	void update_recent_files_menu();
+
 	void update_window_title(const QString& open_filename) {
 		QString display_string;
 
@@ -129,6 +133,7 @@ private slots:
 	void on_actionAbout_Morning_Star_triggered();
 	void on_radPal_clicked();
 	void on_radRc_clicked();
+	void on_action_Recent_triggered();
 };
 
 #endif // MAINWINDOW_HPP
