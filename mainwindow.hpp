@@ -63,7 +63,7 @@ protected:
 	void update_ui_from_specs();	
 
 private:
-    Ui::MainWindow *ui;
+	Ui::MainWindow *ui;
 
 	QString img_path_;
 
@@ -77,6 +77,8 @@ private:
 	QPoint drag_start_pos_;
 
 	QVector<QAction*> recent_file_acts_;
+
+	QList<float> zoom_factors_;
 
 	void update_recent_files_menu();
 
@@ -119,10 +121,9 @@ private:
 
 private slots:
 	void on_action_Reload_triggered();
- void on_actionColor_ranges_triggered();
- void on_tbZoomOut_clicked();
- void on_tbZoomIn_clicked();
- void on_cbxZoomFactor_currentIndexChanged(int index);
+	void on_actionColor_ranges_triggered();
+	void on_tbZoomOut_clicked();
+	void on_tbZoomIn_clicked();
 	void on_listRanges_currentRowChanged(int currentRow);
 	void on_cbxNewPal_currentIndexChanged(int index);
 	void on_cbxKeyPal_currentIndexChanged(int index);
@@ -134,6 +135,7 @@ private slots:
 	void on_radPal_clicked();
 	void on_radRc_clicked();
 	void on_action_Recent_triggered();
+	void on_zoomSlider_valueChanged(int value);
 };
 
 #endif // MAINWINDOW_HPP

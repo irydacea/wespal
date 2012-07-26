@@ -70,6 +70,11 @@ namespace {
 		QObject& o_;
 		bool initial_state_;
 	};
+
+	inline QString zoom_factor_to_str(float factor)
+	{
+		return QString("%d%%").arg(int(100.0f * factor));
+	}
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -126,16 +131,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	toggle_page2(false);
 	toggle_page1(true);
 
-	ui->cbxZoomFactor->addItems(
-		QStringList()
-			<< "50%"
-			<< "100%"
-			<< "200%"
-			<< "400%"
-			<< "800%"
-	);
+	zoom_factors_ << 0.5f << 1.0f << 2.0f << 4.0f << 8.0f;
 
-	ui->cbxZoomFactor->setCurrentIndex(1);
+	ui->zoomSlider->setMinimum(0);
+	ui->zoomSlider->setMaximum(zoom_factors_.size() - 1);
+	ui->zoomSlider->setValue(1);
 
 	ui->previewOriginal->setBackgroundRole(QPalette::Base);
 	ui->previewRc->setBackgroundRole(QPalette::Base);
@@ -737,52 +737,32 @@ void MainWindow::on_listRanges_currentRowChanged(int /*currentRow*/)
 	refresh_previews();
 }
 
-void MainWindow::on_cbxZoomFactor_currentIndexChanged(int index)
-{
-	switch(index) {
-	case 0:
-		zoom_ = 0.5f; break;
-	case 2:
-		zoom_ = 2.0f; break;
-	case 3:
-		zoom_ = 4.0f; break;
-	case 4:
-		zoom_ = 8.0f; break;
-	default:
-		zoom_ = 1.0f;
-	}
 
-	this->refresh_previews();
+void MainWindow::on_zoomSlider_valueChanged(int value)
+{
+	Q_ASSERT(value >= 0 && value < zoom_factors_.size());
+	zoom_ = zoom_factors_[value];
+
+	update_zoom_buttons();
+	refresh_previews();
 }
 
 void MainWindow::on_tbZoomIn_clicked()
 {
-	QComboBox& zoombox = *(ui->cbxZoomFactor);
-	const int ci = zoombox.currentIndex();
-	if(ci + 1 < zoombox.count()) {
-		zoombox.setCurrentIndex(ci + 1);
-	}
-
-	update_zoom_buttons();
+	ui->zoomSlider->setValue(ui->zoomSlider->value() + 1);
 }
 
 void MainWindow::on_tbZoomOut_clicked()
 {
-	QComboBox& zoombox = *(ui->cbxZoomFactor);
-	const int ci = zoombox.currentIndex();
-	if(ci > 0) {
-		zoombox.setCurrentIndex(ci - 1);
-	}
-
-	update_zoom_buttons();
+	ui->zoomSlider->setValue(ui->zoomSlider->value() - 1);
 }
 
 void MainWindow::update_zoom_buttons()
 {
-	QComboBox& zoombox = *(ui->cbxZoomFactor);
+	QSlider& zoomSlider= *ui->zoomSlider;
 
-	ui->tbZoomOut->setEnabled( zoombox.currentIndex() != 0 );
-	ui->tbZoomIn->setEnabled(  zoombox.currentIndex() != zoombox.count() - 1 );
+	ui->tbZoomOut->setEnabled(zoomSlider.value() != zoomSlider.minimum());
+	ui->tbZoomIn->setEnabled(zoomSlider.value() != zoomSlider.maximum());
 }
 
 void MainWindow::on_actionColor_ranges_triggered()
