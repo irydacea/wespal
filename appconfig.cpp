@@ -122,7 +122,7 @@ void mos_add_recent_file(const QString& filepath)
 
 	recent.push_front(filepath);
 
-	while(recent.size() > max_recent_files) {
+	while(recent.size() > int(max_recent_files)) {
 		recent.pop_back();
 	}
 
