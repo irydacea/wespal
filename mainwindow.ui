@@ -471,21 +471,6 @@
     <string>&lt;Recent files&gt;</string>
    </property>
   </action>
-  <action name="action_Recent2">
-   <property name="text">
-    <string>Recent file #2</string>
-   </property>
-  </action>
-  <action name="action_Recent3">
-   <property name="text">
-    <string>Recent file #3</string>
-   </property>
-  </action>
-  <action name="action_Recent4">
-   <property name="text">
-    <string>Recent file #4</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
