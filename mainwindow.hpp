@@ -93,7 +93,7 @@ private:
 			display_string = QFileInfo(open_filename).fileName();
 		}
 
-		this->setWindowTitle(display_string + QString().fromUtf8(" \342\200\224 ") + "Wesnoth RCX");
+		this->setWindowTitle(display_string + QString().fromUtf8(" \342\200\224 ") + tr("Wesnoth RCX"));
 	}
 
 	void toggle_page1(bool newstate);
