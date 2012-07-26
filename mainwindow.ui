@@ -311,6 +311,9 @@
      <layout class="QHBoxLayout" name="hlCommands">
       <item>
        <widget class="QToolButton" name="tbZoomOut">
+        <property name="toolTip">
+         <string>Zoom Out</string>
+        </property>
         <property name="whatsThis">
          <string>Reduces the zoom level.</string>
         </property>
@@ -349,6 +352,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="tbZoomIn">
+        <property name="toolTip">
+         <string>Zoom In</string>
+        </property>
         <property name="whatsThis">
          <string>Increases the zoom level.</string>
         </property>
