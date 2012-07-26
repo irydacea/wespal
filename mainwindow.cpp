@@ -87,7 +87,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	ignore_drops_(false),
 	drag_use_rc_(false),
 	drag_start_(false),
-	drag_start_pos_()
+	drag_start_pos_(),
+	recent_file_acts_(),
+	zoom_factors_()
 {
     ui->setupUi(this);
 
