@@ -18,7 +18,6 @@ HEADERS += mainwindow.hpp \
     defs.hpp \
     version.hpp \
     rc_qt4.hpp \
-    specs.hpp \
     customranges.hpp \
     appconfig.hpp \
     custompalettes.hpp \

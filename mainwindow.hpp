@@ -22,7 +22,6 @@
 #define MAINWINDOW_HPP
 
 #include "wesnothrc.hpp"
-#include "specs.hpp"
 
 #include <QAbstractButton>
 #include <QDropEvent>

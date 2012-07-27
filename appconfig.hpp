@@ -21,7 +21,7 @@
 #ifndef APPCONFIG_HPP
 #define APPCONFIG_HPP
 
-#include "specs.hpp"
+#include "wesnothrc.hpp"
 
 #include <QList>
 #include <QStringList>

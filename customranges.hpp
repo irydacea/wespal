@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "specs.hpp"
+#include "wesnothrc.hpp"
 
 namespace Ui {
     class CustomRanges;
