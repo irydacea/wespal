@@ -134,8 +134,7 @@ void CustomRanges::on_cmdAdd_clicked()
 	ranges_.insert(id, range);
 
 	QListWidgetItem* lwi = new QListWidgetItem(id, ui->rangesList);
-	lwi->setSelected(true);
-	deserialize_default_range();
+	ui->rangesList->setCurrentRow(ui->rangesList->count() - 1);
 }
 
 void CustomRanges::on_cmdUpdate_clicked()
@@ -143,15 +142,23 @@ void CustomRanges::on_cmdUpdate_clicked()
 	if(!ui->rangesList->count())
 		return;
 
-	const QString& id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
+	const QString& old_id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
 
-	QMap<QString, color_range>::iterator range_it = ranges_.find(id);
+	QMap<QString, color_range>::iterator range_it = ranges_.find(old_id);
 	if(range_it == ranges_.end())
 		return;
 
-	deserialize_range(id, range_it.value());
+	QString new_id;
+	color_range new_range;
 
-	ui->rangesList->currentItem()->setText(id);
+	serialize_range(new_id, new_range);
+
+	if(old_id != new_id) {
+		ranges_.erase(range_it);
+		ui->rangesList->currentItem()->setText(new_id);
+	}
+
+	ranges_.insert(new_id, new_range);
 
 	ui->cmdUpdate->setEnabled(false);
 }
@@ -191,12 +198,7 @@ void CustomRanges::on_leName_textChanged(QString)
 	ui->cmdUpdate->setEnabled(true);
 }
 
-void CustomRanges::on_leId_textChanged(QString)
-{
-	ui->cmdUpdate->setEnabled(true);
-}
-
-void CustomRanges::on_rangesList_itemSelectionChanged()
+void CustomRanges::on_rangesList_currentRowChanged(int /*currentRow*/)
 {
 	if(!ui->rangesList->count())
 		return;
@@ -208,4 +210,6 @@ void CustomRanges::on_rangesList_itemSelectionChanged()
 		return;
 
 	deserialize_range(id, range_it.value());
+
+	ui->cmdUpdate->setEnabled(false);
 }

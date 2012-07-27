@@ -35,18 +35,17 @@ private:
 	bool ignore_serializing_events_;
 
 private slots:
-	void on_rangesList_itemSelectionChanged();
- void on_cmdDelete_clicked();
- void on_cmdAdd_clicked();
- void on_leId_textChanged(QString );
- void on_leName_textChanged(QString );
- void on_leMin_textChanged(QString );
- void on_leMax_textChanged(QString );
- void on_leAvg_textChanged(QString );
- void on_cmdUpdate_clicked();
- void on_tbMin_clicked();
+	void on_cmdDelete_clicked();
+	void on_cmdAdd_clicked();
+	void on_leName_textChanged(QString);
+	void on_leMin_textChanged(QString);
+	void on_leMax_textChanged(QString);
+	void on_leAvg_textChanged(QString);
+	void on_cmdUpdate_clicked();
+	void on_tbMin_clicked();
 	void on_tbMax_clicked();
 	void on_tbAvg_clicked();
+	void on_rangesList_currentRowChanged(int);
 };
 
 #endif // CUSTOMRANGES_HPP
