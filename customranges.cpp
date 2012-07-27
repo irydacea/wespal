@@ -128,6 +128,8 @@ void CustomRanges::on_cmdAdd_clicked()
 	ranges_.insert(id, range);
 
 	QListWidgetItem* lwi = new QListWidgetItem(id, ui->rangesList);
+	lwi->setData(Qt::UserRole, id);
+
 	ui->rangesList->setCurrentRow(ui->rangesList->count() - 1);
 }
 
@@ -150,6 +152,7 @@ void CustomRanges::on_cmdUpdate_clicked()
 	if(old_id != new_id) {
 		ranges_.erase(range_it);
 		ui->rangesList->currentItem()->setText(new_id);
+		ui->rangesList->currentItem()->setData(Qt::UserRole, new_id);
 	}
 
 	ranges_.insert(new_id, new_range);
