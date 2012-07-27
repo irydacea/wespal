@@ -20,6 +20,7 @@
 
 #include "appconfig.hpp"
 #include "defs.hpp"
+#include "custompalettes.hpp"
 #include "customranges.hpp"
 #include "mainwindow.hpp"
 #include "rc_qt4.hpp"
@@ -786,4 +787,25 @@ void MainWindow::on_actionColor_ranges_triggered()
 	refresh_previews();
 
 	mos_config_save(user_ranges_, user_palettes_);
+}
+
+void MainWindow::on_action_Palettes_triggered()
+{
+	CustomPalettes dlg(this);
+
+	dlg.addPalette("magenta", mos_pal_magenta);
+	dlg.addPalette("flag_green", mos_pal_flag_green);
+	dlg.addPalette("ellipse_red", mos_pal_ellipse_red);
+
+	// TODO: get rid of the stupid pal_spec thing.
+
+	QMap< QString, QList<QRgb> > user_pals_map;
+
+	foreach(const pal_spec& pal, user_palettes_) {
+		user_pals_map.insert(pal.id, pal.def);
+	}
+
+	dlg.addMultiplePalettes(user_pals_map);
+
+	dlg.exec();
 }

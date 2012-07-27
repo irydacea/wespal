@@ -136,6 +136,7 @@ private slots:
 	void on_radRc_clicked();
 	void on_action_Recent_triggered();
 	void on_zoomSlider_valueChanged(int value);
+	void on_action_Palettes_triggered();
 };
 
 #endif // MAINWINDOW_HPP

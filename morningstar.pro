@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     rc_qt4.cpp \
     customranges.cpp \
     appconfig.cpp \
-    custompalettes.cpp
+    custompalettes.cpp \
+    paletteitem.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \
@@ -20,7 +21,8 @@ HEADERS += mainwindow.hpp \
     specs.hpp \
     customranges.hpp \
     appconfig.hpp \
-    custompalettes.hpp
+    custompalettes.hpp \
+    paletteitem.hpp
 FORMS += mainwindow.ui \
     customranges.ui \
     custompalettes.ui
