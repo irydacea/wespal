@@ -80,7 +80,15 @@ namespace {
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+
+	color_ranges_(),
+	palettes_(),
+
+	user_color_ranges_(),
+	user_palettes_(),
+
 	ui(new Ui::MainWindow),
+
 	img_path_(),
 	img_original_(),
 	img_transview_(),
@@ -94,10 +102,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	mos_config_load(user_ranges_, user_palettes_);
+	mos_config_load(user_color_ranges_, user_palettes_);
 
-	initialize_specs();
-	update_ui_from_specs();
+	generateMergedRcDefinitions();
+	processRcDefinitions();
 
 	QAction* const act_whatsthis = QWhatsThis::createAction(this);
 	ui->menu_Help->insertAction(ui->actionAbout_Morning_Star, act_whatsthis);
@@ -164,69 +172,114 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::initialize_specs()
+void MainWindow::generateMergedRcDefinitions()
 {
-	color_ranges_.clear();
-	palettes_.clear();
-
-	/* The main 9 color ranges. */
-
-	for(int i = 1; i < 10; ++i) {
-		QString const& id = mos_color_range_id_to_name(i);
-		color_ranges_.push_back(range_spec(
-			mos_color_range_from_id(i),
-			id,
-			capitalize(id)
-		));
-	}
-
-	/* User defined ranges. */
-
-	color_ranges_ << user_ranges_;
-
-	/* The main 3 palettes. */
-
-	palettes_
-		<< pal_spec(mos_pal_magenta, "magenta", tr("Magenta TC"))
-		<< pal_spec(mos_pal_flag_green, "flag_green", tr("Green flag TC"))
-		<< pal_spec(mos_pal_ellipse_red, "ellipse_red", tr("Red ellipse TC"));
-
-	/* User defined palettes. */
-
-	palettes_ << user_palettes_;
+	color_ranges_ = mosBuiltinColorRanges;
+	color_ranges_.unite(user_color_ranges_);
+	palettes_ = mosBuiltinColorPalettes;
+	palettes_.unite(user_palettes_);
 }
 
-void MainWindow::update_ui_from_specs()
+void MainWindow::insertRangeListItem(const QString &id, const QString &display_name)
 {
-	QComboBox& ckeys = *(ui->cbxKeyPal);
-	QComboBox& cpals = *(ui->cbxNewPal);
-	QListWidget& cranges = *(ui->listRanges);
+	QListWidgetItem* lwi = new QListWidgetItem(ui->listRanges);
 
-	ckeys.clear();
-	cpals.clear();
+	lwi->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+	lwi->setCheckState(Qt::Checked);
+	lwi->setText(display_name);
+	lwi->setData(Qt::UserRole, id);
+}
 
-	foreach(const pal_spec& p, palettes_) {
-		cpals.addItem(p.name);
-		ckeys.addItem(p.name);
+void MainWindow::processRcDefinitions()
+{
+	QComboBox* cbOldPals = ui->cbxKeyPal;
+	QComboBox* cbNewPals = ui->cbxNewPal;
+
+	cbOldPals->clear();
+	cbNewPals->clear();
+	ui->listRanges->clear();
+
+	//
+	// We allow built-in definitions to be overridden by the user
+	// by defining their own ranges/palettes with mainline ids; when
+	// that happens, their data is internally merged, but these
+	// overridden definitions continue to be displayed before regular
+	// user-defined items.
+	//
+	// This makes the process of entering those definitions for the
+	// UI less trivial than it should be. Additionally, we keep only
+	// ids for user-defined data and use our own translatable names
+	// for displaying built-ins, so we must attach extra data to item
+	// widget entries to ensure things look good in the front-end.
+	//
+
+	//
+	// Add built-in palettes.
+	//
+
+	QStringList paletteUiNames;
+	// NOTE: these names must correspond to the entries in mosOrderedPaletteNames!
+	paletteUiNames << tr("Magenta TC") << tr("Green flag TC") << tr("Red ellipse TC");
+
+	const int builtinPaletteCount = paletteUiNames.size();
+	Q_ASSERT(builtinPaletteCount == mosOrderedPaletteNames.size());
+
+	for(int k = 0; k < builtinPaletteCount; ++k) {
+		cbOldPals->addItem(paletteUiNames[k], mosOrderedPaletteNames[k]);
+		cbNewPals->addItem(paletteUiNames[k], mosOrderedPaletteNames[k]);
 	}
 
-	ckeys.setCurrentIndex(0);
-	cpals.setCurrentIndex(0);
+	//
+	// User-defined palettes.
+	//
 
-	cranges.clear();
-
-	foreach(const range_spec& r, color_ranges_) {
-		cranges.addItem(r.name);
-
-		QListWidgetItem *i = cranges.item(cranges.count() - 1);
-		i->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-		i->setCheckState(Qt::Checked);
-		i->setText(capitalize(i->text()));
-		// Reset selection to #1
-		cranges.setItemSelected(i, cranges.count() == 1);
+	const QList<QString>& userPaletteIds = user_palettes_.uniqueKeys();
+	foreach(const QString& pal_name, userPaletteIds) {
+		if(mosBuiltinColorPalettes.find(pal_name) != mosBuiltinColorPalettes.end()) {
+			// Skip redefinitions of built-in palettes, we only care about
+			// ids and names at this point.
+			continue;
+		}
+		cbOldPals->addItem(capitalize(pal_name), pal_name);
+		cbNewPals->addItem(capitalize(pal_name), pal_name);
 	}
 
-	cranges.setCurrentRow(0);
+	//
+	// Built-in color ranges.
+	//
+
+	QStringList rangeUiNames;
+	// NOTE: these names must correspond to the entries in mosOrderedRangeNames!
+	rangeUiNames << tr("Red") << tr("Blue") << tr("Green")
+				 << tr("Purple") << tr("Black") << tr("Brown")
+				 << tr("Orange") << tr("White") << tr("Teal");
+
+	// It is paramount to ensure built-in ranges are displayed in a specific order,
+	// since Wesnoth associates digits from 1 to 9 to items in the sequence and we
+	// don't want to break that convention here, for consistency's sake.
+
+	const int builtinRangeCount = rangeUiNames.size();
+	Q_ASSERT(builtinRangeCount == mosOrderedRangeNames.size());
+
+	for(int k = 0; k < builtinRangeCount; ++k) {
+		insertRangeListItem(mosOrderedRangeNames[k], rangeUiNames[k]);
+	}
+
+	//
+	// User-defined color ranges
+	//
+
+	const QList<QString>& userRangeIds = user_color_ranges_.uniqueKeys();
+	foreach(const QString& id, userRangeIds) {
+		if(mosBuiltinColorRanges.find(id) != mosBuiltinColorRanges.end()) {
+			// Skip redefinitions of built-in ranges, we only care about
+			// ids and names at this point.
+			continue;
+		}
+		insertRangeListItem(id, capitalize(id));
+	}
+
+	ui->listRanges->setCurrentRow(0);
 }
 
 void MainWindow::on_action_Recent_triggered()
@@ -522,19 +575,17 @@ void MainWindow::refresh_previews()
 	if(this->img_original_.isNull() || this->signalsBlocked())
 		return;
 
-	rc_map cvt_map;
-	QList<QRgb> const *key_pal = current_pal_data();
+	rc_map cvtMap;
+	const QList<QRgb>& palData = current_pal_data();
 
 	if(ui->staFunctionOpts->currentIndex()) {
-		QList<QRgb> const *target_pal = current_pal_data(true);
-		cvt_map = recolor_palettes(*key_pal, *target_pal);
-	}
-	else {
-		cvt_map = recolor_range(
-			color_ranges_.at(ui->listRanges->currentIndex().row()).def, *key_pal);
+		const QList<QRgb>& targetPalData = current_pal_data(true);
+		cvtMap = recolor_palettes(palData, targetPalData);
+	} else {
+		cvtMap = recolor_range(color_ranges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString()), palData);
 	}
 
-	rc_image(img_original_, img_transview_, cvt_map);
+	rc_image(img_original_, img_transview_, cvtMap);
 
 	const QSize& scaled_size = img_original_.size() * zoom_;
 
@@ -617,19 +668,22 @@ void MainWindow::do_about()
 
 QString MainWindow::current_pal_name(bool palette_switch_mode) const
 {
-	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
-	Q_ASSERT(choice >= 0 && choice < palettes_.size());
-	return palettes_.at(choice).id;
+	QComboBox* combow = palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal;
+
+	const int choice = combow->currentIndex();
+	const QString& palette_name = combow->itemData(choice).toString();
+
+	Q_ASSERT(!palette_name.isEmpty());
+
+	return palette_name;
 }
 
-QList<QRgb> const *MainWindow::current_pal_data(bool palette_switch_mode) const
+QList<QRgb> MainWindow::current_pal_data(bool palette_switch_mode) const
 {
-	const int choice = (palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal)->currentIndex();
-	Q_ASSERT(choice >= 0 && choice < palettes_.size());
-	return &(palettes_.at(choice).def);
+	return palettes_.value(current_pal_name(palette_switch_mode));
 }
 
-bool MainWindow::confirm_existing_files(QStringList& paths)
+bool MainWindow::confirm_existing_files(const QStringList& paths)
 {
 	return QMessageBox::question(
 			this,
@@ -640,54 +694,59 @@ bool MainWindow::confirm_existing_files(QStringList& paths)
 
 QStringList MainWindow::do_save_single_recolor(QString &base)
 {
-	QString palname = current_pal_name();
-	QList<QRgb> const *paldata = current_pal_data();
-	QString newpalname = current_pal_name(true);
-	QList<QRgb> const *newpaldata = current_pal_data(true);
-	QMap<QString, rc_map> rc_job;
+	QMap<QString, rc_map> jobs;
 
-	QString path = base + "/" + QFileInfo(img_path_).completeBaseName();
-	path += QString("-PAL-") + palname + "-" + newpalname + ".png";
+	const QString& palId = current_pal_name();
+	const QList<QRgb>& palData = current_pal_data();
 
-	rc_job[path] = recolor_palettes(*paldata, *newpaldata);
+	const QString& targetPalId = current_pal_name(true);
+	const QList<QRgb>& targetPalData = current_pal_data(true);
 
-	QStringList paths(path);
+	const QString& filePath = base + "/" + QFileInfo(img_path_).completeBaseName() +
+			"-PAL-" + palId + "-" + targetPalId + ".png";
 
-	if(QFileInfo(path).exists() && !confirm_existing_files(paths)) {
+	jobs[filePath] = recolor_palettes(palData, targetPalData);
+
+	if(QFileInfo(filePath).exists() && !confirm_existing_files(QStringList(filePath))) {
 		throw canceled_job();
 	}
 
-	return do_run_jobs(rc_job);
+	return do_run_jobs(jobs);
 }
 
 QStringList MainWindow::do_save_color_ranges(QString &base)
 {
-	QString palname = current_pal_name();
-	QList<QRgb> const *paldata = current_pal_data();
-	QMap<QString, rc_map> rc_jobs;
-	QListWidget *list = this->ui->listRanges;
+	QMap<QString, rc_map> jobs;
 
-	QStringList existing;
+	const QString& palId = current_pal_name();
+	const QList<QRgb>& palData = current_pal_data();
 
-	for(int k = 0; k < list->count(); ++k) {
-		if(list->item(k)->checkState() == Qt::Checked) {
-			QString path = base + "/" + QFileInfo(img_path_).completeBaseName();
-			path += QString("-RC-") + palname + "-";
-			path += QString::number(k + 1) + "-" + color_ranges_.at(k).id + ".png";
+	QStringList needOverwriteFiles;
 
-			rc_jobs[path] = recolor_range(color_ranges_.at(k).def, *paldata);
+	for(int k = 0; k < ui->listRanges->count(); ++k) {
+		QListWidgetItem* itemw = ui->listRanges->item(k);
+		Q_ASSERT(itemw);
 
-			if(QFileInfo(path).exists()) {
-				existing.push_back(path);
+		if(itemw->checkState() == Qt::Checked) {
+			const QString& rangeId = itemw->data(Qt::UserRole).toString();
+
+			const QString& filePath = base + "/" + QFileInfo(img_path_).completeBaseName() +
+					"-RC-" + palId + "-" + QString::number(k + 1) +
+					"-" + rangeId + ".png";
+
+			jobs[filePath] = recolor_range(color_ranges_.value(rangeId), palData);
+
+			if(QFileInfo(filePath).exists()) {
+				needOverwriteFiles.push_back(filePath);
 			}
 		}
 	}
 
-	if(!existing.isEmpty() && !confirm_existing_files(existing)) {
+	if(!needOverwriteFiles.isEmpty() && !confirm_existing_files(needOverwriteFiles)) {
 		throw canceled_job();
 	}
 
-	return do_run_jobs(rc_jobs);
+	return do_run_jobs(jobs);
 }
 
 QStringList MainWindow::do_run_jobs(QMap<QString, rc_map> &jobs)
@@ -770,42 +829,32 @@ void MainWindow::update_zoom_buttons()
 
 void MainWindow::on_actionColor_ranges_triggered()
 {
-	CustomRanges dlg(this, user_ranges_);
+	CustomRanges dlg(this, user_color_ranges_);
 	dlg.exec();
 
 	if(dlg.result() == QDialog::Rejected)
 		return;
 
-	user_ranges_ = dlg.ranges();
+	user_color_ranges_ = dlg.ranges();
 
 	{
 		ObjectLock l(*this);
-		initialize_specs();
-		update_ui_from_specs();
+		generateMergedRcDefinitions();
+		processRcDefinitions();
 	}
 
 	refresh_previews();
 
-	mos_config_save(user_ranges_, user_palettes_);
+	mos_config_save(user_color_ranges_, user_palettes_);
 }
 
 void MainWindow::on_action_Palettes_triggered()
 {
 	CustomPalettes dlg(this);
 
-	dlg.addPalette("magenta", mos_pal_magenta);
-	dlg.addPalette("flag_green", mos_pal_flag_green);
-	dlg.addPalette("ellipse_red", mos_pal_ellipse_red);
-
-	// TODO: get rid of the stupid pal_spec thing.
-
-	QMap< QString, QList<QRgb> > user_pals_map;
-
-	foreach(const pal_spec& pal, user_palettes_) {
-		user_pals_map.insert(pal.id, pal.def);
-	}
-
-	dlg.addMultiplePalettes(user_pals_map);
-
+	dlg.addMultiplePalettes(palettes_);
 	dlg.exec();
+
+	// TODO: implement saving palettes to configuration and
+	//       refreshing the UI accordingly.
 }

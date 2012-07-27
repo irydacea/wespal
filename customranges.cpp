@@ -4,14 +4,31 @@
 #include <QColorDialog>
 #include <QMessageBox>
 
-CustomRanges::CustomRanges(QWidget *parent, QList<range_spec>& initial_ranges) :
+CustomRanges::CustomRanges(QWidget *parent, QMap<QString, color_range>& initial_ranges) :
     QDialog(parent),
 	ui(new Ui::CustomRanges),
 	ranges_(initial_ranges),
 	ignore_serializing_events_(false)
 {
     ui->setupUi(this);
-	post_setup();
+
+	for(QMap< QString, color_range >::const_iterator ci = ranges_.constBegin();
+		ci != ranges_.constEnd();
+		++ci)
+	{
+		// TODO: capitalize display name for built-ins!
+		QListWidgetItem* lwi = new QListWidgetItem(ci.key(), ui->rangesList);
+		lwi->setData(Qt::UserRole, ci.key());
+	}
+
+	ui->cmdUpdate->setEnabled(false);
+	ui->rangesList->setCurrentRow(0);
+
+	if(ranges_.count()) {
+		deserialize_range(ranges_.begin().key(), ranges_.begin().value());
+	} else {
+		deserialize_default_range();
+	}
 }
 
 CustomRanges::~CustomRanges()
@@ -21,48 +38,39 @@ CustomRanges::~CustomRanges()
 
 void CustomRanges::post_setup()
 {
-	foreach(const range_spec& r, ranges_) {
-		ui->rangesList->addItem(new QListWidgetItem(r.name));
-	}
 
-	ui->cmdUpdate->setEnabled(false);
-	ui->rangesList->setCurrentRow(0);
-
-	if(ranges_.count()) {
-		deserialize_range(ranges_.front());
-	}
-	else {
-		deserialize_range(range_spec()); // clear input widgets
-	}
 }
 
-void CustomRanges::serialize_range(range_spec &range)
+void CustomRanges::serialize_range(QString& name, color_range& range)
 {
-	range.id = ui->leId->text();
-	range.name = ui->leName->text();
-	range.def = color_range(
+	name = ui->leName->text();
+	range = color_range(
 		QColor(ui->leAvg->text()).rgb(),
 		QColor(ui->leMax->text()).rgb(),
 		QColor(ui->leMin->text()).rgb());
 }
 
-void CustomRanges::deserialize_range(range_spec const& range)
+void CustomRanges::deserialize_range(const QString& name, const color_range& range)
 {
 	ignore_serializing_events_ = true;
 
 	QColor
-		avg(range.def.mid()),
-		max(range.def.max()),
-		min(range.def.min());
+		avg(range.mid()),
+		max(range.max()),
+		min(range.min());
 
 	ui->leAvg->setText(avg.name());
 	ui->leMax->setText(max.name());
 	ui->leMin->setText(min.name());
 
-	ui->leId->setText(range.id);
-	ui->leName->setText(range.name);
+	ui->leName->setText(name);
 
 	ignore_serializing_events_ = false;
+}
+
+void CustomRanges::deserialize_default_range()
+{
+	deserialize_range(tr("New Range"), color_range());
 }
 
 void CustomRanges::changeEvent(QEvent *e)
@@ -107,58 +115,60 @@ void CustomRanges::on_tbMin_clicked()
 
 void CustomRanges::on_cmdAdd_clicked()
 {
-	range_spec nr;
-	serialize_range(nr);
+	QString id;
+	color_range range;
+	serialize_range(id, range);
 
-	if(nr.id.isEmpty()) {
+	if(id.isEmpty()) {
 		QMessageBox::warning(
 			this, tr("Wesnoth RCX"),
 			tr("You need to specify a valid, non-empty identifier."));
 		return;
-	}
-	else {
-		foreach(const range_spec& r, ranges_) {
-			if(r.id == nr.id) {
-				QMessageBox::warning(
-					this, tr("Wesnoth RCX"),
-					tr("You cannot specify multiple ranges with the same identifier."));
-				return;
-			}
-		}
+	} else if(ranges_.find(id) != ranges_.end()) {
+		QMessageBox::warning(
+			this, tr("Wesnoth RCX"),
+			tr("You cannot specify multiple ranges with the same identifier."));
+		return;
 	}
 
-	ranges_.push_back(nr);
+	ranges_.insert(id, range);
 
-	QListWidget& l = *ui->rangesList;
-	QListWidgetItem* i = new QListWidgetItem(nr.name + QString(" [") + nr.id+ QString("]"));
-	i->setSelected(true);
-	// Adds the listbox item and clears the input widgets
-	l.addItem(i);
-	deserialize_range(range_spec());
+	QListWidgetItem* lwi = new QListWidgetItem(id, ui->rangesList);
+	lwi->setSelected(true);
+	deserialize_default_range();
 }
 
 void CustomRanges::on_cmdUpdate_clicked()
 {
-	QListWidget& l = *ui->rangesList;
-	if(!l.count())
+	if(!ui->rangesList->count())
 		return;
 
-	range_spec& r = ranges_[l.currentRow()];
+	const QString& id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
 
-	serialize_range(r);
-	l.currentItem()->setText(r.name + QString(" [") + r.id + QString("]"));
+	QMap<QString, color_range>::iterator range_it = ranges_.find(id);
+	if(range_it == ranges_.end())
+		return;
+
+	deserialize_range(id, range_it.value());
+
+	ui->rangesList->currentItem()->setText(id);
 
 	ui->cmdUpdate->setEnabled(false);
 }
 
 void CustomRanges::on_cmdDelete_clicked()
 {
-	QListWidget& l = *ui->rangesList;
-	if(!l.count())
+	if(!ui->rangesList->count())
 		return;
 
-	ranges_.removeAt(l.currentRow());
-	l.takeItem(l.currentRow());
+	const QString& id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
+
+	QMap<QString, color_range>::iterator range_it = ranges_.find(id);
+	if(range_it == ranges_.end())
+		return;
+
+	ranges_.erase(range_it);
+	delete ui->rangesList->takeItem(ui->rangesList->currentRow());
 }
 
 void CustomRanges::on_leAvg_textChanged(QString)
@@ -188,5 +198,14 @@ void CustomRanges::on_leId_textChanged(QString)
 
 void CustomRanges::on_rangesList_itemSelectionChanged()
 {
-	deserialize_range(ranges_.at(ui->rangesList->currentRow()));
+	if(!ui->rangesList->count())
+		return;
+
+	const QString& id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
+
+	QMap<QString, color_range>::iterator range_it = ranges_.find(id);
+	if(range_it == ranges_.end())
+		return;
+
+	deserialize_range(id, range_it.value());
 }

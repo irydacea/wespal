@@ -26,8 +26,8 @@
 #include <QList>
 #include <QStringList>
 
-void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes);
-void mos_config_save(const QList<range_spec>& ranges, const QList<pal_spec>& palettes);
+void mos_config_load(QMap< QString, color_range >& ranges, QMap< QString, QList<QRgb> >& palettes);
+void mos_config_save(const QMap< QString, color_range >& ranges, const QMap< QString, QList<QRgb> >& palettes);
 
 QStringList mos_recent_files();
 void mos_add_recent_file(const QString& filepath);

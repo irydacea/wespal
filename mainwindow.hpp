@@ -53,16 +53,26 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 
-	QList< range_spec > color_ranges_;
-	QList< pal_spec   > palettes_;
-
-	QList< range_spec > user_ranges_;
-	QList< pal_spec   > user_palettes_;
-
-	void initialize_specs();
-	void update_ui_from_specs();	
-
 private:
+	QMap< QString, color_range > color_ranges_;
+	QMap< QString, QList<QRgb> > palettes_;
+
+	QMap< QString, color_range > user_color_ranges_;
+	QMap< QString, QList<QRgb> > user_palettes_;
+
+	/**
+	 * Merges user definitions with built-ins.
+	 *
+	 * It is assumed that the user definitions have already been
+	 * loaded when calling this method.
+	 */
+	void generateMergedRcDefinitions();
+
+	/** Process definitions, updating UI elements accordingly. */
+	void processRcDefinitions();
+
+	void insertRangeListItem(const QString& id, const QString& display_name);
+
 	Ui::MainWindow *ui;
 
 	QString img_path_;
@@ -105,7 +115,7 @@ private:
 	void do_reload();
 	void do_about();
 
-	bool confirm_existing_files(QStringList& paths);
+	bool confirm_existing_files(const QStringList& paths);
 
 	QStringList do_save_color_ranges(QString& base);
 	QStringList do_save_single_recolor(QString& base);
@@ -113,7 +123,7 @@ private:
 	void refresh_previews();
 
 	QString current_pal_name(bool palette_switch_mode = false) const;
-	QList<QRgb> const *current_pal_data(bool palette_switch_mode = false) const;
+	QList<QRgb> current_pal_data(bool palette_switch_mode = false) const;
 
 	QString supported_file_patterns() const;
 

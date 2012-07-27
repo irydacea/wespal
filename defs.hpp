@@ -23,14 +23,19 @@
 
 #include "wesnothrc.hpp"
 
-extern QStringList			mos_color_range_names;
-extern QList<color_range>	mos_color_ranges;
+#include <QStringList>
 
-extern QList<QRgb>			mos_pal_magenta;
-extern QList<QRgb>			mos_pal_flag_green;
-extern QList<QRgb>			mos_pal_ellipse_red;
+// Definitions of built-in (Wesnoth mainline)
+// color ranges and palettes.
 
-extern QString mos_color_range_id_to_name(int n);
-extern const color_range& mos_color_range_from_id(int n);
+/** Built-in color palettes. */
+extern QMap< QString, QList<QRgb> > mosBuiltinColorPalettes;
+/** Names of the built-in color palettes, sorted for presentation purposes. */
+extern QStringList mosOrderedPaletteNames;
+
+/** Built-in color ranges. */
+extern QMap< QString, color_range > mosBuiltinColorRanges;
+/** Names of the built-in color ranges, sorted for presentation purposes. */
+extern QStringList mosOrderedRangeNames;
 
 #endif // DEFS_HPP

@@ -27,7 +27,7 @@ namespace {
 	const unsigned max_recent_files = 4;
 }
 
-void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes)
+void mos_config_load(QMap<QString, color_range> &ranges, QMap<QString, QList<QRgb> > &palettes)
 {
 	QSettings s;
 
@@ -39,9 +39,7 @@ void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes)
 			s.value("avg").toUInt(),
 			s.value("max").toUInt(),
 			s.value("min").toUInt());
-		ranges.push_back(range_spec(
-			r, s.value("id").toString(), s.value("name").toString()
-		));
+		ranges.insert(s.value("id").toString(), r);
 	}
 
 	s.endArray();
@@ -58,39 +56,41 @@ void mos_config_load(QList<range_spec>& ranges, QList<pal_spec>& palettes)
 			rgblist.push_back(v.toUInt());
 		}
 
-		palettes.push_back(pal_spec(
-			rgblist, s.value("id").toString(), s.value("name").toString()
-		));
+		palettes.insert(s.value("id").toString(), rgblist);
 	}
 
 	s.endArray();
 }
 
-void mos_config_save(const QList<range_spec>& ranges, const QList<pal_spec>& palettes)
+void mos_config_save(const QMap<QString, color_range> &ranges, const QMap<QString, QList<QRgb> > &palettes)
 {
 	QSettings s;
+	int j;
 
 	s.beginWriteArray("color_ranges");
-	for(int i = 0; i < ranges.size(); ++i) {
-		s.setArrayIndex(i);
-		s.setValue("id", ranges.at(i).id);
-		s.setValue("name", ranges.at(i).name);
-		// Definition
-		s.setValue("avg", ranges.at(i).def.mid());
-		s.setValue("max", ranges.at(i).def.max());
-		s.setValue("min", ranges.at(i).def.min());
+	j = 0;
+	for(QMap<QString, color_range>::const_iterator i = ranges.constBegin();
+		i != ranges.constEnd(); ++i, ++j)
+	{
+		s.setArrayIndex(j);
+		s.setValue("id", i.key());
+		s.setValue("avg", i.value().mid());
+		s.setValue("max", i.value().max());
+		s.setValue("min", i.value().min());
 	}
 	s.endArray();
 
 	s.beginWriteArray("palettes");
-	for(int i = 0; i < palettes.size(); ++i) {
-		s.setArrayIndex(i);
-		s.setValue("id", palettes.at(i).id);
-		s.setValue("name", palettes.at(i).name);
+	j = 0;
+	for(QMap<QString, QList<QRgb> >::const_iterator i = palettes.constBegin();
+		i != palettes.constEnd(); ++i, ++j)
+	{
+		s.setArrayIndex(j);
+		s.setValue("id", i.key());
 
 		QString csv;
 
-		foreach(QRgb v, palettes.at(i).def) {
+		foreach(QRgb v, i.value()) {
 			if(!csv.isEmpty())
 				csv += ',';
 			csv += QString::number(v);
@@ -98,9 +98,7 @@ void mos_config_save(const QList<range_spec>& ranges, const QList<pal_spec>& pal
 
 		s.setValue("values", csv);
 	}
-
 	s.endArray();
-
 }
 
 unsigned mos_max_recent_files()

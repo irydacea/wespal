@@ -12,10 +12,10 @@ namespace Ui {
 class CustomRanges : public QDialog {
     Q_OBJECT
 public:
-	CustomRanges(QWidget *parent, QList<range_spec>& initial_ranges);
+	CustomRanges(QWidget *parent, QMap<QString, color_range>& initial_ranges);
     ~CustomRanges();
 
-	const QList<range_spec> ranges() const {
+	const QMap<QString, color_range>& ranges() const {
 		return ranges_;
 	}
 
@@ -23,13 +23,14 @@ protected:
     void changeEvent(QEvent *e);
 	void post_setup();
 
-	void deserialize_range(range_spec const& range);
-	void serialize_range(range_spec& range);
+	void deserialize_default_range();
+	void deserialize_range(const QString& name, const color_range& range);
+	void serialize_range(QString& name, color_range& range);
 
 private:
     Ui::CustomRanges *ui;
 
-	QList<range_spec> ranges_;
+	QMap<QString, color_range> ranges_;
 
 	bool ignore_serializing_events_;
 
