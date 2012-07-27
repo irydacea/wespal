@@ -91,7 +91,7 @@ void CustomPalettes::populatePaletteView(const QList<QRgb> &pal)
 	listw->clear();
 
 	foreach(QRgb rgb, pal) {
-		QListWidgetItem* itemw = new QListWidgetItem("x", listw);
+		QListWidgetItem* itemw = new QListWidgetItem("", listw);
 		itemw->setData(Qt::UserRole, rgb);
 		itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 	}
