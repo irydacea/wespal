@@ -36,11 +36,6 @@ CustomRanges::~CustomRanges()
     delete ui;
 }
 
-void CustomRanges::post_setup()
-{
-
-}
-
 void CustomRanges::serialize_range(QString& name, color_range& range)
 {
 	name = ui->leName->text();
@@ -84,7 +79,6 @@ void CustomRanges::changeEvent(QEvent *e)
         break;
     }
 }
-
 
 void CustomRanges::on_tbAvg_clicked()
 {

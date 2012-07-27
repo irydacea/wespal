@@ -20,8 +20,7 @@ public:
 	}
 
 protected:
-    void changeEvent(QEvent *e);
-	void post_setup();
+	void changeEvent(QEvent *e);
 
 	void deserialize_default_range();
 	void deserialize_range(const QString& name, const color_range& range);

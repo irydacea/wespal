@@ -71,11 +71,6 @@ namespace {
 		QObject& o_;
 		bool initial_state_;
 	};
-
-	inline QString zoom_factor_to_str(float factor)
-	{
-		return QString("%d%%").arg(int(100.0f * factor));
-	}
 }
 
 MainWindow::MainWindow(QWidget *parent) :
