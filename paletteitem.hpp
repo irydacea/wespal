@@ -31,10 +31,19 @@ public:
 
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+
+	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+		const QSize& base_size = QStyledItemDelegate::sizeHint(option, index);
+		return QSize(qMax(width_, base_size.width()), qMax(height_, base_size.height()));
+	}
 	
 signals:
 	
 public slots:
+
+private:
+
+	const int border_size_, width_, height_;
 	
 };
 

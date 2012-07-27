@@ -39,7 +39,9 @@ namespace {
 }
 
 PaletteItemDelegate::PaletteItemDelegate(QObject *parent) :
-	QStyledItemDelegate(parent)
+	QStyledItemDelegate(parent),
+	border_size_(2),
+	width_(16), height_(17)
 {
 }
 
@@ -47,19 +49,25 @@ void PaletteItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 {
 	PainterRestorer restorer(painter);
 
-	painter->setClipping(true);
+	// The actual item region.
+	QRect area = option.rect;
+
+	QPen pen;
 
 	if(option.state & QStyle::State_Selected) {
-		QPen pen(Qt::black, 4);
-		painter->setPen(pen);
+		pen.setStyle(Qt::SolidLine);
+		pen.setCapStyle(Qt::SquareCap);
+		pen.setJoinStyle(Qt::MiterJoin);
+		pen.setWidth(border_size_);
+		pen.setColor(option.palette.color(QPalette::Highlight));
+		// Shrink the rectangle so the borders can fit.
+		area.adjust(border_size_/2, border_size_/2, -border_size_/2, -border_size_/2);
+	} else {
+		pen.setStyle(Qt::NoPen);
 	}
 
-	QColor color = index.data(Qt::UserRole).toInt();
-	painter->setBrush(color);
-
-	const QRect& area = option.rect;
-
-
+	painter->setPen(pen);
+	painter->setBrush(QColor(index.data(Qt::UserRole).toInt()));
 	painter->drawRect(area);
 }
 
