@@ -659,7 +659,7 @@ QList<QRgb> MainWindow::current_pal_data(bool palette_switch_mode) const
 
 bool MainWindow::confirm_existing_files(const QStringList& paths)
 {
-	return JobUi::prompt(this, tr("The chosen directory already contains files with the same names required for the output. Do you wish to overwrite them and continue?"), paths);
+	return JobUi::prompt(this, tr("The chosen directory already contains files with the same names required for output. Do you wish to overwrite them and continue?"), paths);
 }
 
 QStringList MainWindow::do_save_single_recolor(QString &base)
