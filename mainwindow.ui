@@ -320,6 +320,9 @@
         <property name="text">
          <string>−</string>
         </property>
+        <property name="icon">
+         <iconset theme="zoom-out"/>
+        </property>
        </widget>
       </item>
       <item>
@@ -360,6 +363,9 @@
         </property>
         <property name="text">
          <string>+</string>
+        </property>
+        <property name="icon">
+         <iconset theme="zoom-in"/>
         </property>
        </widget>
       </item>
