@@ -1,4 +1,7 @@
 Version 0.2.0:
+ * Implemented Reload (F5) action.
+ * Implemented Recent Files list in the File menu.
+ * Redesigned the main window.
 
 Version 0.1.4:
  * Complete drag-and-drop support.
