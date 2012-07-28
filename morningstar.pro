@@ -21,7 +21,8 @@ HEADERS += mainwindow.hpp \
     customranges.hpp \
     appconfig.hpp \
     custompalettes.hpp \
-    paletteitem.hpp
+    paletteitem.hpp \
+    util.hpp
 FORMS += mainwindow.ui \
     customranges.ui \
     custompalettes.ui
