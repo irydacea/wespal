@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>410</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>440</width>
-    <height>410</height>
+    <height>440</height>
    </size>
   </property>
   <property name="acceptDrops">
@@ -34,6 +34,81 @@
   </property>
   <widget class="QWidget" name="grid">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="6" column="0">
+     <layout class="QHBoxLayout" name="hlCommands">
+      <item>
+       <widget class="QToolButton" name="tbZoomOut">
+        <property name="toolTip">
+         <string>Zoom Out</string>
+        </property>
+        <property name="whatsThis">
+         <string>Reduces the zoom level.</string>
+        </property>
+        <property name="text">
+         <string>−</string>
+        </property>
+        <property name="icon">
+         <iconset theme="zoom-out">
+          <normaloff/>
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSlider" name="zoomSlider">
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Zoom</string>
+        </property>
+        <property name="whatsThis">
+         <string>Allows to choose the view's zoom level.</string>
+        </property>
+        <property name="maximum">
+         <number>5</number>
+        </property>
+        <property name="pageStep">
+         <number>4</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="tbZoomIn">
+        <property name="toolTip">
+         <string>Zoom In</string>
+        </property>
+        <property name="whatsThis">
+         <string>Increases the zoom level.</string>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+        <property name="icon">
+         <iconset theme="zoom-in">
+          <normaloff/>
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="hlPreviews" stretch="1,1">
       <item>
@@ -229,7 +304,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="pageRcRanges">
            <property name="sizePolicy">
@@ -264,13 +339,9 @@
             </property>
             <item row="0" column="0">
              <layout class="QFormLayout" name="flRcPal">
-              <item row="0" column="1">
-               <widget class="QComboBox" name="cbxNewPal">
-                <property name="whatsThis">
-                 <string>You an choose the replacement palette in this box.</string>
-                </property>
-               </widget>
-              </item>
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::ExpandingFieldsGrow</enum>
+              </property>
               <item row="0" column="0">
                <widget class="QLabel" name="lblNewPal">
                 <property name="enabled">
@@ -281,6 +352,13 @@
                 </property>
                 <property name="buddy">
                  <cstring>cbxNewPal</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="cbxNewPal">
+                <property name="whatsThis">
+                 <string>You an choose the replacement palette in this box.</string>
                 </property>
                </widget>
               </item>
@@ -308,75 +386,18 @@
      </layout>
     </item>
     <item row="5" column="0">
-     <layout class="QHBoxLayout" name="hlCommands">
-      <item>
-       <widget class="QToolButton" name="tbZoomOut">
-        <property name="toolTip">
-         <string>Zoom Out</string>
-        </property>
-        <property name="whatsThis">
-         <string>Reduces the zoom level.</string>
-        </property>
-        <property name="text">
-         <string>−</string>
-        </property>
-        <property name="icon">
-         <iconset theme="zoom-out"/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="zoomSlider">
-        <property name="maximumSize">
-         <size>
-          <width>120</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Zoom</string>
-        </property>
-        <property name="whatsThis">
-         <string>Allows to choose the view's zoom level.</string>
-        </property>
-        <property name="maximum">
-         <number>5</number>
-        </property>
-        <property name="pageStep">
-         <number>4</number>
-        </property>
-        <property name="value">
-         <number>1</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="tbZoomIn">
-        <property name="toolTip">
-         <string>Zoom In</string>
-        </property>
-        <property name="whatsThis">
-         <string>Increases the zoom level.</string>
-        </property>
-        <property name="text">
-         <string>+</string>
-        </property>
-        <property name="icon">
-         <iconset theme="zoom-in"/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDialogButtonBox" name="buttonBox">
-        <property name="standardButtons">
-         <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
