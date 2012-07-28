@@ -14,21 +14,8 @@ namespace Ui {
 class CustomPalettes : public QDialog {
     Q_OBJECT
 public:
-    CustomPalettes(QWidget *parent = 0);
-    ~CustomPalettes();
-
-	void addPalette(const QString& name, const QList<QRgb>& colors) {
-		palettes_.insert(name, colors);
-		addPaletteListEntry(name);
-	}
-
-	void addMultiplePalettes(const QMap< QString, QList<QRgb> >& palettes) {
-		for(QMap< QString, QList<QRgb> >::const_iterator i = palettes.constBegin();
-			i != palettes.constEnd(); ++i) {
-			palettes_.insert(i.key(), i.value());
-			addPaletteListEntry(i.key());
-		}
-	}
+	CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, QWidget *parent = 0);
+	~CustomPalettes();
 
 protected:
     void changeEvent(QEvent *e);

@@ -6,16 +6,14 @@
 #include <QColorDialog>
 #include <QMessageBox>
 
-CustomPalettes::CustomPalettes(QWidget *parent) :
+CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::CustomPalettes)
+	ui(new Ui::CustomPalettes),
+	palettes_(initialPalettes)
 {
     ui->setupUi(this);
-
-	/*palw = new PaletteWidget(this);
-	ui->paletteViewContainer->addWidget(palw);*/
-
 	ui->listColors->setItemDelegate(new PaletteItemDelegate(ui->listPals));
+	updatePaletteUI();
 }
 
 CustomPalettes::~CustomPalettes()

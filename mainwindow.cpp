@@ -820,9 +820,7 @@ void MainWindow::on_actionColor_ranges_triggered()
 
 void MainWindow::on_action_Palettes_triggered()
 {
-	CustomPalettes dlg(this);
-
-	dlg.addMultiplePalettes(palettes_);
+	CustomPalettes dlg(palettes_, this);
 	dlg.exec();
 
 	// TODO: implement saving palettes to configuration and
