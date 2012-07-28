@@ -25,6 +25,7 @@
 #include "mainwindow.hpp"
 #include "rc_qt4.hpp"
 #include "ui_mainwindow.h"
+#include "util.hpp"
 #include "version.hpp"
 
 #include <QDesktopServices> // viva la integration!
@@ -52,25 +53,6 @@ namespace {
 
 		return ret;
 	}
-
-	class ObjectLock
-	{
-	public:
-		ObjectLock(QObject& o)
-			: o_(o)
-			, initial_state_(o.blockSignals(true))
-		{
-		}
-
-		~ObjectLock()
-		{
-			o_.blockSignals(initial_state_);
-		}
-
-	private:
-		QObject& o_;
-		bool initial_state_;
-	};
 }
 
 MainWindow::MainWindow(QWidget *parent) :
