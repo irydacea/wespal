@@ -21,7 +21,8 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
-#include <QObject>
+#include <QStringList>
+#include <QWidget>
 
 class ObjectLock
 {
@@ -41,5 +42,18 @@ private:
 	QObject& o_;
 	bool initial_state_;
 };
+
+namespace JobUi {
+
+void message(QWidget* parent, const QString& message, const QString& details = "");
+void message(QWidget* parent, const QString& message, const QStringList& detailItems);
+
+bool prompt(QWidget* parent, const QString& message, const QString& details = "");
+bool prompt(QWidget* parent, const QString& message, const QStringList& detailItems);
+
+void error(QWidget* parent, const QString& message, const QString& details = "");
+void error(QWidget* parent, const QString& message, const QStringList& detailItems);
+
+} // end namespace JobUi
 
 #endif // UTIL_HPP

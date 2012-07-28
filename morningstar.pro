@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     customranges.cpp \
     appconfig.cpp \
     custompalettes.cpp \
-    paletteitem.cpp
+    paletteitem.cpp \
+    util.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \

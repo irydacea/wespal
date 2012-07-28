@@ -508,9 +508,8 @@ void MainWindow::do_open(const QString &initial_file)
 	QImage img_temp(path_temp);
 	if(img_temp.isNull()) {
 		if(path_temp.isNull() != true) {
-			QMessageBox::critical(
-				this, tr("Wesnoth RCX"), tr("Could not load %1.").arg(path_temp)
-			);
+			JobUi::error(
+				this, tr("Could not load %1.").arg(path_temp));
 		}
 
 		if(img_original_.isNull()) {
@@ -537,7 +536,7 @@ void MainWindow::do_reload()
 {
 	QImage img(img_path_);
 	if(img.isNull()) {
-		QMessageBox::critical(this, tr("Wesnoth RCX"), tr("Could not reload %1.").arg(img_path_));
+		JobUi::error(this, tr("Could not reload %1.").arg(img_path_));
 		return;
 	}
 
@@ -599,14 +598,11 @@ void MainWindow::do_save()
 			succeeded = do_save_color_ranges(base);
 		}
 
-		QMessageBox::information(
-				this, tr("Wesnoth RCX"), tr("Job successfully saved. The following files have been generated:<br><br>%1").arg(succeeded.join("<br>"))
-				);
+		JobUi::message(this, tr("The output files have been saved successfully."), succeeded);
 	} catch(const canceled_job&) {
 		;
 	} catch(const QStringList& failed) {
-		QMessageBox::critical(
-				this, tr("Wesnoth RCX"), tr("The following files could not be saved correctly:<br><br>%1").arg(failed.join("<br>")));
+		JobUi::error(this, tr("Some files could not be saved correctly."), failed);
 	}
 }
 
@@ -663,11 +659,7 @@ QList<QRgb> MainWindow::current_pal_data(bool palette_switch_mode) const
 
 bool MainWindow::confirm_existing_files(const QStringList& paths)
 {
-	return QMessageBox::question(
-			this,
-			tr("Wesnoth RCX"),
-			tr("The following files already exist. Do you want to overwrite them?<br><br>%1").arg(paths.join("<br>")),
-			QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes;
+	return JobUi::prompt(this, tr("The chosen directory already contains files with the same names required for the output. Do you wish to overwrite them and continue?"), paths);
 }
 
 QStringList MainWindow::do_save_single_recolor(QString &base)
