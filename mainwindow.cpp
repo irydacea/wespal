@@ -617,7 +617,7 @@ void MainWindow::do_close()
 
 void MainWindow::do_about()
 {
-	QMessageBox msg;
+	QMessageBox msg(this);
 
 	QString text =
 		tr("<h3>Wesnoth RCX %1</h3>").arg(mos_version);
@@ -640,6 +640,7 @@ void MainWindow::do_about()
 	msg.setIconPixmap(QPixmap(":/rsrc/rcx-icon.png"));
 	msg.setWindowIcon(this->windowIcon());
 	msg.setWindowTitle(tr("Wesnoth RCX"));
+	msg.setWindowModality(Qt::WindowModal);
 	msg.exec();
 }
 
