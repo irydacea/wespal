@@ -48,6 +48,10 @@ private slots:
 
 	void on_cmdDelCol_clicked();
 
+	void on_cmdDelPal_clicked();
+
+	void on_cmdAddPal_clicked();
+
 private:
     Ui::CustomPalettes *ui;
 	//PaletteWidget *palw;
@@ -66,6 +70,18 @@ private:
 
 	/** Update the palette UI starting from scratch. */
 	void updatePaletteUI();
+
+	void setColorEditControlsEnabled(bool enabled);
+	void setPaletteViewEnabled(bool enabled);
+	void setPaletteEditControlsEnabled(bool enabled);
+
+	void clearPaletteView();
+
+	QList<QRgb>& getCurrentPalette();
+
+	void updatePaletteIcon();
+
+	QString generateNewPaletteName() const;
 };
 
 #endif // CUSTOMPALETTES_HPP

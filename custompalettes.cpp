@@ -122,6 +122,75 @@ void CustomPalettes::populatePaletteView(const QList<QRgb> &pal)
 	listw->setCurrentRow(0);
 }
 
+void CustomPalettes::setColorEditControlsEnabled(bool enabled)
+{
+	const bool haveColors = ui->listColors->count() != 0;
+
+	ui->cmdDelCol->setEnabled(enabled && haveColors);
+	ui->tbEditColor->setEnabled(enabled && haveColors);
+	ui->leColor->setEnabled(enabled && haveColors);
+}
+
+void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
+{
+	ui->listColors->setEnabled(enabled);
+	ui->cmdAddCol->setEnabled(enabled);
+
+	setColorEditControlsEnabled(enabled);
+}
+
+void CustomPalettes::setPaletteViewEnabled(bool enabled)
+{
+	ui->cmdDelPal->setEnabled(enabled);
+	ui->cmdRenPal->setEnabled(enabled);
+
+	setPaletteEditControlsEnabled(enabled);
+}
+
+void CustomPalettes::clearPaletteView()
+{
+	ui->listColors->clear();
+	ui->leColor->clear();
+}
+
+QList<QRgb>& CustomPalettes::getCurrentPalette()
+{
+	QListWidgetItem const* palItem = ui->listPals->currentItem();
+	Q_ASSERT(palItem);
+
+	if(!palItem)
+		return palettes_[""];
+
+	const QString& palId = palItem->data(Qt::UserRole).toString();
+	// Create a palette if necessary.
+	return palettes_[palId];
+}
+
+void CustomPalettes::updatePaletteIcon()
+{
+	QListWidgetItem* const palw = ui->listPals->currentItem();
+	Q_ASSERT(palw);
+
+	const QList<QRgb>& palette = palettes_.value(palw->data(Qt::UserRole).toString());
+
+	if(palette.empty())
+		return;
+
+	palw->setIcon(createColorIcon(palette.front()));
+}
+
+QString CustomPalettes::generateNewPaletteName() const
+{
+	QString name;
+	int i = 0;
+
+	do {
+		name = tr("New Palette #%1").arg(++i);
+	} while(palettes_.find(name) != palettes_.end());
+
+	return name;
+}
+
 void CustomPalettes::on_listColors_currentRowChanged(int currentRow)
 {
 	QLineEdit* const textw = ui->leColor;
@@ -138,14 +207,30 @@ void CustomPalettes::on_listColors_itemChanged(QListWidgetItem *item)
 		item->data(Qt::UserRole).toInt();
 
 	textw->setText(currentColor.name());
+
+	// Update palette definition.
+
+	QListWidget* const listw = ui->listColors;
+
+	QList<QRgb>& pal = getCurrentPalette();
+	const int index = listw->currentRow();
+	Q_ASSERT(index < pal.size());
+	pal[index] = currentColor.rgb();
+
+	// If this is the first row we might as well update
+	// the palette icon.
+
+	if(listw->currentRow() == 0) {
+		updatePaletteIcon();
+	}
 }
 
 void CustomPalettes::on_cmdRenPal_clicked()
 {
 	QListWidget* const listw = ui->listPals;
+	// An edit slot should take care of updating the
+	// palette definition afterwards.
 	listw->editItem(listw->currentItem());
-
-	// TODO: update palette definition accordingly!
 }
 
 void CustomPalettes::on_tbEditColor_clicked()
@@ -159,48 +244,131 @@ void CustomPalettes::on_tbEditColor_clicked()
 	QColor color = lwi->data(Qt::UserRole).toInt();
 	color = QColorDialog::getColor(color);
 
-	if(color.isValid()) {
-		lwi->setData(Qt::UserRole, color.rgb());
-	}
+	if(!color.isValid())
+		return;
 
-	// TODO: update palette definition accordingly!
+	const QRgb rgb = color.rgb();
+	lwi->setData(Qt::UserRole, rgb);
 }
 
 void CustomPalettes::on_cmdAddCol_clicked()
 {
 	QListWidget* const listw = ui->listColors;
-	QListWidgetItem* const itemw = new QListWidgetItem("", listw);
 
-	// We should already have a first row with the first
-	// color of the palette. If we don't, then something is
-	// wrong but we can still use pure black.
+	// Make sure to actually add the item only later, once
+	// it is safe to notify other widgets!
+
+	QListWidgetItem* const itemw = new QListWidgetItem("");
+
+	// We might already have a first row with the first
+	// color of the palette. If we don't we use pure black.
 
 	QListWidgetItem* const first = listw->item(0);
-	Q_ASSERT(first != NULL);
 
-	itemw->setData(Qt::UserRole, first ? first->data(Qt::UserRole).toInt() : qRgb(0,0,0));
+	const QRgb rgb = first ? first->data(Qt::UserRole).toInt() : qRgb(0,0,0);
+
+	itemw->setData(Qt::UserRole, rgb);
 	itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
+	// Update palette definition.
+
+	QList<QRgb>& pal = getCurrentPalette();
+	pal.push_back(rgb);
+
+	// Notify widgets.
+
+	listw->addItem(itemw);
 	listw->setCurrentItem(itemw);
 
-	// TODO: update palette definition accordingly!
+	setColorEditControlsEnabled(true);
+
+	// If this is the first row we might as well update
+	// the palette icon.
+
+	if(first == NULL) {
+		updatePaletteIcon();
+	}
 }
 
 void CustomPalettes::on_cmdDelCol_clicked()
 {
 	QListWidget* const listw = ui->listColors;
+
+	ObjectLock lock(*listw);
+
 	const int remaining = listw->count();
 
-	Q_ASSERT(remaining > 0);
-
-	if(remaining == 1) {
-		QMessageBox::critical(this, tr("Wesnoth RCX"), tr("You cannot remove the last color in the palette!"));
-		// TODO: delete the palette itself in this case
-		//       or just delete the color and disable widgets
+	if(remaining == 0)
 		return;
-	}
+
+	const int index = listw->currentRow();
 
 	delete listw->takeItem(listw->currentRow());
 
-	// TODO: update palette definition accordingly!
+	if(remaining == 1) {
+		// No more colors!
+		setColorEditControlsEnabled(false);
+	}
+
+	// Update palette definition.
+
+	QList<QRgb>& pal = getCurrentPalette();
+
+	Q_ASSERT(index < pal.count());
+	pal.removeAt(index);
+
+	// If this was the first row and we still have
+	// more colors, update the palette's color icon.
+	if(index == 0 && remaining > 1) {
+		updatePaletteIcon();
+	}
+}
+
+void CustomPalettes::on_cmdAddPal_clicked()
+{
+	QListWidget* const listw = ui->listPals;
+
+	{
+		ObjectLock lockPals(*listw);
+
+		const QString& palName = generateNewPaletteName();
+		palettes_[palName].push_back(qRgb(0,0,0));
+		addPaletteListEntry(palName);
+
+		setPaletteViewEnabled(true);
+	}
+
+	listw->setCurrentRow(listw->count() - 1);
+}
+
+void CustomPalettes::on_cmdDelPal_clicked()
+{
+	QListWidget* const listw = ui->listPals;
+
+	ObjectLock lockPals(*listw);
+	ObjectLock lockColors(*ui->listColors);
+
+	const int remaining = listw->count();
+
+	if(remaining == 0)
+		return;
+
+	QListWidgetItem* const itemw = listw->takeItem(listw->currentRow());
+	Q_ASSERT(itemw);
+	const QString& palId = itemw->data(Qt::UserRole).toString();
+	delete itemw;
+
+	if(remaining == 1) {
+		// No more palettes!
+		setPaletteViewEnabled(false);
+		clearPaletteView();
+	}
+
+	// Delete palette definition.
+
+	QMap< QString, QList<QRgb> >::iterator palItem = palettes_.find(palId);
+
+	if(palItem != palettes_.end()) {
+		palettes_.erase(palItem);
+	}
 }
