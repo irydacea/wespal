@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
+    <width>515</width>
     <height>354</height>
    </rect>
   </property>
@@ -19,22 +19,130 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3">
      <item>
       <layout class="QVBoxLayout" name="paletteListContainer">
        <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>&amp;Palettes:</string>
+         </property>
+         <property name="buddy">
+          <cstring>listPals</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QListWidget" name="listPals"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,1">
+         <item>
+          <widget class="QPushButton" name="cmdAddPal">
+           <property name="text">
+            <string>&amp;Add</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdRenPal">
+           <property name="text">
+            <string>Re&amp;name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cmdDelPal">
+           <property name="text">
+            <string>&amp;Delete</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
       <layout class="QVBoxLayout" name="paletteViewContainer">
        <item>
-        <widget class="QListWidget" name="listColors">
-         <property name="uniformItemSizes">
-          <bool>true</bool>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>C&amp;olors:</string>
+         </property>
+         <property name="buddy">
+          <cstring>listColors</cstring>
          </property>
         </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QListWidget" name="listColors">
+             <property name="uniformItemSizes">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>He&amp;x:</string>
+               </property>
+               <property name="buddy">
+                <cstring>leColor</cstring>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="leColor"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="tbEditColor">
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QPushButton" name="cmdAddCol">
+             <property name="text">
+              <string>Add &amp;color</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdDelCol">
+             <property name="text">
+              <string>&amp;Remove color</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>

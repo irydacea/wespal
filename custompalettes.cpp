@@ -1,7 +1,9 @@
 #include "custompalettes.hpp"
 #include "ui_custompalettes.h"
+#include "util.hpp"
 
 #include "paletteitem.hpp"
+#include <QColorDialog>
 #include <QMessageBox>
 
 CustomPalettes::CustomPalettes(QWidget *parent) :
@@ -35,18 +37,33 @@ void CustomPalettes::changeEvent(QEvent *e)
 
 void CustomPalettes::updatePaletteUI()
 {
-	//ui->listColors->clear();
-	ui->listPals->clear();
+	{
+		// Make sure to not emit signals while setting up rows.
+		const ObjectLock lock(*ui->listPals);
 
-	for(QMap< QString, QList<QRgb> >::const_iterator i = palettes_.constBegin();
-		i != palettes_.constEnd(); ++i) {
-		addPaletteListEntry(i.key());
+		ui->listPals->clear();
+
+		for(QMap< QString, QList<QRgb> >::const_iterator i = palettes_.constBegin();
+			i != palettes_.constEnd(); ++i) {
+			addPaletteListEntry(i.key());
+		}
 	}
+
+	// Notify the palette view widget.
+	ui->listPals->setCurrentRow(0);
 }
 
 void CustomPalettes::addPaletteListEntry(const QString& name)
 {
-	ui->listPals->addItem(name);
+	QListWidgetItem* lwi = new QListWidgetItem(name, ui->listPals);
+	lwi->setData(Qt::UserRole, name);
+	lwi->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+
+	const QList<QRgb> palette = palettes_.value(name);
+
+	if(!palette.empty()) {
+		lwi->setIcon(createColorIcon(palette.front()));
+	}
 }
 
 void CustomPalettes::removePaletteListEntry(const QString &name)
@@ -88,11 +105,102 @@ void CustomPalettes::populatePaletteView(const QList<QRgb> &pal)
 	if(!listw)
 		return;
 
-	listw->clear();
+	{
+		// Make sure to not emit signals while setting up rows.
+		const ObjectLock lock(*listw);
 
-	foreach(QRgb rgb, pal) {
-		QListWidgetItem* itemw = new QListWidgetItem("", listw);
-		itemw->setData(Qt::UserRole, rgb);
-		itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+		listw->clear();
+
+		foreach(QRgb rgb, pal) {
+			QListWidgetItem* itemw = new QListWidgetItem("", listw);
+			itemw->setData(Qt::UserRole, rgb);
+			itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+		}
 	}
+
+	// The hex editor box needs to be notified now.
+	listw->setCurrentRow(0);
+}
+
+void CustomPalettes::on_listColors_currentRowChanged(int currentRow)
+{
+	QLineEdit* const textw = ui->leColor;
+	const QColor currentColor =
+		ui->listColors->item(currentRow)->data(Qt::UserRole).toInt();
+
+	textw->setText(currentColor.name());
+}
+
+void CustomPalettes::on_listColors_itemChanged(QListWidgetItem *item)
+{
+	QLineEdit* const textw = ui->leColor;
+	const QColor currentColor =
+		item->data(Qt::UserRole).toInt();
+
+	textw->setText(currentColor.name());
+}
+
+void CustomPalettes::on_cmdRenPal_clicked()
+{
+	QListWidget* const listw = ui->listPals;
+	listw->editItem(listw->currentItem());
+
+	// TODO: update palette definition accordingly!
+}
+
+void CustomPalettes::on_tbEditColor_clicked()
+{
+	QListWidget* const listw = ui->listColors;
+	QListWidgetItem* const lwi = listw->currentItem();
+
+	if(!lwi)
+		return;
+
+	QColor color = lwi->data(Qt::UserRole).toInt();
+	color = QColorDialog::getColor(color);
+
+	if(color.isValid()) {
+		lwi->setData(Qt::UserRole, color.rgb());
+	}
+
+	// TODO: update palette definition accordingly!
+}
+
+void CustomPalettes::on_cmdAddCol_clicked()
+{
+	QListWidget* const listw = ui->listColors;
+	QListWidgetItem* const itemw = new QListWidgetItem("", listw);
+
+	// We should already have a first row with the first
+	// color of the palette. If we don't, then something is
+	// wrong but we can still use pure black.
+
+	QListWidgetItem* const first = listw->item(0);
+	Q_ASSERT(first != NULL);
+
+	itemw->setData(Qt::UserRole, first ? first->data(Qt::UserRole).toInt() : qRgb(0,0,0));
+	itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+
+	listw->setCurrentItem(itemw);
+
+	// TODO: update palette definition accordingly!
+}
+
+void CustomPalettes::on_cmdDelCol_clicked()
+{
+	QListWidget* const listw = ui->listColors;
+	const int remaining = listw->count();
+
+	Q_ASSERT(remaining > 0);
+
+	if(remaining == 1) {
+		QMessageBox::critical(this, tr("Wesnoth RCX"), tr("You cannot remove the last color in the palette!"));
+		// TODO: delete the palette itself in this case
+		//       or just delete the color and disable widgets
+		return;
+	}
+
+	delete listw->takeItem(listw->currentRow());
+
+	// TODO: update palette definition accordingly!
 }

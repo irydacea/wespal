@@ -38,6 +38,22 @@ namespace {
 	};
 }
 
+QIcon createColorIcon(QRgb color)
+{
+	QPixmap base(16, 16);
+	base.fill(QColor(255, 255, 255, 0));
+
+	QPainter painter(&base);
+	QBrush brush(color);
+	QPen pen(Qt::black, 1);
+
+	painter.setBrush(brush);
+	painter.setPen(pen);
+	painter.drawRect(base.rect().adjusted(1,1,-2,-2));
+
+	return base;
+}
+
 PaletteItemDelegate::PaletteItemDelegate(QObject *parent) :
 	QStyledItemDelegate(parent),
 	border_size_(2),
@@ -71,7 +87,7 @@ void PaletteItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	painter->drawRect(area);
 }
 
-bool PaletteItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+bool PaletteItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& /*option*/, const QModelIndex& index)
 {
 	if(event->type() != QEvent::MouseButtonDblClick)
 		return false;

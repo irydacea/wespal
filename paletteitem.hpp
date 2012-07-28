@@ -47,4 +47,6 @@ private:
 	
 };
 
+QIcon createColorIcon(QRgb color);
+
 #endif // PALETTEITEM_HPP

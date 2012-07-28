@@ -5,6 +5,7 @@
 //#include "palettewidget.hpp"
 
 #include <QMap>
+#include <QListWidgetItem>
 
 namespace Ui {
     class CustomPalettes;
@@ -34,6 +35,18 @@ protected:
 
 private slots:
 	void on_listPals_currentRowChanged(int currentRow);
+
+	void on_listColors_currentRowChanged(int currentRow);
+
+	void on_cmdRenPal_clicked();
+
+	void on_tbEditColor_clicked();
+
+	void on_listColors_itemChanged(QListWidgetItem *item);
+
+	void on_cmdAddCol_clicked();
+
+	void on_cmdDelCol_clicked();
 
 private:
     Ui::CustomPalettes *ui;
