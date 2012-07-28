@@ -233,6 +233,48 @@ void CustomPalettes::on_cmdRenPal_clicked()
 	listw->editItem(listw->currentItem());
 }
 
+void CustomPalettes::on_listPals_itemChanged(QListWidgetItem *item)
+{
+	Q_ASSERT(item);
+
+	const QString& newName = item->text();
+	const QString& oldName = item->data(Qt::UserRole).toString();
+
+	if(newName == oldName)
+		return;
+
+	QMap<QString, QList<QRgb> >::iterator
+		oldIt = palettes_.find(oldName),
+		newIt = palettes_.find(newName);
+	Q_ASSERT(oldIt != palettes_.end());
+	Q_ASSERT(oldIt != newIt);
+
+	if(oldIt == palettes_.end())
+		return;
+
+	if(newIt != palettes_.end()) {
+		if(!JobUi::prompt(this, tr("The palette '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
+			item->setText(oldName);
+			return;
+		}
+
+		for(int i = 0; i < ui->listPals->count(); ++i) {
+			QListWidgetItem* const ii = ui->listPals->item(i);
+			if(ii->data(Qt::UserRole).toString() == newName) {
+				delete ui->listPals->takeItem(i);
+				break;
+			}
+		}
+	} else {
+		newIt = palettes_.insert(newName, QList<QRgb>());
+	}
+
+	newIt.value().swap(oldIt.value());
+	palettes_.erase(oldIt);
+
+	item->setData(Qt::UserRole, newName);
+}
+
 void CustomPalettes::on_tbEditColor_clicked()
 {
 	QListWidget* const listw = ui->listColors;

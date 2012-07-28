@@ -52,6 +52,8 @@ private slots:
 
 	void on_cmdAddPal_clicked();
 
+	void on_listPals_itemChanged(QListWidgetItem *item);
+
 private:
     Ui::CustomPalettes *ui;
 	//PaletteWidget *palw;
