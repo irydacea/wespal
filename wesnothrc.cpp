@@ -27,6 +27,35 @@
 
 #include "wesnothrc.hpp"
 
+namespace {
+
+const QString wml_indent = "    ";
+
+QString makeIdentifier(const QString& name)
+{
+	if(name.isEmpty())
+		return name;
+
+	QString ret = name.toLower();
+	// Characters that may confuse the WML parser or
+	// aren't conventionally used in identifiers are
+	// replaced by underscores.
+	ret.replace(QRegExp("[=\"\\s]"), "_");
+
+	return ret;
+}
+
+QString makeWmlColor(QRgb rgb)
+{
+	QString ret = QColor(rgb).name().toUpper();
+	Q_ASSERT(!ret.isEmpty());
+	ret.remove(0, 1); // The leading #
+
+	return ret;
+}
+
+}
+
 QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QList<QRgb>& old_rgb){
 	QMap<QRgb, QRgb> map_rgb;
 
@@ -98,6 +127,72 @@ QMap<QRgb, QRgb> recolor_palettes(const QList<QRgb> &key, const QList<QRgb> &new
 	}
 
 	return map;
+}
+
+QString generate_color_range_wml(const QString& name, const color_range& range)
+{
+	static const QString lead =
+		"# This code defines a Wesnoth color range.\n"
+		"# You may use it at global level (e.g. within\n"
+		"# the add-on's _main.cfg #ifdef) or in specific\n"
+		"# situations by providing the contents of the\n"
+		"# rgb= attribute (e.g. in [side] color=\n"
+		"# attributes or in ~RC() image path function\n"
+		"# specifications).\n"
+		"\n";
+
+	QString code = lead;
+
+	code += "[color_range]\n" +
+			wml_indent + "id=\"" + makeIdentifier(name) + "\"\n" +
+			wml_indent + "name= _ \"" + name + "\"\n" +
+			wml_indent + "rgb=\"";
+
+	const QString& strAvg = makeWmlColor(range.mid());
+	const QString& strMax = makeWmlColor(range.max());
+	const QString& strMin = makeWmlColor(range.min());
+	// TODO: restore map marker color support in the color_range type and
+	//       allow users to pick one, or just warn them about it?
+	const QString& strMap = strAvg;
+
+	code += strAvg + "," + strMax + "," + strMin + "," + strMap + "\"\n" +
+			"[/color_range]\n";
+
+
+	return code;
+}
+
+QString generate_color_palette_wml(const QString& name, const QList<QRgb>& palette)
+{
+	static const QString lead =
+		"# This code defines a Wesnoth color palette.\n"
+		"# You may use it at global level (e.g. within\n"
+		"# the add-on's _main.cfg #ifdef) or in specific\n"
+		"# situations by providing the comma-separated\n"
+		"# color list (e.g. in ~RC() image path function\n"
+		"# specifications).\n"
+		"\n";
+
+	QString code = lead;
+
+	code += "[color_palette]\n" +
+			wml_indent + makeIdentifier(name) + "=\"";
+
+	bool first = true;
+	foreach(QRgb rgb, palette) {
+		if(!first) {
+			code += ",";
+		} else {
+			first = false;
+		}
+
+		code += makeWmlColor(rgb);
+	}
+
+	code += "\"\n";
+	code += "[/color_palette]\n";
+
+	return code;
 }
 
 // kate: indent-mode normal; encoding utf-8; space-indent off; indent-width 4;

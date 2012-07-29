@@ -138,6 +138,10 @@ rc_map recolor_range(const color_range& new_rgb, const QList<QRgb>& old_rgb);
 
 rc_map recolor_palettes(const QList<QRgb>& key, const QList<QRgb>& new_values);
 
+QString generate_color_range_wml(const QString& name, const color_range& range);
+
+QString generate_color_palette_wml(const QString& name, const QList<QRgb>& palette);
+
 #endif
 
 // kate: indent-mode normal; encoding utf-8; space-indent off; indent-width 4;
