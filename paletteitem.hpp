@@ -47,6 +47,6 @@ private:
 	
 };
 
-QIcon createColorIcon(QRgb color);
+QIcon createColorIcon(const QColor &color, int width = 16, int height = 16);
 
 #endif // PALETTEITEM_HPP

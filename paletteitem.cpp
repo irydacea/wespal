@@ -38,9 +38,9 @@ namespace {
 	};
 }
 
-QIcon createColorIcon(QRgb color)
+QIcon createColorIcon(const QColor& color, int width, int height)
 {
-	QPixmap base(16, 16);
+	QPixmap base(width, height);
 	base.fill(QColor(255, 255, 255, 0));
 
 	QPainter painter(&base);
