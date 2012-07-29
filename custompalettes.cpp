@@ -379,6 +379,7 @@ void CustomPalettes::on_cmdAddPal_clicked()
 	}
 
 	listw->setCurrentRow(listw->count() - 1);
+	listw->editItem(listw->currentItem());
 }
 
 void CustomPalettes::on_cmdDelPal_clicked()
