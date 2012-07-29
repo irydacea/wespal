@@ -1,8 +1,12 @@
 #include "codesnippetdialog.hpp"
 #include "ui_codesnippetdialog.h"
 
+#include "util.hpp"
+
 #include <QClipboard>
+#include <QFileDialog>
 #include <QPushButton>
+#include <QTextStream>
 
 CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
     QDialog(parent),
@@ -15,6 +19,12 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 
 	copyButton->setDefault(true);
 	connect(copyButton, SIGNAL(clicked()), this, SLOT(on_copyButton_clicked()));
+
+	QPushButton* const saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
+
+	if(saveButton) {
+		connect(saveButton, SIGNAL(clicked()), this, SLOT(on_saveButton_clicked()));
+	}
 }
 
 CodeSnippetDialog::~CodeSnippetDialog()
@@ -37,4 +47,27 @@ void CodeSnippetDialog::changeEvent(QEvent *e)
 void CodeSnippetDialog::on_copyButton_clicked()
 {
 	QApplication::clipboard()->setText(ui->teContents->toPlainText());
+}
+
+void CodeSnippetDialog::on_saveButton_clicked()
+{
+	const QString& filePath = QFileDialog::getSaveFileName(this, tr("Save Color Range WML"));
+
+	if(filePath.isNull()) {
+		return;
+	}
+
+	QFile f(filePath);
+
+	if(f.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
+		QTextStream out(&f);
+		out << ui->teContents->toPlainText();
+		f.close();
+	}
+
+	if(f.error()) {
+		JobUi::error(this, tr("The file could not be saved"), filePath);
+	} else {
+		JobUi::message(this, tr("The file was saved successfully."), filePath);
+	}
 }

@@ -23,6 +23,7 @@ private:
 
 private slots:
 	void on_copyButton_clicked();
+	void on_saveButton_clicked();
 };
 
 #endif // CODESNIPPETDIALOG_HPP
