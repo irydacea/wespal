@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     appconfig.cpp \
     custompalettes.cpp \
     paletteitem.cpp \
-    util.cpp
+    util.cpp \
+    codesnippetdialog.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \
@@ -23,8 +24,10 @@ HEADERS += mainwindow.hpp \
     appconfig.hpp \
     custompalettes.hpp \
     paletteitem.hpp \
-    util.hpp
+    util.hpp \
+    codesnippetdialog.hpp
 FORMS += mainwindow.ui \
     customranges.ui \
-    custompalettes.ui
+    custompalettes.ui \
+    codesnippetdialog.ui
 RESOURCES += morningstar.qrc
