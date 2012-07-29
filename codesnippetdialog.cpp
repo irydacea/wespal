@@ -25,6 +25,9 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	if(saveButton) {
 		connect(saveButton, SIGNAL(clicked()), this, SLOT(on_saveButton_clicked()));
 	}
+
+	ui->successIcon->setPixmap(style()->standardIcon(QStyle::SP_DialogOkButton).pixmap(22));
+	ui->boxClipboardMessage->setVisible(false);
 }
 
 CodeSnippetDialog::~CodeSnippetDialog()
@@ -47,6 +50,7 @@ void CodeSnippetDialog::changeEvent(QEvent *e)
 void CodeSnippetDialog::on_copyButton_clicked()
 {
 	QApplication::clipboard()->setText(ui->teContents->toPlainText());
+	ui->boxClipboardMessage->setVisible(true);
 }
 
 void CodeSnippetDialog::on_saveButton_clicked()
