@@ -808,7 +808,7 @@ void MainWindow::on_actionColor_ranges_triggered()
 	user_color_ranges_ = dlg.ranges();
 
 	{
-		ObjectLock l(*this);
+		ObjectLock l(this);
 		generateMergedRcDefinitions();
 		processRcDefinitions();
 	}

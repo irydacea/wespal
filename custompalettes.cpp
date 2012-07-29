@@ -37,7 +37,7 @@ void CustomPalettes::updatePaletteUI()
 {
 	{
 		// Make sure to not emit signals while setting up rows.
-		const ObjectLock lock(*ui->listPals);
+		const ObjectLock lock(ui->listPals);
 
 		ui->listPals->clear();
 
@@ -105,7 +105,7 @@ void CustomPalettes::populatePaletteView(const QList<QRgb> &pal)
 
 	{
 		// Make sure to not emit signals while setting up rows.
-		const ObjectLock lock(*listw);
+		const ObjectLock lock(listw);
 
 		listw->clear();
 
@@ -334,7 +334,7 @@ void CustomPalettes::on_cmdDelCol_clicked()
 {
 	QListWidget* const listw = ui->listColors;
 
-	ObjectLock lock(*listw);
+	ObjectLock lock(listw);
 
 	const int remaining = listw->count();
 
@@ -369,7 +369,7 @@ void CustomPalettes::on_cmdAddPal_clicked()
 	QListWidget* const listw = ui->listPals;
 
 	{
-		ObjectLock lockPals(*listw);
+		ObjectLock lockPals(listw);
 
 		const QString& palName = generateNewPaletteName();
 		palettes_[palName].push_back(qRgb(0,0,0));
@@ -385,8 +385,8 @@ void CustomPalettes::on_cmdDelPal_clicked()
 {
 	QListWidget* const listw = ui->listPals;
 
-	ObjectLock lockPals(*listw);
-	ObjectLock lockColors(*ui->listColors);
+	ObjectLock lockPals(listw);
+	ObjectLock lockColors(ui->listColors);
 
 	const int remaining = listw->count();
 

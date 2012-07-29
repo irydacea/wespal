@@ -21,25 +21,28 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <QPointer>
 #include <QStringList>
 #include <QWidget>
 
 class ObjectLock
 {
 public:
-	ObjectLock(QObject& o)
+	ObjectLock(QObject* o)
 		: o_(o)
-		, initial_state_(o.blockSignals(true))
+		, initial_state_(o ? o->blockSignals(true) : bool())
 	{
 	}
 
 	~ObjectLock()
 	{
-		o_.blockSignals(initial_state_);
+		if(o_) {
+			o_->blockSignals(initial_state_);
+		}
 	}
 
 private:
-	QObject& o_;
+	QPointer<QObject> o_;
 	bool initial_state_;
 };
 
