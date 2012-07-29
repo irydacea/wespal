@@ -1,71 +1,40 @@
 #include "customranges.hpp"
 #include "ui_customranges.h"
 
+#include "paletteitem.hpp"
+#include "util.hpp"
+
 #include <QColorDialog>
 #include <QMessageBox>
 
-CustomRanges::CustomRanges(QWidget *parent, QMap<QString, color_range>& initial_ranges) :
+CustomRanges::CustomRanges(const QMap<QString, color_range>& initialRanges, QWidget *parent) :
     QDialog(parent),
 	ui(new Ui::CustomRanges),
-	ranges_(initial_ranges),
-	ignore_serializing_events_(false)
+	ranges_(initialRanges)
 {
     ui->setupUi(this);
 
-	for(QMap< QString, color_range >::const_iterator ci = ranges_.constBegin();
-		ci != ranges_.constEnd();
-		++ci)
 	{
-		// TODO: capitalize display name for built-ins!
-		QListWidgetItem* lwi = new QListWidgetItem(ci.key(), ui->rangesList);
-		lwi->setData(Qt::UserRole, ci.key());
+		const ObjectLock lock(ui->listRanges);
+
+		for(QMap< QString, color_range >::const_iterator ci = ranges_.constBegin();
+			ci != ranges_.constEnd();
+			++ci)
+		{
+			addRangeListEntry(ci.key());
+		}
 	}
 
-	ui->cmdUpdate->setEnabled(false);
-	ui->rangesList->setCurrentRow(0);
-
-	if(ranges_.count()) {
-		deserialize_range(ranges_.begin().key(), ranges_.begin().value());
-	} else {
-		deserialize_default_range();
+	if(!ranges_.empty()) {
+		ui->listRanges->setCurrentRow(0);
 	}
+
+	updateRangeEditControls();
 }
 
 CustomRanges::~CustomRanges()
 {
     delete ui;
-}
-
-void CustomRanges::serialize_range(QString& name, color_range& range)
-{
-	name = ui->leName->text();
-	range = color_range(
-		QColor(ui->leAvg->text()).rgb(),
-		QColor(ui->leMax->text()).rgb(),
-		QColor(ui->leMin->text()).rgb());
-}
-
-void CustomRanges::deserialize_range(const QString& name, const color_range& range)
-{
-	ignore_serializing_events_ = true;
-
-	QColor
-		avg(range.mid()),
-		max(range.max()),
-		min(range.min());
-
-	ui->leAvg->setText(avg.name());
-	ui->leMax->setText(max.name());
-	ui->leMin->setText(min.name());
-
-	ui->leName->setText(name);
-
-	ignore_serializing_events_ = false;
-}
-
-void CustomRanges::deserialize_default_range()
-{
-	deserialize_range(tr("New Range"), color_range());
 }
 
 void CustomRanges::changeEvent(QEvent *e)
@@ -78,6 +47,90 @@ void CustomRanges::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+QString CustomRanges::generateNewRangeName() const
+{
+	QString name;
+	int i = 0;
+
+	do {
+		name = tr("New Color Range #%1").arg(++i);
+	} while(ranges_.find(name) != ranges_.end());
+
+	return name;
+
+}
+
+color_range& CustomRanges::currentRange()
+{
+	QListWidget* const listw = ui->listRanges;
+	QListWidgetItem* const itemw = listw->currentItem();
+
+	Q_ASSERT(itemw);
+
+	if(!itemw)
+		return ranges_[""];
+
+	const QString& name = itemw->data(Qt::UserRole).toString();
+
+	// Create a new range if it doesn't exist already.
+	return ranges_[name];
+}
+
+void CustomRanges::updateColorButton(QAbstractButton* button, const QColor& color)
+{
+	Q_ASSERT(button);
+
+	static const QSize colorIconSize(48, 16);
+
+	button->setIconSize(colorIconSize);
+	button->setIcon(createColorIcon(color, colorIconSize.width(), colorIconSize.height()));
+}
+
+void CustomRanges::addRangeListEntry(const QString& name)
+{
+	QListWidget* const listw = ui->listRanges;
+	QListWidgetItem* const itemw = new QListWidgetItem(name, listw);
+
+	itemw->setData(Qt::UserRole, name);
+	itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
+}
+
+void CustomRanges::updateRangeEditControls()
+{
+	QListWidget* const listw = ui->listRanges;
+
+	const bool noMoreRanges = listw->count() == 0;
+	ui->boxRangeEditor->setEnabled(!noMoreRanges);
+
+	// Do not send textChanged signals, since that would alter
+	// the ranges_ map (adding a range with an empty key in the
+	// noMoreRanges == true case) and either cause problems or
+	// waste everyone's time doing color parsing. We'll update
+	// the color picker buttons directly instead.
+	const ObjectLock lock(this);
+
+	if(noMoreRanges) {
+		const QColor& color = this->palette().color(QPalette::Button);
+
+		ui->leAvg->clear();
+		updateColorButton(ui->tbAvg, color);
+		ui->leMin->clear();
+		updateColorButton(ui->tbMax, color);
+		ui->leMax->clear();
+		updateColorButton(ui->tbMin, color);
+	} else {
+		color_range& range = currentRange();
+		const QColor avg = range.mid(), min = range.min(), max = range.max();
+
+		ui->leAvg->setText(avg.name());
+		updateColorButton(ui->tbAvg, avg);
+		ui->leMax->setText(max.name());
+		updateColorButton(ui->tbMax, max);
+		ui->leMin->setText(min.name());
+		updateColorButton(ui->tbMin, min);
+	}
 }
 
 void CustomRanges::on_tbAvg_clicked()
@@ -109,104 +162,129 @@ void CustomRanges::on_tbMin_clicked()
 
 void CustomRanges::on_cmdAdd_clicked()
 {
-	QString id;
-	color_range range;
-	serialize_range(id, range);
+	QListWidget* const listw = ui->listRanges;
 
-	if(id.isEmpty()) {
-		QMessageBox::warning(
-			this, tr("Wesnoth RCX"),
-			tr("You need to specify a valid, non-empty identifier."));
-		return;
-	} else if(ranges_.find(id) != ranges_.end()) {
-		QMessageBox::warning(
-			this, tr("Wesnoth RCX"),
-			tr("You cannot specify multiple ranges with the same identifier."));
-		return;
-	}
+	const QString& raName = generateNewRangeName();
+	ranges_.insert(raName, color_range());
+	addRangeListEntry(raName);
 
-	ranges_.insert(id, range);
-
-	QListWidgetItem* lwi = new QListWidgetItem(id, ui->rangesList);
-	lwi->setData(Qt::UserRole, id);
-
-	ui->rangesList->setCurrentRow(ui->rangesList->count() - 1);
+	listw->setCurrentRow(listw->count() - 1);
+	listw->editItem(listw->currentItem());
 }
 
-void CustomRanges::on_cmdUpdate_clicked()
+void CustomRanges::on_cmdRename_clicked()
 {
-	if(!ui->rangesList->count())
-		return;
-
-	const QString& old_id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
-
-	QMap<QString, color_range>::iterator range_it = ranges_.find(old_id);
-	if(range_it == ranges_.end())
-		return;
-
-	QString new_id;
-	color_range new_range;
-
-	serialize_range(new_id, new_range);
-
-	if(old_id != new_id) {
-		ranges_.erase(range_it);
-		ui->rangesList->currentItem()->setText(new_id);
-		ui->rangesList->currentItem()->setData(Qt::UserRole, new_id);
-	}
-
-	ranges_.insert(new_id, new_range);
-
-	ui->cmdUpdate->setEnabled(false);
+	QListWidget* const listw = ui->listRanges;
+	// An edit slot should take care of updating the
+	// range definition afterwards.
+	listw->editItem(listw->currentItem());
 }
 
 void CustomRanges::on_cmdDelete_clicked()
 {
-	if(!ui->rangesList->count())
+	QListWidget* const listw = ui->listRanges;
+
+	ObjectLock lock(listw);
+
+	const int remaining = listw->count();
+	if(remaining == 0)
 		return;
 
-	const QString& id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
+	QListWidgetItem* const itemw = listw->takeItem(listw->currentRow());
+	Q_ASSERT(itemw);
+	const QString& raName = itemw->data(Qt::UserRole).toString();
+	delete itemw;
 
-	QMap<QString, color_range>::iterator range_it = ranges_.find(id);
-	if(range_it == ranges_.end())
-		return;
+	if(remaining == 1) {
+		// No more ranges!
+		updateRangeEditControls();
+	}
 
-	ranges_.erase(range_it);
-	delete ui->rangesList->takeItem(ui->rangesList->currentRow());
+	// Delete the actual color range.
+
+	QMap<QString, color_range>::iterator raIt = ranges_.find(raName);
+
+	if(raIt != ranges_.end()) {
+		ranges_.erase(raIt);
+	}
 }
 
 void CustomRanges::on_leAvg_textChanged(QString)
 {
-	ui->cmdUpdate->setEnabled(true);
+	QColor newColor(ui->leAvg->text());
+
+	if(!newColor.isValid())
+		return;
+
+	currentRange().setMid(newColor.rgb());
+	updateColorButton(ui->tbAvg, newColor);
 }
 
 void CustomRanges::on_leMax_textChanged(QString)
 {
-	ui->cmdUpdate->setEnabled(true);
+	QColor newColor(ui->leMax->text());
+
+	if(!newColor.isValid())
+		return;
+
+	currentRange().setMax(newColor.rgb());
+	updateColorButton(ui->tbMax, newColor);
 }
 
 void CustomRanges::on_leMin_textChanged(QString)
 {
-	ui->cmdUpdate->setEnabled(true);
-}
+	QColor newColor(ui->leMin->text());
 
-void CustomRanges::on_leName_textChanged(QString)
-{
-	ui->cmdUpdate->setEnabled(true);
-}
-
-void CustomRanges::on_rangesList_currentRowChanged(int /*currentRow*/)
-{
-	if(!ui->rangesList->count())
+	if(!newColor.isValid())
 		return;
 
-	const QString& id = ui->rangesList->currentItem()->data(Qt::UserRole).toString();
+	currentRange().setMin(newColor.rgb());
+	updateColorButton(ui->tbMin, newColor);
+}
 
-	QMap<QString, color_range>::iterator range_it = ranges_.find(id);
-	if(range_it == ranges_.end())
+void CustomRanges::on_listRanges_currentRowChanged(int /*currentRow*/)
+{
+	updateRangeEditControls();
+}
+
+void CustomRanges::on_listRanges_itemChanged(QListWidgetItem *item)
+{
+	Q_ASSERT(item);
+
+	const QString& newName = item->text();
+	const QString& oldName = item->data(Qt::UserRole).toString();
+
+	if(newName == oldName)
 		return;
 
-	deserialize_range(id, range_it.value());
+	QMap<QString, color_range>::iterator
+		oldIt = ranges_.find(oldName),
+		newIt = ranges_.find(newName);
+	Q_ASSERT(oldIt != ranges_.end());
+	Q_ASSERT(oldIt != newIt);
 
-	ui->cmdUpdate->setEnabled(false);
+	if(oldIt == ranges_.end())
+		return;
+
+	if(newIt != ranges_.end()) {
+		if(!JobUi::prompt(this, tr("The range '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
+			item->setText(oldName);
+			return;
+		}
+
+		for(int i = 0; i < ui->listRanges->count(); ++i) {
+			QListWidgetItem* const ii = ui->listRanges->item(i);
+			if(ii->data(Qt::UserRole).toString() == newName) {
+				delete ui->listRanges->takeItem(i);
+				break;
+			}
+		}
+	} else {
+		newIt = ranges_.insert(newName, color_range());
+	}
+
+	newIt.value() = oldIt.value();
+	ranges_.erase(oldIt);
+
+	item->setData(Qt::UserRole, newName);
 }

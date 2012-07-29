@@ -799,7 +799,7 @@ void MainWindow::update_zoom_buttons()
 
 void MainWindow::on_actionColor_ranges_triggered()
 {
-	CustomRanges dlg(this, user_color_ranges_);
+	CustomRanges dlg(user_color_ranges_, this);
 	dlg.exec();
 
 	if(dlg.result() == QDialog::Rejected)
