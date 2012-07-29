@@ -181,9 +181,6 @@
           </item>
           <item>
            <widget class="QPushButton" name="cmdWml">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
             <property name="text">
              <string>Generate &amp;WML</string>
             </property>

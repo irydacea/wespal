@@ -53,6 +53,7 @@ private slots:
 	void on_tbAvg_clicked();
 	void on_listRanges_currentRowChanged(int);
 	void on_listRanges_itemChanged(QListWidgetItem *item);
+	void on_cmdWml_clicked();
 };
 
 #endif // CUSTOMRANGES_HPP

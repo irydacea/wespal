@@ -1,6 +1,7 @@
 #include "customranges.hpp"
 #include "ui_customranges.h"
 
+#include "codesnippetdialog.hpp"
 #include "paletteitem.hpp"
 #include "util.hpp"
 
@@ -287,4 +288,21 @@ void CustomRanges::on_listRanges_itemChanged(QListWidgetItem *item)
 	ranges_.erase(oldIt);
 
 	item->setData(Qt::UserRole, newName);
+}
+
+void CustomRanges::on_cmdWml_clicked()
+{
+	QListWidget* const listw = ui->listRanges;
+	QListWidgetItem* const itemw = listw->currentItem();
+
+	if(!itemw)
+		return;
+
+	const QString& raName = itemw->data(Qt::UserRole).toString();
+	const color_range& range = ranges_.value(raName);
+	const QString& wml = generate_color_range_wml(raName, range);
+
+	CodeSnippetDialog dlg(wml, this);
+	dlg.setWindowTitle(tr("Color Range WML"));
+	dlg.exec();
 }
