@@ -40,7 +40,7 @@
          <item>
           <widget class="QPushButton" name="cmdAddPal">
            <property name="text">
-            <string>&amp;Add</string>
+            <string>&amp;New</string>
            </property>
           </widget>
          </item>
@@ -116,14 +116,14 @@
            <item>
             <widget class="QPushButton" name="cmdAddCol">
              <property name="text">
-              <string>Add &amp;color</string>
+              <string>&amp;Add Color</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="cmdDelCol">
              <property name="text">
-              <string>&amp;Remove color</string>
+              <string>&amp;Remove Color</string>
              </property>
             </widget>
            </item>
