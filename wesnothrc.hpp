@@ -86,6 +86,13 @@ public:
 	/** Minimum color shade. */
 	QRgb min() const{ return min_; }
 
+	/** Sets the average color shade. */
+	void setMid(QRgb mid) { mid_ = mid; }
+	/** Sets the maximum color shade. */
+	void setMax(QRgb max) { max_ = max; }
+	/** Sets the minimum color shade. */
+	void setMin(QRgb min) { min_ = min; }
+
 	bool operator<(const color_range& b) const
 	{
 		if(mid_ != b.mid()) {
