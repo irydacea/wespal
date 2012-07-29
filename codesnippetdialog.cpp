@@ -55,7 +55,7 @@ void CodeSnippetDialog::on_copyButton_clicked()
 
 void CodeSnippetDialog::on_saveButton_clicked()
 {
-	const QString& filePath = QFileDialog::getSaveFileName(this, tr("Save Color Range WML"));
+	const QString& filePath = QFileDialog::getSaveFileName(this, tr("Save File"));
 
 	if(filePath.isNull()) {
 		return;
