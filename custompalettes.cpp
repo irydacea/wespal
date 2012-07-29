@@ -2,7 +2,10 @@
 #include "ui_custompalettes.h"
 #include "util.hpp"
 
+#include "codesnippetdialog.hpp"
 #include "paletteitem.hpp"
+#include "wesnothrc.hpp"
+
 #include <QColorDialog>
 #include <QMessageBox>
 
@@ -133,6 +136,7 @@ void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
 {
 	ui->listColors->setEnabled(enabled);
 	ui->cmdAddCol->setEnabled(enabled);
+	ui->cmdWml->setEnabled(enabled);
 
 	setColorEditControlsEnabled(enabled);
 }
@@ -412,4 +416,21 @@ void CustomPalettes::on_cmdDelPal_clicked()
 	if(palItem != palettes_.end()) {
 		palettes_.erase(palItem);
 	}
+}
+
+void CustomPalettes::on_cmdWml_clicked()
+{
+	QListWidget* const listw = ui->listPals;
+	QListWidgetItem* const itemw = listw->currentItem();
+
+	if(!itemw)
+		return;
+
+	const QString& palName = itemw->data(Qt::UserRole).toString();
+	const QList<QRgb>& pal = palettes_.value(palName);
+	const QString& wml = generate_color_palette_wml(palName, pal);
+
+	CodeSnippetDialog dlg(wml, this);
+	dlg.setWindowTitle(tr("Color Palette WML"));
+	dlg.exec();
 }
