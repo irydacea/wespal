@@ -23,6 +23,6 @@
 
 #include <QString>
 
-QString mos_version;
+extern QString mos_version;
 
 #endif // VERSION_HPP
