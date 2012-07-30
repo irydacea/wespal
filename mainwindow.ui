@@ -501,11 +501,17 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>cbxKeyPal</tabstop>
+  <tabstop>previewOriginalContainer</tabstop>
+  <tabstop>previewRcContainer</tabstop>
   <tabstop>radRc</tabstop>
   <tabstop>radPal</tabstop>
+  <tabstop>cbxKeyPal</tabstop>
   <tabstop>listRanges</tabstop>
   <tabstop>cbxNewPal</tabstop>
+  <tabstop>tbZoomOut</tabstop>
+  <tabstop>zoomSlider</tabstop>
+  <tabstop>tbZoomIn</tabstop>
+  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
   <include location="morningstar.qrc"/>

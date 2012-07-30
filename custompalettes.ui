@@ -180,6 +180,19 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>listPals</tabstop>
+  <tabstop>cmdAddPal</tabstop>
+  <tabstop>cmdRenPal</tabstop>
+  <tabstop>cmdDelPal</tabstop>
+  <tabstop>listColors</tabstop>
+  <tabstop>leColor</tabstop>
+  <tabstop>tbEditColor</tabstop>
+  <tabstop>cmdAddCol</tabstop>
+  <tabstop>cmdDelCol</tabstop>
+  <tabstop>cmdWml</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="morningstar.qrc"/>
  </resources>
@@ -191,8 +204,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>252</x>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -207,8 +220,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>320</x>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

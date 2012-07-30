@@ -205,6 +205,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>listRanges</tabstop>
+  <tabstop>cmdAdd</tabstop>
+  <tabstop>cmdRename</tabstop>
+  <tabstop>cmdDelete</tabstop>
+  <tabstop>leAvg</tabstop>
+  <tabstop>tbAvg</tabstop>
+  <tabstop>leMax</tabstop>
+  <tabstop>tbMax</tabstop>
+  <tabstop>leMin</tabstop>
+  <tabstop>tbMin</tabstop>
+  <tabstop>cmdWml</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -214,8 +228,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>252</x>
+     <y>337</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -230,8 +244,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>320</x>
+     <y>337</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
