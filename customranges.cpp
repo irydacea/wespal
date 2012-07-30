@@ -104,6 +104,8 @@ void CustomRanges::updateRangeEditControls()
 
 	const bool noMoreRanges = listw->count() == 0;
 	ui->boxRangeEditor->setEnabled(!noMoreRanges);
+	ui->cmdDelete->setEnabled(!noMoreRanges);
+	ui->cmdRename->setEnabled(!noMoreRanges);
 
 	// Do not send textChanged signals, since that would alter
 	// the ranges_ map (adding a range with an empty key in the
