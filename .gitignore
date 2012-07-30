@@ -8,6 +8,6 @@ morningstar.exe
 wesnoth-rcx
 wesnoth-rcx.exe
 Makefile
-*.h
+obj/
 *.tar
 *.tar.*

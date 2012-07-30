@@ -3,7 +3,14 @@
 # -------------------------------------------------
 TARGET = wesnoth-rcx
 TEMPLATE = app
+
+OBJECTS_DIR = obj
+MOC_DIR = obj
+UI_DIR = obj
+DESTDIR = .
+
 VPATH = src
+
 SOURCES += main.cpp \
     mainwindow.cpp \
     wesnothrc.cpp \
