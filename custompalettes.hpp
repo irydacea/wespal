@@ -45,6 +45,8 @@ private slots:
 
 	void on_cmdWml_clicked();
 
+	void on_leColor_textEdited(const QString &arg1);
+
 private:
     Ui::CustomPalettes *ui;
 	//PaletteWidget *palw;

@@ -446,3 +446,16 @@ void CustomPalettes::on_cmdWml_clicked()
 	dlg.setWindowTitle(tr("Color Palette WML"));
 	dlg.exec();
 }
+
+void CustomPalettes::on_leColor_textEdited(const QString &arg1)
+{
+	QColor color(arg1);
+
+	if(!color.isValid())
+		return;
+
+	QListWidgetItem* const itemw = ui->listColors->currentItem();
+	Q_ASSERT(itemw);
+
+	const QRgb rgb = color.rgb();
+	itemw->setData(Qt::UserRole, rgb);}
