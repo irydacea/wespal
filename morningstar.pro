@@ -7,6 +7,7 @@ TEMPLATE = app
 OBJECTS_DIR = obj
 MOC_DIR = obj
 UI_DIR = obj
+RCC_DIR = obj
 DESTDIR = .
 
 VPATH = src
