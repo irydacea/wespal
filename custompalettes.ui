@@ -47,7 +47,7 @@
          <item>
           <widget class="QPushButton" name="cmdRenPal">
            <property name="text">
-            <string>Re&amp;name</string>
+            <string>&amp;Rename</string>
            </property>
           </widget>
          </item>
@@ -133,7 +133,7 @@
            <item>
             <widget class="QPushButton" name="cmdDelCol">
              <property name="text">
-              <string>&amp;Remove Color</string>
+              <string>Re&amp;move Color</string>
              </property>
             </widget>
            </item>

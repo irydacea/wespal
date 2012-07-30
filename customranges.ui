@@ -21,7 +21,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Color &amp;ranges:</string>
+          <string>&amp;Color ranges:</string>
          </property>
          <property name="buddy">
           <cstring>listRanges</cstring>
