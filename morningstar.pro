@@ -31,3 +31,4 @@ FORMS += mainwindow.ui \
     custompalettes.ui \
     codesnippetdialog.ui
 RESOURCES += morningstar.qrc
+RC_FILE += win32/wesnoth-rcx.rc
