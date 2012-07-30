@@ -55,7 +55,9 @@ void CodeSnippetDialog::on_copyButton_clicked()
 
 void CodeSnippetDialog::on_saveButton_clicked()
 {
-	const QString& filePath = QFileDialog::getSaveFileName(this, tr("Save File"));
+	const QString& filePath = QFileDialog::getSaveFileName(
+		this, tr("Save WML"), QString(),
+		tr("WML document") + " (*.cfg);;" + tr("All files") + " (*)");
 
 	if(filePath.isNull()) {
 		return;
