@@ -20,11 +20,11 @@
 
 #include "defs.hpp"
 
-/*extern*/ QMap< QString, QList<QRgb> > mosBuiltinColorPalettes;
-/*extern*/ QStringList mosOrderedPaletteNames;
+QMap< QString, QList<QRgb> > mosBuiltinColorPalettes;
+QStringList mosOrderedPaletteNames;
 
-/*extern*/ QMap< QString, color_range > mosBuiltinColorRanges;
-/*extern*/ QStringList mosOrderedRangeNames;
+QMap< QString, color_range > mosBuiltinColorRanges;
+QStringList mosOrderedRangeNames;
 
 namespace {
 

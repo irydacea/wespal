@@ -29,13 +29,13 @@
 // color ranges and palettes.
 
 /** Built-in color palettes. */
-extern QMap< QString, QList<QRgb> > mosBuiltinColorPalettes;
+QMap< QString, QList<QRgb> > mosBuiltinColorPalettes;
 /** Names of the built-in color palettes, sorted for presentation purposes. */
-extern QStringList mosOrderedPaletteNames;
+QStringList mosOrderedPaletteNames;
 
 /** Built-in color ranges. */
-extern QMap< QString, color_range > mosBuiltinColorRanges;
+QMap< QString, color_range > mosBuiltinColorRanges;
 /** Names of the built-in color ranges, sorted for presentation purposes. */
-extern QStringList mosOrderedRangeNames;
+QStringList mosOrderedRangeNames;
 
 #endif // DEFS_HPP
