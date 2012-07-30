@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>rsrc/app.png</file>
-        <file>rsrc/rcx-icon.png</file>
+		<file>rsrc/app.png</file>
+		<file>rsrc/rcx-icon.png</file>
     </qresource>
 </RCC>

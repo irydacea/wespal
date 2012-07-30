@@ -3,6 +3,7 @@
 # -------------------------------------------------
 TARGET = wesnoth-rcx
 TEMPLATE = app
+VPATH = src
 SOURCES += main.cpp \
     mainwindow.cpp \
     wesnothrc.cpp \
