@@ -17,6 +17,8 @@ public:
 	CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, QWidget *parent = 0);
 	~CustomPalettes();
 
+	const QMap<QString, QList<QRgb> >& getPalettes() const { return palettes_; }
+
 protected:
     void changeEvent(QEvent *e);
 

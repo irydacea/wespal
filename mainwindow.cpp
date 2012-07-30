@@ -820,9 +820,21 @@ void MainWindow::on_actionColor_ranges_triggered()
 
 void MainWindow::on_action_Palettes_triggered()
 {
-	CustomPalettes dlg(palettes_, this);
+	CustomPalettes dlg(user_palettes_, this);
 	dlg.exec();
 
-	// TODO: implement saving palettes to configuration and
-	//       refreshing the UI accordingly.
+	if(dlg.result() == QDialog::Rejected)
+		return;
+
+	user_palettes_ = dlg.getPalettes();
+
+	{
+		ObjectLock l(this);
+		generateMergedRcDefinitions();
+		processRcDefinitions();
+	}
+
+	refresh_previews();
+
+	mos_config_save(user_color_ranges_, user_palettes_);
 }
