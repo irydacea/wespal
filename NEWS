@@ -1,4 +1,7 @@
 Version 0.2.0:
+ * Implemented built-in editors for custom color ranges and palettes,
+   as well as options to export individual items as WML (either to a
+   new file, or the system clipboard).
  * Implemented Reload (F5) action.
  * Implemented Recent Files list in the File menu.
  * Redesigned the main window.
