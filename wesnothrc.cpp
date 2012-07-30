@@ -40,7 +40,7 @@ QString makeIdentifier(const QString& name)
 	// Characters that may confuse the WML parser or
 	// aren't conventionally used in identifiers are
 	// replaced by underscores.
-	ret.replace(QRegExp("[=\"\\s]"), "_");
+	ret.replace(QRegExp("[#=\"\\s]"), "_");
 
 	return ret;
 }
