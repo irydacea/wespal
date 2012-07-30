@@ -89,6 +89,9 @@
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
               <widget class="QLabel" name="label_3">
+               <property name="whatsThis">
+                <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+               </property>
                <property name="text">
                 <string>He&amp;x:</string>
                </property>
@@ -98,10 +101,17 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="leColor"/>
+              <widget class="QLineEdit" name="leColor">
+               <property name="whatsThis">
+                <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QToolButton" name="tbEditColor">
+               <property name="whatsThis">
+                <string>Displays controls to allow you to choose a new color.</string>
+               </property>
                <property name="text">
                 <string>...</string>
                </property>
@@ -142,6 +152,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdWml">
+             <property name="whatsThis">
+              <string>Generates a sample Wesnoth Markup Language snippet containing a single color palette definition, which you can save to a file or clipboard for later inclusion in your own project.</string>
+             </property>
              <property name="text">
               <string>Generate &amp;WML</string>
              </property>
