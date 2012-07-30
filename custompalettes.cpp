@@ -9,6 +9,11 @@
 #include <QColorDialog>
 #include <QMessageBox>
 
+// BIG TODO: signal handling in this class is a massive mess!
+// I really need to refactor this and regroup widgets according to
+// their task so we don't need to have such inconvenient private
+// wrappers as the setTaskThingsEnabled() family.
+
 CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, QWidget *parent) :
     QDialog(parent),
 	ui(new Ui::CustomPalettes),
@@ -50,8 +55,12 @@ void CustomPalettes::updatePaletteUI()
 		}
 	}
 
-	// Notify the palette view widget.
-	ui->listPals->setCurrentRow(0);
+	if(palettes_.empty()) {
+		setPaletteViewEnabled(false);
+	} else {
+		// Notify the palette view widget.
+		ui->listPals->setCurrentRow(0);
+	}
 }
 
 void CustomPalettes::addPaletteListEntry(const QString& name)
@@ -378,11 +387,10 @@ void CustomPalettes::on_cmdAddPal_clicked()
 		const QString& palName = generateNewPaletteName();
 		palettes_[palName].push_back(qRgb(0,0,0));
 		addPaletteListEntry(palName);
-
-		setPaletteViewEnabled(true);
 	}
 
 	listw->setCurrentRow(listw->count() - 1);
+	setPaletteViewEnabled(true);
 	listw->editItem(listw->currentItem());
 }
 
@@ -390,13 +398,17 @@ void CustomPalettes::on_cmdDelPal_clicked()
 {
 	QListWidget* const listw = ui->listPals;
 
-	ObjectLock lockPals(listw);
-	ObjectLock lockColors(ui->listColors);
-
 	const int remaining = listw->count();
 
 	if(remaining == 0)
 		return;
+
+	// If there are at least two remaining items (including the one that's
+	// about to be deleted), it's safe to allow some signals to go through.
+	// Otherwise, we need to disable them.
+
+	QScopedPointer<ObjectLock> lockPals(remaining == 1 ? new ObjectLock(listw) : NULL);
+	QScopedPointer<ObjectLock> lockColors(remaining == 1 ? new ObjectLock(ui->listColors) : NULL);
 
 	QListWidgetItem* const itemw = listw->takeItem(listw->currentRow());
 	Q_ASSERT(itemw);
