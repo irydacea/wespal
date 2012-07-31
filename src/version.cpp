@@ -20,4 +20,4 @@
 
 #include "version.hpp"
 
-QString mos_version = MOS_VERSION_STRING;
+const QString mos_version = MOS_VERSION_STRING;

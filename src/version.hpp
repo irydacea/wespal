@@ -31,7 +31,7 @@
 
 #include <QString>
 
-extern QString mos_version;
+extern const QString mos_version;
 
 #endif
 
