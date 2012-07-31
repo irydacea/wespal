@@ -14,7 +14,7 @@
    <string>Palette Editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="morningstar.qrc">
+   <iconset resource="../morningstar.qrc">
     <normaloff>:/rsrc/rcx-icon.png</normaloff>:/rsrc/rcx-icon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -207,7 +207,7 @@
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
-  <include location="morningstar.qrc"/>
+  <include location="../morningstar.qrc"/>
  </resources>
  <connections>
   <connection>

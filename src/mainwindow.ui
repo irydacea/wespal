@@ -29,7 +29,7 @@
    <string>Wesnoth RCX</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="morningstar.qrc">
+   <iconset resource="../morningstar.qrc">
     <normaloff>:/rsrc/app.png</normaloff>:/rsrc/app.png</iconset>
   </property>
   <widget class="QWidget" name="grid">
@@ -514,7 +514,7 @@
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
-  <include location="morningstar.qrc"/>
+  <include location="../morningstar.qrc"/>
  </resources>
  <connections/>
 </ui>
