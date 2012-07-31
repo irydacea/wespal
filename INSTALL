@@ -1,21 +1,46 @@
 Wesnoth RCX (codename “Morning Star”) — Installation Instructions
 -----------------------------------------------------------------
 
-Since I’ve got no packagers to help at the moment, the only way to install for
-now is from source. Since I’ve been working only with Qt Creator so far,
-there's no specific build recipe other than the project file
-(‘morningstar.pro’), which you are expected to use to generate a Makefile using
-QMake.
+These instructions apply to the source code distribution. If you are using the
+provided Windows binary distribution or the Mac OS X application bundle, you
+should be able to just run Wesnoth RCX right away.
 
-To do this, just make sure you have Qt4’s development files and QMake installed
-(package ‘qt4-qmake’ on Debian and Ubuntu), and type the command as follows:
 
- $ qmake morningstar.pro
+Dependencies
+------------
 
-NOTE: If you have Qt3’s version of QMake installed, you may have to explicitly
-use ‘qmake-qt4’ instead to avoid confusing the generator and messing up the
-sources.
+You will need a basic development environment (i.e. GCC with the C++ compiler),
+as well as the Qt development files and the ‘qmake’ tool. The exact procedure
+to gather these dependencies varies from system to system.
 
-Once QMake generates the Makefile, just issue ‘make’ and wait for compilation
-to finish. The binary ‘morningstar’ will appear in the source dir, and you can
-now run it from there — no installation is required.
+On Debian and Ubuntu in particular, it should be enough to install the
+following packages:
+
+  * build-essential
+  * libqt4-dev
+  * qt4-qmake
+
+Wesnoth RCX should build and run with Qt 4.6 and later, and GCC 4.4 and later.
+
+KDE is not required to build or run Wesnoth RCX, but it provides additional
+image reader plug-ins handling GIMP .xcf files and Adobe Photoshop .psd files;
+Wesnoth RCX can read these formats when these plug-ins are available.
+
+
+Building from source
+--------------------
+
+First you need to generate a Makefile:
+
+  $ cd wesnoth-rcx-X.Y.Z/
+  $ qmake -config release
+
+Then you can build the application:
+
+  $ make
+
+An executable file ‘wesnoth-rcx’ will be generated in the current directory.
+You can copy this file to a suitable location in PATH, such as $HOME/bin or
+/usr/local/bin, or just keep it where it is — installation is not strictly
+necessary. However, you may want to create a desktop or menu launcher for easy
+access.
