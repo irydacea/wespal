@@ -104,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 		act->setVisible(false);
 
-		QObject::connect(act, SIGNAL(triggered()), this, SLOT(on_action_Recent_triggered()));
+		connect(act, SIGNAL(triggered()), this, SLOT(on_action_Recent_triggered()));
 
 		ui->menu_File->insertAction(ui->action_RecentPlaceholder, act);
 		recent_file_acts_.push_back(act);
@@ -130,16 +130,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->previewOriginalContainer->setBackgroundRole(QPalette::Dark);
 	ui->previewRcContainer->setBackgroundRole(QPalette::Dark);
 
-	QObject::connect(
+	connect(
 		ui->previewOriginalContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewRcContainer->horizontalScrollBar(), SLOT(setValue(int)));
-	QObject::connect(
+	connect(
 		ui->previewRcContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewOriginalContainer->horizontalScrollBar(), SLOT(setValue(int)));
-	QObject::connect(
+	connect(
 		ui->previewOriginalContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewRcContainer->verticalScrollBar(), SLOT(setValue(int)));
-	QObject::connect(
+	connect(
 		ui->previewRcContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewOriginalContainer->verticalScrollBar(), SLOT(setValue(int)));
 }
