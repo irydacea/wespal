@@ -20,4 +20,4 @@
 
 #include "version.hpp"
 
-QString mos_version = "0.2.0-dev";
+QString mos_version = MOS_VERSION_STRING;

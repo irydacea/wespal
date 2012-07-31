@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <richedit.h>
+#include "../src/version.hpp"
 #include "resource.h"
 
 
@@ -23,8 +24,8 @@ IDI_ICON1          ICON           ".\\wesnoth-rcx.ico"
 //
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 1 VERSIONINFO
-    FILEVERSION     0,2,0,0
-    PRODUCTVERSION  0,2,0,0
+    FILEVERSION     MOS_VERSION_MAJOR,MOS_VERSION_MINOR,MOS_VERSION_RELEASE,0
+    PRODUCTVERSION  MOS_VERSION_MAJOR,MOS_VERSION_MINOR,MOS_VERSION_RELEASE,0
     FILEOS          VOS_NT_WINDOWS32
     FILETYPE        VFT_APP
     FILESUBTYPE     VFT2_UNKNOWN
@@ -36,12 +37,12 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
         BLOCK "0409FDE9"
         {
             VALUE "FileDescription", "Wesnoth team-coloring tool"
-            VALUE "FileVersion", "0.2.0-dev"
+            VALUE "FileVersion", MOS_VERSION_STRING
             VALUE "InternalName", "wesnoth-rcx"
             VALUE "LegalCopyright", "Copyright (C) 2008 - 2012 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>"
             VALUE "OriginalFilename", "wesnoth-rcx.exe"
             VALUE "ProductName", "Wesnoth RCX"
-            VALUE "ProductVersion", "0.2.0-dev"
+            VALUE "ProductVersion", MOS_VERSION_STRING
         }
     }
     BLOCK "VarFileInfo"
