@@ -17,7 +17,14 @@ in add-ons.
 Installing
 ----------
 
-Please see the INSTALL file for installation instructions.
+If you are building from source, see the INSTALL file for instructions. Windows
+and Mac OS X users should just use the binary packages provided here:
+
+  http://shadowm.rewound.net/projects/wesnoth-tc.php
+
+Windows users might prefer to create a shortcut to the ‘wesnoth-rcx.exe’ file
+found after unpacking the distribution Zip file. No actual installation
+procedure is required in either case.
 
 
 Usage
@@ -71,6 +78,38 @@ chance of being fixed in the latest release. If you are in doubt about whether
 you are already using the latest version, you can find more information here:
 
   http://shadowm.rewound.net/projects/wesnoth-tc.php
+
+
+Git repository
+--------------
+
+At this time, Wesnoth RCX’s public Git repository is hosted at Github. If you
+can build from source and want to try the latest bleeding-edge changes, you can
+find instructions for cloning the repository at the following location:
+
+  https://github.com/shikadilord/morningstar
+
+You may also fork the repository on Github and submit pull requests if you want
+to contribute code for fixing a bug or implementing some missing feature. It is
+recommended that you contact me beforehand, though.
+
+
+Contact
+-------
+
+There are a few options for providing feedback or getting help:
+
+ * Forum topic at the Wesnoth.org forums:
+   http://r.wesnoth.org/t31965
+
+ * IRC channel:
+   ##shadowm (chat.freenode.net)
+
+ * Twitter:
+   @shikadilord (not RCX-specific)
+
+ * Email (not recommended, subject line should start with [RCX]):
+   shadowm2006@gmail.com
 
 
 --
