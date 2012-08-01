@@ -315,7 +315,7 @@ void CustomPalettes::on_tbEditColor_clicked()
 		return;
 
 	QColor color = lwi->data(Qt::UserRole).toInt();
-	color = QColorDialog::getColor(color);
+	color = QColorDialog::getColor(color, this);
 
 	if(!color.isValid())
 		return;
