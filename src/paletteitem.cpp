@@ -93,7 +93,7 @@ bool PaletteItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, 
 		return false;
 
 	QColor color = index.data(Qt::UserRole).toInt();
-	color = QColorDialog::getColor(color);
+	color = QColorDialog::getColor(color, qobject_cast<QWidget*>(this->parent()));
 
 	if(color.isValid())
 		model->setData(index, color.rgb(), Qt::UserRole);
