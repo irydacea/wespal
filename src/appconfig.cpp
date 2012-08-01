@@ -49,7 +49,7 @@ void mos_config_load(QMap<QString, color_range> &ranges, QMap<QString, QList<QRg
 	for(int i = 0; i < npals; ++i) {
 		s.setArrayIndex(i);
 
-		const QStringList vals = s.value("values").toStringList();
+		const QStringList vals = s.value("values").toString().split(",");
 		QList<QRgb> rgblist;
 
 		foreach(const QString& v, vals) {
