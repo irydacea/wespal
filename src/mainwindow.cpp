@@ -301,8 +301,8 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton) {
 		this->drag_start_pos_ = event->pos();
-		this->drag_use_rc_ = ui->previewRc->geometry().contains(event->pos());
-		this->drag_start_ = drag_use_rc_ || ui->previewOriginal->geometry().contains(event->pos());
+		this->drag_use_rc_ = ui->previewRcContainer->geometry().contains(event->pos());
+		this->drag_start_ = drag_use_rc_ || ui->previewOriginalContainer->geometry().contains(event->pos());
 	}
 }
 
