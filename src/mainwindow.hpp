@@ -28,7 +28,7 @@
 #include <QDragEnterEvent>
 #include <QFileInfo>
 #include <QMainWindow>
-#include <QScrollBar>
+#include <QScrollArea>
 #include <QStringList>
 
 namespace Ui {
@@ -129,6 +129,8 @@ private:
 	void update_zoom_buttons();
 
 	void setPreviewBackgroundColor(const QColor& color);
+
+	void centerScrollArea(QScrollArea* scrollArea);
 
 private slots:
 	void on_action_Reload_triggered();

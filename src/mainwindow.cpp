@@ -36,6 +36,7 @@
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QScrollBar>
 #include <QStyle>
 #include <QUrl>
 #include <QWhatsThis>
@@ -597,6 +598,20 @@ void MainWindow::refresh_previews()
 
 	ui->previewOriginal->parentWidget()->adjustSize();
 	ui->previewRc->parentWidget()->adjustSize();
+
+	centerScrollArea(ui->previewOriginalContainer);
+	centerScrollArea(ui->previewRcContainer);
+}
+
+void MainWindow::centerScrollArea(QScrollArea *scrollArea)
+{
+	if(!scrollArea || !scrollArea->widget())
+		return;
+
+	const QSize& childSize = scrollArea->widget()->size();
+	const QSize& viewSize = scrollArea->viewport()->size();
+
+	scrollArea->ensureVisible(childSize.width()/2, childSize.height()/2, viewSize.width()/2, viewSize.height()/2);
 }
 
 void MainWindow::do_save()
