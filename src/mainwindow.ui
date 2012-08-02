@@ -492,7 +492,7 @@
   </action>
   <action name="actionColor_ranges">
    <property name="text">
-    <string>Custom color &amp;ranges...</string>
+    <string>Custom Color &amp;Ranges...</string>
    </property>
    <property name="visible">
     <bool>true</bool>
@@ -500,7 +500,7 @@
   </action>
   <action name="action_Palettes">
    <property name="text">
-    <string>Custom &amp;palettes...</string>
+    <string>Custom &amp;Palettes...</string>
    </property>
   </action>
   <action name="action_Reload">
