@@ -93,6 +93,8 @@ void CustomPalettes::addPaletteListEntry(const QString& name)
 
 	if(!palette.empty()) {
 		lwi->setIcon(createColorIcon(palette.front()));
+	} else {
+		lwi->setIcon(createColorIcon(Qt::white));
 	}
 }
 
