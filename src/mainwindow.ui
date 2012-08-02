@@ -274,7 +274,7 @@
         <item>
          <layout class="QFormLayout" name="flKeyPal">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="lblKeyPal">
@@ -288,8 +288,17 @@
           </item>
           <item row="0" column="1">
            <widget class="QComboBox" name="cbxKeyPal">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="whatsThis">
              <string>Selects the original palette for transformation.</string>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToContents</enum>
             </property>
            </widget>
           </item>
@@ -340,7 +349,7 @@
             <item row="0" column="0">
              <layout class="QFormLayout" name="flRcPal">
               <property name="fieldGrowthPolicy">
-               <enum>QFormLayout::ExpandingFieldsGrow</enum>
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
               </property>
               <item row="0" column="0">
                <widget class="QLabel" name="lblNewPal">
@@ -357,8 +366,17 @@
               </item>
               <item row="0" column="1">
                <widget class="QComboBox" name="cbxNewPal">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="whatsThis">
                  <string>You an choose the replacement palette in this box.</string>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QComboBox::AdjustToContents</enum>
                 </property>
                </widget>
               </item>
