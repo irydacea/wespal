@@ -145,7 +145,7 @@ private slots:
 	void on_actionAbout_Morning_Star_triggered();
 	void on_radPal_clicked();
 	void on_radRc_clicked();
-	void on_action_Recent_triggered();
+	void handleRecent();
 	void on_zoomSlider_valueChanged(int value);
 	void on_action_Palettes_triggered();
 

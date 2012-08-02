@@ -42,8 +42,8 @@ private:
 	Ui::CodeSnippetDialog *ui;
 
 private slots:
-	void on_copyButton_clicked();
-	void on_saveButton_clicked();
+	void handleCopy();
+	void handleSave();
 };
 
 #endif // CODESNIPPETDIALOG_HPP

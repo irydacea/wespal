@@ -38,12 +38,12 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	QPushButton* const copyButton = ui->buttonBox->addButton(tr("Co&py"), QDialogButtonBox::ApplyRole);
 
 	copyButton->setDefault(true);
-	connect(copyButton, SIGNAL(clicked()), this, SLOT(on_copyButton_clicked()));
+	connect(copyButton, SIGNAL(clicked()), this, SLOT(handleCopy()));
 
 	QPushButton* const saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
 
 	if(saveButton) {
-		connect(saveButton, SIGNAL(clicked()), this, SLOT(on_saveButton_clicked()));
+		connect(saveButton, SIGNAL(clicked()), this, SLOT(handleSave()));
 	}
 
 	ui->successIcon->setPixmap(style()->standardIcon(QStyle::SP_DialogOkButton).pixmap(22));
@@ -72,13 +72,13 @@ void CodeSnippetDialog::changeEvent(QEvent *e)
 	}
 }
 
-void CodeSnippetDialog::on_copyButton_clicked()
+void CodeSnippetDialog::handleCopy()
 {
 	QApplication::clipboard()->setText(ui->teContents->toPlainText());
 	ui->boxClipboardMessage->setVisible(true);
 }
 
-void CodeSnippetDialog::on_saveButton_clicked()
+void CodeSnippetDialog::handleSave()
 {
 	const QString& filePath = QFileDialog::getSaveFileName(
 		this, tr("Save WML"), QString(),

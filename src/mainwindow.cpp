@@ -105,7 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 		act->setVisible(false);
 
-		connect(act, SIGNAL(triggered()), this, SLOT(on_action_Recent_triggered()));
+		connect(act, SIGNAL(triggered()), this, SLOT(handleRecent()));
 
 		ui->menu_File->insertAction(ui->action_RecentPlaceholder, act);
 		recent_file_acts_.push_back(act);
@@ -283,7 +283,7 @@ void MainWindow::processRcDefinitions()
 	ui->listRanges->setCurrentRow(0);
 }
 
-void MainWindow::on_action_Recent_triggered()
+void MainWindow::handleRecent()
 {
 	QAction* act = qobject_cast<QAction*>(sender());
 	if(act) {
