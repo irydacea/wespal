@@ -28,7 +28,8 @@
 #include "util.hpp"
 #include "version.hpp"
 
-#include <QDesktopServices> // viva la integration!
+#include <QActionGroup>
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QIcon>
 #include <QImageReader>
@@ -114,6 +115,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	update_recent_files_menu();
 
+	QActionGroup* bgColorActs = new QActionGroup(this);
+
+	bgColorActs->addAction(ui->actionPreviewBgBlack);
+	bgColorActs->addAction(ui->actionPreviewBgDark);
+	bgColorActs->addAction(ui->actionPreviewBgDefault);
+	bgColorActs->addAction(ui->actionPreviewBgLight);
+	bgColorActs->addAction(ui->actionPreviewBgWhite);
+
+	ui->actionPreviewBgDefault->setChecked(true);
+
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
 	toggle_page2(false);
@@ -125,10 +136,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->zoomSlider->setMaximum(zoom_factors_.size() - 1);
 	ui->zoomSlider->setValue(1);
 
-	ui->previewOriginal->setBackgroundRole(QPalette::Base);
-	ui->previewRc->setBackgroundRole(QPalette::Base);
-	ui->previewOriginalContainer->setBackgroundRole(QPalette::Dark);
-	ui->previewRcContainer->setBackgroundRole(QPalette::Dark);
+	ui->previewOriginalContainer->viewport()->setBackgroundRole(QPalette::Dark);
+	ui->previewRcContainer->viewport()->setBackgroundRole(QPalette::Dark);
 
 	//
 	// FIXME: hack to prevent Oxygen stealing our drag events when dragging
@@ -852,4 +861,42 @@ void MainWindow::on_action_Palettes_triggered()
 	refresh_previews();
 
 	mos_config_save(user_color_ranges_, user_palettes_);
+}
+
+void MainWindow::on_actionPreviewBgBlack_triggered()
+{
+	setPreviewBackgroundColor(Qt::black);
+}
+
+void MainWindow::on_actionPreviewBgDark_triggered()
+{
+	setPreviewBackgroundColor(Qt::darkGray);
+}
+
+void MainWindow::on_actionPreviewBgDefault_triggered()
+{
+	static QColor invalid;
+	setPreviewBackgroundColor(invalid);
+}
+
+void MainWindow::on_actionPreviewBgLight_triggered()
+{
+	setPreviewBackgroundColor(Qt::lightGray);
+}
+
+void MainWindow::on_actionPreviewBgWhite_triggered()
+{
+	setPreviewBackgroundColor(Qt::white);
+}
+
+void MainWindow::setPreviewBackgroundColor(const QColor &color)
+{
+	QString ss;
+
+	if(color.isValid()) {
+		ss = "* { background-color: " + color.name() + "; }";
+	}
+
+	ui->previewOriginalContainer->viewport()->setStyleSheet(ss);
+	ui->previewRcContainer->viewport()->setStyleSheet(ss);
 }

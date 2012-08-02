@@ -454,6 +454,19 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
+    <widget class="QMenu" name="menuPreview_Background">
+     <property name="title">
+      <string>Preview &amp;Background</string>
+     </property>
+     <addaction name="actionPreviewBgDefault"/>
+     <addaction name="separator"/>
+     <addaction name="actionPreviewBgWhite"/>
+     <addaction name="actionPreviewBgLight"/>
+     <addaction name="actionPreviewBgDark"/>
+     <addaction name="actionPreviewBgBlack"/>
+    </widget>
+    <addaction name="menuPreview_Background"/>
+    <addaction name="separator"/>
     <addaction name="actionColor_ranges"/>
     <addaction name="action_Palettes"/>
    </widget>
@@ -514,6 +527,49 @@
   <action name="action_RecentPlaceholder">
    <property name="text">
     <string>&lt;Recent files&gt;</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgWhite">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;White</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgLight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Light</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgDark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Da&amp;rk</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgBlack">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Black</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgDefault">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Default</string>
    </property>
   </action>
  </widget>

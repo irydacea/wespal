@@ -1,6 +1,7 @@
 Version 0.2.0:
  * Added an embedded application icon and version information to Windows
    builds.
+ * Added various preview background color options.
  * Implemented built-in editors for custom color ranges and palettes,
    as well as options to export individual items as WML (either to a
    new file, or the system clipboard).

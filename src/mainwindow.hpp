@@ -128,6 +128,8 @@ private:
 
 	void update_zoom_buttons();
 
+	void setPreviewBackgroundColor(const QColor& color);
+
 private slots:
 	void on_action_Reload_triggered();
 	void on_actionColor_ranges_triggered();
@@ -146,6 +148,12 @@ private slots:
 	void on_action_Recent_triggered();
 	void on_zoomSlider_valueChanged(int value);
 	void on_action_Palettes_triggered();
+
+	void on_actionPreviewBgBlack_triggered();
+	void on_actionPreviewBgDark_triggered();
+	void on_actionPreviewBgDefault_triggered();
+	void on_actionPreviewBgLight_triggered();
+	void on_actionPreviewBgWhite_triggered();
 };
 
 #endif // MAINWINDOW_HPP
