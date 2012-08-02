@@ -130,6 +130,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->previewOriginalContainer->setBackgroundRole(QPalette::Dark);
 	ui->previewRcContainer->setBackgroundRole(QPalette::Dark);
 
+	//
+	// FIXME: hack to prevent Oxygen stealing our drag events when dragging
+	// windows from empty areas is enabled.
+	//
+	// http://lists.kde.org/?l=kde-devel&m=130530904703913&w=2
+	//
+	// We should probably figure out a better way to do this later, as well
+	// as the preview panels themselves; the proper way according to the
+	// Oxygen dev is to prevent (at the widget level) propagation of the event
+	// to the window widget.
+	//
+
+	ui->previewOriginalContainer->setProperty("_kde_no_window_grab", true);
+	ui->previewRcContainer->setProperty("_kde_no_window_grab", true);
+
 	connect(
 		ui->previewOriginalContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewRcContainer->horizontalScrollBar(), SLOT(setValue(int)));
