@@ -376,12 +376,16 @@ void CustomPalettes::on_cmdDelCol_clicked()
 {
 	QListWidget* const listw = ui->listColors;
 
-	ObjectLock lock(listw);
-
 	const int remaining = listw->count();
 
 	if(remaining == 0)
 		return;
+
+	// If there are at least two remaining items (including the one that's
+	// about to be deleted), it's safe to allow some signals to go through.
+	// Otherwise, we need to disable them.
+
+	QScopedPointer<ObjectLock> lock(remaining == 1 ? new ObjectLock(listw) : NULL);
 
 	const int index = listw->currentRow();
 
