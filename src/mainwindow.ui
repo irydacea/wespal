@@ -459,7 +459,6 @@
       <string>Preview &amp;Background</string>
      </property>
      <addaction name="actionPreviewBgDefault"/>
-     <addaction name="separator"/>
      <addaction name="actionPreviewBgWhite"/>
      <addaction name="actionPreviewBgLight"/>
      <addaction name="actionPreviewBgDark"/>
