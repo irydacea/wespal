@@ -246,7 +246,20 @@ void CustomPalettes::on_listColors_itemChanged(QListWidgetItem *item)
 	const QColor currentColor =
 		item->data(Qt::UserRole).toInt();
 
-	textw->setText(currentColor.name());
+	// FIXME: the following is a HACK to prevent leColor's changes
+	// from being overwritten when it has triggered this itemChanged
+	// signal in the first place, e.g. in the middle of the user
+	// entering a hex code or color name in the field. Just one symptom
+	// of terrible design that needs to be fixed later.
+
+	const QColor textwSetColor=
+		textw->text();
+
+	if(textwSetColor != currentColor) {
+		textw->setText(currentColor.name());
+	}
+
+	// END HACK
 
 	// Update palette definition.
 
@@ -487,4 +500,5 @@ void CustomPalettes::on_leColor_textEdited(const QString &arg1)
 	Q_ASSERT(itemw);
 
 	const QRgb rgb = color.rgb();
-	itemw->setData(Qt::UserRole, rgb);}
+	itemw->setData(Qt::UserRole, rgb);
+}
