@@ -35,7 +35,7 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	ui->setupUi(this);
 	ui->teContents->setPlainText(contents);
 
-	QPushButton* const copyButton = ui->buttonBox->addButton(tr("Co&py"), QDialogButtonBox::ApplyRole);
+	QPushButton* const copyButton = ui->buttonBox->addButton(tr("Copy"), QDialogButtonBox::ApplyRole);
 
 	copyButton->setDefault(true);
 	copyButton->setIcon(QIcon::fromTheme("edit-copy"));
