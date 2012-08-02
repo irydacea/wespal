@@ -206,10 +206,11 @@ void CustomPalettes::updatePaletteIcon()
 
 	const QList<QRgb>& palette = palettes_.value(palw->data(Qt::UserRole).toString());
 
-	if(palette.empty())
-		return;
-
-	palw->setIcon(createColorIcon(palette.front()));
+	if(palette.empty()) {
+		palw->setIcon(createColorIcon(Qt::white));
+	} else {
+		palw->setIcon(createColorIcon(palette.front()));
+	}
 }
 
 QString CustomPalettes::generateNewPaletteName() const
@@ -392,11 +393,7 @@ void CustomPalettes::on_cmdDelCol_clicked()
 	Q_ASSERT(index < pal.count());
 	pal.removeAt(index);
 
-	// If this was the first row and we still have
-	// more colors, update the palette's color icon.
-	if(index == 0 && remaining > 1) {
-		updatePaletteIcon();
-	}
+	updatePaletteIcon();
 }
 
 void CustomPalettes::on_cmdAddPal_clicked()
