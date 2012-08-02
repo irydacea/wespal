@@ -127,6 +127,8 @@ void CustomPalettes::on_listPals_currentRowChanged(int currentRow)
 	}
 
 	populatePaletteView(pal_it.value());
+
+	setColorEditControlsEnabled(true);
 }
 
 void CustomPalettes::populatePaletteView(const QList<QRgb> &pal)
