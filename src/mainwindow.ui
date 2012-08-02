@@ -28,10 +28,6 @@
   <property name="windowTitle">
    <string>Wesnoth RCX</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="../morningstar.qrc">
-    <normaloff>:/rsrc/app.png</normaloff>:/rsrc/app.png</iconset>
-  </property>
   <widget class="QWidget" name="grid">
    <layout class="QGridLayout" name="gridLayout">
     <item row="6" column="0">
@@ -586,8 +582,6 @@
   <tabstop>tbZoomIn</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources>
-  <include location="../morningstar.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

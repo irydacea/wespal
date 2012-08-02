@@ -658,7 +658,6 @@ void MainWindow::do_about()
 
 	msg.setText(text);
 	msg.setIconPixmap(QPixmap(":/rsrc/rcx-icon.png"));
-	msg.setWindowIcon(this->windowIcon());
 	msg.setWindowTitle(tr("Wesnoth RCX"));
 	msg.setWindowModality(Qt::WindowModal);
 	msg.exec();
