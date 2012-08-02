@@ -163,6 +163,10 @@ void CustomPalettes::setColorEditControlsEnabled(bool enabled)
 	ui->cmdDelCol->setEnabled(enabled && haveColors);
 	ui->tbEditColor->setEnabled(enabled && haveColors);
 	ui->leColor->setEnabled(enabled && haveColors);
+
+	if(!haveColors) {
+		ui->leColor->clear();
+	}
 }
 
 void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
