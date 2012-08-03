@@ -47,8 +47,6 @@ private slots:
 
 	void on_listColors_currentRowChanged(int currentRow);
 
-	void on_cmdRenPal_clicked();
-
 	void on_tbEditColor_clicked();
 
 	void on_listColors_itemChanged(QListWidgetItem *item);
@@ -66,6 +64,8 @@ private slots:
 	void on_cmdWml_clicked();
 
 	void on_leColor_textEdited(const QString &arg1);
+
+	void on_action_Rename_triggered();
 
 private:
     Ui::CustomPalettes *ui;

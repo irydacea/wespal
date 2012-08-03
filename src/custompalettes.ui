@@ -34,23 +34,56 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,1">
          <item>
-          <widget class="QPushButton" name="cmdAddPal">
+          <widget class="QToolButton" name="cmdAddPal">
            <property name="text">
             <string>&amp;New</string>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdRenPal">
-           <property name="text">
-            <string>&amp;Rename</string>
+           <property name="icon">
+            <iconset theme="list-add"/>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="cmdDelPal">
+          <widget class="QToolButton" name="cmdDelPal">
            <property name="text">
             <string>&amp;Delete</string>
+           </property>
+           <property name="icon">
+            <iconset theme="list-remove"/>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbMoreOptions">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>&amp;More</string>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::InstantPopup</enum>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -188,11 +221,26 @@
     </widget>
    </item>
   </layout>
+  <action name="action_Rename">
+   <property name="icon">
+    <iconset theme="edit-rename"/>
+   </property>
+   <property name="text">
+    <string>&amp;Rename</string>
+   </property>
+  </action>
+  <action name="action_Duplicate">
+   <property name="icon">
+    <iconset theme="edit-copy"/>
+   </property>
+   <property name="text">
+    <string>&amp;Duplicate</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>listPals</tabstop>
   <tabstop>cmdAddPal</tabstop>
-  <tabstop>cmdRenPal</tabstop>
   <tabstop>cmdDelPal</tabstop>
   <tabstop>listColors</tabstop>
   <tabstop>leColor</tabstop>

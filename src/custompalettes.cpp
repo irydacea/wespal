@@ -28,6 +28,7 @@
 
 #include <QColorDialog>
 #include <QMessageBox>
+#include <QMenu>
 
 // BIG TODO: signal handling in this class is a massive mess!
 // I really need to refactor this and regroup widgets according to
@@ -42,6 +43,12 @@ CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalett
     ui->setupUi(this);
 	ui->listColors->setItemDelegate(new PaletteItemDelegate(ui->listPals));
 	updatePaletteUI();
+
+	QMenu* const menuMore = new QMenu(ui->tbMoreOptions);
+	menuMore->addAction(ui->action_Duplicate);
+	menuMore->addAction(ui->action_Rename);
+
+	ui->tbMoreOptions->setMenu(menuMore);
 }
 
 CustomPalettes::~CustomPalettes()
@@ -181,7 +188,7 @@ void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
 void CustomPalettes::setPaletteViewEnabled(bool enabled)
 {
 	ui->cmdDelPal->setEnabled(enabled);
-	ui->cmdRenPal->setEnabled(enabled);
+	ui->tbMoreOptions->setEnabled(enabled);
 
 	setPaletteEditControlsEnabled(enabled);
 }
@@ -278,7 +285,7 @@ void CustomPalettes::on_listColors_itemChanged(QListWidgetItem *item)
 	}
 }
 
-void CustomPalettes::on_cmdRenPal_clicked()
+void CustomPalettes::on_action_Rename_triggered()
 {
 	QListWidget* const listw = ui->listPals;
 	// An edit slot should take care of updating the
