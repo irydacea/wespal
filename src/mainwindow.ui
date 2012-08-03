@@ -48,6 +48,9 @@
           <normaloff/>
          </iconset>
         </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -93,6 +96,9 @@
          <iconset theme="zoom-in">
           <normaloff/>
          </iconset>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
