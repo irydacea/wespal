@@ -39,7 +39,9 @@
             <string>&amp;Add</string>
            </property>
            <property name="icon">
-            <iconset theme="list-add"/>
+            <iconset theme="list-add">
+             <normaloff/>
+            </iconset>
            </property>
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -55,7 +57,9 @@
             <string>&amp;Delete</string>
            </property>
            <property name="icon">
-            <iconset theme="list-remove"/>
+            <iconset theme="list-remove">
+             <normaloff/>
+            </iconset>
            </property>
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -91,7 +95,7 @@
         <string>The average shade of the image's recolored portions.</string>
        </property>
        <property name="title">
-        <string/>
+        <string>Colors</string>
        </property>
        <layout class="QFormLayout" name="formLayout">
         <property name="fieldGrowthPolicy">
@@ -209,19 +213,6 @@
          </layout>
         </item>
         <item row="3" column="1">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="4" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <spacer name="horizontalSpacer">
@@ -266,7 +257,9 @@
   </layout>
   <action name="action_Rename">
    <property name="icon">
-    <iconset theme="edit-rename"/>
+    <iconset theme="edit-rename">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Rename</string>
@@ -274,7 +267,9 @@
   </action>
   <action name="action_Duplicate">
    <property name="icon">
-    <iconset theme="edit-copy"/>
+    <iconset theme="edit-copy">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Duplicate</string>

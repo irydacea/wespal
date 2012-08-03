@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
      <item>
       <layout class="QVBoxLayout" name="paletteListContainer">
        <item>
@@ -92,121 +92,116 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="paletteViewContainer">
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>C&amp;olors:</string>
-         </property>
-         <property name="buddy">
-          <cstring>listColors</cstring>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QListWidget" name="listColors">
-             <property name="uniformItemSizes">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="whatsThis">
-                <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
-               </property>
-               <property name="text">
-                <string>He&amp;x:</string>
-               </property>
-               <property name="buddy">
-                <cstring>leColor</cstring>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="leColor">
-               <property name="whatsThis">
-                <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="tbEditColor">
-               <property name="whatsThis">
-                <string>Displays controls to allow you to choose a new color.</string>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,2">
-           <item>
-            <widget class="QPushButton" name="cmdAddCol">
-             <property name="text">
-              <string>&amp;Add Color</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdDelCol">
-             <property name="text">
-              <string>Re&amp;move Color</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cmdWml">
-             <property name="whatsThis">
-              <string>Generates a sample Wesnoth Markup Language snippet containing a single color palette definition, which you can save to a file or clipboard for later inclusion in your own project.</string>
-             </property>
-             <property name="text">
-              <string>Generate &amp;WML</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
+      <widget class="QGroupBox" name="">
+       <property name="title">
+        <string>Colors</string>
+       </property>
+       <layout class="QVBoxLayout" name="paletteViewContainer">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QListWidget" name="listColors">
+              <property name="uniformItemSizes">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="whatsThis">
+                 <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+                </property>
+                <property name="text">
+                 <string>He&amp;x:</string>
+                </property>
+                <property name="buddy">
+                 <cstring>leColor</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="leColor">
+                <property name="whatsThis">
+                 <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="tbEditColor">
+                <property name="whatsThis">
+                 <string>Displays controls to allow you to choose a new color.</string>
+                </property>
+                <property name="text">
+                 <string>...</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,2">
+            <item>
+             <widget class="QPushButton" name="cmdAddCol">
+              <property name="text">
+               <string>&amp;Add Color</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cmdDelCol">
+              <property name="text">
+               <string>Re&amp;move Color</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cmdWml">
+              <property name="whatsThis">
+               <string>Generates a sample Wesnoth Markup Language snippet containing a single color palette definition, which you can save to a file or clipboard for later inclusion in your own project.</string>
+              </property>
+              <property name="text">
+               <string>Generate &amp;WML</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </item>
     </layout>
    </item>
