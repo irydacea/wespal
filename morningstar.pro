@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     custompalettes.cpp \
     paletteitem.cpp \
     util.cpp \
-    codesnippetdialog.cpp
+    codesnippetdialog.cpp \
+    colorlistinputdialog.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \
@@ -34,10 +35,12 @@ HEADERS += mainwindow.hpp \
     custompalettes.hpp \
     paletteitem.hpp \
     util.hpp \
-    codesnippetdialog.hpp
+    codesnippetdialog.hpp \
+    colorlistinputdialog.hpp
 FORMS += mainwindow.ui \
     customranges.ui \
     custompalettes.ui \
-    codesnippetdialog.ui
+    codesnippetdialog.ui \
+    colorlistinputdialog.ui
 RESOURCES += morningstar.qrc
 RC_FILE += win32/wesnoth-rcx.rc
