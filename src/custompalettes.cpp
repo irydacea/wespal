@@ -443,6 +443,23 @@ void CustomPalettes::on_cmdAddPal_clicked()
 	listw->editItem(listw->currentItem());
 }
 
+void CustomPalettes::on_action_Duplicate_triggered()
+{
+	QListWidget* const listw = ui->listPals;
+
+	{
+		ObjectLock lockPals(listw);
+
+		const QString& palName = generateNewPaletteName();
+		palettes_[palName] = getCurrentPalette();
+		addPaletteListEntry(palName);
+	}
+
+	listw->setCurrentRow(listw->count() - 1);
+	setPaletteViewEnabled(true);
+	listw->editItem(listw->currentItem());
+}
+
 void CustomPalettes::on_cmdDelPal_clicked()
 {
 	QListWidget* const listw = ui->listPals;

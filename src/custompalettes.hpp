@@ -67,6 +67,8 @@ private slots:
 
 	void on_action_Rename_triggered();
 
+	void on_action_Duplicate_triggered();
+
 private:
     Ui::CustomPalettes *ui;
 	//PaletteWidget *palw;
