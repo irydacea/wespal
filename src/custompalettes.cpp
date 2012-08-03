@@ -23,6 +23,7 @@
 #include "util.hpp"
 
 #include "codesnippetdialog.hpp"
+#include "colorlistinputdialog.hpp"
 #include "paletteitem.hpp"
 #include "wesnothrc.hpp"
 
@@ -502,6 +503,28 @@ void CustomPalettes::on_cmdDelPal_clicked()
 
 	if(palItem != palettes_.end()) {
 		palettes_.erase(palItem);
+	}
+}
+
+void CustomPalettes::on_cmdAddFromList_clicked()
+{
+	QListWidget* const listw = ui->listPals;
+	QListWidgetItem* const itemw = listw->currentItem();
+
+	if(!itemw)
+		return;
+
+	ColorListInputDialog dlg(this);
+	dlg.exec();
+
+	const QList<QRgb>& colors = dlg.getColorList();
+
+	if(colors.size()) {
+		QList<QRgb>& pal = getCurrentPalette();
+
+		pal.append(colors);
+		// Force refresh the current palette colors view.
+		populatePaletteView(pal);
 	}
 }
 

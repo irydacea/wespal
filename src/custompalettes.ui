@@ -149,7 +149,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,2">
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,0,2">
             <item>
              <widget class="QPushButton" name="cmdAddCol">
               <property name="text">
@@ -176,6 +176,16 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cmdAddFromList">
+              <property name="whatsThis">
+               <string>Adds multiple colors from a comma-separated lists.</string>
+              </property>
+              <property name="text">
+               <string>Add from &amp;List</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QPushButton" name="cmdWml">
