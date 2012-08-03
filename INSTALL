@@ -40,7 +40,21 @@ Then you can build the application:
   $ make
 
 An executable file ‘wesnoth-rcx’ will be generated in the current directory.
-You can copy this file to a suitable location in PATH, such as $HOME/bin or
-/usr/local/bin, or just keep it where it is — installation is not strictly
-necessary. However, you may want to create a desktop or menu launcher for easy
-access.
+
+
+Installing
+----------
+
+For your convenience, the provided ‘install’ target will install Wesnoth RCX
+to /usr/local/bin and add an applications menu entry for you:
+
+  $ sudo make install
+
+Or (as root):
+
+  # make install
+
+If this does not fit your needs, you can copy the executable file generated in
+the previous step to a different location, such as $HOME/bin, or just keep it
+where it is — installation is *not* strictly necessary. However, you may want
+to manually create a desktop or applications menu launcher for easy access.
