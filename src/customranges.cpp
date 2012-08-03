@@ -27,6 +27,7 @@
 
 #include <QColorDialog>
 #include <QMessageBox>
+#include <QMenu>
 
 CustomRanges::CustomRanges(const QMap<QString, color_range>& initialRanges, QWidget *parent) :
     QDialog(parent),
@@ -51,6 +52,12 @@ CustomRanges::CustomRanges(const QMap<QString, color_range>& initialRanges, QWid
 	}
 
 	updateRangeEditControls();
+
+	QMenu* const menuMore = new QMenu(ui->tbMoreOptions);
+	menuMore->addAction(ui->action_Duplicate);
+	menuMore->addAction(ui->action_Rename);
+
+	ui->tbMoreOptions->setMenu(menuMore);
 }
 
 CustomRanges::~CustomRanges()
@@ -70,13 +77,17 @@ void CustomRanges::changeEvent(QEvent *e)
     }
 }
 
-QString CustomRanges::generateNewRangeName() const
+QString CustomRanges::generateNewRangeName(QString stem) const
 {
+	if(stem.isEmpty()) {
+		stem = tr("New Color Range");
+	}
+
 	QString name;
 	int i = 0;
 
 	do {
-		name = tr("New Color Range #%1").arg(++i);
+		name = tr("%1 #%2").arg(stem).arg(++i);
 	} while(ranges_.find(name) != ranges_.end());
 
 	return name;
@@ -126,7 +137,7 @@ void CustomRanges::updateRangeEditControls()
 	const bool noMoreRanges = listw->count() == 0;
 	ui->boxRangeEditor->setEnabled(!noMoreRanges);
 	ui->cmdDelete->setEnabled(!noMoreRanges);
-	ui->cmdRename->setEnabled(!noMoreRanges);
+	ui->tbMoreOptions->setEnabled(!noMoreRanges);
 
 	// Do not send textChanged signals, since that would alter
 	// the ranges_ map (adding a range with an empty key in the
@@ -196,11 +207,26 @@ void CustomRanges::on_cmdAdd_clicked()
 	listw->editItem(listw->currentItem());
 }
 
-void CustomRanges::on_cmdRename_clicked()
+void CustomRanges::on_action_Rename_triggered()
 {
 	QListWidget* const listw = ui->listRanges;
 	// An edit slot should take care of updating the
 	// range definition afterwards.
+	listw->editItem(listw->currentItem());
+}
+
+void CustomRanges::on_action_Duplicate_triggered()
+{
+	QListWidget* const listw = ui->listRanges;
+	Q_ASSERT(listw);
+	QListWidgetItem* const itemw = ui->listRanges->currentItem();
+	Q_ASSERT(itemw);
+
+	const QString& raName = generateNewRangeName(itemw->data(Qt::UserRole).toString());
+	ranges_.insert(raName, currentRange());
+	addRangeListEntry(raName);
+
+	listw->setCurrentRow(listw->count() - 1);
 	listw->editItem(listw->currentItem());
 }
 

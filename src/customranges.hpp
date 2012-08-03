@@ -55,13 +55,12 @@ private:
 	void updateColorButton(QAbstractButton* button, const QColor& color);
 	void updateRangeEditControls();
 
-	QString generateNewRangeName() const;
+	QString generateNewRangeName(QString stem = QString()) const;
 
 	void addRangeListEntry(const QString& name);
 
 private slots:
 	void on_cmdAdd_clicked();
-	void on_cmdRename_clicked();
 	void on_cmdDelete_clicked();
 
 	void on_leMin_textChanged(QString);
@@ -74,6 +73,9 @@ private slots:
 	void on_listRanges_currentRowChanged(int);
 	void on_listRanges_itemChanged(QListWidgetItem *item);
 	void on_cmdWml_clicked();
+
+	void on_action_Rename_triggered();
+	void on_action_Duplicate_triggered();
 };
 
 #endif // CUSTOMRANGES_HPP
