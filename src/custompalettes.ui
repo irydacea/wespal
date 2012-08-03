@@ -39,7 +39,9 @@
             <string>&amp;New</string>
            </property>
            <property name="icon">
-            <iconset theme="list-add"/>
+            <iconset theme="list-add">
+             <normaloff/>
+            </iconset>
            </property>
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -55,7 +57,9 @@
             <string>&amp;Delete</string>
            </property>
            <property name="icon">
-            <iconset theme="list-remove"/>
+            <iconset theme="list-remove">
+             <normaloff/>
+            </iconset>
            </property>
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -74,7 +78,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>&amp;More</string>
+            <string>&amp;More </string>
            </property>
            <property name="popupMode">
             <enum>QToolButton::InstantPopup</enum>
@@ -92,7 +96,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QGroupBox" name="">
+      <widget class="QGroupBox" name="groupBox">
        <property name="title">
         <string>Colors</string>
        </property>
@@ -218,7 +222,9 @@
   </layout>
   <action name="action_Rename">
    <property name="icon">
-    <iconset theme="edit-rename"/>
+    <iconset theme="edit-rename">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Rename</string>
@@ -226,7 +232,9 @@
   </action>
   <action name="action_Duplicate">
    <property name="icon">
-    <iconset theme="edit-copy"/>
+    <iconset theme="edit-copy">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Duplicate</string>
