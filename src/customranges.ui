@@ -10,6 +10,12 @@
     <height>342</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>441</width>
+    <height>342</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Customize color ranges</string>
   </property>
