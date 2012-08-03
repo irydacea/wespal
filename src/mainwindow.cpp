@@ -672,7 +672,7 @@ void MainWindow::do_about()
 		"See the GNU General Public License for more details.") + "</p>";
 
 	msg.setText(text);
-	msg.setIconPixmap(QPixmap(":/rsrc/rcx-icon.png"));
+	msg.setIconPixmap(QPixmap(":/wesnoth-rcx-icon-128.png"));
 	msg.setWindowTitle(tr("Wesnoth RCX"));
 	msg.setWindowModality(Qt::WindowModal);
 	msg.exec();

@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationDomain("wesnoth.org");
 	QCoreApplication::setApplicationVersion(mos_version);
 
-	a.setWindowIcon(QIcon(":/rsrc/app.png"));
+	a.setWindowIcon(QIcon(":/wesnoth-rcx-icon-64.png"));
 
 	MainWindow w;
 	if(w.initial_open(initial_file)) {

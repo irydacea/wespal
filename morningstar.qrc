@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-		<file>rsrc/app.png</file>
-		<file>rsrc/rcx-icon.png</file>
+        <file alias="wesnoth-rcx-icon-64.png">icons/64x64/wesnoth-rcx.png</file>
+        <file alias="wesnoth-rcx-icon-128.png">icons/128x128/wesnoth-rcx.png</file>
     </qresource>
 </RCC>
