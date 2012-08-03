@@ -98,7 +98,7 @@ private:
 
 	void updatePaletteIcon();
 
-	QString generateNewPaletteName() const;
+	QString generateNewPaletteName(QString stem = QString()) const;
 };
 
 #endif // CUSTOMPALETTES_HPP

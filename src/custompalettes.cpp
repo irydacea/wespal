@@ -226,13 +226,17 @@ void CustomPalettes::updatePaletteIcon()
 	}
 }
 
-QString CustomPalettes::generateNewPaletteName() const
+QString CustomPalettes::generateNewPaletteName(QString stem) const
 {
+	if(stem.isEmpty()) {
+		stem = tr("New Palette");
+	}
+
 	QString name;
 	int i = 0;
 
 	do {
-		name = tr("New Palette #%1").arg(++i);
+		name = tr("%1 #%2").arg(stem).arg(++i);
 	} while(palettes_.find(name) != palettes_.end());
 
 	return name;
@@ -446,11 +450,16 @@ void CustomPalettes::on_cmdAddPal_clicked()
 void CustomPalettes::on_action_Duplicate_triggered()
 {
 	QListWidget* const listw = ui->listPals;
+	Q_ASSERT(listw);
+	QListWidgetItem* const itemw = listw->currentItem();
+	Q_ASSERT(itemw);
+
+	const QString& oldPalName = itemw->data(Qt::UserRole).toString();
 
 	{
 		ObjectLock lockPals(listw);
 
-		const QString& palName = generateNewPaletteName();
+		const QString& palName = generateNewPaletteName(oldPalName);
 		palettes_[palName] = getCurrentPalette();
 		addPaletteListEntry(palName);
 	}
