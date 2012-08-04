@@ -1,0 +1,37 @@
+Known issues
+------------
+
+ * Zoom can use excessive amounts of memory with larger (than 72x72) images,
+   in particular when the zoom level is greater than 200%. It is also very
+   demanding on the CPU while switching zoom levels.
+
+ * Zooming does not preserve the current view, always scrolling to the center
+   of the picture instead.
+
+
+Reporting bugs
+--------------
+
+This software is still a work-in-progress, and as a such it may contain bugs.
+
+There is an issue tracker for this kind of thing, hosted at Github:
+
+  https://github.com/shikadilord/morningstar/issues
+
+When reporting a bug, make sure to provide as much relevant information as
+possible; the operating system class (i.e. Windows vs. Mac OS X) and version
+(i.e. XP, 7) you are using is extremely important, as well as the steps to
+reproduce and the Wesnoth RCX version affected.
+
+Don’t submit bugs for earlier versions of Wesnoth RCX, since those have a high
+chance of being fixed in the latest release. If you are in doubt about whether
+you are already using the latest version, you can find more information here:
+
+  http://shadowm.rewound.net/projects/wesnoth-tc.php
+
+
+--
+
+Have lots of fun!
+
+Ignacio Riquelme Morelle <shadowm2006@gmail.com>
