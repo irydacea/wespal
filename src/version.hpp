@@ -21,7 +21,7 @@
 #ifndef VERSION_HPP
 #define VERSION_HPP
 
-#define MOS_VERSION_STRING      "0.2.0-dev"
+#define MOS_VERSION_STRING      "0.2.0"
 
 #define MOS_VERSION_MAJOR       0
 #define MOS_VERSION_MINOR       2
