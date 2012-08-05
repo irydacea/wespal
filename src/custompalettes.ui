@@ -44,11 +44,7 @@
            <property name="text">
             <string>&amp;New</string>
            </property>
-           <property name="icon">
-            <iconset theme="list-add">
-             <normaloff/>
-            </iconset>
-           </property>
+		   <property name="icon" />
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
@@ -62,11 +58,7 @@
            <property name="text">
             <string>&amp;Delete</string>
            </property>
-           <property name="icon">
-            <iconset theme="list-remove">
-             <normaloff/>
-            </iconset>
-           </property>
+		   <property name="icon" />
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
@@ -237,21 +229,13 @@
    </item>
   </layout>
   <action name="action_Rename">
-   <property name="icon">
-    <iconset theme="edit-rename">
-     <normaloff/>
-    </iconset>
-   </property>
+   <property name="icon" />
    <property name="text">
     <string>&amp;Rename</string>
    </property>
   </action>
   <action name="action_Duplicate">
-   <property name="icon">
-    <iconset theme="edit-copy">
-     <normaloff/>
-    </iconset>
-   </property>
+   <property name="icon" />
    <property name="text">
     <string>&amp;Duplicate</string>
    </property>

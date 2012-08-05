@@ -50,6 +50,14 @@ CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalett
 	menuMore->addAction(ui->action_Rename);
 
 	ui->tbMoreOptions->setMenu(menuMore);
+
+	// Use theme icons for some buttons on X11. This is not
+	// in the .ui file for Qt 4.6 - 4.7 compatibility.
+
+	ui->cmdAddPal->setIcon(QIcon::fromTheme("list-add"));
+	ui->cmdDelPal->setIcon(QIcon::fromTheme("list-remove"));
+	ui->action_Rename->setIcon(QIcon::fromTheme("edit-rename"));
+	ui->action_Duplicate->setIcon(QIcon::fromTheme("edit-copy"));
 }
 
 CustomPalettes::~CustomPalettes()

@@ -101,6 +101,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->action_Reload->setIcon(this->style()->standardIcon(QStyle::SP_BrowserReload, 0, dynamic_cast<QWidget*>(ui->action_Reload)));
 	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, 0, dynamic_cast<QWidget*>(ui->action_Quit)));
 
+	// Use theme icons for some buttons on X11. This is not
+	// in the .ui file for Qt 4.6 - 4.7 compatibility.
+
+	ui->tbZoomIn->setIcon(QIcon::fromTheme("zoom-in"));
+	ui->tbZoomOut->setIcon(QIcon::fromTheme("zoom-out"));
+
 	for(unsigned k = 0; k < mos_max_recent_files(); ++k) {
 		QAction* act = new QAction(this);
 

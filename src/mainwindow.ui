@@ -43,11 +43,7 @@
         <property name="text">
          <string>−</string>
         </property>
-        <property name="icon">
-         <iconset theme="zoom-out">
-          <normaloff/>
-         </iconset>
-        </property>
+		<property name="icon" />
         <property name="autoRaise">
          <bool>true</bool>
         </property>
@@ -92,11 +88,7 @@
         <property name="text">
          <string>+</string>
         </property>
-        <property name="icon">
-         <iconset theme="zoom-in">
-          <normaloff/>
-         </iconset>
-        </property>
+		<property name="icon" />
         <property name="autoRaise">
          <bool>true</bool>
         </property>
