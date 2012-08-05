@@ -3,6 +3,8 @@ Version 0.2.1
 
  * Compatibility fixes for Qt 4.6 and 4.7.
 
+ * Add Colors dialog: Minor visual improvements
+
  * Palette Editor: "Add from List" should stay disabled when there are no
    available palettes.
 
