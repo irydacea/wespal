@@ -23,7 +23,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;p&gt;Enter the list of colors to add to the palette. Colors should be provided in RRGGBB form, separated by commas. Both the leading # prefix and surroundiing whitespace are optional.&lt;/p&gt;
+      <string>&lt;p&gt;Enter the list of colors to add to the palette. Colors should be provided in RRGGBB form, separated by commas. Both the leading # prefix and surrounding whitespace are optional.&lt;/p&gt;
 &lt;p&gt;Example: &lt;tt&gt;FF00FF, FFFF00, #FFF&lt;/tt&gt; (magenta, yellow, white)&lt;/p&gt;</string>
      </property>
      <property name="textFormat">
