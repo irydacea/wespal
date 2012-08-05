@@ -7,6 +7,11 @@ ColorListInputDialog::ColorListInputDialog(QWidget *parent) :
 	listString_()
 {
 	ui->setupUi(this);
+
+	QFont font("Monospace");
+	font.setStyleHint(QFont::TypeWriter);
+
+	ui->teColors->setFont(font);
 }
 
 ColorListInputDialog::~ColorListInputDialog()
