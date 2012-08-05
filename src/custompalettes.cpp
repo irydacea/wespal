@@ -342,7 +342,7 @@ void CustomPalettes::on_listPals_itemChanged(QListWidgetItem *item)
 		newIt = palettes_.insert(newName, QList<QRgb>());
 	}
 
-	newIt.value().swap(oldIt.value());
+	newIt.value() = oldIt.value();
 	palettes_.erase(oldIt);
 
 	item->setData(Qt::UserRole, newName);
