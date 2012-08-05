@@ -189,6 +189,7 @@ void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
 {
 	ui->listColors->setEnabled(enabled);
 	ui->cmdAddCol->setEnabled(enabled);
+	ui->cmdAddFromList->setEnabled(enabled);
 	ui->cmdWml->setEnabled(enabled);
 
 	setColorEditControlsEnabled(enabled);

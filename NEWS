@@ -1,7 +1,10 @@
 Version 0.2.1
 -------------
 
- * Compatibility fixes for Qt 4.6 and 4.7
+ * Compatibility fixes for Qt 4.6 and 4.7.
+
+ * Palette Editor: "Add from List" should stay disabled when there are no
+   available palettes.
 
 
 Version 0.2.0
