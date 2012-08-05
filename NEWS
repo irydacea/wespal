@@ -5,6 +5,8 @@ Version 0.2.1
 
  * Add Colors dialog: Minor visual improvements
 
+ * Main: Make preview background color setting persistent.
+
  * Palette Editor: "Add from List" should stay disabled when there are no
    available palettes.
 

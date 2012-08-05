@@ -128,7 +128,7 @@ private:
 
 	void update_zoom_buttons();
 
-	void setPreviewBackgroundColor(const QColor& color);
+	void setPreviewBackgroundColor(const QString &colorName);
 
 	void centerScrollArea(QScrollArea* scrollArea);
 
@@ -151,11 +151,7 @@ private slots:
 	void on_zoomSlider_valueChanged(int value);
 	void on_action_Palettes_triggered();
 
-	void on_actionPreviewBgBlack_triggered();
-	void on_actionPreviewBgDark_triggered();
-	void on_actionPreviewBgDefault_triggered();
-	void on_actionPreviewBgLight_triggered();
-	void on_actionPreviewBgWhite_triggered();
+	void handlePreviewBgOption(bool checked);
 };
 
 #endif // MAINWINDOW_HPP

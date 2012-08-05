@@ -125,12 +125,31 @@ MainWindow::MainWindow(QWidget *parent) :
 	QActionGroup* bgColorActs = new QActionGroup(this);
 
 	bgColorActs->addAction(ui->actionPreviewBgBlack);
+	ui->actionPreviewBgBlack->setData(QColor(Qt::black).name());
 	bgColorActs->addAction(ui->actionPreviewBgDark);
+	ui->actionPreviewBgDark->setData(QColor(Qt::darkGray).name());
 	bgColorActs->addAction(ui->actionPreviewBgDefault);
+	ui->actionPreviewBgDefault->setData("");
 	bgColorActs->addAction(ui->actionPreviewBgLight);
+	ui->actionPreviewBgLight->setData(QColor(Qt::lightGray).name());
 	bgColorActs->addAction(ui->actionPreviewBgWhite);
+	ui->actionPreviewBgWhite->setData(QColor(Qt::white).name());
 
-	ui->actionPreviewBgDefault->setChecked(true);
+	const QString& bgColorName = mos_get_preview_background_color_name();
+
+	QList<QAction*> bgColorActList = bgColorActs->actions();
+	foreach(QAction* const act, bgColorActList) {
+		connect(act, SIGNAL(triggered(bool)), this, SLOT(handlePreviewBgOption(bool)));
+
+		// We must find the menu item for the color we read from the app
+		// config and mark it as checked, and update the preview background
+		// color manually since setChecked() won't raise the triggered()
+		// signal.
+		if(act->data().toString() == bgColorName) {
+			act->setChecked(true);
+			setPreviewBackgroundColor(bgColorName);
+		}
+	}
 
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
@@ -883,40 +902,25 @@ void MainWindow::on_action_Palettes_triggered()
 	mos_config_save(user_color_ranges_, user_palettes_);
 }
 
-void MainWindow::on_actionPreviewBgBlack_triggered()
+void MainWindow::handlePreviewBgOption(bool checked)
 {
-	setPreviewBackgroundColor(Qt::black);
+	if(!checked)
+		return;
+
+	QAction* const act = qobject_cast<QAction*>(sender());
+
+	if(!act)
+		return;
+
+	setPreviewBackgroundColor(act->data().toString());
 }
 
-void MainWindow::on_actionPreviewBgDark_triggered()
+void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 {
-	setPreviewBackgroundColor(Qt::darkGray);
-}
-
-void MainWindow::on_actionPreviewBgDefault_triggered()
-{
-	static QColor invalid;
-	setPreviewBackgroundColor(invalid);
-}
-
-void MainWindow::on_actionPreviewBgLight_triggered()
-{
-	setPreviewBackgroundColor(Qt::lightGray);
-}
-
-void MainWindow::on_actionPreviewBgWhite_triggered()
-{
-	setPreviewBackgroundColor(Qt::white);
-}
-
-void MainWindow::setPreviewBackgroundColor(const QColor &color)
-{
-	QString ss;
-
-	if(color.isValid()) {
-		ss = "* { background-color: " + color.name() + "; }";
-	}
+	const QString ss = "* { background-color: " + colorName + "; }";
 
 	ui->previewOriginalContainer->viewport()->setStyleSheet(ss);
 	ui->previewRcContainer->viewport()->setStyleSheet(ss);
+
+	mos_set_preview_background_color_name(colorName);
 }
