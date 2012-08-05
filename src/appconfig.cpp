@@ -136,3 +136,13 @@ void mos_remove_recent_file(const QString& filepath)
 
 	s.setValue("recent_files", recent);
 }
+
+QString mos_get_preview_background_color_name()
+{
+	return QSettings().value("preview_background").toString();
+}
+
+void mos_set_preview_background_color_name(const QString& colorName)
+{
+	QSettings().setValue("preview_background", colorName);
+}

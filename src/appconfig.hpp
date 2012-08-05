@@ -26,6 +26,11 @@
 #include <QList>
 #include <QStringList>
 
+enum PreviewBackgroundColor {
+	SystemColor,
+	White,
+};
+
 void mos_config_load(QMap< QString, color_range >& ranges, QMap< QString, QList<QRgb> >& palettes);
 void mos_config_save(const QMap< QString, color_range >& ranges, const QMap< QString, QList<QRgb> >& palettes);
 
@@ -34,5 +39,8 @@ void mos_add_recent_file(const QString& filepath);
 void mos_remove_recent_file(const QString& filepath);
 
 unsigned mos_max_recent_files();
+
+QString mos_get_preview_background_color_name();
+void mos_set_preview_background_color_name(const QString& colorName);
 
 #endif // APPCONFIG_HPP
