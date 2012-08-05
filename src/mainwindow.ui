@@ -43,7 +43,6 @@
         <property name="text">
          <string>−</string>
         </property>
-		<property name="icon" />
         <property name="autoRaise">
          <bool>true</bool>
         </property>
@@ -88,7 +87,6 @@
         <property name="text">
          <string>+</string>
         </property>
-		<property name="icon" />
         <property name="autoRaise">
          <bool>true</bool>
         </property>
