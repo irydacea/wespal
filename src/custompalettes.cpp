@@ -327,7 +327,7 @@ void CustomPalettes::on_listPals_itemChanged(QListWidgetItem *item)
 		return;
 
 	if(newIt != palettes_.end()) {
-		if(!JobUi::prompt(this, tr("The palette '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
+		if(!MosUi::prompt(this, tr("The palette '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
 			item->setText(oldName);
 			return;
 		}

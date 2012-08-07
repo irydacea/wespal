@@ -58,7 +58,7 @@ bool doJobNotification(QWidget* parent, const QString& message, const QStringLis
 
 } // end anonymous namespace
 
-namespace JobUi {
+namespace MosUi {
 
 void message(QWidget* parent, const QString& message, const QString& details)
 {

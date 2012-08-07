@@ -330,7 +330,7 @@ void CustomRanges::on_listRanges_itemChanged(QListWidgetItem *item)
 		return;
 
 	if(newIt != ranges_.end()) {
-		if(!JobUi::prompt(this, tr("The range '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
+		if(!MosUi::prompt(this, tr("The range '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
 			item->setText(oldName);
 			return;
 		}

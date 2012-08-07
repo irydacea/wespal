@@ -46,7 +46,7 @@ private:
 	bool initial_state_;
 };
 
-namespace JobUi {
+namespace MosUi {
 
 void message(QWidget* parent, const QString& message, const QString& details = "");
 void message(QWidget* parent, const QString& message, const QStringList& detailItems);

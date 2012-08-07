@@ -98,8 +98,8 @@ void CodeSnippetDialog::handleSave()
 	}
 
 	if(f.error()) {
-		JobUi::error(this, tr("The file could not be saved"), filePath);
+		MosUi::error(this, tr("The file could not be saved"), filePath);
 	} else {
-		JobUi::message(this, tr("The file was saved successfully."), filePath);
+		MosUi::message(this, tr("The file was saved successfully."), filePath);
 	}
 }
