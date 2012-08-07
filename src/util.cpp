@@ -20,6 +20,8 @@
 
 #include "util.hpp"
 
+#include "version.hpp"
+
 #include <QIcon>
 #include <QMessageBox>
 
@@ -88,6 +90,34 @@ void error(QWidget* parent, const QString& message, const QString& details)
 void error(QWidget* parent, const QString& message, const QStringList& detailItems)
 {
 	doJobNotification(parent, message, detailItems, QMessageBox::Critical);
+}
+
+void about(QWidget* parent)
+{
+	QMessageBox msg(parent);
+
+	QString text =
+		tr("<h3>Wesnoth RCX %1</h3>").arg(mos_version);
+
+	text += "<p>" + tr("Built with Qt %1.").arg(QT_VERSION_STR) + "<br>";
+	text += tr("Copyright &copy; 2008 &#8211; 2012 by Ignacio Riquelme Morelle.") + "<br>";
+	text += "&lt;shadowm@wesnoth.org&gt;</p>";
+
+	text += "<p>" +
+		tr("This program is free software; you can redistribute it and/or modify "
+		"it under the terms of the GNU General Public License as published by "
+		"the Free Software Foundation; either version 2 of the License, or "
+		"(at your option) any later version.") + "</p><p>" +
+		tr("This program is distributed in the hope that it will be useful, but "
+		"<b>WITHOUT ANY WARRANTY</b>; without even the implied warranty of "
+		"<b>MERCHANTABILITY</b> or <b>FITNESS FOR A PARTICULAR PURPOSE</b>. "
+		"See the GNU General Public License for more details.") + "</p>";
+
+	msg.setText(text);
+	msg.setIconPixmap(QPixmap(":/wesnoth-rcx-icon-128.png"));
+	msg.setWindowTitle(tr("Wesnoth RCX"));
+	msg.setWindowModality(Qt::WindowModal);
+	msg.exec();
 }
 
 } // end namespace JobNotifications
