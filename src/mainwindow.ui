@@ -135,7 +135,7 @@
          <property name="whatsThis">
           <string/>
          </property>
-         <widget class="QLabel" name="previewOriginal">
+         <widget class="ImageLabel" name="previewOriginal">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -186,7 +186,7 @@
            <height>162</height>
           </rect>
          </property>
-         <widget class="QLabel" name="previewRc">
+         <widget class="ImageLabel" name="previewRc">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -565,6 +565,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ImageLabel</class>
+   <extends>QLabel</extends>
+   <header>src/imagelabel.hpp</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>previewOriginalContainer</tabstop>
   <tabstop>previewRcContainer</tabstop>

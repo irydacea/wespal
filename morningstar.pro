@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     paletteitem.cpp \
     util.cpp \
     codesnippetdialog.cpp \
-    colorlistinputdialog.cpp
+    colorlistinputdialog.cpp \
+    imagelabel.cpp
 HEADERS += mainwindow.hpp \
     wesnothrc.hpp \
     defs.hpp \
@@ -50,7 +51,8 @@ HEADERS += mainwindow.hpp \
     paletteitem.hpp \
     util.hpp \
     codesnippetdialog.hpp \
-    colorlistinputdialog.hpp
+    colorlistinputdialog.hpp \
+    imagelabel.hpp
 FORMS += mainwindow.ui \
     customranges.ui \
     custompalettes.ui \

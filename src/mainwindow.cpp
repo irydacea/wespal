@@ -615,8 +615,8 @@ void MainWindow::refresh_previews()
 
 	const QSize& scaled_size = img_original_.size() * zoom_;
 
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_).scaled(scaled_size));
-	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_).scaled(scaled_size));
+	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
+	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_));
 
 	ui->previewOriginal->resize(scaled_size);
 	ui->previewRc->resize(scaled_size);
