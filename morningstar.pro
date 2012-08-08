@@ -26,37 +26,44 @@ DESTDIR = .
 
 VPATH = src
 
-SOURCES += main.cpp \
-    mainwindow.cpp \
-    wesnothrc.cpp \
-    defs.cpp \
-    version.cpp \
-    rc_qt4.cpp \
-    customranges.cpp \
+SOURCES += \
     appconfig.cpp \
-    custompalettes.cpp \
-    paletteitem.cpp \
-    util.cpp \
     codesnippetdialog.cpp \
     colorlistinputdialog.cpp \
-    imagelabel.cpp
-HEADERS += mainwindow.hpp \
-    wesnothrc.hpp \
-    defs.hpp \
-    version.hpp \
-    rc_qt4.hpp \
-    customranges.hpp \
+    custompalettes.cpp \
+    customranges.cpp \
+    defs.cpp \
+    imagelabel.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    paletteitem.cpp \
+    rc_qt4.cpp \
+    util.cpp \
+    wesnothrc.cpp \
+    version.cpp
+
+HEADERS += \
     appconfig.hpp \
-    custompalettes.hpp \
-    paletteitem.hpp \
-    util.hpp \
     codesnippetdialog.hpp \
     colorlistinputdialog.hpp \
-    imagelabel.hpp
-FORMS += mainwindow.ui \
-    customranges.ui \
-    custompalettes.ui \
+    custompalettes.hpp \
+    customranges.hpp \
+    defs.hpp \
+    imagelabel.hpp \
+    mainwindow.hpp \
+    paletteitem.hpp \
+    rc_qt4.hpp \
+    util.hpp \
+    wesnothrc.hpp \
+    version.hpp
+
+FORMS += \
     codesnippetdialog.ui \
-    colorlistinputdialog.ui
+    colorlistinputdialog.ui \
+    custompalettes.ui \
+    customranges.ui \
+    mainwindow.ui
+
 RESOURCES += morningstar.qrc
+
 RC_FILE += win32/wesnoth-rcx.rc
