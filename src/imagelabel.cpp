@@ -38,7 +38,20 @@ void ImageLabel::paintEvent(QPaintEvent* event)
 	}
 
 	QPainter p(this);
-
 	p.setRenderHint(QPainter::SmoothPixmapTransform, false);
-	p.drawPixmap(this->rect(), *pm);
+
+	const qreal xRatio = qreal(width()) / qreal(pm->width());
+	const qreal yRatio = qreal(height()) / qreal(pm->height());
+
+	const QRect& partialDestRect = event->rect();
+
+	QRect partialSrcRect(
+		partialDestRect.x() / xRatio,
+		partialDestRect.y() / yRatio,
+		partialDestRect.width() / xRatio,
+		partialDestRect.height() / yRatio);
+
+	//qDebug() << partialSrcRect << " --> " << partialDestRect << " (scale " << xRatio << "x" << yRatio << ")";
+
+	p.drawPixmap(partialDestRect, *pm, partialSrcRect);
 }
