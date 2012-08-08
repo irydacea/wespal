@@ -124,11 +124,12 @@ void about(QWidget* parent)
 
 QString capitalize(const QString& str)
 {
-	if(str.isEmpty())
-		return str;
+	QString ret(str);
 
-	QString ret = str.toUpper().left(1);
-	ret += str.right(str.length() - 1);
+	if(!ret.isEmpty()) {
+		QCharRef c = ret[0];
+		c = c.toUpper();
+	}
 
 	return ret;
 }
