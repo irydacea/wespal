@@ -22,7 +22,8 @@
 #define CUSTOMPALETTES_HPP
 
 #include <QDialog>
-//#include "palettewidget.hpp"
+
+#include "wesnothrc.hpp"
 
 #include <QMap>
 #include <QListWidgetItem>
@@ -34,7 +35,7 @@ namespace Ui {
 class CustomPalettes : public QDialog {
     Q_OBJECT
 public:
-	CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, QWidget *parent = 0);
+	CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, const QMap<QString, color_range>& colorRanges, QWidget* parent = 0);
 	~CustomPalettes();
 
 	const QMap<QString, QList<QRgb> >& getPalettes() const { return palettes_; }
@@ -71,11 +72,15 @@ private slots:
 
 	void on_action_Duplicate_triggered();
 
+	void handleRcOption();
+
 private:
     Ui::CustomPalettes *ui;
 	//PaletteWidget *palw;
 
 	QMap< QString, QList<QRgb> > palettes_;
+
+	QMap<QString, color_range> ranges_;
 
 	void addPaletteListEntry(const QString& name);
 	void removePaletteListEntry(const QString& name);

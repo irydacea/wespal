@@ -860,7 +860,7 @@ void MainWindow::on_actionColor_ranges_triggered()
 
 void MainWindow::on_action_Palettes_triggered()
 {
-	CustomPalettes dlg(user_palettes_, this);
+	CustomPalettes dlg(user_palettes_, color_ranges_, this);
 	dlg.exec();
 
 	if(dlg.result() == QDialog::Rejected)

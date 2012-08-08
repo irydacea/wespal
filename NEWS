@@ -13,6 +13,9 @@ Version 0.2.1
  * Palette Editor: "Add from List" should stay disabled when there are no
    available palettes.
 
+ * Palette Editor: Added option to apply a color range (team coloring) to
+   the current selected palette.
+
 
 Version 0.2.0
 -------------

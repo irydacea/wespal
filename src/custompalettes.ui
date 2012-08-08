@@ -44,7 +44,6 @@
            <property name="text">
             <string>&amp;New</string>
            </property>
-		   <property name="icon" />
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
@@ -58,7 +57,6 @@
            <property name="text">
             <string>&amp;Delete</string>
            </property>
-		   <property name="icon" />
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonTextBesideIcon</enum>
            </property>
@@ -147,7 +145,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,0,2">
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,0,2,0,0">
             <item>
              <widget class="QPushButton" name="cmdAddCol">
               <property name="text">
@@ -208,6 +206,29 @@
               </property>
              </spacer>
             </item>
+            <item>
+             <widget class="QPushButton" name="cmdRc">
+              <property name="whatsThis">
+               <string>Recolors the palette using a given color range.</string>
+              </property>
+              <property name="text">
+               <string>&amp;Recolor</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </item>
          </layout>
@@ -229,13 +250,11 @@
    </item>
   </layout>
   <action name="action_Rename">
-   <property name="icon" />
    <property name="text">
     <string>&amp;Rename</string>
    </property>
   </action>
   <action name="action_Duplicate">
-   <property name="icon" />
    <property name="text">
     <string>&amp;Duplicate</string>
    </property>

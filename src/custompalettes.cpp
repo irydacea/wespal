@@ -36,10 +36,11 @@
 // their task so we don't need to have such inconvenient private
 // wrappers as the setTaskThingsEnabled() family.
 
-CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, QWidget *parent) :
+CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, const QMap<QString, color_range>& colorRanges, QWidget *parent) :
     QDialog(parent),
 	ui(new Ui::CustomPalettes),
-	palettes_(initialPalettes)
+	palettes_(initialPalettes),
+	ranges_(colorRanges)
 {
     ui->setupUi(this);
 	ui->listColors->setItemDelegate(new PaletteItemDelegate(ui->listPals));
@@ -50,6 +51,22 @@ CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalett
 	menuMore->addAction(ui->action_Rename);
 
 	ui->tbMoreOptions->setMenu(menuMore);
+
+	QMenu* const menuRanges = new QMenu(ui->cmdRc);
+
+	;
+	for(QMap<QString, color_range>::const_iterator k = ranges_.constBegin();
+		k != ranges_.constEnd(); ++k)
+	{
+		// TODO: unique keyboard accel for each entry.
+		QAction* const act = menuRanges->addAction(k.key());
+		act->setData(k.key());
+		act->setIcon(createColorIcon(k.value().mid()));
+
+		connect(act, SIGNAL(triggered()), this, SLOT(handleRcOption()));
+	}
+
+	ui->cmdRc->setMenu(menuRanges);
 
 	// Use theme icons for some buttons on X11. This is not
 	// in the .ui file for Qt 4.6 - 4.7 compatibility.
@@ -180,6 +197,8 @@ void CustomPalettes::setColorEditControlsEnabled(bool enabled)
 	ui->tbEditColor->setEnabled(enabled && haveColors);
 	ui->leColor->setEnabled(enabled && haveColors);
 
+	ui->cmdRc->setEnabled(enabled);
+
 	if(!haveColors) {
 		ui->leColor->clear();
 	}
@@ -191,6 +210,7 @@ void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
 	ui->cmdAddCol->setEnabled(enabled);
 	ui->cmdAddFromList->setEnabled(enabled);
 	ui->cmdWml->setEnabled(enabled);
+	ui->cmdRc->setEnabled(enabled);
 
 	setColorEditControlsEnabled(enabled);
 }
@@ -552,6 +572,40 @@ void CustomPalettes::on_cmdWml_clicked()
 	CodeSnippetDialog dlg(wml, this);
 	dlg.setWindowTitle(tr("Color Palette WML"));
 	dlg.exec();
+}
+
+void CustomPalettes::handleRcOption()
+{
+	QAction* const act = qobject_cast<QAction*>(sender());
+
+	if(!act)
+		return;
+
+	// If the color range is somehow missing, insert and use
+	// the default gray color range.
+	color_range& range = ranges_[act->data().toString()];
+
+	QListWidget* const listw = ui->listPals;
+	QListWidgetItem* const itemw = listw->currentItem();
+
+	if(!itemw)
+		return;
+
+	QList<QRgb>& pal = getCurrentPalette();
+
+	const QMap<QRgb, QRgb>& cvtMap = recolor_range(range, pal);
+	// The actual recoloring must be done manually here.
+	for(QList<QRgb>::iterator i = pal.begin(); i != pal.end(); ++i) {
+		QRgb& rgb = *i;
+
+		QMap<QRgb, QRgb>::const_iterator cvtIt = cvtMap.find(rgb);
+		if(cvtIt != cvtMap.constEnd()) {
+			rgb = cvtIt.value();
+		}
+	}
+
+	// Force refresh the current palette colors view.
+	populatePaletteView(pal);
 }
 
 void CustomPalettes::on_leColor_textEdited(const QString &arg1)
