@@ -21,20 +21,32 @@
 #ifndef IMAGELABEL_HPP
 #define IMAGELABEL_HPP
 
-#include <QLabel>
+#include <QWidget>
 
-class ImageLabel : public QLabel
+class ImageLabel : public QWidget
 {
 	Q_OBJECT
+	Q_PROPERTY(QPixmap pixmap READ pixmap WRITE setPixmap)
 public:
 	explicit ImageLabel(QWidget* parent = 0);
 	
+	const QPixmap* pixmap() const {
+		return &pixmap_;
+	}
+
+	void setPixmap(const QPixmap& pixmap) {
+		pixmap_ = pixmap;
+	}
+
 signals:
 	
 public slots:
 
 protected:
 	virtual void paintEvent(QPaintEvent* event);
+
+private:
+	QPixmap pixmap_;
 };
 
 #endif // IMAGELABEL_HPP

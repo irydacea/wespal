@@ -25,7 +25,8 @@
 #include <QPaintEvent>
 
 ImageLabel::ImageLabel(QWidget *parent) :
-    QLabel(parent)
+	QWidget(parent),
+	pixmap_()
 {
 }
 
