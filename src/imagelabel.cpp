@@ -52,14 +52,12 @@ void ImageLabel::paintEvent(QPaintEvent* event)
 	// otherwise pixels cease to be squares.
 
 	const int intXRatio = qCeil(xRatio);
-	const int xRem = partialDestRect.width() % intXRatio;
-	if(xRem) {
+	if(partialDestRect.width() % intXRatio != 0) {
 		partialDestRect.setWidth((partialDestRect.width()/intXRatio + 1) * intXRatio);
 	}
 
 	const int intYRatio = qCeil(yRatio);
-	const int yRem = partialDestRect.height() % intYRatio;
-	if(yRem) {
+	if(partialDestRect.height() % intYRatio != 0) {
 		partialDestRect.setHeight((partialDestRect.height()/intYRatio + 1) * intYRatio);
 	}
 
