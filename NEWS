@@ -7,6 +7,9 @@ Version 0.2.1
 
  * Main: Make preview background color setting persistent.
 
+ * Main: Solve excessive memory usage when zooming in. This can save around
+   1 GiB of RAM in some cases (!).
+
  * Palette Editor: "Add from List" should stay disabled when there are no
    available palettes.
 
