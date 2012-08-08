@@ -121,3 +121,14 @@ void about(QWidget* parent)
 }
 
 } // end namespace JobNotifications
+
+QString capitalize(const QString& str)
+{
+	if(str.isEmpty())
+		return str;
+
+	QString ret = str.toUpper().left(1);
+	ret += str.right(str.length() - 1);
+
+	return ret;
+}

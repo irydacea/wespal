@@ -44,17 +44,6 @@
 namespace {
 	struct no_initial_file {};
 	struct canceled_job    {};
-
-	QString capitalize(const QString& str)
-	{
-		if(str.isEmpty())
-			return str;
-
-		QString ret = str.toUpper().left(1);
-		ret += str.right(str.length() - 1);
-
-		return ret;
-	}
 }
 
 MainWindow::MainWindow(QWidget *parent) :

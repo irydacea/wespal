@@ -46,6 +46,8 @@ private:
 	bool initial_state_;
 };
 
+QString capitalize(const QString& str);
+
 namespace MosUi {
 
 void message(QWidget* parent, const QString& message, const QString& details = "");
