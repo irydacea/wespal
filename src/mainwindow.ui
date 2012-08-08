@@ -569,7 +569,7 @@
   <customwidget>
    <class>ImageLabel</class>
    <extends>QLabel</extends>
-   <header>src/imagelabel.hpp</header>
+   <header>../src/imagelabel.hpp</header>
   </customwidget>
  </customwidgets>
  <tabstops>
