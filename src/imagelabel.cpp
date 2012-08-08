@@ -20,6 +20,7 @@
 
 #include "imagelabel.hpp"
 
+#include <qmath.h>
 #include <QPainter>
 #include <QPaintEvent>
 
@@ -43,7 +44,24 @@ void ImageLabel::paintEvent(QPaintEvent* event)
 	const qreal xRatio = qreal(width()) / qreal(pm->width());
 	const qreal yRatio = qreal(height()) / qreal(pm->height());
 
-	const QRect& partialDestRect = event->rect();
+	QRect partialDestRect = event->rect();
+
+	p.setClipRect(partialDestRect);
+
+	// We must maintain a fixed aspect ratio when scaling up,
+	// otherwise pixels cease to be squares.
+
+	const int intXRatio = qCeil(xRatio);
+	const int xRem = partialDestRect.width() % intXRatio;
+	if(xRem) {
+		partialDestRect.setWidth((partialDestRect.width()/intXRatio + 1) * intXRatio);
+	}
+
+	const int intYRatio = qCeil(yRatio);
+	const int yRem = partialDestRect.height() % intYRatio;
+	if(yRem) {
+		partialDestRect.setHeight((partialDestRect.height()/intYRatio + 1) * intYRatio);
+	}
 
 	QRect partialSrcRect(
 		partialDestRect.x() / xRatio,
