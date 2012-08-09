@@ -551,10 +551,16 @@ void CustomPalettes::on_cmdAddFromList_clicked()
 	if(colors.size()) {
 		QList<QRgb>& pal = getCurrentPalette();
 
+		const bool firstColorChanged = pal.empty();
+
 		pal.append(colors);
 		// Force refresh the current palette colors view.
 		populatePaletteView(pal);
 		setPaletteEditControlsEnabled(true);
+
+		if(firstColorChanged) {
+			updatePaletteIcon();
+		}
 	}
 }
 
