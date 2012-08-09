@@ -264,12 +264,15 @@
   <tabstop>listPals</tabstop>
   <tabstop>cmdAddPal</tabstop>
   <tabstop>cmdDelPal</tabstop>
+  <tabstop>tbMoreOptions</tabstop>
   <tabstop>listColors</tabstop>
   <tabstop>leColor</tabstop>
   <tabstop>tbEditColor</tabstop>
   <tabstop>cmdAddCol</tabstop>
   <tabstop>cmdDelCol</tabstop>
+  <tabstop>cmdAddFromList</tabstop>
   <tabstop>cmdWml</tabstop>
+  <tabstop>cmdRc</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
