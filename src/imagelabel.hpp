@@ -36,6 +36,7 @@ public:
 
 	void setPixmap(const QPixmap& pixmap) {
 		pixmap_ = pixmap;
+		update();
 	}
 
 signals:
