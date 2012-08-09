@@ -71,10 +71,10 @@ CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalett
 	// Use theme icons for some buttons on X11. This is not
 	// in the .ui file for Qt 4.6 - 4.7 compatibility.
 
-	ui->cmdAddPal->setIcon(QIcon::fromTheme("list-add", QIcon(":/list-add-22.png")));
-	ui->cmdDelPal->setIcon(QIcon::fromTheme("list-remove", QIcon(":/list-remove-22.png")));
+	ui->cmdAddPal->setIcon(QIcon::fromTheme("list-add", QIcon(":/list-add-16.png")));
+	ui->cmdDelPal->setIcon(QIcon::fromTheme("list-remove", QIcon(":/list-remove-16.png")));
 	ui->action_Rename->setIcon(QIcon::fromTheme("edit-rename"));
-	ui->action_Duplicate->setIcon(QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-22.png")));
+	ui->action_Duplicate->setIcon(QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-16.png")));
 }
 
 CustomPalettes::~CustomPalettes()
