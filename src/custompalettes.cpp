@@ -554,6 +554,7 @@ void CustomPalettes::on_cmdAddFromList_clicked()
 		pal.append(colors);
 		// Force refresh the current palette colors view.
 		populatePaletteView(pal);
+		setPaletteEditControlsEnabled(true);
 	}
 }
 
