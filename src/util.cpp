@@ -38,7 +38,7 @@ bool doJobNotification(QWidget* parent, const QString& message, const QString& d
 	msg.setText(message);
 	msg.setDetailedText(details);
 	msg.setIcon(icon);
-	msg.setWindowModality(Qt::WindowModal);
+	msg.setModal(true);
 
 	if(icon == QMessageBox::Question) {
 		msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -116,7 +116,7 @@ void about(QWidget* parent)
 	msg.setText(text);
 	msg.setIconPixmap(QPixmap(":/wesnoth-rcx-icon-128.png"));
 	msg.setWindowTitle(tr("Wesnoth RCX"));
-	msg.setWindowModality(Qt::WindowModal);
+	msg.setModal(true);
 	msg.exec();
 }
 
