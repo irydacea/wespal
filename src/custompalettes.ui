@@ -103,6 +103,9 @@
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
              <widget class="QListWidget" name="listColors">
+              <property name="editTriggers">
+               <set>QAbstractItemView::DoubleClicked</set>
+              </property>
               <property name="uniformItemSizes">
                <bool>true</bool>
               </property>
