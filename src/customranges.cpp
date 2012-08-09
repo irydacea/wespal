@@ -62,10 +62,10 @@ CustomRanges::CustomRanges(const QMap<QString, color_range>& initialRanges, QWid
 	// Use theme icons for some buttons on X11. This is not
 	// in the .ui file for Qt 4.6 - 4.7 compatibility.
 
-	ui->cmdAdd->setIcon(QIcon::fromTheme("list-add"));
-	ui->cmdDelete->setIcon(QIcon::fromTheme("list-remove"));
+	ui->cmdAdd->setIcon(QIcon::fromTheme("list-add", QIcon(":/list-add-22.png")));
+	ui->cmdDelete->setIcon(QIcon::fromTheme("list-remove", QIcon(":/list-remove-22.png")));
 	ui->action_Rename->setIcon(QIcon::fromTheme("edit-rename"));
-	ui->action_Duplicate->setIcon(QIcon::fromTheme("edit-copy"));
+	ui->action_Duplicate->setIcon(QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-22.png")));
 }
 
 CustomRanges::~CustomRanges()

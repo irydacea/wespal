@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file alias="wesnoth-rcx-icon-64.png">icons/64x64/wesnoth-rcx.png</file>
         <file alias="wesnoth-rcx-icon-128.png">icons/128x128/wesnoth-rcx.png</file>
+        <file alias="list-add-22.png">icons/22x22/list-add.png</file>
+        <file alias="list-remove-22.png">icons/22x22/list-remove.png</file>
+        <file alias="edit-copy-22.png">icons/22x22/edit-copy.png</file>
     </qresource>
 </RCC>
