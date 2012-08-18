@@ -77,6 +77,7 @@ void CodeSnippetDialog::handleCopy()
 {
 	QApplication::clipboard()->setText(ui->teContents->toPlainText());
 	ui->boxClipboardMessage->setVisible(true);
+	ui->teContents->selectAll();
 }
 
 void CodeSnippetDialog::handleSave()
