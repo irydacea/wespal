@@ -146,3 +146,13 @@ void mos_set_preview_background_color_name(const QString& colorName)
 {
 	QSettings().setValue("preview_background", colorName);
 }
+
+QSize mos_get_main_window_size()
+{
+	return QSettings().value("mainwindow_size").toSize();
+}
+
+void mos_set_main_window_size(const QSize& size)
+{
+	QSettings().setValue("mainwindow_size", size);
+}

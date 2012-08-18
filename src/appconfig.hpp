@@ -24,6 +24,7 @@
 #include "wesnothrc.hpp"
 
 #include <QList>
+#include <QSize>
 #include <QStringList>
 
 enum PreviewBackgroundColor {
@@ -42,5 +43,8 @@ unsigned mos_max_recent_files();
 
 QString mos_get_preview_background_color_name();
 void mos_set_preview_background_color_name(const QString& colorName);
+
+QSize mos_get_main_window_size();
+void mos_set_main_window_size(const QSize& size);
 
 #endif // APPCONFIG_HPP

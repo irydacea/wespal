@@ -7,6 +7,8 @@ Version 0.2.1
 
  * Main: Make preview background color setting persistent.
 
+ * Main: Remember the main window size for subsequent runs.
+
  * Main: Solve excessive memory usage when zooming in. This can save around
    1 GiB of RAM in some cases (!).
 

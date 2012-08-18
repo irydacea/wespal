@@ -72,6 +72,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	mos_config_load(user_color_ranges_, user_palettes_);
 
+	const QSize& lastWindowSize = mos_get_main_window_size();
+
+	if(lastWindowSize.isValid()) {
+		resize(lastWindowSize);
+	}
+
 	generateMergedRcDefinitions();
 	processRcDefinitions();
 
@@ -334,6 +340,11 @@ void MainWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+	mos_set_main_window_size(size());
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
