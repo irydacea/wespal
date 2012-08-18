@@ -24,6 +24,7 @@
 
 #include "codesnippetdialog.hpp"
 #include "colorlistinputdialog.hpp"
+#include "defs.hpp"
 #include "paletteitem.hpp"
 #include "wesnothrc.hpp"
 
@@ -52,21 +53,7 @@ CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalett
 
 	ui->tbMoreOptions->setMenu(menuMore);
 
-	QMenu* const menuRanges = new QMenu(ui->cmdRc);
-
-	;
-	for(QMap<QString, color_range>::const_iterator k = ranges_.constBegin();
-		k != ranges_.constEnd(); ++k)
-	{
-		// TODO: unique keyboard accel for each entry.
-		QAction* const act = menuRanges->addAction(k.key());
-		act->setData(k.key());
-		act->setIcon(createColorIcon(k.value().mid()));
-
-		connect(act, SIGNAL(triggered()), this, SLOT(handleRcOption()));
-	}
-
-	ui->cmdRc->setMenu(menuRanges);
+	ui->cmdRc->setMenu(createRangesMenu());
 
 	// Use theme icons for some buttons on X11. This is not
 	// in the .ui file for Qt 4.6 - 4.7 compatibility.
@@ -92,6 +79,56 @@ void CustomPalettes::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+QMenu* CustomPalettes::createRangesMenu()
+{
+	QMenu* const menu = new QMenu(ui->cmdRc);
+
+	// We want to sort the ranges menu here so custom ranges
+	// go always at the end.
+
+	QStringList rangeUiNames;
+
+	// NOTE: these names must correspond to the entries in mosOrderedRangeNames!
+	rangeUiNames << tr("Red") << tr("Blue") << tr("Green")
+				 << tr("Purple") << tr("Black") << tr("Brown")
+				 << tr("Orange") << tr("White") << tr("Teal");
+
+	Q_ASSERT(rangeUiNames.size() == mosOrderedRangeNames.size());
+
+	QMap<QString, color_range> sortedRanges = ranges_;
+
+	for(int k = 0; k < mosOrderedRangeNames.size(); ++k) {
+		const QString& id = mosOrderedRangeNames[k];
+		// Use the copy of the color range in ranges_ in order to
+		// take into account potential user-overridden builtins.
+		addRangesMenuEntry(menu, id, sortedRanges.value(id), rangeUiNames[k]);
+		sortedRanges.remove(id);
+	}
+
+	// Now we can deal with any remaining user-defined ranges.
+
+	menu->addSeparator();
+
+	for(QMap<QString, color_range>::const_iterator k = sortedRanges.constBegin();
+		k != sortedRanges.constEnd(); ++k)
+	{
+		addRangesMenuEntry(menu, k.key(), k.value(), capitalize(k.key()));
+	}
+
+	return menu;
+}
+
+void CustomPalettes::addRangesMenuEntry(QMenu* menu, const QString& id, const color_range& range, const QString& text)
+{
+	// TODO: unique keyboard accel for each entry?
+	QAction* const act = menu->addAction(text);
+
+	act->setData(id);
+	act->setIcon(createColorIcon(range.mid()));
+
+	connect(act, SIGNAL(triggered()), this, SLOT(handleRcOption()));
 }
 
 void CustomPalettes::updatePaletteUI()

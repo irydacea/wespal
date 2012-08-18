@@ -82,6 +82,9 @@ private:
 
 	QMap<QString, color_range> ranges_;
 
+	QMenu* createRangesMenu();
+	void addRangesMenuEntry(QMenu* menu, const QString& id, const color_range& range, const QString& text);
+
 	void addPaletteListEntry(const QString& name);
 	void removePaletteListEntry(const QString& name);
 
