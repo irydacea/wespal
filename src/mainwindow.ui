@@ -135,7 +135,7 @@
          <property name="whatsThis">
           <string/>
          </property>
-         <widget class="ImageLabel" name="previewOriginal">
+         <widget class="ImageLabel" name="previewOriginal" native="true">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -177,7 +177,7 @@
            <height>162</height>
           </rect>
          </property>
-         <widget class="ImageLabel" name="previewRc">
+         <widget class="ImageLabel" name="previewRc" native="true">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -280,9 +280,15 @@
         </item>
         <item>
          <widget class="QStackedWidget" name="staFunctionOpts">
-          <property name="maximumSize">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
            <size>
-            <width>203</width>
+            <width>0</width>
             <height>120</height>
            </size>
           </property>
