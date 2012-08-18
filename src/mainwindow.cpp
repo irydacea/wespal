@@ -99,8 +99,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	// Use theme icons for some buttons on X11. This is not
 	// in the .ui file for Qt 4.6 - 4.7 compatibility.
 
-	ui->tbZoomIn->setIcon(QIcon::fromTheme("zoom-in"));
-	ui->tbZoomOut->setIcon(QIcon::fromTheme("zoom-out"));
+	ui->tbZoomIn->setIcon(QIcon::fromTheme("zoom-in", QIcon(":/zoom-in-16.png")));
+	ui->tbZoomOut->setIcon(QIcon::fromTheme("zoom-out", QIcon(":/zoom-out-16.png")));
 
 	for(unsigned k = 0; k < mos_max_recent_files(); ++k) {
 		QAction* act = new QAction(this);
