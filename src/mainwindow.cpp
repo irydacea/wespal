@@ -342,7 +342,7 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent *e)
+void MainWindow::closeEvent(QCloseEvent * /*e*/)
 {
 	mos_set_main_window_size(size());
 }
