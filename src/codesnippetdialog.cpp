@@ -35,10 +35,17 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	ui->setupUi(this);
 	ui->teContents->setPlainText(contents);
 
+	QPushButton* const closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
+
 	QPushButton* const copyButton = ui->buttonBox->addButton(tr("Copy"), QDialogButtonBox::ApplyRole);
 
 	copyButton->setDefault(true);
-	copyButton->setIcon(QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-16.png")));
+	// Primitive check to see whether the current style likes assigning icons
+	// to dialog buttons.
+	if(closeButton && !closeButton->icon().isNull()) {
+		copyButton->setIcon(QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-16.png")));
+	}
+
 	connect(copyButton, SIGNAL(clicked()), this, SLOT(handleCopy()));
 
 	QPushButton* const saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
