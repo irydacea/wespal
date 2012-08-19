@@ -1,10 +1,6 @@
 Known issues
 ------------
 
- * Zoom can use excessive amounts of memory with larger (than 72x72) images,
-   in particular when the zoom level is greater than 200%. It is also very
-   demanding on the CPU while switching zoom levels.
-
  * Zooming does not preserve the current view, always scrolling to the center
    of the picture instead.
 
