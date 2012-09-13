@@ -650,6 +650,8 @@ void CustomPalettes::handleRcOption()
 
 	// Force refresh the current palette colors view.
 	populatePaletteView(pal);
+
+	updatePaletteIcon();
 }
 
 void CustomPalettes::on_leColor_textEdited(const QString &arg1)
