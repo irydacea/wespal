@@ -39,7 +39,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
             VALUE "FileDescription", "Wesnoth team-coloring tool"
             VALUE "FileVersion", MOS_VERSION_STRING
             VALUE "InternalName", "wesnoth-rcx"
-            VALUE "LegalCopyright", "Copyright (C) 2008 - 2012 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>"
+            VALUE "LegalCopyright", "Copyright (C) 2008 - 2013 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>"
             VALUE "OriginalFilename", "wesnoth-rcx.exe"
             VALUE "ProductName", "Wesnoth RCX"
             VALUE "ProductVersion", MOS_VERSION_STRING

@@ -1,7 +1,7 @@
 //
 // codename Morning Star
 //
-// Copyright (C) 2010 - 2012 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
+// Copyright (C) 2010 - 2013 by Ignacio Riquelme Morelle <shadowm2006@gmail.com>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ void about(QWidget* parent)
 		tr("<h3>Wesnoth RCX %1</h3>").arg(mos_version);
 
 	text += "<p>" + tr("Built with Qt %1.").arg(QT_VERSION_STR) + "<br>";
-	text += tr("Copyright &copy; 2008 &#8211; 2012 by Ignacio Riquelme Morelle.") + "<br>";
+	text += tr("Copyright &copy; 2008 &#8211; 2013 by Ignacio Riquelme Morelle.") + "<br>";
 	text += "&lt;shadowm@wesnoth.org&gt;</p>";
 
 	text += "<p>" +
