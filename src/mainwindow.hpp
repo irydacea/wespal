@@ -52,6 +52,7 @@ protected:
 	void dropEvent(QDropEvent *e);
 	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
+	void keyPressEvent(QKeyEvent *event);
 
 private:
 	QMap< QString, color_range > color_ranges_;

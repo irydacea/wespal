@@ -347,6 +347,17 @@ void MainWindow::closeEvent(QCloseEvent * /*e*/)
 	mos_set_main_window_size(size());
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+	if(event->matches(QKeySequence::ZoomIn)) {
+		on_tbZoomIn_clicked();
+	} else if(event->matches(QKeySequence::ZoomOut)) {
+		on_tbZoomOut_clicked();
+	} else {
+		QMainWindow::keyPressEvent(event);
+	}
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton) {

@@ -3,6 +3,8 @@ Version 0.3.0
 
  * Palette Editor: Update palette icon after recoloring.
 
+ * Main: Zoom view in/out using Ctrl++ (plus) or Ctrl+- (minus).
+
 
 Version 0.2.1
 -------------
