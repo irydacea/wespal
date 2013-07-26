@@ -135,6 +135,9 @@ private:
 
 	void centerScrollArea(QScrollArea* scrollArea);
 
+	void do_custom_preview_color_option();
+	void do_custom_preview_color_icon();
+
 private slots:
 	void on_action_Reload_triggered();
 	void on_actionColor_ranges_triggered();

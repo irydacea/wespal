@@ -443,6 +443,8 @@
      <addaction name="actionPreviewBgLight"/>
      <addaction name="actionPreviewBgDark"/>
      <addaction name="actionPreviewBgBlack"/>
+     <addaction name="separator"/>
+     <addaction name="actionPreviewBgCustom"/>
     </widget>
     <addaction name="menuPreview_Background"/>
     <addaction name="separator"/>
@@ -549,6 +551,14 @@
    </property>
    <property name="text">
     <string>&amp;Default</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgCustom">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Custom...</string>
    </property>
   </action>
  </widget>

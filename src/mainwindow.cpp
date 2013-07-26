@@ -23,12 +23,14 @@
 #include "custompalettes.hpp"
 #include "customranges.hpp"
 #include "mainwindow.hpp"
+#include "paletteitem.hpp"
 #include "rc_qt4.hpp"
 #include "ui_mainwindow.h"
 #include "util.hpp"
 #include "version.hpp"
 
 #include <QActionGroup>
+#include <QColorDialog>
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QIcon>
@@ -117,8 +119,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	update_recent_files_menu();
 
+	const QString& bgColorName = mos_get_preview_background_color_name();
+
 	QActionGroup* bgColorActs = new QActionGroup(this);
 
+	// The Custom Color entry goes into the list first so that it is preemptively
+	// selected first on the next loop in case the color saved in preferences isn't
+	// any of the predefined ones.
+	bgColorActs->addAction(ui->actionPreviewBgCustom);
+	ui->actionPreviewBgCustom->setData(bgColorName);
+	do_custom_preview_color_icon();
 	bgColorActs->addAction(ui->actionPreviewBgBlack);
 	ui->actionPreviewBgBlack->setData(QColor(Qt::black).name());
 	bgColorActs->addAction(ui->actionPreviewBgDark);
@@ -129,8 +139,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->actionPreviewBgLight->setData(QColor(Qt::lightGray).name());
 	bgColorActs->addAction(ui->actionPreviewBgWhite);
 	ui->actionPreviewBgWhite->setData(QColor(Qt::white).name());
-
-	const QString& bgColorName = mos_get_preview_background_color_name();
 
 	QList<QAction*> bgColorActList = bgColorActs->actions();
 	foreach(QAction* const act, bgColorActList) {
@@ -917,7 +925,29 @@ void MainWindow::handlePreviewBgOption(bool checked)
 	if(!act)
 		return;
 
+	if(act == ui->actionPreviewBgCustom) {
+		// We want to give the user the option to customize the preview color
+		// first.
+		do_custom_preview_color_option();
+	}
+
 	setPreviewBackgroundColor(act->data().toString());
+}
+
+void MainWindow::do_custom_preview_color_option()
+{
+	QAction* const act = ui->actionPreviewBgCustom;
+	QColor userColor = QColorDialog::getColor(QColor(act->data().toString()), this);
+	if(userColor.isValid()) {
+		act->setData(userColor.name());
+		do_custom_preview_color_icon();
+	}
+}
+
+void MainWindow::do_custom_preview_color_icon()
+{
+	QAction* const act = ui->actionPreviewBgCustom;
+	createColorIcon(QColor(act->data().toString()));
 }
 
 void MainWindow::setPreviewBackgroundColor(const QString& colorName)

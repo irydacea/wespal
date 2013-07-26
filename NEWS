@@ -7,6 +7,9 @@ Version 0.3.0
 
  * Main: Zoom view in/out using Ctrl+<vertical scrollwheel>.
 
+ * Main: Made it possible for the user to choose any custom color for the
+   preview background.
+
 
 Version 0.2.1
 -------------
