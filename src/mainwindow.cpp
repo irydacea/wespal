@@ -571,11 +571,19 @@ void MainWindow::do_open(const QString &initial_file)
 	QString path_temp;
 	QString start_dir;
 
+	QStringList picture_locations =
+			QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
+
 	if(initial_file.isNull() || initial_file.isEmpty()) {
-		if(img_path_.isEmpty())
-			start_dir = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation);
-		else
+		if(img_path_.isEmpty()) {
+			if(!picture_locations.empty()) {
+				start_dir = picture_locations.first();
+			} else {
+				start_dir = ".";
+			}
+		} else {
 			start_dir = QFileInfo(img_path_).absolutePath();
+		}
 
 		path_temp = QFileDialog::getOpenFileName(
 			this,
