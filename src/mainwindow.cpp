@@ -32,11 +32,13 @@
 #include <QActionGroup>
 #include <QColorDialog>
 #include <QDesktopServices>
+#include <QDrag>
 #include <QFileDialog>
 #include <QIcon>
 #include <QImageReader>
 #include <QImageWriter>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QPushButton>
 #include <QScrollBar>
 #include <QStyle>
