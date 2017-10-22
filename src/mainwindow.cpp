@@ -534,34 +534,37 @@ bool MainWindow::initial_open(const QString &initial_file)
 QString MainWindow::supported_file_patterns() const
 {
 	QString ret;
-	QList<QByteArray> supported_fmts = QImageReader::supportedImageFormats();
-	bool have_xcf = false;
-	bool have_psd = false;
+	QString all_label = tr("All Supported Files") + " (*.png *.bmp";
 
-	foreach(QByteArray str, supported_fmts) {
-		QString qstr(str);
-		if(qstr == "XCF") {
-			have_xcf = true;
-		}
-		else if(qstr == "PSD") {
-			have_psd = true;
+	QMap<QString, QString> all_fmts = {
+		{ ".png", tr("PNG image") },
+		{ ".bmp", tr("Windows Bitmap") },
+	};
+
+	QMap<QString, QString> optional_fmts = {
+		{ "*.xcf", tr("GIMP image") },
+		{ "*.psd", tr("Photoshop image") },
+		{ "*.ora", tr("OpenRaster image") },
+		{ "*.kra", tr("Krita image") },
+	};
+
+	QList<QByteArray> supported_list = QImageReader::supportedImageFormats();
+	foreach (const auto& supp, supported_list) {
+		QString str = "*." + supp;
+		auto it = optional_fmts.find(str.toLower());
+		if (it != optional_fmts.end()) {
+			all_fmts[it.key()] = it.value();
 		}
 	}
 
-	ret += tr("All Supported Files") + " (*.png *.bmp";
-	if(have_xcf) { ret += " *.xcf"; }
-	if(have_psd) { ret += " *.psd"; }
+	ret += tr("All Supported Files") + " (";
+	ret += QStringList{all_fmts.keys()}.join(' ') + ")";
 
-	ret += ");;" + tr("PNG image") + " (*.png);;" + tr("Windows BMP image");
-	ret += " (*.bmp);;";
+	foreach (const auto& ext, all_fmts.keys()) {
+		ret += ";;" + all_fmts[ext] + " (" + ext + ")";
+	}
 
-	if(have_xcf)
-		ret += tr("GIMP image") + " (*.xcf);;";
-
-	if(have_psd)
-		ret += tr("Photoshop image") + " (*.psd);;";
-
-	ret += tr("All files") + " (*)";
+	ret += ";;" + tr("All Files") + " (*)";
 
 	return ret;
 }
