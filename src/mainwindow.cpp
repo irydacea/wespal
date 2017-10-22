@@ -534,7 +534,6 @@ bool MainWindow::initial_open(const QString &initial_file)
 QString MainWindow::supported_file_patterns() const
 {
 	QString ret;
-	QString all_label = tr("All Supported Files") + " (*.png *.bmp";
 
 	QMap<QString, QString> all_fmts = {
 		{ ".png", tr("PNG image") },
