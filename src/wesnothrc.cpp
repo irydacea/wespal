@@ -179,7 +179,7 @@ QString generate_color_palette_wml(const QString& name, const QList<QRgb>& palet
 			wml_indent + makeIdentifier(name) + "=\"";
 
 	bool first = true;
-	foreach(QRgb rgb, palette) {
+	for(QRgb rgb : palette) {
 		if(!first) {
 			code += ",";
 		} else {

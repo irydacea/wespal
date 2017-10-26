@@ -52,7 +52,7 @@ void mos_config_load(QMap<QString, color_range> &ranges, QMap<QString, QList<QRg
 		const QStringList vals = s.value("values").toString().split(",", QString::SkipEmptyParts);
 		QList<QRgb> rgblist;
 
-		foreach(const QString& v, vals) {
+		for(const QString& v : vals) {
 			rgblist.push_back(v.toUInt());
 		}
 
@@ -90,7 +90,7 @@ void mos_config_save(const QMap<QString, color_range> &ranges, const QMap<QStrin
 
 		QString csv;
 
-		foreach(QRgb v, i.value()) {
+		for(QRgb v : i.value()) {
 			if(!csv.isEmpty())
 				csv += ',';
 			csv += QString::number(v);

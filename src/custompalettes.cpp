@@ -173,7 +173,7 @@ void CustomPalettes::removePaletteListEntry(const QString &name)
 	QList<QListWidgetItem*> const items = ui->listPals->findItems(name, Qt::MatchFixedString);
 	Q_ASSERT(items.size() <= 1);
 
-	foreach(QListWidgetItem* w, items) {
+	for(QListWidgetItem* w : items) {
 		delete ui->listPals->takeItem(ui->listPals->row(w));
 	}
 }
@@ -215,7 +215,7 @@ void CustomPalettes::populatePaletteView(const QList<QRgb> &pal)
 
 		listw->clear();
 
-		foreach(QRgb rgb, pal) {
+		for(QRgb rgb : pal) {
 			QListWidgetItem* itemw = new QListWidgetItem("", listw);
 			itemw->setData(Qt::UserRole, rgb);
 			itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);

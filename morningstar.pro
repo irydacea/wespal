@@ -28,6 +28,8 @@ DESTDIR = .
 
 VPATH = src
 
+DEFINES += QT_NO_FOREACH
+
 SOURCES += \
     appconfig.cpp \
     codesnippetdialog.cpp \

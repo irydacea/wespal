@@ -47,7 +47,7 @@ bool rc_image(const QImage &input, QImage &output, const rc_map &cvt_map)
 	for(y = 0; y < output.height(); ++y) {
 		for (x = 0; x < output.width(); ++x) {
 			QRgb color = output.pixel(x, y);
-			foreach(QRgb key, cvt_map.keys()) {
+			for(QRgb key : cvt_map.keys()) {
 				if(rgb_equals(key, color)) {
 					output.setPixel(x, y, rc_single_color(cvt_map[key], color));
 				}

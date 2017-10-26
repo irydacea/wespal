@@ -143,7 +143,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->actionPreviewBgWhite->setData(QColor(Qt::white).name());
 
 	QList<QAction*> bgColorActList = bgColorActs->actions();
-	foreach(QAction* const act, bgColorActList) {
+	for(auto* act : bgColorActList) {
 		connect(act, SIGNAL(triggered(bool)), this, SLOT(handlePreviewBgOption(bool)));
 
 		// We must find the menu item for the color we read from the app
@@ -266,7 +266,7 @@ void MainWindow::processRcDefinitions()
 	//
 
 	const QList<QString>& userPaletteIds = user_palettes_.uniqueKeys();
-	foreach(const QString& pal_name, userPaletteIds) {
+	for(const auto& pal_name : userPaletteIds) {
 		if(mosBuiltinColorPalettes.find(pal_name) != mosBuiltinColorPalettes.end()) {
 			// Skip redefinitions of built-in palettes, we only care about
 			// ids and names at this point.
@@ -302,7 +302,7 @@ void MainWindow::processRcDefinitions()
 	//
 
 	const QList<QString>& userRangeIds = user_color_ranges_.uniqueKeys();
-	foreach(const QString& id, userRangeIds) {
+	for(const auto& id : userRangeIds) {
 		if(mosBuiltinColorRanges.find(id) != mosBuiltinColorRanges.end()) {
 			// Skip redefinitions of built-in ranges, we only care about
 			// ids and names at this point.
@@ -548,7 +548,7 @@ QString MainWindow::supported_file_patterns() const
 	};
 
 	QList<QByteArray> supported_list = QImageReader::supportedImageFormats();
-	foreach (const auto& supp, supported_list) {
+	for (const auto& supp : supported_list) {
 		QString str = "*." + supp;
 		auto it = optional_fmts.find(str.toLower());
 		if (it != optional_fmts.end()) {
@@ -559,7 +559,7 @@ QString MainWindow::supported_file_patterns() const
 	ret += tr("All Supported Files") + " (";
 	ret += QStringList{all_fmts.keys()}.join(' ') + ")";
 
-	foreach (const auto& ext, all_fmts.keys()) {
+	for (const auto& ext : all_fmts.keys()) {
 		ret += ";;" + all_fmts[ext] + " (" + ext + ")";
 	}
 
