@@ -26,6 +26,7 @@
 #include <QClipboard>
 #include <QFileDialog>
 #include <QPushButton>
+#include <QStyle>
 #include <QTextStream>
 
 CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
