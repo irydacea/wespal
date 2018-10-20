@@ -18,9 +18,11 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#include <QApplication>
 #include "mainwindow.hpp"
 #include "version.hpp"
+
+#include <QApplication>
+#include <QTimer>
 
 int main(int argc, char *argv[])
 {
@@ -39,10 +41,13 @@ int main(int argc, char *argv[])
 	a.setWindowIcon(QIcon(":/wesnoth-rcx-icon-64.png"));
 
 	MainWindow w;
-	if(w.initial_open(initial_file)) {
-		w.show();
-		return a.exec();
-	}
+	w.show();
 
-	return 1;
+	QTimer::singleShot(0, [&w, &initial_file]() {
+		if(!w.initial_open(initial_file)) {
+			QApplication::exit(1);
+		}
+	});
+
+	return a.exec();
 }
