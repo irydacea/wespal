@@ -1,6 +1,11 @@
 Version 0.3.0
 -------------
 
+ * Ported to Qt 5 and C++11.
+
+ * Added more unit team colors introduced in Wesnoth 1.14 (light red, dark
+   red, light blue, bright green, bright orange, gold).
+
  * Palette Editor: Update palette icon after recoloring.
 
  * Main: Zoom view in/out using Ctrl++ (plus) or Ctrl+- (minus).
