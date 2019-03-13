@@ -47,7 +47,11 @@ struct mosBuiltinDataConstructor
 {
 	mosBuiltinDataConstructor()
 	{
+		//
 		// Definitions taken from /data/core/team-colors.cfg
+		//
+
+		// Unit TC
 
 		register_color_range("red", color_range(0xFF0000, 0xFFFFFF, 0x000000));
 		register_color_range("blue", color_range(0x2E419B, 0xFFFFFF, 0x0F0F0F));
@@ -58,6 +62,37 @@ struct mosBuiltinDataConstructor
 		register_color_range("orange", color_range(0xFF7E00, 0xFFFFFF, 0x0F0F0F));
 		register_color_range("white", color_range(0xE1E1E1, 0xFFFFFF, 0x1E1E1E));
 		register_color_range("teal", color_range(0x30CBC0, 0xFFFFFF, 0x000000));
+		register_color_range("lightred", color_range(0xD1620D, 0xFFFFFF, 0x000000));
+		register_color_range("darkred", color_range(0x8A0808, 0xFFFFFF, 0x000000));
+		register_color_range("lightblue", color_range(0x00A4FF, 0xFFFFFF, 0x000A21));
+		register_color_range("brightgreen", color_range(0x8CFF00, 0xEBFFBF, 0x2D4001));
+		register_color_range("brightorange", color_range(0x0FFC600, 0xFFF7E6, 0x792A00));
+		register_color_range("gold", color_range(0xFFF35A, 0xFFF8D2, 0x994F13));
+
+		// Terrain icon color ranges
+
+		/*
+		register_color_range("reef", color_range(0x00B6E3, 0x09FFDB, 0x00090D));
+		register_color_range("shallow_water", color_range(0x027CC4, 0x00FFE7, 0x00223F));
+		register_color_range("deep_water", color_range(0x00419E, 0x5CD6FF, 0x000B15));
+		register_color_range("swamp_water", color_range(0x33978C, 0x38FF8B, 0x092A1E));
+		register_color_range("flat", color_range(0x89C236, 0xD9FF62, 0x023B02));
+		register_color_range("hills", color_range(0xC0B030, 0xFBFF95, 0x353B00));
+		register_color_range("mountains", color_range(0x916B09, 0xE9DA7D, 0x3B3406));
+		register_color_range("forest", color_range(0x263E01, 0x69B70A, 0x142303));
+		register_color_range("sand", color_range(0xF1CE6C, 0xFFFCC0, 0x4A3212));
+		register_color_range("frozen", color_range(0x95B5E6, 0xFFF6BD, 0x180E5F));
+		register_color_range("cave", color_range(0x5A517D, 0xBBA1FF, 0x0A0616));
+		register_color_range("fungus", color_range(0x703816, 0xFB8435, 0x2B150B));
+		register_color_range("village", color_range(0x995B51, 0xFFE0DB, 0x24190F));
+		register_color_range("castle", color_range(0x988C85, 0xFFF0E1, 0x171514));
+		register_color_range("keep", color_range(0x6E6059, 0xFFF0E1, 0x171514));
+		register_color_range("rails", color_range(0x4C5E6E, 0xFFFFFF, 0x181E24));
+		register_color_range("unwalkable", color_range(0xBD001F, 0xFF1D29, 0x240506));
+		register_color_range("impassable", color_range(0x7D0013, 0xD81721, 0x240506));
+		register_color_range("fog", color_range(0x686868, 0xFFFFFF, 0x000000));
+		register_color_range("shroud", color_range(0x313131, 0x7E7E7E, 0x000000));
+		*/
 
 		register_palette("magenta")
 			<< 0xF49AC1 << 0x3F0016 << 0x55002A << 0x690039 << 0x7B0045 << 0x8C0051 << 0x9E005D << 0xB10069 << 0xC30074 << 0xD6007F << 0xEC008C << 0xEE3D96 << 0xEF5BA1 << 0xF172AC << 0xF287B6 << 0xF6ADCD << 0xF8C1D9 << 0xFAD5E5 << 0xFDE9F1;
