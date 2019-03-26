@@ -93,7 +93,9 @@ QMenu* CustomPalettes::createRangesMenu()
 	// NOTE: these names must correspond to the entries in mosOrderedRangeNames!
 	rangeUiNames << tr("Red") << tr("Blue") << tr("Green")
 				 << tr("Purple") << tr("Black") << tr("Brown")
-				 << tr("Orange") << tr("White") << tr("Teal");
+				 << tr("Orange") << tr("White") << tr("Teal")
+				 << tr("Lightred") << tr("Darkred") << tr("Lightblue")
+				 << tr("Brightgreen") << tr("Brightorange") << tr("Gold");
 
 	Q_ASSERT(rangeUiNames.size() == mosOrderedRangeNames.size());
 
