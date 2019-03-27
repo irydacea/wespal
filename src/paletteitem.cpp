@@ -83,7 +83,7 @@ void PaletteItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	}
 
 	painter->setPen(pen);
-	painter->setBrush(QColor(index.data(Qt::UserRole).toInt()));
+	painter->setBrush(QColor{index.data(Qt::UserRole).toUInt()});
 	painter->drawRect(area);
 }
 
@@ -92,7 +92,7 @@ bool PaletteItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, 
 	if(event->type() != QEvent::MouseButtonDblClick)
 		return false;
 
-	QColor color = index.data(Qt::UserRole).toInt();
+	QColor color = index.data(Qt::UserRole).toUInt();
 	color = QColorDialog::getColor(color, qobject_cast<QWidget*>(this->parent()));
 
 	if(color.isValid())
