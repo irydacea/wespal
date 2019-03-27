@@ -41,7 +41,7 @@ bool rc_image(const QImage &input, QImage &output, const rc_map &cvt_map)
 
 	// Always use ARGB
 	if(output.format() != QImage::Format_ARGB32)
-		output.convertToFormat(QImage::Format_ARGB32);
+		output = output.convertToFormat(QImage::Format_ARGB32);
 
 	int x, y;
 	for(y = 0; y < output.height(); ++y) {
