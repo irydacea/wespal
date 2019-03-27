@@ -38,4 +38,6 @@ extern QMap< QString, color_range > mosBuiltinColorRanges;
 /** Names of the built-in color ranges, sorted for presentation purposes. */
 extern QStringList mosOrderedRangeNames;
 
+const QStringList& mos_builtin_palette_display_names();
+
 #endif // DEFS_HPP

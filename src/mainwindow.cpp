@@ -280,33 +280,34 @@ void MainWindow::processRcDefinitions()
 	// Built-in color ranges.
 	//
 
-	QStringList rangeUiNames;
 	// NOTE: these names must correspond to the entries in mosOrderedRangeNames!
-	rangeUiNames << tr("Red") << tr("Blue") << tr("Green")
-				 << tr("Purple") << tr("Black") << tr("Brown")
-				 << tr("Orange") << tr("White") << tr("Teal")
-				 << tr("Light Red") << tr("Dark Red") << tr("Light Blue")
-				 << tr("Bright Green") << tr("Bright Orange") << tr("Gold") /*
-				 << tr("Terrain Icon: Reef")
-				 << tr("Terrain Icon: Shallow Water")
-				 << tr("Terrain Icon: Deep Water")
-				 << tr("Terrain Icon: Swamp Water")
-				 << tr("Terrain Icon: Flat")
-				 << tr("Terrain Icon: Hills")
-				 << tr("Terrain Icon: Mountains")
-				 << tr("Terrain Icon: Forest")
-				 << tr("Terrain Icon: Sand")
-				 << tr("Terrain Icon: Frozen")
-				 << tr("Terrain Icon: Cave")
-				 << tr("Terrain Icon: Fungus")
-				 << tr("Terrain Icon: Village")
-				 << tr("Terrain Icon: Castle")
-				 << tr("Terrain Icon: Keep")
-				 << tr("Terrain Icon: Rail")
-				 << tr("Terrain Icon: Unwalkable")
-				 << tr("Terrain Icon: Impassable")
-				 << tr("Terrain Icon: Fog")
-				 << tr("Terrain Icon: Shroud") */;
+	QStringList rangeUiNames = {
+		tr("Red"), tr("Blue"), tr("Green"),
+		tr("Purple"), tr("Black"), tr("Brown"),
+		tr("Orange"), tr("White"), tr("Teal"),
+		tr("Light Red"), tr("Dark Red"), tr("Light Blue"),
+		tr("Bright Green"), tr("Bright Orange"), tr("Gold"), /*
+		tr("Terrain Icon: Reef"),
+		tr("Terrain Icon: Shallow Water"),
+		tr("Terrain Icon: Deep Water"),
+		tr("Terrain Icon: Swamp Water"),
+		tr("Terrain Icon: Flat"),
+		tr("Terrain Icon: Hills"),
+		tr("Terrain Icon: Mountains"),
+		tr("Terrain Icon: Forest"),
+		tr("Terrain Icon: Sand"),
+		tr("Terrain Icon: Frozen"),
+		tr("Terrain Icon: Cave"),
+		tr("Terrain Icon: Fungus"),
+		tr("Terrain Icon: Village"),
+		tr("Terrain Icon: Castle"),
+		tr("Terrain Icon: Keep"),
+		tr("Terrain Icon: Rail"),
+		tr("Terrain Icon: Unwalkable"),
+		tr("Terrain Icon: Impassable"),
+		tr("Terrain Icon: Fog"),
+		tr("Terrain Icon: Shroud"), */
+	};
 
 	// It is paramount to ensure built-in ranges are displayed in a specific order,
 	// since Wesnoth associates digits from 1 to 9 to items in the sequence and we
