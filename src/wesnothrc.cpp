@@ -3,7 +3,7 @@
 // src/color_range.cpp - Recoloring mechanism (implementation)
 //
 // Copyright (C) 2003 - 2008 by the Battle for Wesnoth Project <www.wesnoth.org>
-// Copyright (C) 2010 - 2018 by Iris Morelle <shadowm2006@gmail.com>
+// Copyright (C) 2010 - 2019 by Iris Morelle <shadowm2006@gmail.com>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
