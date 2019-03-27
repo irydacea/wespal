@@ -82,7 +82,7 @@ private:
 	QImage img_original_;
 	QImage img_transview_;
 
-	float zoom_;
+	qreal zoom_;
 	bool ignore_drops_;
 	bool drag_use_rc_;
 	bool drag_start_;
@@ -90,7 +90,7 @@ private:
 
 	QVector<QAction*> recent_file_acts_;
 
-	QList<float> zoom_factors_;
+	QList<qreal> zoom_factors_;
 
 	void update_recent_files_menu();
 

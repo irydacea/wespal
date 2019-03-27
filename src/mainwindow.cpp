@@ -64,13 +64,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	img_path_(),
 	img_original_(),
 	img_transview_(),
-	zoom_(1.0f),
+	zoom_(1.0),
 	ignore_drops_(false),
 	drag_use_rc_(false),
 	drag_start_(false),
 	drag_start_pos_(),
 	recent_file_acts_(),
-	zoom_factors_()
+	zoom_factors_({ 0.5, 1.0, 2.0, 4.0, 8.0 })
 {
     ui->setupUi(this);
 
@@ -160,8 +160,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->staFunctionOpts->setCurrentIndex(0);
 	toggle_page2(false);
 	toggle_page1(true);
-
-	zoom_factors_ << 0.5f << 1.0f << 2.0f << 4.0f << 8.0f;
 
 	ui->zoomSlider->setMinimum(0);
 	ui->zoomSlider->setMaximum(zoom_factors_.size() - 1);
