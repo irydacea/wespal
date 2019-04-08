@@ -11,13 +11,15 @@ unix {
     icon64.files = icons/64x64/wesnoth-rcx.png
     icon128.path = /usr/local/share/icons/hicolor/128x128/apps
     icon128.files = icons/128x128/wesnoth-rcx.png
+    icon256.path = /usr/local/share/icons/hicolor/256x256/apps
+    icon256.files = icons/256x256/wesnoth-rcx.png
 
     menu.path = /usr/local/share/applications
     menu.files = x11/wesnoth-rcx.desktop
 
     target.path = /usr/local/bin
 
-    INSTALLS += target icon64 icon128 menu
+    INSTALLS += target icon64 icon128 icon256 menu
 }
 
 OBJECTS_DIR = obj
