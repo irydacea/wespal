@@ -6,6 +6,8 @@ TEMPLATE = app
 
 QT += widgets
 
+CONFIG += c++11
+
 unix {
     icon64.path = /usr/local/share/icons/hicolor/64x64/apps
     icon64.files = icons/64x64/wesnoth-rcx.png
