@@ -391,19 +391,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-	if((ui->previewRcContainer->hasFocus() || ui->previewOriginalContainer->hasFocus()) &&
-	   event->orientation() == Qt::Vertical && event->modifiers() & Qt::ControlModifier)
+	if(event->orientation() == Qt::Vertical && event->modifiers() & Qt::ControlModifier)
 	{
-		if(event->delta() > 0) {
+		if(event->angleDelta().y() > 0) {
 			on_tbZoomIn_clicked();
 			return;
-		} else if(event->delta()) {
+		} else if(event->angleDelta().y() < 0) {
 			on_tbZoomOut_clicked();
 			return;
 		}
 	}
-
-	event->ignore();
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
