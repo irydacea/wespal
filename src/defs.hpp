@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef DEFS_HPP
-#define DEFS_HPP
+#pragma once
 
 #include "wesnothrc.hpp"
 
@@ -39,5 +38,3 @@ extern QMap< QString, color_range > mosBuiltinColorRanges;
 extern QStringList mosOrderedRangeNames;
 
 const QStringList& mos_builtin_palette_display_names();
-
-#endif // DEFS_HPP

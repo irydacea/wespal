@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef CUSTOMPALETTES_HPP
-#define CUSTOMPALETTES_HPP
+#pragma once
 
 #include <QDialog>
 
@@ -110,5 +109,3 @@ private:
 
 	QString generateNewPaletteName(QString stem = QString()) const;
 };
-
-#endif // CUSTOMPALETTES_HPP

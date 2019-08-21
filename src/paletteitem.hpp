@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef PALETTEITEM_HPP
-#define PALETTEITEM_HPP
+#pragma once
 
 #include <QStyledItemDelegate>
 
@@ -48,5 +47,3 @@ private:
 };
 
 QIcon createColorIcon(const QColor &color, int width = 16, int height = 16);
-
-#endif // PALETTEITEM_HPP

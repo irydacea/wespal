@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef CODESNIPPETDIALOG_HPP
-#define CODESNIPPETDIALOG_HPP
+#pragma once
 
 #include <QDialog>
 
@@ -45,5 +44,3 @@ private slots:
 	void handleCopy();
 	void handleSave();
 };
-
-#endif // CODESNIPPETDIALOG_HPP

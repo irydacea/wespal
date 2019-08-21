@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef IMAGELABEL_HPP
-#define IMAGELABEL_HPP
+#pragma once
 
 #include <QWidget>
 
@@ -49,5 +48,3 @@ protected:
 private:
 	QPixmap pixmap_;
 };
-
-#endif // IMAGELABEL_HPP

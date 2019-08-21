@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef COLORLISTINPUTDIALOG_HPP
-#define COLORLISTINPUTDIALOG_HPP
+#pragma once
 
 #include <QDialog>
 
@@ -47,5 +46,3 @@ private:
 	Ui::ColorListInputDialog *ui;
 	QString listString_;
 };
-
-#endif // COLORLISTINPUTDIALOG_HPP

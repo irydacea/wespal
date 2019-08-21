@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#pragma once
 
 #include <QPointer>
 #include <QStringList>
@@ -62,5 +61,3 @@ void error(QWidget* parent, const QString& message, const QStringList& detailIte
 void about(QWidget* parent = NULL);
 
 } // end namespace JobUi
-
-#endif // UTIL_HPP

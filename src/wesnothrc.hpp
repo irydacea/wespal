@@ -20,10 +20,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-/** @file wesnothrcc.hpp */
-
-#ifndef WESNOTHRC_HPP_INCLUDED
-#define WESNOTHRC_HPP_INCLUDED
+#pragma once
 
 #include <QColor>
 #include <QMap>
@@ -141,7 +138,5 @@ rc_map recolor_palettes(const QList<QRgb>& key, const QList<QRgb>& new_values);
 QString generate_color_range_wml(const QString& name, const color_range& range);
 
 QString generate_color_palette_wml(const QString& name, const QList<QRgb>& palette);
-
-#endif
 
 // kate: indent-mode normal; encoding utf-8; space-indent off; indent-width 4;

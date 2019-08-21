@@ -19,13 +19,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef RC_QT4_HPP
-#define RC_QT4_HPP
+#pragma once
 
 #include "wesnothrc.hpp"
 
 #include <QImage>
 
 bool rc_image(const QImage& input, QImage& output, const rc_map& cvt_map);
-
-#endif // RC_QT4_HPP

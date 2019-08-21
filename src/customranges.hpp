@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef CUSTOMRANGES_HPP
-#define CUSTOMRANGES_HPP
+#pragma once
 
 #include <QDialog>
 
@@ -77,5 +76,3 @@ private slots:
 	void on_action_Rename_triggered();
 	void on_action_Duplicate_triggered();
 };
-
-#endif // CUSTOMRANGES_HPP

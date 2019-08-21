@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef APPCONFIG_HPP
-#define APPCONFIG_HPP
+#pragma once
 
 #include "wesnothrc.hpp"
 
@@ -46,5 +45,3 @@ void mos_set_preview_background_color_name(const QString& colorName);
 
 QSize mos_get_main_window_size();
 void mos_set_main_window_size(const QSize& size);
-
-#endif // APPCONFIG_HPP

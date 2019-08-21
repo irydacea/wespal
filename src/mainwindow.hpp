@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef MAINWINDOW_HPP
-#define MAINWINDOW_HPP
+#pragma once
 
 #include "wesnothrc.hpp"
 
@@ -159,5 +158,3 @@ private slots:
 
 	void handlePreviewBgOption(bool checked);
 };
-
-#endif // MAINWINDOW_HPP

@@ -18,8 +18,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-#ifndef VERSION_HPP
-#define VERSION_HPP
+#pragma once
 
 #define MOS_VERSION_STRING      "0.3.1-dev"
 
@@ -34,5 +33,3 @@
 extern const QString mos_version;
 
 #endif
-
-#endif // VERSION_HPP
