@@ -21,11 +21,11 @@
 #ifndef VERSION_HPP
 #define VERSION_HPP
 
-#define MOS_VERSION_STRING      "0.2.90-dev"
+#define MOS_VERSION_STRING      "0.3.0"
 
 #define MOS_VERSION_MAJOR       0
-#define MOS_VERSION_MINOR       2
-#define MOS_VERSION_RELEASE     90
+#define MOS_VERSION_MINOR       3
+#define MOS_VERSION_RELEASE     0
 
 #ifndef RC_INVOKED
 
