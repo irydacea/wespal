@@ -395,11 +395,11 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 	{
 		if(event->angleDelta().y() > 0) {
 			on_tbZoomIn_clicked();
-			return;
 		} else if(event->angleDelta().y() < 0) {
 			on_tbZoomOut_clicked();
-			return;
 		}
+		event->accept();
+		return;
 	}
 }
 
