@@ -26,7 +26,7 @@ class PaletteItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 public:
-	explicit PaletteItemDelegate(QObject *parent = 0);
+	explicit PaletteItemDelegate(QObject *parent = nullptr);
 
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);

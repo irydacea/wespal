@@ -58,6 +58,6 @@ bool prompt(QWidget* parent, const QString& message, const QStringList& detailIt
 void error(QWidget* parent, const QString& message, const QString& details = "");
 void error(QWidget* parent, const QString& message, const QStringList& detailItems);
 
-void about(QWidget* parent = NULL);
+void about(QWidget* parent = nullptr);
 
 } // end namespace JobUi

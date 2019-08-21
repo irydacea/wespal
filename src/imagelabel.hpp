@@ -27,7 +27,7 @@ class ImageLabel : public QWidget
 	Q_OBJECT
 	Q_PROPERTY(QPixmap pixmap READ pixmap WRITE setPixmap)
 public:
-	explicit ImageLabel(QWidget* parent = 0);
+	explicit ImageLabel(QWidget* parent = nullptr);
 	
 	const QPixmap* pixmap() const {
 		return &pixmap_;

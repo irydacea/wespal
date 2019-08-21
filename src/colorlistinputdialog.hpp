@@ -31,7 +31,7 @@ class ColorListInputDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit ColorListInputDialog(QWidget *parent = 0);
+	explicit ColorListInputDialog(QWidget *parent = nullptr);
 	~ColorListInputDialog();
 
 	QList<QRgb> getColorList() const;

@@ -34,7 +34,7 @@ namespace Ui {
 class CustomPalettes : public QDialog {
     Q_OBJECT
 public:
-	CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, const QMap<QString, color_range>& colorRanges, QWidget* parent = 0);
+	CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, const QMap<QString, color_range>& colorRanges, QWidget* parent = nullptr);
 	~CustomPalettes();
 
 	const QMap<QString, QList<QRgb> >& getPalettes() const { return palettes_; }
