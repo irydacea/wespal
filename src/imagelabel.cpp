@@ -63,10 +63,10 @@ void ImageLabel::paintEvent(QPaintEvent* event)
 	}
 
 	QRect partialSrcRect(
-		partialDestRect.x() / xRatio,
-		partialDestRect.y() / yRatio,
-		partialDestRect.width() / xRatio,
-		partialDestRect.height() / yRatio);
+		int(partialDestRect.x() / xRatio),
+		int(partialDestRect.y() / yRatio),
+		int(partialDestRect.width() / xRatio),
+		int(partialDestRect.height() / yRatio));
 
 	//qDebug() << partialSrcRect << " --> " << partialDestRect << " (scale " << xRatio << "x" << yRatio << ")";
 
