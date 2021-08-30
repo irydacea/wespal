@@ -11,3 +11,5 @@ Makefile
 obj/
 *.tar
 *.tar.*
+.qmake.stash
+wesnoth-rcx.app
