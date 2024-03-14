@@ -75,3 +75,5 @@ FORMS += \
 RESOURCES += morningstar.qrc
 
 RC_FILE += win32/wesnoth-rcx.rc
+
+DISTFILES +=

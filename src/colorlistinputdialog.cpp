@@ -61,8 +61,7 @@ QList<QRgb> ColorListInputDialog::getColorList() const
 	QList<QRgb> ret;
 
 	if(!listString_.isEmpty()) {
-		const QStringList& colorNames =
-			listString_.split(",", QString::SkipEmptyParts);
+		const QStringList& colorNames = listString_.split(",", Qt::SkipEmptyParts);
 
 		for(const QString& originalColorName : colorNames) {
 			if(originalColorName.isEmpty())

@@ -27,6 +27,8 @@
 
 #include "wesnothrc.hpp"
 
+#include <QRegularExpression>
+
 namespace {
 
 const QString wml_indent = "    ";
@@ -40,7 +42,8 @@ QString makeIdentifier(const QString& name)
 	// Characters that may confuse the WML parser or
 	// aren't conventionally used in identifiers are
 	// replaced by underscores.
-	ret.replace(QRegExp("[#=\"\\s]"), "_");
+	static QRegularExpression invalid_wml_id{"[#=\"\\s]"};
+	ret.replace(invalid_wml_id, "_");
 
 	return ret;
 }

@@ -127,7 +127,7 @@ QString capitalize(const QString& str)
 	QString ret(str);
 
 	if(!ret.isEmpty()) {
-		QCharRef c = ret[0];
+		auto c = ret[0];
 		c = c.toUpper();
 	}
 

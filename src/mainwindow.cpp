@@ -41,6 +41,7 @@
 #include <QMimeData>
 #include <QPushButton>
 #include <QScrollBar>
+#include <QStandardPaths>
 #include <QStyle>
 #include <QUrl>
 #include <QWhatsThis>
@@ -205,9 +206,9 @@ MainWindow::~MainWindow()
 void MainWindow::generateMergedRcDefinitions()
 {
 	color_ranges_ = mosBuiltinColorRanges;
-	color_ranges_.unite(user_color_ranges_);
+	color_ranges_.insert(user_color_ranges_);
 	palettes_ = mosBuiltinColorPalettes;
-	palettes_.unite(user_palettes_);
+	palettes_.insert(user_palettes_);
 }
 
 void MainWindow::insertRangeListItem(const QString &id, const QString &display_name)
@@ -263,7 +264,7 @@ void MainWindow::processRcDefinitions()
 	// User-defined palettes.
 	//
 
-	const QList<QString>& userPaletteIds = user_palettes_.uniqueKeys();
+	const auto& userPaletteIds = user_palettes_.keys();
 	for(const auto& pal_name : userPaletteIds) {
 		if(mosBuiltinColorPalettes.find(pal_name) != mosBuiltinColorPalettes.end()) {
 			// Skip redefinitions of built-in palettes, we only care about
@@ -322,7 +323,7 @@ void MainWindow::processRcDefinitions()
 	// User-defined color ranges
 	//
 
-	const QList<QString>& userRangeIds = user_color_ranges_.uniqueKeys();
+	const auto& userRangeIds = user_color_ranges_.keys();
 	for(const auto& id : userRangeIds) {
 		if(mosBuiltinColorRanges.find(id) != mosBuiltinColorRanges.end()) {
 			// Skip redefinitions of built-in ranges, we only care about
@@ -391,7 +392,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-	if(event->orientation() == Qt::Vertical && event->modifiers() & Qt::ControlModifier)
+	if(event->angleDelta().x() == 0 && event->modifiers() & Qt::ControlModifier)
 	{
 		if(event->angleDelta().y() > 0) {
 			on_tbZoomIn_clicked();
