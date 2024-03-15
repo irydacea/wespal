@@ -38,6 +38,10 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationDomain("wesnoth.org");
 	QCoreApplication::setApplicationVersion(mos_version);
 
+#ifdef Q_OS_MACOS
+	QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
+#endif
+
 	a.setWindowIcon(QIcon(":/wesnoth-rcx-icon-64.png"));
 
 	MainWindow w;
