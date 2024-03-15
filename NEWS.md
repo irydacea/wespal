@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 0.4.0
+-------------
+
+* It is now possible to close the active file without quitting the app.
+* Not opening a file on startup no longer causes the app to quit.
+* Various fixes for Qt 6 compatibility.
+* Various changes to make the app feel more native on macOS.
+
 Version 0.3.0
 -------------
 
