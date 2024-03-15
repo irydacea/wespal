@@ -534,6 +534,7 @@ void MainWindow::on_action_Open_triggered()
 void MainWindow::on_action_Quit_triggered()
 {
 	do_close();
+	this->close();
 }
 
 void MainWindow::on_action_Reload_triggered()
