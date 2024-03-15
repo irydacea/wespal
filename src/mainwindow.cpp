@@ -406,7 +406,7 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-	if(event->button() == Qt::LeftButton) {
+	if(event->button() == Qt::LeftButton && !img_original_.isNull() && !img_transview_.isNull()) {
 		this->drag_start_pos_ = event->pos();
 		this->drag_use_rc_ = ui->previewRcContainer->geometry().contains(event->pos());
 		this->drag_start_ = drag_use_rc_ || ui->previewOriginalContainer->geometry().contains(event->pos());
