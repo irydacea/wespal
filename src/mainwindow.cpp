@@ -196,6 +196,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(
 		ui->previewRcContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewOriginalContainer->verticalScrollBar(), SLOT(setValue(int)));
+
+	enableWorkArea(false);
 }
 
 MainWindow::~MainWindow()
@@ -334,6 +336,7 @@ void MainWindow::processRcDefinitions()
 	}
 
 	ui->listRanges->setCurrentRow(0);
+	ui->staWorkAreaParent->setCurrentIndex(1);
 }
 
 void MainWindow::handleRecent()
@@ -647,6 +650,8 @@ void MainWindow::do_open(const QString &initial_file)
 	update_recent_files_menu();
 	update_window_title(img_path_);
 	refresh_previews();
+
+	enableWorkArea(true);
 }
 
 void MainWindow::do_reload()
@@ -693,6 +698,8 @@ void MainWindow::refresh_previews()
 
 	centerScrollArea(ui->previewOriginalContainer);
 	centerScrollArea(ui->previewRcContainer);
+
+	ui->staWorkAreaParent->setCurrentIndex(0);
 }
 
 void MainWindow::centerScrollArea(QScrollArea *scrollArea)
@@ -739,12 +746,36 @@ void MainWindow::do_save()
 
 void MainWindow::do_close()
 {
-	this->close();
+	enableWorkArea(false);
+	this->img_original_ = QImage{};
+	this->img_transview_ = QImage{};
 }
 
 void MainWindow::do_about()
 {
 	MosUi::about(this);
+}
+
+void MainWindow::enableWorkArea(bool enable)
+{
+	if (!enable) {
+		this->setWindowTitle(tr("Wesnoth RCX"));
+	}
+
+	auto elements = std::make_tuple(
+		ui->radPal, ui->radRc,
+		ui->lblKeyPal, ui->cbxKeyPal,
+		ui->lblNewPal, ui->cbxNewPal,
+		ui->listRanges,
+		ui->zoomSlider, ui->tbZoomIn, ui->tbZoomOut,
+		ui->buttonBox->button(QDialogButtonBox::Save),
+		ui->buttonBox->button(QDialogButtonBox::Close));
+
+	std::apply([enable](auto&&... widget) {
+		(widget->setEnabled(enable), ...);
+	}, elements);
+
+	ui->staWorkAreaParent->setCurrentIndex(enable ? 0 : 1);
 }
 
 QString MainWindow::current_pal_name(bool palette_switch_mode) const

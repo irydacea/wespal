@@ -46,12 +46,7 @@ int main(int argc, char *argv[])
 
 	MainWindow w;
 	w.show();
-
-	QTimer::singleShot(0, [&w, &initial_file]() {
-		if(!w.initial_open(initial_file)) {
-			QApplication::exit(1);
-		}
-	});
+	w.initial_open(initial_file);
 
 	return a.exec();
 }

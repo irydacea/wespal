@@ -116,6 +116,8 @@ private:
 	void do_reload();
 	void do_about();
 
+	void enableWorkArea(bool enable);
+
 	bool confirm_existing_files(const QStringList& paths);
 
 	QStringList do_save_color_ranges(QString& base);

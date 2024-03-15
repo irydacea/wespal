@@ -30,6 +30,132 @@
   </property>
   <widget class="QWidget" name="grid">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="staWorkAreaParent">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QWidget" name="pageWorkArea">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="hlPreviews">
+          <item>
+           <widget class="QScrollArea" name="previewOriginalContainer">
+            <property name="whatsThis">
+             <string>This is the original image's preview.</string>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_2">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>270</width>
+               <height>162</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string/>
+             </property>
+             <widget class="ImageLabel" name="previewOriginal" native="true">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>72</width>
+                <height>72</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QScrollArea" name="previewRcContainer">
+            <property name="whatsThis">
+             <string>This is a preview of a single transformation of the original image.</string>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>271</width>
+               <height>162</height>
+              </rect>
+             </property>
+             <widget class="ImageLabel" name="previewRc" native="true">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>72</width>
+                <height>72</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageNoFile">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="lblNoFile">
+          <property name="text">
+           <string>Open a file to display its preview here.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
     <item row="6" column="0">
      <layout class="QHBoxLayout" name="hlCommands">
       <item>
@@ -97,97 +223,6 @@
         <property name="standardButtons">
          <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
         </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="hlPreviews" stretch="1,1">
-      <item>
-       <widget class="QScrollArea" name="previewOriginalContainer">
-        <property name="whatsThis">
-         <string>This is the original image's preview.</string>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOn</enum>
-        </property>
-        <property name="horizontalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOn</enum>
-        </property>
-        <property name="widgetResizable">
-         <bool>false</bool>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents_2">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>270</width>
-           <height>162</height>
-          </rect>
-         </property>
-         <property name="whatsThis">
-          <string/>
-         </property>
-         <widget class="ImageLabel" name="previewOriginal" native="true">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>72</width>
-            <height>72</height>
-           </rect>
-          </property>
-         </widget>
-        </widget>
-       </widget>
-      </item>
-      <item>
-       <widget class="QScrollArea" name="previewRcContainer">
-        <property name="whatsThis">
-         <string>This is a preview of a single transformation of the original image.</string>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="verticalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOn</enum>
-        </property>
-        <property name="horizontalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOn</enum>
-        </property>
-        <property name="widgetResizable">
-         <bool>false</bool>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents_3">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>271</width>
-           <height>162</height>
-          </rect>
-         </property>
-         <widget class="ImageLabel" name="previewRc" native="true">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>72</width>
-            <height>72</height>
-           </rect>
-          </property>
-         </widget>
-        </widget>
        </widget>
       </item>
      </layout>
@@ -293,7 +328,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="pageRcRanges">
            <property name="sizePolicy">
@@ -303,7 +338,7 @@
             </sizepolicy>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
-            <property name="margin">
+            <property name="margin" stdset="0">
              <number>0</number>
             </property>
             <item row="0" column="0">
@@ -323,7 +358,7 @@
             <property name="sizeConstraint">
              <enum>QLayout::SetMinimumSize</enum>
             </property>
-            <property name="margin">
+            <property name="margin" stdset="0">
              <number>0</number>
             </property>
             <item row="0" column="0">
@@ -390,13 +425,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="Line" name="line_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -405,7 +433,7 @@
      <x>0</x>
      <y>0</y>
      <width>440</width>
-     <height>19</height>
+     <height>37</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
