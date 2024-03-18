@@ -96,6 +96,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	save->setWhatsThis(tr("Saves the current recolor job."));
 	close->setWhatsThis(tr("Abandons the current job and exits."));
 
+#ifdef Q_OS_MACOS
+	ui->action_Reload->setShortcut(QKeySequence::Refresh);
+#endif
+
 	ui->action_Open->setIcon(this->style()->standardIcon(QStyle::SP_DialogOpenButton, nullptr, dynamic_cast<QWidget*>(ui->action_Open)));
 	ui->action_Save->setIcon(this->style()->standardIcon(QStyle::SP_DialogSaveButton, nullptr, dynamic_cast<QWidget*>(ui->action_Save)));
 	ui->action_Reload->setIcon(this->style()->standardIcon(QStyle::SP_BrowserReload, nullptr, dynamic_cast<QWidget*>(ui->action_Reload)));
