@@ -20,7 +20,7 @@ Windows and macOS users should use the binary packages provided on the
 [Wesnoth RCX web page][2]. For Windows, no actual installation is required and
 the provided .exe file will work out of the box and can be placed anywhere.
 
-[2]: <https://shadowm.ai0867.net/projects/wesnoth-rcx>
+[2]: <https://irydacea.me/projects/wesnoth-rcx>
 
 Users building from source should see the `INSTALL.md` file for instructions.
 
@@ -60,7 +60,7 @@ Reporting bugs
 There is an issue tracker on [Github][3]. Alternatively, you may post in the
 [Wesnoth.org forum topic][4].
 
-[3]: https://github.com/shikadiqueen/morningstar/issues
+[3]: https://github.com/irydacea/morningstar/issues
 [4]: https://r.wesnoth.org/t31965
 
 When reporting a bug, make sure to provide as much relevant information as
