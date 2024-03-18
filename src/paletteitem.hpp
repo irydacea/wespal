@@ -26,26 +26,35 @@ class PaletteItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 public:
-	explicit PaletteItemDelegate(QObject *parent = nullptr);
-
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
-
-	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
-		const QSize& base_size = QStyledItemDelegate::sizeHint(option, index);
-		return QSize(qMax(width_, base_size.width()), qMax(height_, base_size.height()));
+	explicit PaletteItemDelegate(QObject* parent = nullptr)
+		: QStyledItemDelegate(parent)
+	{
 	}
-	
+
+	virtual void paint(QPainter* painter,
+					   const QStyleOptionViewItem& option,
+					   const QModelIndex& index) const override;
+
+	virtual bool editorEvent(QEvent* event,
+							 QAbstractItemModel* model,
+							 const QStyleOptionViewItem& option,
+							 const QModelIndex& index) override;
+
+	virtual QSize sizeHint(const QStyleOptionViewItem& option,
+						   const QModelIndex& index) const override
+	{
+		const auto& base_size = QStyledItemDelegate::sizeHint(option, index);
+		return {qMax(width_, base_size.width()), qMax(height_, base_size.height())};
+	}
+
 signals:
 	
 public slots:
 
-
-
 private:
-
-	const int border_size_, width_, height_;
-	
+	static constexpr int border_size_ = 2;
+	static constexpr int width_ = 16;
+	static constexpr int height_ = 17;
 };
 
 /**

@@ -30,8 +30,9 @@ int main(int argc, char *argv[])
 	QString initial_file = "";
 	QStringList argvq = a.arguments();
 
-	if(argvq.count() > 1)
+	if (argvq.count() > 1) {
 		initial_file = argvq.last();
+	}
 
 	QCoreApplication::setApplicationName("Morning Star");
 	QCoreApplication::setOrganizationName("Wesnoth");

@@ -82,23 +82,16 @@ QIcon createColorIcon(const QColor& color,
 	return base;
 }
 
-PaletteItemDelegate::PaletteItemDelegate(QObject *parent) :
-	QStyledItemDelegate(parent),
-	border_size_(2),
-	width_(16), height_(17)
+void PaletteItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-}
-
-void PaletteItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	PainterRestorer restorer(painter);
+	PainterRestorer restorer{painter};
 
 	// The actual item region.
-	QRect area = option.rect;
+	QRect area{option.rect};
 
 	QPen pen;
 
-	if(option.state & QStyle::State_Selected) {
+	if (option.state & QStyle::State_Selected) {
 		pen.setStyle(Qt::SolidLine);
 		pen.setCapStyle(Qt::SquareCap);
 		pen.setJoinStyle(Qt::MiterJoin);
@@ -128,3 +121,4 @@ bool PaletteItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, 
 
 	return true;
 }
+

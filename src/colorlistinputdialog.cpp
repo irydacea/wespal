@@ -40,12 +40,13 @@ ColorListInputDialog::~ColorListInputDialog()
 void ColorListInputDialog::changeEvent(QEvent *e)
 {
 	QDialog::changeEvent(e);
+
 	switch (e->type()) {
-	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
-		break;
-	default:
-		break;
+		case QEvent::LanguageChange:
+			ui->retranslateUi(this);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -58,22 +59,23 @@ QList<QRgb> ColorListInputDialog::getColorList() const
 {
 	QList<QRgb> ret;
 
-	if(!listString_.isEmpty()) {
-		const QStringList& colorNames = listString_.split(",", Qt::SkipEmptyParts);
+	if (!listString_.isEmpty()) {
+		const auto& colorNames = listString_.split(",", Qt::SkipEmptyParts);
 
-		for(const QString& originalColorName : colorNames) {
-			if(originalColorName.isEmpty())
+		for (const auto& originalColorName : colorNames) {
+			if(originalColorName.isEmpty()) {
 				continue;
+			}
 
 			QString colorName = originalColorName;
 
-			if(colorName.at(0) != '#') {
+			if (colorName.at(0) != '#') {
 				colorName.prepend('#');
 			}
 
 			QColor color(colorName);
 
-			if(color.isValid()) {
+			if (color.isValid()) {
 				ret.push_back(color.rgb());
 			}
 		}

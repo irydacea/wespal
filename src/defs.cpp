@@ -25,11 +25,24 @@
 //
 
 QStringList mosOrderedRangeNames{
-	"red", "blue", "green", "purple", "black", "brown", "orange", "white", "teal",
-	"lightred", "darkred", "lightblue", "brightgreen", "brightorange", "gold",
+	"red",
+	"blue",
+	"green",
+	"purple",
+	"black",
+	"brown",
+	"orange",
+	"white",
+	"teal",
+	"lightred",
+	"darkred",
+	"lightblue",
+	"brightgreen",
+	"brightorange",
+	"gold",
 };
 
-QMap< QString, color_range > mosBuiltinColorRanges{
+QMap<QString, color_range> mosBuiltinColorRanges{
 	// Unit TC
 
 	{ "red",			{ 0xFF0000, 0xFFFFFF, 0x000000 } },
@@ -75,7 +88,9 @@ QMap< QString, color_range > mosBuiltinColorRanges{
 };
 
 QStringList mosOrderedPaletteNames{
-	"magenta", "flag_green", "ellipse_red"
+	"magenta",
+	"flag_green",
+	"ellipse_red",
 };
 
 QMap< QString, QList<QRgb> > mosBuiltinColorPalettes{
