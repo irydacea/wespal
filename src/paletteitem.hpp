@@ -47,3 +47,8 @@ private:
 };
 
 QIcon createColorIcon(const QColor &color, int width = 16, int height = 16);
+
+inline QIcon createColorIcon(const QColor &color, const QSize& size)
+{
+	return createColorIcon(color, size.width(), size.height());
+}

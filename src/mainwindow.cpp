@@ -47,9 +47,13 @@
 #include <QWhatsThis>
 
 namespace {
-	struct no_initial_file {};
-	struct canceled_job    {};
-}
+
+struct no_initial_file {};
+struct canceled_job    {};
+
+static const QSize colorIconSize{16, 16};
+
+} // end unnamed namespace
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -82,6 +86,10 @@ MainWindow::MainWindow(QWidget *parent) :
 	if(lastWindowSize.isValid()) {
 		resize(lastWindowSize);
 	}
+
+	ui->cbxKeyPal->setIconSize(colorIconSize);
+	ui->cbxNewPal->setIconSize(colorIconSize);
+	ui->listRanges->setIconSize(colorIconSize);
 
 	generateMergedRcDefinitions();
 	processRcDefinitions();
@@ -217,13 +225,15 @@ void MainWindow::generateMergedRcDefinitions()
 	palettes_.insert(user_palettes_);
 }
 
-void MainWindow::insertRangeListItem(const QString &id, const QString &display_name)
+void MainWindow::insertRangeListItem(const QString &id, const QString &display_name, const QColor& color)
 {
 	QListWidgetItem* lwi = new QListWidgetItem(ui->listRanges);
+	auto colorIcon = createColorIcon(color, colorIconSize);
 
 	lwi->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 	lwi->setCheckState(Qt::Checked);
 	lwi->setText(display_name);
+	lwi->setIcon(colorIcon);
 	lwi->setData(Qt::UserRole, id);
 }
 
@@ -262,8 +272,12 @@ void MainWindow::processRcDefinitions()
 	Q_ASSERT(builtinPaletteCount == mosOrderedPaletteNames.size());
 
 	for(int k = 0; k < builtinPaletteCount; ++k) {
-		cbOldPals->addItem(paletteUiNames[k], mosOrderedPaletteNames[k]);
-		cbNewPals->addItem(paletteUiNames[k], mosOrderedPaletteNames[k]);
+		auto& palName = mosOrderedPaletteNames[k];
+		auto& uiName = paletteUiNames[k];
+		auto color = mosBuiltinColorPalettes[palName].empty() ? 0U : mosBuiltinColorPalettes[palName].front();
+		auto colorIcon = createColorIcon(color, colorIconSize);
+		cbOldPals->addItem(colorIcon, uiName, palName);
+		cbNewPals->addItem(colorIcon, uiName, palName);
 	}
 
 	//
@@ -277,8 +291,10 @@ void MainWindow::processRcDefinitions()
 			// ids and names at this point.
 			continue;
 		}
-		cbOldPals->addItem(capitalize(pal_name), pal_name);
-		cbNewPals->addItem(capitalize(pal_name), pal_name);
+		auto color = user_palettes_[pal_name].empty() ? 0U : user_palettes_[pal_name].front();
+		auto colorIcon = createColorIcon(color, colorIconSize);
+		cbOldPals->addItem(colorIcon, capitalize(pal_name), pal_name);
+		cbNewPals->addItem(colorIcon, capitalize(pal_name), pal_name);
 	}
 
 	//
@@ -322,7 +338,9 @@ void MainWindow::processRcDefinitions()
 	Q_ASSERT(builtinRangeCount == mosOrderedRangeNames.size());
 
 	for(int k = 0; k < builtinRangeCount; ++k) {
-		insertRangeListItem(mosOrderedRangeNames[k], rangeUiNames[k]);
+		auto rangeName = mosOrderedRangeNames[k];
+		auto color = mosBuiltinColorRanges[rangeName].mid();
+		insertRangeListItem(rangeName, rangeUiNames[k], color);
 	}
 
 	//
@@ -336,7 +354,8 @@ void MainWindow::processRcDefinitions()
 			// ids and names at this point.
 			continue;
 		}
-		insertRangeListItem(id, capitalize(id));
+		auto color = user_color_ranges_[id].mid();
+		insertRangeListItem(id, capitalize(id), color);
 	}
 
 	ui->listRanges->setCurrentRow(0);

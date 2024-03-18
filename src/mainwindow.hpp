@@ -72,7 +72,7 @@ private:
 	/** Process definitions, updating UI elements accordingly. */
 	void processRcDefinitions();
 
-	void insertRangeListItem(const QString& id, const QString& display_name);
+	void insertRangeListItem(const QString& id, const QString& display_name, const QColor& color);
 
 	Ui::MainWindow *ui;
 
