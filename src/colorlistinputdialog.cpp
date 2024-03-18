@@ -28,10 +28,8 @@ ColorListInputDialog::ColorListInputDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	QFont font("Monospace");
-	font.setStyleHint(QFont::TypeWriter);
-
-	ui->teColors->setFont(font);
+	const auto& monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+	ui->teColors->setFont(monoFont);
 }
 
 ColorListInputDialog::~ColorListInputDialog()
