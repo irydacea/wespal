@@ -480,6 +480,7 @@ void MainWindow::dropEvent(QDropEvent *e)
 	}
 
 	refresh_previews();
+	enableWorkArea(true);
 }
 
 void MainWindow::on_radRc_clicked()
@@ -626,8 +627,7 @@ void MainWindow::do_open(const QString &initial_file)
 	}
 
 	if(path_temp.isNull() && img_original_.isNull()) {
-		// it's null if we've just setup the window
-		throw no_initial_file();
+		return;
 	}
 
 	QImage img_temp(path_temp);
@@ -1026,3 +1026,9 @@ void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 
 	mos_set_preview_background_color_name(colorName);
 }
+
+void MainWindow::on_cmdOpen_clicked()
+{
+	do_open({});
+}
+

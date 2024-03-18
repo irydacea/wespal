@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
 
 	MainWindow w;
 	w.show();
-	w.initial_open(initial_file);
 
 	return a.exec();
 }

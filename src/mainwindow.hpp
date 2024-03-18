@@ -37,8 +37,8 @@ namespace Ui {
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+	MainWindow(QWidget *parent = nullptr);
+	~MainWindow();
 
 	bool initial_open(const QString& initial_file);
 
@@ -159,4 +159,5 @@ private slots:
 	void on_action_Palettes_triggered();
 
 	void handlePreviewBgOption(bool checked);
+	void on_cmdOpen_clicked();
 };
