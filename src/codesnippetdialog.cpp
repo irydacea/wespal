@@ -55,7 +55,7 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	connect(copyButton, SIGNAL(clicked()), this, SLOT(handleCopy()));
 	connect(saveButton, SIGNAL(clicked()), this, SLOT(handleSave()));
 
-	auto okIcon = style()->standardIcon(QStyle::SP_DialogOkButton);
+	auto okIcon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
 	ui->successIcon->setPixmap(okIcon.pixmap(22));
 	ui->boxClipboardMessage->setVisible(false);
 
