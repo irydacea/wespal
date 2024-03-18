@@ -36,26 +36,27 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	ui->setupUi(this);
 	ui->teContents->setPlainText(contents);
 
-	QPushButton* const closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
+	auto* const closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
+	auto* const saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
+	auto* const copyButton = ui->buttonBox->button(QDialogButtonBox::Apply);
 
-	QPushButton* const copyButton = ui->buttonBox->addButton(tr("Copy"), QDialogButtonBox::ApplyRole);
+	Q_ASSERT(closeButton && saveButton && copyButton);
 
+	copyButton->setText(tr("Copy"));
 	copyButton->setDefault(true);
+
 	// Primitive check to see whether the current style likes assigning icons
 	// to dialog buttons.
-	if(closeButton && !closeButton->icon().isNull()) {
-		copyButton->setIcon(QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-16.png")));
+	if (!closeButton->icon().isNull()) {
+		auto copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-16.png"));
+		copyButton->setIcon(copyIcon);
 	}
 
 	connect(copyButton, SIGNAL(clicked()), this, SLOT(handleCopy()));
+	connect(saveButton, SIGNAL(clicked()), this, SLOT(handleSave()));
 
-	QPushButton* const saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
-
-	if(saveButton) {
-		connect(saveButton, SIGNAL(clicked()), this, SLOT(handleSave()));
-	}
-
-	ui->successIcon->setPixmap(style()->standardIcon(QStyle::SP_DialogOkButton).pixmap(22));
+	auto okIcon = style()->standardIcon(QStyle::SP_DialogOkButton);
+	ui->successIcon->setPixmap(okIcon.pixmap(22));
 	ui->boxClipboardMessage->setVisible(false);
 
 	const auto& monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
@@ -70,12 +71,13 @@ CodeSnippetDialog::~CodeSnippetDialog()
 void CodeSnippetDialog::changeEvent(QEvent *e)
 {
 	QDialog::changeEvent(e);
+
 	switch (e->type()) {
-	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
-		break;
-	default:
-		break;
+		case QEvent::LanguageChange:
+			ui->retranslateUi(this);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -88,23 +90,27 @@ void CodeSnippetDialog::handleCopy()
 
 void CodeSnippetDialog::handleSave()
 {
-	const QString& filePath = QFileDialog::getSaveFileName(
-		this, tr("Save WML"), QString(),
-		tr("WML document") + " (*.cfg);;" + tr("All files") + " (*)");
+	const auto& filePath =
+			QFileDialog::getSaveFileName(
+				this,
+				tr("Save WML"),
+				{},
+				tr("WML document") % " (*.cfg);;" %
+				tr("All files") % " (*)");
 
-	if(filePath.isNull()) {
+	if (filePath.isNull()) {
 		return;
 	}
 
-	QFile f(filePath);
+	QFile f{filePath};
 
-	if(f.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
-		QTextStream out(&f);
+	if (f.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
+		QTextStream out{&f};
 		out << ui->teContents->toPlainText();
 		f.close();
 	}
 
-	if(f.error()) {
+	if (f.error()) {
 		MosUi::error(this, tr("The file could not be saved"), filePath);
 	} else {
 		MosUi::message(this, tr("The file was saved successfully."), filePath);
