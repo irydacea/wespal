@@ -228,7 +228,7 @@ void MainWindow::generateMergedRcDefinitions()
 void MainWindow::insertRangeListItem(const QString &id, const QString &display_name, const QColor& color)
 {
 	QListWidgetItem* lwi = new QListWidgetItem(ui->listRanges);
-	auto colorIcon = createColorIcon(color, colorIconSize);
+	auto colorIcon = createColorIcon(color, colorIconSize, ui->listRanges);
 
 	lwi->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 	lwi->setCheckState(Qt::Checked);
@@ -275,7 +275,7 @@ void MainWindow::processRcDefinitions()
 		auto& palName = mosOrderedPaletteNames[k];
 		auto& uiName = paletteUiNames[k];
 		auto color = mosBuiltinColorPalettes[palName].empty() ? 0U : mosBuiltinColorPalettes[palName].front();
-		auto colorIcon = createColorIcon(color, colorIconSize);
+		auto colorIcon = createColorIcon(color, colorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, uiName, palName);
 		cbNewPals->addItem(colorIcon, uiName, palName);
 	}
@@ -292,7 +292,7 @@ void MainWindow::processRcDefinitions()
 			continue;
 		}
 		auto color = user_palettes_[pal_name].empty() ? 0U : user_palettes_[pal_name].front();
-		auto colorIcon = createColorIcon(color, colorIconSize);
+		auto colorIcon = createColorIcon(color, colorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, capitalize(pal_name), pal_name);
 		cbNewPals->addItem(colorIcon, capitalize(pal_name), pal_name);
 	}
@@ -1033,7 +1033,7 @@ void MainWindow::do_custom_preview_color_option()
 void MainWindow::do_custom_preview_color_icon()
 {
 	QAction* const act = ui->actionPreviewBgCustom;
-	createColorIcon(QColor(act->data().toString()));
+	createColorIcon(QColor(act->data().toString()), this);
 }
 
 void MainWindow::setPreviewBackgroundColor(const QString& colorName)

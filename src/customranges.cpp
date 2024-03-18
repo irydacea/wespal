@@ -125,7 +125,7 @@ void CustomRanges::updateColorButton(QAbstractButton* button, const QColor& colo
 	static const QSize colorIconSize(48, 16);
 
 	button->setIconSize(colorIconSize);
-	button->setIcon(createColorIcon(color, colorIconSize.width(), colorIconSize.height()));
+	button->setIcon(createColorIcon(color, colorIconSize, button));
 }
 
 void CustomRanges::addRangeListEntry(const QString& name)
@@ -135,7 +135,7 @@ void CustomRanges::addRangeListEntry(const QString& name)
 
 	itemw->setData(Qt::UserRole, name);
 	itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-	itemw->setIcon(createColorIcon(ranges_.value(name).mid()));
+	itemw->setIcon(createColorIcon(ranges_.value(name).mid(), ui->listRanges));
 }
 
 void CustomRanges::updateRangeEditControls()
@@ -280,7 +280,7 @@ void CustomRanges::on_leAvg_textChanged(QString)
 	QListWidgetItem* itemw = ui->listRanges->currentItem();
 	Q_ASSERT(itemw);
 
-	itemw->setIcon(createColorIcon(newColor));
+	itemw->setIcon(createColorIcon(newColor, ui->listRanges));
 }
 
 void CustomRanges::on_leMax_textChanged(QString)

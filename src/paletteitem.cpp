@@ -20,36 +20,64 @@
 
 #include "paletteitem.hpp"
 
+#include <QGuiApplication>
 #include <QColorDialog>
 #include <QEvent>
 #include <QPainter>
 
 namespace {
-	struct PainterRestorer
+
+struct PainterRestorer
+{
+	PainterRestorer(QPainter *painter)
+		: painter_(painter)
 	{
-		PainterRestorer(QPainter *painter) : painter_(painter) {
-			painter_->save();
-		}
-		~PainterRestorer() {
-			painter_->restore();
-		}
-	private:
-		QPainter *painter_;
-	};
+		painter_->save();
+	}
+
+	~PainterRestorer()
+	{
+		painter_->restore();
+	}
+
+private:
+	QPainter *painter_;
+};
+
+inline qreal pixelRatioFallback(const QWidget* target)
+{
+	return target ? target->devicePixelRatio() : qGuiApp->devicePixelRatio();
 }
 
-QIcon createColorIcon(const QColor& color, int width, int height)
-{
-	QPixmap base(width, height);
-	base.fill(QColor(255, 255, 255, 0));
+} // end unnamed namespace
 
-	QPainter painter(&base);
-	QBrush brush(color);
-	QPen pen(Qt::black, 1);
+QIcon createColorIcon(const QColor& color,
+					  const QSize& size,
+					  const QWidget* target)
+{
+	static constexpr qreal borderWidth = 1.0;
+	static constexpr qreal outerMargin = 2.0;
+	static constexpr QMarginsF innerMargin = {
+		outerMargin, outerMargin,
+		outerMargin, outerMargin
+	};
+
+	const auto pixelRatio = pixelRatioFallback(target);
+
+	QPixmap base{size * pixelRatio};
+
+	base.setDevicePixelRatio(pixelRatio);
+	base.fill(Qt::transparent);
+
+	QPainter painter{&base};
+	QBrush brush{color};
+	QPen pen{Qt::black, borderWidth};
+	QRectF borderRect{QPointF{outerMargin, outerMargin},
+					  QSizeF{size}.shrunkBy(innerMargin)};
 
 	painter.setBrush(brush);
 	painter.setPen(pen);
-	painter.drawRect(base.rect().adjusted(1,1,-2,-2));
+	painter.drawRect(borderRect);
 
 	return base;
 }

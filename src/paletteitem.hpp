@@ -40,15 +40,79 @@ signals:
 	
 public slots:
 
+
+
 private:
 
 	const int border_size_, width_, height_;
 	
 };
 
-QIcon createColorIcon(const QColor &color, int width = 16, int height = 16);
+/**
+ * Creates an icon for a color item for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param color                Color value.
+ * @param size                 Icon size.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of the specified solid color with a solid black
+ *         outline, padded all around by one transparent pixel.
+ */
+QIcon createColorIcon(const QColor &color,
+					  const QSize& size,
+					  const QWidget* target = nullptr);
 
-inline QIcon createColorIcon(const QColor &color, const QSize& size)
+/**
+ * Creates an icon for a color item for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param color                Color value.
+ * @param width                Icon width.
+ * @param height               Icon height.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of the specified solid color with a solid black
+ *         outline, padded all around by one transparent pixel.
+ */
+inline QIcon createColorIcon(const QColor &color,
+							 int width = 16,
+							 int height = 16,
+							 const QWidget* target = nullptr)
 {
-	return createColorIcon(color, size.width(), size.height());
+	return createColorIcon(color, QSize{width, height}, target);
+}
+
+/**
+ * Creates a 16x16 icon for a color item for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param color                Color value.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of the specified solid color with a solid black
+ *         outline, padded all around by one transparent pixel.
+ */
+inline QIcon createColorIcon(const QColor &color,
+							 const QWidget* target = nullptr)
+{
+	return createColorIcon(color, QSize{16, 16}, target);
 }

@@ -148,7 +148,7 @@ void CustomPalettes::addRangesMenuEntry(QMenu* menu, const QString& id, const co
 	QAction* const act = menu->addAction(text);
 
 	act->setData(id);
-	act->setIcon(createColorIcon(range.mid()));
+	act->setIcon(createColorIcon(range.mid(), menu));
 
 	connect(act, SIGNAL(triggered()), this, SLOT(handleRcOption()));
 }
@@ -184,9 +184,9 @@ void CustomPalettes::addPaletteListEntry(const QString& name)
 	const QList<QRgb> palette = palettes_.value(name);
 
 	if(!palette.empty()) {
-		lwi->setIcon(createColorIcon(palette.front()));
+		lwi->setIcon(createColorIcon(palette.front(), ui->listPals));
 	} else {
-		lwi->setIcon(createColorIcon(Qt::white));
+		lwi->setIcon(createColorIcon(Qt::white, ui->listPals));
 	}
 }
 
@@ -309,9 +309,9 @@ void CustomPalettes::updatePaletteIcon()
 	const QList<QRgb>& palette = palettes_.value(palw->data(Qt::UserRole).toString());
 
 	if(palette.empty()) {
-		palw->setIcon(createColorIcon(Qt::white));
+		palw->setIcon(createColorIcon(Qt::white, ui->listPals));
 	} else {
-		palw->setIcon(createColorIcon(palette.front()));
+		palw->setIcon(createColorIcon(palette.front(), ui->listPals));
 	}
 }
 
