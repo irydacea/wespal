@@ -58,10 +58,8 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	ui->successIcon->setPixmap(style()->standardIcon(QStyle::SP_DialogOkButton).pixmap(22));
 	ui->boxClipboardMessage->setVisible(false);
 
-	QFont font("Monospace");
-	font.setStyleHint(QFont::TypeWriter);
-
-	ui->teContents->setFont(font);
+	const auto& monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+	ui->teContents->setFont(monoFont);
 }
 
 CodeSnippetDialog::~CodeSnippetDialog()
