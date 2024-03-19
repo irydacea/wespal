@@ -223,9 +223,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::generateMergedRcDefinitions()
 {
-	color_ranges_ = mosBuiltinColorRanges;
+	color_ranges_ = wesnoth::builtinColorRanges.objects();
 	color_ranges_.insert(user_color_ranges_);
-	palettes_ = mosBuiltinColorPalettes;
+	palettes_ = wesnoth::builtinPalettes.objects();
 	palettes_.insert(user_palettes_);
 }
 
@@ -268,17 +268,13 @@ void MainWindow::processRcDefinitions()
 	// Add built-in palettes.
 	//
 
-	QStringList paletteUiNames;
-	// NOTE: these names must correspond to the entries in mosOrderedPaletteNames!
-	paletteUiNames << tr("Magenta TC") << tr("Green flag TC") << tr("Red ellipse TC");
-
-	const int builtinPaletteCount = paletteUiNames.size();
-	Q_ASSERT(builtinPaletteCount == mosOrderedPaletteNames.size());
-
-	for(int k = 0; k < builtinPaletteCount; ++k) {
-		auto& palName = mosOrderedPaletteNames[k];
-		auto& uiName = paletteUiNames[k];
-		auto color = mosBuiltinColorPalettes[palName].empty() ? 0U : mosBuiltinColorPalettes[palName].front();
+	for (int k = 0; k < wesnoth::builtinPalettes.objectCount(); ++k)
+	{
+		const auto& palName = wesnoth::builtinPalettes.orderedNames()[k];
+		const auto& uiName = wesnoth::builtinPalettes.orderedTranslatableNames()[k];
+		auto color = wesnoth::builtinPalettes[palName].empty()
+					 ? 0U
+					 : wesnoth::builtinPalettes[palName].front();
 		auto colorIcon = createColorIcon(color, colorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, uiName, palName);
 		cbNewPals->addItem(colorIcon, uiName, palName);
@@ -288,82 +284,44 @@ void MainWindow::processRcDefinitions()
 	// User-defined palettes.
 	//
 
-	const auto& userPaletteIds = user_palettes_.keys();
-	for(const auto& pal_name : userPaletteIds) {
-		if(mosBuiltinColorPalettes.find(pal_name) != mosBuiltinColorPalettes.end()) {
+	for (const auto& palName : user_palettes_.keys())
+	{
+		if (wesnoth::builtinPalettes.hasName(palName)) {
 			// Skip redefinitions of built-in palettes, we only care about
 			// ids and names at this point.
 			continue;
 		}
-		auto color = user_palettes_[pal_name].empty() ? 0U : user_palettes_[pal_name].front();
+		auto color = user_palettes_[palName].empty()
+					 ? 0U
+					 : user_palettes_[palName].front();
 		auto colorIcon = createColorIcon(color, colorIconSize, cbOldPals);
-		cbOldPals->addItem(colorIcon, capitalize(pal_name), pal_name);
-		cbNewPals->addItem(colorIcon, capitalize(pal_name), pal_name);
+		cbOldPals->addItem(colorIcon, capitalize(palName), palName);
+		cbNewPals->addItem(colorIcon, capitalize(palName), palName);
 	}
 
 	//
 	// Built-in color ranges.
 	//
 
-	// NOTE: these names must correspond to the entries in mosOrderedRangeNames!
-	QStringList rangeUiNames = {
-		tr("Red"),
-		tr("Blue"),
-		tr("Green"),
-		tr("Purple"),
-		tr("Black"),
-		tr("Brown"),
-		tr("Orange"),
-		tr("White"),
-		tr("Teal"),
-		tr("Light Red"),
-		tr("Dark Red"),
-		tr("Light Blue"),
-		tr("Bright Green"),
-		tr("Bright Orange"),
-		tr("Gold"), /*
-		tr("Terrain Icon: Reef"),
-		tr("Terrain Icon: Shallow Water"),
-		tr("Terrain Icon: Deep Water"),
-		tr("Terrain Icon: Swamp Water"),
-		tr("Terrain Icon: Flat"),
-		tr("Terrain Icon: Hills"),
-		tr("Terrain Icon: Mountains"),
-		tr("Terrain Icon: Forest"),
-		tr("Terrain Icon: Sand"),
-		tr("Terrain Icon: Frozen"),
-		tr("Terrain Icon: Cave"),
-		tr("Terrain Icon: Fungus"),
-		tr("Terrain Icon: Village"),
-		tr("Terrain Icon: Castle"),
-		tr("Terrain Icon: Keep"),
-		tr("Terrain Icon: Rail"),
-		tr("Terrain Icon: Unwalkable"),
-		tr("Terrain Icon: Impassable"),
-		tr("Terrain Icon: Fog"),
-		tr("Terrain Icon: Shroud"), */
-	};
-
 	// It is paramount to ensure built-in ranges are displayed in a specific order,
 	// since Wesnoth associates digits from 1 to 9 to items in the sequence and we
 	// don't want to break that convention here, for consistency's sake.
 
-	const int builtinRangeCount = rangeUiNames.size();
-	Q_ASSERT(builtinRangeCount == mosOrderedRangeNames.size());
-
-	for(int k = 0; k < builtinRangeCount; ++k) {
-		auto rangeName = mosOrderedRangeNames[k];
-		auto color = mosBuiltinColorRanges[rangeName].mid();
-		insertRangeListItem(rangeName, rangeUiNames[k], color);
+	for (int k = 0; k < wesnoth::builtinColorRanges.objectCount(); ++k)
+	{
+		auto& rangeName = wesnoth::builtinColorRanges.orderedNames()[k];
+		auto& uiName = wesnoth::builtinColorRanges.orderedTranslatableNames()[k];
+		auto color = wesnoth::builtinColorRanges[rangeName].mid();
+		insertRangeListItem(rangeName, uiName, color);
 	}
 
 	//
 	// User-defined color ranges
 	//
 
-	const auto& userRangeIds = user_color_ranges_.keys();
-	for(const auto& id : userRangeIds) {
-		if(mosBuiltinColorRanges.find(id) != mosBuiltinColorRanges.end()) {
+	for (const auto& id : user_color_ranges_.keys())
+	{
+		if (wesnoth::builtinColorRanges.hasName(id)) {
 			// Skip redefinitions of built-in ranges, we only care about
 			// ids and names at this point.
 			continue;
