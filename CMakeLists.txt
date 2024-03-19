@@ -9,6 +9,17 @@ find_package(Qt6 REQUIRED COMPONENTS Gui Widgets)
 
 qt_standard_project_setup()
 
+qt_add_plugin(xcfplugin STATIC CLASS_NAME XCFPlugin
+    src/kimageformats/gimp_p.h
+    src/kimageformats/util_p.h
+    src/kimageformats/xcf.cpp src/kimageformats/xcf_p.h
+)
+
+target_link_libraries(xcfplugin PRIVATE
+    Qt::Core
+    Qt::Gui
+)
+
 qt_add_executable(wesnoth-rcx WIN32 MACOSX_BUNDLE
     src/appconfig.cpp src/appconfig.hpp
     src/codesnippetdialog.cpp src/codesnippetdialog.hpp src/codesnippetdialog.ui
@@ -26,6 +37,8 @@ qt_add_executable(wesnoth-rcx WIN32 MACOSX_BUNDLE
     src/wesnothrc.cpp src/wesnothrc.hpp
 )
 
+qt_import_plugins(wesnoth-rcx INCLUDE XCFPlugin)
+
 target_compile_options(wesnoth-rcx PRIVATE
 	-Wall
 	-Wextra
@@ -41,8 +54,8 @@ target_link_libraries(wesnoth-rcx PRIVATE
     Qt::Core
     Qt::Gui
     Qt::Widgets
+    xcfplugin
 )
-
 
 # Resources:
 set_source_files_properties("icons/128x128/wesnoth-rcx.png"

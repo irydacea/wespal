@@ -12,15 +12,37 @@ results to disk for other purposes. A built-in visual palette and color range
 editor allows artists and coders to play around with the various possibilities
 offered by Wesnoth’s team coloring and generate WML code for use in add-ons.
 
+License
+-------
+
+Wesnoth RCX as a whole is licensed under the GNU General Public License
+version 2, or (at your option) any later version — a copy of the GNU GPL
+version 2 is included in `COPYING`. Some parts include code licensed under
+other licenses which may be found under `licenses/`.
+
+Code from [KDE KImageFormats][2] licensed under the GNU Library General Public
+License version 2 or later:
+
+ * `src/kimageformats/util_p.h`
+
+Code from [KDE KImageFormats][2] licensed under the GNU Lesser General Public
+License version 2.1 or later:
+
+ * `src/kimageformats/gimp_p.h`
+ * `src/kimageformats/xcf.cpp`
+ * `src/kimageformats/xcf_p.h`
+
+[2]: <https://api.kde.org/frameworks/kimageformats/html/index.html>
+
 
 Installing
 ----------
 
 Windows and macOS users should use the binary packages provided on the
-[Wesnoth RCX web page][2]. For Windows, no actual installation is required and
+[Wesnoth RCX web page][3]. For Windows, no actual installation is required and
 the provided .exe file will work out of the box and can be placed anywhere.
 
-[2]: <https://irydacea.me/projects/wesnoth-rcx>
+[3]: <https://irydacea.me/projects/wesnoth-rcx>
 
 Users building from source should see the `INSTALL.md` file for instructions.
 
@@ -57,11 +79,11 @@ Configuration
 Reporting bugs
 --------------
 
-There is an issue tracker on [Github][3]. Alternatively, you may post in the
-[Wesnoth.org forum topic][4].
+There is an issue tracker on [Github][4]. Alternatively, you may post in the
+[Wesnoth.org forum topic][5].
 
-[3]: https://github.com/irydacea/morningstar/issues
-[4]: https://r.wesnoth.org/t31965
+[4]: https://github.com/irydacea/morningstar/issues
+[5]: https://r.wesnoth.org/t31965
 
 When reporting a bug, make sure to provide as much relevant information as
 possible, including your operating system version (e.g. Windows 10 1903)
