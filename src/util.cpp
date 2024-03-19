@@ -23,6 +23,7 @@
 #include "version.hpp"
 
 #include <QIcon>
+#include <QImageReader>
 #include <QMessageBox>
 #include <QStringBuilder>
 
@@ -128,3 +129,55 @@ void about(QWidget* parent)
 }
 
 } // end namespace JobNotifications
+
+namespace MosPlatform {
+
+QString supportedImageFileFormats()
+{
+	QString res;
+
+	QList<QPair<QString, QString>> supportedFormats = {
+		{ "*.png",  tr("PNG image") },
+		{ "*.webp", tr("WebP image") },
+		{ "*.bmp",  tr("Windows Bitmap") },
+	};
+
+	static const QMap<QString, QString> pluginFormats = {
+		{ "*.xcf",  tr("GIMP image") },
+		{ "*.psd",  tr("Photoshop image") },
+		{ "*.ora",  tr("OpenRaster image") },
+		{ "*.kra",  tr("Krita image") },
+	};
+
+	for (const auto& format : QImageReader::supportedImageFormats())
+	{
+		QString str = QStringLiteral("*.") % format;
+
+		auto it = pluginFormats.find(str.toLower());
+
+		if (it != pluginFormats.end()) {
+			supportedFormats.emplaceBack(it.key(), it.value());
+		}
+	}
+
+	QStringList entries;
+	entries.reserve(2 + supportedFormats.count());
+	entries << tr("All Supported Files") % " (" ;
+	QString& catchAll = entries.front();
+
+	for (const auto& [pattern, label] : supportedFormats)
+	{
+		if (entries.count() > 1)
+			catchAll += ' ';
+		catchAll += pattern;
+		entries << label % QStringLiteral(" (") % pattern % ')';
+	}
+
+	catchAll += ')';
+	entries << tr("All Files") % QStringLiteral(" (*)");
+	res = entries.join(QStringLiteral(";;"));
+
+	return res;
+}
+
+} // end namespace MosPlatform

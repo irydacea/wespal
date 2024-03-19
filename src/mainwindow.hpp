@@ -91,6 +91,8 @@ private:
 
 	QList<qreal> zoom_factors_;
 
+	QString supportedImageFileFormats_;
+
 	void update_recent_files_menu();
 
 	void update_window_title(const QString& open_filename) {
@@ -127,8 +129,6 @@ private:
 
 	QString current_pal_name(bool palette_switch_mode = false) const;
 	ColorList current_pal_data(bool palette_switch_mode = false) const;
-
-	QString supported_file_patterns() const;
 
 	void update_zoom_buttons();
 

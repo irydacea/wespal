@@ -74,7 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	drag_start_(false),
 	drag_start_pos_(),
 	recent_file_acts_(),
-	zoom_factors_({ 0.5, 1.0, 2.0, 4.0, 8.0 })
+	zoom_factors_({ 0.5, 1.0, 2.0, 4.0, 8.0 }),
+	supportedImageFileFormats_(MosPlatform::supportedImageFileFormats())
 {
     ui->setupUi(this);
 
@@ -553,44 +554,6 @@ bool MainWindow::initial_open(const QString &initial_file)
 	return true;
 }
 
-QString MainWindow::supported_file_patterns() const
-{
-	QString ret;
-
-	QMap<QString, QString> all_fmts = {
-		{ "*.png",  tr("PNG image") },
-		{ "*.webp", tr("WebP image") },
-		{ "*.bmp",  tr("Windows Bitmap") },
-	};
-
-	QMap<QString, QString> optional_fmts = {
-		{ "*.xcf",  tr("GIMP image") },
-		{ "*.psd",  tr("Photoshop image") },
-		{ "*.ora",  tr("OpenRaster image") },
-		{ "*.kra",  tr("Krita image") },
-	};
-
-	QList<QByteArray> supported_list = QImageReader::supportedImageFormats();
-	for (const auto& supp : supported_list) {
-		QString str = "*." + supp;
-		auto it = optional_fmts.find(str.toLower());
-		if (it != optional_fmts.end()) {
-			all_fmts[it.key()] = it.value();
-		}
-	}
-
-	ret += tr("All Supported Files") + " (";
-	ret += QStringList{all_fmts.keys()}.join(' ') + ")";
-
-	for (const auto& ext : all_fmts.keys()) {
-		ret += ";;" + all_fmts[ext] + " (" + ext + ")";
-	}
-
-	ret += ";;" + tr("All Files") + " (*)";
-
-	return ret;
-}
-
 void MainWindow::do_open(const QString &initial_file)
 {
 	QString path_temp;
@@ -614,7 +577,7 @@ void MainWindow::do_open(const QString &initial_file)
 			this,
 			tr("Choose source image"),
 			start_dir,
-			supported_file_patterns()
+			supportedImageFileFormats_
 		);
 	}
 	else {

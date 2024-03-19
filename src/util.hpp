@@ -69,6 +69,17 @@ inline QString capitalize(const QString& str)
 	return res;
 }
 
+namespace MosPlatform {
+
+/**
+ * Retrieves a list of supported image file formats.
+ *
+ * @note The returned value is meant to be used with QFileDialog.
+ */
+QString supportedImageFileFormats();
+
+} // end namespace MosPlatform
+
 namespace MosUi {
 
 void message(QWidget* parent, const QString& message, const QString& details = "");
