@@ -28,6 +28,10 @@
 
 namespace {
 
+const QString ABOUT_AUTHOR_URL = QStringLiteral("https://irydacea.me/");
+
+const QString LICENSE_URL = QStringLiteral("https://www.gnu.org/licenses/old-licenses/gpl-2.0.html#SEC1");
+
 /** Namespace wrapper for QObject::tr(). */
 inline QString tr(const char* text)
 {
@@ -100,19 +104,25 @@ void about(QWidget* parent)
 {
 	QString text =
 		tr("<h3>Wesnoth RCX %1</h3>").arg(mos_version) %
-		"<p>" % tr("Built with Qt %1").arg(QT_VERSION_STR) % "<br>" %
-		tr("Copyright &copy; 2008 &#8211; 2024 by Iris Morelle") % "<br>" %
-		"&lt;iris@irydacea.me&gt;</p>" %
-		"<p>" % tr(
+		"<p>" %
+		tr(
+			"Copyright &copy; 2008 &#8211; 2024 by "
+			"<a href='%1'>Iris Morelle</a>").arg(ABOUT_AUTHOR_URL) %
+		"</p><p>" %
+		tr("Built with Qt %1").arg(QT_VERSION_STR) %
+		"</p><p>" %
+		tr(
 			"This program is free software; you can redistribute it and/or modify "
 			"it under the terms of the GNU General Public License as published by "
 			"the Free Software Foundation; either version 2 of the License, or "
 			"(at your option) any later version.") %
-		"</p><p>" % tr(
+		"</p><p>" %
+		tr(
 			"This program is distributed in the hope that it will be useful, but "
 			"<b>WITHOUT ANY WARRANTY</b>; without even the implied warranty of "
 			"<b>MERCHANTABILITY</b> or <b>FITNESS FOR A PARTICULAR PURPOSE</b>. "
-			"See the GNU General Public License for more details.") %
+			"See the <a href='%1'>"
+			"GNU General Public License</a> for more details.").arg(LICENSE_URL) %
 		"</p>";
 	QMessageBox::about(parent, tr("Wesnoth RCX"), text);
 }
