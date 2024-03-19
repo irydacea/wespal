@@ -46,7 +46,7 @@ bool doJobNotification(QWidget* parent, const QString& message, const QString& d
 	msg.setText(message);
 	msg.setDetailedText(details);
 	msg.setIcon(icon);
-	msg.setModal(true);
+	msg.setWindowModality(Qt::WindowModal);
 
 	if (icon == QMessageBox::Question) {
 		msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

@@ -34,15 +34,17 @@ namespace {
 const QString WML_INDENT = QStringLiteral("    ");
 
 const QString WML_COLOR_RANGE_DESC = QStringLiteral(
-	"# This code defines a Wesnoth color range. You may use it at global level\n"
-	"# (e.g. within the add-on's _main.cfg #ifdef) or in specific situations\n"
-	"# by providing the contents of the rgb= attribute (e.g. in [side] color=\n"
-	"# attributes or in ~RC() image path function specifications).\n");
+	"# This code defines a Wesnoth color range. You may use it\n"
+	"# at global level (e.g. within the add-on's _main.cfg #ifdef)\n"
+	"# or in specific situations by providing the contents of the\n"
+	"# rgb= attribute (e.g. in [side] color= attributes or in ~RC()\n"
+	"# image path function specifications).\n");
 
 const QString WML_COLOR_PALETTE_DESC = QStringLiteral(
-	"# This code defines a Wesnoth color palette. You may use it at global level\n"
-	"# (e.g. within the add-on's _main.cfg #ifdef) or in specific situations by\n"
-	"# providing the comma-separated color list (e.g. in ~RC() image path function\n"
+	"# This code defines a Wesnoth color palette. You may use it\n"
+	"# at global level (e.g. within the add-on's _main.cfg #ifdef)\n"
+	"# or in specific situations by providing the comma-separated\n"
+	"# color list (e.g. in ~RC() image path function\n"
 	"# specifications).\n");
 
 QString makeIdentifier(const QString& name)
