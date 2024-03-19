@@ -171,6 +171,8 @@ MainWindow::MainWindow(QWidget *parent) :
 		}
 	}
 
+	// Make custom bg color icon always visible even on macOS
+	ui->actionPreviewBgCustom->setIconVisibleInMenu(true);
 	do_custom_preview_color_icon();
 
 	ui->radRc->setChecked(true);
@@ -1010,7 +1012,7 @@ void MainWindow::do_custom_preview_color_option()
 void MainWindow::do_custom_preview_color_icon()
 {
 	auto* act = ui->actionPreviewBgCustom;
-	createColorIcon(QColor(act->data().toString()), this);
+	act->setIcon(createColorIcon({act->data().toString()}, this));
 }
 
 void MainWindow::setPreviewBackgroundColor(const QString& colorName)
