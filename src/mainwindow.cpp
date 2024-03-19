@@ -140,33 +140,38 @@ MainWindow::MainWindow(QWidget *parent) :
 	// The Custom Color entry goes into the list first so that it is preemptively
 	// selected first on the next loop in case the color saved in preferences isn't
 	// any of the predefined ones.
-	bgColorActs->addAction(ui->actionPreviewBgCustom);
-	ui->actionPreviewBgCustom->setData(bgColorName);
-	do_custom_preview_color_icon();
-	bgColorActs->addAction(ui->actionPreviewBgBlack);
-	ui->actionPreviewBgBlack->setData(QColor(Qt::black).name());
-	bgColorActs->addAction(ui->actionPreviewBgDark);
-	ui->actionPreviewBgDark->setData(QColor(Qt::darkGray).name());
-	bgColorActs->addAction(ui->actionPreviewBgDefault);
-	ui->actionPreviewBgDefault->setData("");
-	bgColorActs->addAction(ui->actionPreviewBgLight);
-	ui->actionPreviewBgLight->setData(QColor(Qt::lightGray).name());
-	bgColorActs->addAction(ui->actionPreviewBgWhite);
-	ui->actionPreviewBgWhite->setData(QColor(Qt::white).name());
+	QList<QPair<QAction*, QString>> bgColorActsItems = {
+		{ ui->actionPreviewBgBlack,   QColor(Qt::black).name()     },
+		{ ui->actionPreviewBgDark,    QColor(Qt::darkGray).name()  },
+		{ ui->actionPreviewBgDefault, {}                           },
+		{ ui->actionPreviewBgLight,   QColor(Qt::lightGray).name() },
+		{ ui->actionPreviewBgWhite,   QColor(Qt::white).name()     },
+		{ ui->actionPreviewBgCustom,  bgColorName                  },
+	};
 
-	QList<QAction*> bgColorActList = bgColorActs->actions();
-	for(auto* act : bgColorActList) {
-		connect(act, SIGNAL(triggered(bool)), this, SLOT(handlePreviewBgOption(bool)));
+	bool stockColorSelected = false;
+
+	for (const auto& [action, data] : bgColorActsItems)
+	{
+		bgColorActs->addAction(action);
+		action->setData(data);
+
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(handlePreviewBgOption(bool)));
 
 		// We must find the menu item for the color we read from the app
 		// config and mark it as checked, and update the preview background
 		// color manually since setChecked() won't raise the triggered()
 		// signal.
-		if(act->data().toString() == bgColorName) {
-			act->setChecked(true);
+		if(data == bgColorName) {
+			// Avoid marking both Custom and a stock color
+			if (!stockColorSelected)
+				action->setChecked(true);
+			stockColorSelected = true;
 			setPreviewBackgroundColor(bgColorName);
 		}
 	}
+
+	do_custom_preview_color_icon();
 
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
@@ -1043,10 +1048,14 @@ void MainWindow::do_custom_preview_color_icon()
 
 void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 {
-	const QString ss = "* { background-color: " + colorName + "; }";
-
-	ui->previewOriginalContainer->viewport()->setStyleSheet(ss);
-	ui->previewRcContainer->viewport()->setStyleSheet(ss);
+	if (!colorName.isEmpty()) {
+		const QString ss = "* { background-color: " % colorName % "; }";
+		ui->previewOriginalContainer->viewport()->setStyleSheet(ss);
+		ui->previewRcContainer->viewport()->setStyleSheet(ss);
+	} else {
+		ui->previewOriginalContainer->viewport()->setStyleSheet({});
+		ui->previewRcContainer->viewport()->setStyleSheet({});
+	}
 
 	mos_set_preview_background_color_name(colorName);
 }
