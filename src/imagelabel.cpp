@@ -35,7 +35,7 @@ void ImageLabel::paintEvent(QPaintEvent* event)
 	// We only paint the pixmap in this subclass.
 	QPixmap const * const pm = pixmap();
 
-	if(!pm) {
+	if (!pm) {
 		return;
 	}
 
@@ -53,12 +53,12 @@ void ImageLabel::paintEvent(QPaintEvent* event)
 	// otherwise pixels cease to be squares.
 
 	const int intXRatio = qCeil(xRatio);
-	if(partialDestRect.width() % intXRatio != 0) {
+	if (partialDestRect.width() % intXRatio != 0) {
 		partialDestRect.setWidth((partialDestRect.width()/intXRatio + 1) * intXRatio);
 	}
 
 	const int intYRatio = qCeil(yRatio);
-	if(partialDestRect.height() % intYRatio != 0) {
+	if (partialDestRect.height() % intYRatio != 0) {
 		partialDestRect.setHeight((partialDestRect.height()/intYRatio + 1) * intYRatio);
 	}
 

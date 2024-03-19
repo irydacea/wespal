@@ -49,7 +49,7 @@ const QString WML_COLOR_PALETTE_DESC = QStringLiteral(
 
 QString makeIdentifier(const QString& name)
 {
-	if(name.isEmpty())
+	if (name.isEmpty())
 		return name;
 
 	QString ret = name.toLower();
@@ -176,7 +176,7 @@ QString wmlFromColorList(const QString& name,
 	bool first = true;
 
 	for (auto color : palette) {
-		if(!first) {
+		if (!first) {
 			code += ',';
 		} else {
 			first = false;
@@ -198,19 +198,19 @@ QImage recolorImage(const QImage& input,
 
 	// Copy input to output first. We force ARGB32 since that's the only
 	// format we (and Wesnoth) currently understand.
-	if(input.format() != QImage::Format_ARGB32) {
+	if (input.format() != QImage::Format_ARGB32) {
 		output = input.convertToFormat(QImage::Format_ARGB32);
 	} else {
 		output = input;
 	}
 
-	for(int y = 0; y < output.height(); ++y) for (int x = 0; x < output.width(); ++x)
+	for (int y = 0; y < output.height(); ++y) for (int x = 0; x < output.width(); ++x)
 	{
 		auto color = output.pixel(x, y);
 
-		for(auto key : colorMap.keys())
+		for (auto key : colorMap.keys())
 		{
-			if((key & 0xFFFFFF) != (color & 0xFFFFFF))
+			if ((key & 0xFFFFFF) != (color & 0xFFFFFF))
 				continue;
 			// Match found, replace everything except alpha
 			auto newColor = (color & 0xFF000000) + (colorMap[key] & 0xFFFFFF);

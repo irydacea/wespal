@@ -63,7 +63,7 @@ ColorList ColorListInputDialog::getColorList() const
 		const auto& colorNames = listString_.split(",", Qt::SkipEmptyParts);
 
 		for (const auto& originalColorName : colorNames) {
-			if(originalColorName.isEmpty()) {
+			if (originalColorName.isEmpty()) {
 				continue;
 			}
 

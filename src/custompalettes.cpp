@@ -74,12 +74,13 @@ CustomPalettes::~CustomPalettes()
 void CustomPalettes::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
+
+	switch (e->type()) {
+		case QEvent::LanguageChange:
+			ui->retranslateUi(this);
+			break;
+		default:
+			break;
     }
 }
 
@@ -142,7 +143,7 @@ void CustomPalettes::updatePaletteUI()
 		}
 	}
 
-	if(palettes_.empty()) {
+	if (palettes_.empty()) {
 		setPaletteViewEnabled(false);
 	} else {
 		// Notify the palette view widget.
@@ -158,7 +159,7 @@ void CustomPalettes::addPaletteListEntry(const QString& name)
 
 	const auto& palette = palettes_.value(name);
 
-	if(!palette.empty()) {
+	if (!palette.empty()) {
 		lwi->setIcon(createColorIcon(palette.front(), ui->listPals));
 	} else {
 		lwi->setIcon(createColorIcon(Qt::white, ui->listPals));
@@ -170,7 +171,7 @@ void CustomPalettes::removePaletteListEntry(const QString &name)
 	QList<QListWidgetItem*> const items = ui->listPals->findItems(name, Qt::MatchFixedString);
 	Q_ASSERT(items.size() <= 1);
 
-	for(QListWidgetItem* w : items) {
+	for (QListWidgetItem* w : items) {
 		delete ui->listPals->takeItem(ui->listPals->row(w));
 	}
 }
@@ -180,13 +181,13 @@ void CustomPalettes::on_listPals_currentRowChanged(int currentRow)
 	QListWidgetItem* const itemw = ui->listPals->item(currentRow);
 
 	Q_ASSERT(itemw);
-	if(!itemw)
+	if (!itemw)
 		return;
 
 	const QString& name = itemw->text();
 	auto pal_it = palettes_.find(name);
 
-	if(pal_it == palettes_.end()) {
+	if (pal_it == palettes_.end()) {
 		QMessageBox::critical(this, tr("Wesnoth RCX"),
 			tr("The palette \"%1\" does not exist.").arg(name));
 		removePaletteListEntry(name);
@@ -203,7 +204,7 @@ void CustomPalettes::populatePaletteView(const ColorList& pal)
 	QListWidget* const listw = ui->listColors;
 
 	Q_ASSERT(listw);
-	if(!listw)
+	if (!listw)
 		return;
 
 	{
@@ -212,7 +213,7 @@ void CustomPalettes::populatePaletteView(const ColorList& pal)
 
 		listw->clear();
 
-		for(QRgb rgb : pal) {
+		for (QRgb rgb : pal) {
 			QListWidgetItem* itemw = new QListWidgetItem("", listw);
 			itemw->setData(Qt::UserRole, rgb);
 			itemw->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
@@ -233,7 +234,7 @@ void CustomPalettes::setColorEditControlsEnabled(bool enabled)
 
 	ui->cmdRc->setEnabled(enabled);
 
-	if(!haveColors) {
+	if (!haveColors) {
 		ui->leColor->clear();
 	}
 }
@@ -268,7 +269,7 @@ ColorList& CustomPalettes::getCurrentPalette()
 	QListWidgetItem const* palItem = ui->listPals->currentItem();
 	Q_ASSERT(palItem);
 
-	if(!palItem)
+	if (!palItem)
 		return palettes_[""];
 
 	const QString& palId = palItem->data(Qt::UserRole).toString();
@@ -283,7 +284,7 @@ void CustomPalettes::updatePaletteIcon()
 
 	const auto& palette = palettes_.value(palw->data(Qt::UserRole).toString());
 
-	if(palette.empty()) {
+	if (palette.empty()) {
 		palw->setIcon(createColorIcon(Qt::white, ui->listPals));
 	} else {
 		palw->setIcon(createColorIcon(palette.front(), ui->listPals));
@@ -292,7 +293,7 @@ void CustomPalettes::updatePaletteIcon()
 
 QString CustomPalettes::generateNewPaletteName(QString stem) const
 {
-	if(stem.isEmpty()) {
+	if (stem.isEmpty()) {
 		stem = tr("New Palette");
 	}
 
@@ -301,7 +302,7 @@ QString CustomPalettes::generateNewPaletteName(QString stem) const
 
 	do {
 		name = tr("%1 #%2").arg(stem).arg(++i);
-	} while(palettes_.find(name) != palettes_.end());
+	} while (palettes_.find(name) != palettes_.end());
 
 	return name;
 }
@@ -330,7 +331,7 @@ void CustomPalettes::on_listColors_itemChanged(QListWidgetItem *item)
 	const QColor textwSetColor=
 		textw->text();
 
-	if(textwSetColor != currentColor) {
+	if (textwSetColor != currentColor) {
 		textw->setText(currentColor.name());
 	}
 
@@ -348,7 +349,7 @@ void CustomPalettes::on_listColors_itemChanged(QListWidgetItem *item)
 	// If this is the first row we might as well update
 	// the palette icon.
 
-	if(listw->currentRow() == 0) {
+	if (listw->currentRow() == 0) {
 		updatePaletteIcon();
 	}
 }
@@ -368,7 +369,7 @@ void CustomPalettes::on_listPals_itemChanged(QListWidgetItem *item)
 	const QString& newName = item->text();
 	const QString& oldName = item->data(Qt::UserRole).toString();
 
-	if(newName == oldName)
+	if (newName == oldName)
 		return;
 
 	auto oldIt = palettes_.find(oldName),
@@ -377,18 +378,18 @@ void CustomPalettes::on_listPals_itemChanged(QListWidgetItem *item)
 	Q_ASSERT(oldIt != palettes_.end());
 	Q_ASSERT(oldIt != newIt);
 
-	if(oldIt == palettes_.end())
+	if (oldIt == palettes_.end())
 		return;
 
-	if(newIt != palettes_.end()) {
-		if(!MosUi::prompt(this, tr("The palette '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
+	if (newIt != palettes_.end()) {
+		if (!MosUi::prompt(this, tr("The palette '%1' already exists. Do you wish to overwrite it?").arg(newName))) {
 			item->setText(oldName);
 			return;
 		}
 
-		for(int i = 0; i < ui->listPals->count(); ++i) {
+		for (int i = 0; i < ui->listPals->count(); ++i) {
 			QListWidgetItem* const ii = ui->listPals->item(i);
-			if(ii->data(Qt::UserRole).toString() == newName) {
+			if (ii->data(Qt::UserRole).toString() == newName) {
 				delete ui->listPals->takeItem(i);
 				break;
 			}
@@ -408,13 +409,13 @@ void CustomPalettes::on_tbEditColor_clicked()
 	QListWidget* const listw = ui->listColors;
 	QListWidgetItem* const lwi = listw->currentItem();
 
-	if(!lwi)
+	if (!lwi)
 		return;
 
 	QColor color = lwi->data(Qt::UserRole).toInt();
 	color = QColorDialog::getColor(color, this);
 
-	if(!color.isValid())
+	if (!color.isValid())
 		return;
 
 	const QRgb rgb = color.rgb();
@@ -455,7 +456,7 @@ void CustomPalettes::on_cmdAddCol_clicked()
 	// If this is the first row we might as well update
 	// the palette icon.
 
-	if(first == NULL) {
+	if (first == NULL) {
 		updatePaletteIcon();
 	}
 }
@@ -466,7 +467,7 @@ void CustomPalettes::on_cmdDelCol_clicked()
 
 	const int remaining = listw->count();
 
-	if(remaining == 0)
+	if (remaining == 0)
 		return;
 
 	// If there are at least two remaining items (including the one that's
@@ -479,7 +480,7 @@ void CustomPalettes::on_cmdDelCol_clicked()
 
 	delete listw->takeItem(listw->currentRow());
 
-	if(remaining == 1) {
+	if (remaining == 1) {
 		// No more colors!
 		setColorEditControlsEnabled(false);
 	}
@@ -539,7 +540,7 @@ void CustomPalettes::on_cmdDelPal_clicked()
 
 	const int remaining = listw->count();
 
-	if(remaining == 0)
+	if (remaining == 0)
 		return;
 
 	// If there are at least two remaining items (including the one that's
@@ -554,7 +555,7 @@ void CustomPalettes::on_cmdDelPal_clicked()
 	const QString& palId = itemw->data(Qt::UserRole).toString();
 	delete itemw;
 
-	if(remaining == 1) {
+	if (remaining == 1) {
 		// No more palettes!
 		setPaletteViewEnabled(false);
 		clearPaletteView();
@@ -564,7 +565,7 @@ void CustomPalettes::on_cmdDelPal_clicked()
 
 	auto palItem = palettes_.find(palId);
 
-	if(palItem != palettes_.end()) {
+	if (palItem != palettes_.end()) {
 		palettes_.erase(palItem);
 	}
 }
@@ -574,7 +575,7 @@ void CustomPalettes::on_cmdAddFromList_clicked()
 	QListWidget* const listw = ui->listPals;
 	QListWidgetItem* const itemw = listw->currentItem();
 
-	if(!itemw)
+	if (!itemw)
 		return;
 
 	ColorListInputDialog dlg(this);
@@ -582,7 +583,7 @@ void CustomPalettes::on_cmdAddFromList_clicked()
 
 	const auto& colors = dlg.getColorList();
 
-	if(colors.size()) {
+	if (colors.size()) {
 		auto& pal = getCurrentPalette();
 
 		const bool firstColorChanged = pal.empty();
@@ -592,7 +593,7 @@ void CustomPalettes::on_cmdAddFromList_clicked()
 		populatePaletteView(pal);
 		setPaletteEditControlsEnabled(true);
 
-		if(firstColorChanged) {
+		if (firstColorChanged) {
 			updatePaletteIcon();
 		}
 	}
@@ -603,7 +604,7 @@ void CustomPalettes::on_cmdWml_clicked()
 	QListWidget* const listw = ui->listPals;
 	QListWidgetItem* const itemw = listw->currentItem();
 
-	if(!itemw)
+	if (!itemw)
 		return;
 
 	const auto& palName = itemw->data(Qt::UserRole).toString();
@@ -619,7 +620,7 @@ void CustomPalettes::handleRcOption()
 {
 	QAction* const act = qobject_cast<QAction*>(sender());
 
-	if(!act)
+	if (!act)
 		return;
 
 	// If the color range is somehow missing, insert and use
@@ -629,7 +630,7 @@ void CustomPalettes::handleRcOption()
 	QListWidget* const listw = ui->listPals;
 	QListWidgetItem* const itemw = listw->currentItem();
 
-	if(!itemw)
+	if (!itemw)
 		return;
 
 	auto& pal = getCurrentPalette();
@@ -654,7 +655,7 @@ void CustomPalettes::on_leColor_textEdited(const QString &arg1)
 {
 	QColor color(arg1);
 
-	if(!color.isValid())
+	if (!color.isValid())
 		return;
 
 	QListWidgetItem* const itemw = ui->listColors->currentItem();

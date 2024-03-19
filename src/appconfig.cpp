@@ -33,7 +33,7 @@ void mos_config_load(QMap<QString, ColorRange> &ranges, QMap<QString, ColorList>
 
 	const int nranges = s.beginReadArray("color_ranges");
 
-	for(int i = 0; i < nranges; ++i) {
+	for (int i = 0; i < nranges; ++i) {
 		s.setArrayIndex(i);
 		const ColorRange r{
 			s.value("avg").toUInt(),
@@ -46,13 +46,13 @@ void mos_config_load(QMap<QString, ColorRange> &ranges, QMap<QString, ColorList>
 
 	const int npals = s.beginReadArray("palettes");
 
-	for(int i = 0; i < npals; ++i) {
+	for (int i = 0; i < npals; ++i) {
 		s.setArrayIndex(i);
 
 		const QStringList vals = s.value("values").toString().split(",", Qt::SkipEmptyParts);
 		ColorList rgblist;
 
-		for(const QString& v : vals) {
+		for (const QString& v : vals) {
 			rgblist.push_back(v.toUInt());
 		}
 
@@ -69,8 +69,7 @@ void mos_config_save(const QMap<QString, ColorRange> &ranges, const QMap<QString
 
 	s.beginWriteArray("color_ranges");
 	j = 0;
-	for(QMap<QString, ColorRange>::const_iterator i = ranges.constBegin();
-		i != ranges.constEnd(); ++i, ++j)
+	for (auto i = ranges.constBegin(); i != ranges.constEnd(); ++i, ++j)
 	{
 		s.setArrayIndex(j);
 		s.setValue("id", i.key());
@@ -82,16 +81,15 @@ void mos_config_save(const QMap<QString, ColorRange> &ranges, const QMap<QString
 
 	s.beginWriteArray("palettes");
 	j = 0;
-	for(QMap<QString, ColorList>::const_iterator i = palettes.constBegin();
-		i != palettes.constEnd(); ++i, ++j)
+	for (auto i = palettes.constBegin(); i != palettes.constEnd(); ++i, ++j)
 	{
 		s.setArrayIndex(j);
 		s.setValue("id", i.key());
 
 		QString csv;
 
-		for(QRgb v : i.value()) {
-			if(!csv.isEmpty())
+		for (QRgb v : i.value()) {
+			if (!csv.isEmpty())
 				csv += ',';
 			csv += QString::number(v);
 		}
@@ -120,7 +118,7 @@ void mos_add_recent_file(const QString& filepath)
 
 	recent.push_front(filepath);
 
-	while(recent.size() > int(max_recent_files)) {
+	while (recent.size() > int(max_recent_files)) {
 		recent.pop_back();
 	}
 

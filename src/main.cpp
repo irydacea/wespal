@@ -26,8 +26,8 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-	QString initial_file = "";
+	QApplication a{argc, argv};
+	QString initial_file;
 	QStringList argvq = a.arguments();
 
 	if (argvq.count() > 1) {
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
 
-	a.setWindowIcon(QIcon(":/wesnoth-rcx-icon-64.png"));
+	a.setWindowIcon(QIcon{":/wesnoth-rcx-icon-64.png"});
 
 	MainWindow w;
 	w.show();

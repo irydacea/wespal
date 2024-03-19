@@ -110,13 +110,13 @@ void PaletteItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
 bool PaletteItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& /*option*/, const QModelIndex& index)
 {
-	if(event->type() != QEvent::MouseButtonDblClick)
+	if (event->type() != QEvent::MouseButtonDblClick)
 		return false;
 
 	QColor color = index.data(Qt::UserRole).toUInt();
 	color = QColorDialog::getColor(color, qobject_cast<QWidget*>(this->parent()));
 
-	if(color.isValid())
+	if (color.isValid())
 		model->setData(index, color.rgb(), Qt::UserRole);
 
 	return true;
