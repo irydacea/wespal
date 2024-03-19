@@ -23,8 +23,12 @@
 #pragma once
 
 #include <QColor>
+#include <QImage>
 #include <QMap>
 #include <QString>
+
+using ColorList = QList<QRgb>;
+using ColorMap = QMap<QRgb, QRgb>;
 
 /**
  * A color range definition is made of four reference RGB colors, used
@@ -45,98 +49,175 @@
  * In this implementation, the fourth reference color is unsupported as
  * it is not required for wesnoth-tc's functionality.
  */
-class color_range
+class ColorRange
 {
 public:
 	/**
-	 * Copy constructor.
-	 */
-	color_range(const color_range& o)
-			: mid_(o.mid_)
-			, max_(o.max_)
-			, min_(o.min_)
-	{}
-
-	/**
 	 * Constructor, which expects three reference RGB colors.
+	 *
 	 * @param mid Average color shade.
 	 * @param max Maximum (highlight) color shade
 	 * @param min Minimum color shade
 	 */
-	color_range(
-		QRgb mid,
-		QRgb max = 0x00FFFFFF,
-		QRgb min = 0x00000000)
-			: mid_(mid)
-			, max_(max)
-			, min_(min)
-	{}
-
-	/** Default constructor. */
-	color_range() : mid_(0x00808080), max_(0x00FFFFFF), min_(0x00000000)
-	{}
-
-	/** Average color shade. */
-	QRgb mid() const{ return mid_; }
-	/** Maximum color shade. */
-	QRgb max() const{ return max_; }
-	/** Minimum color shade. */
-	QRgb min() const{ return min_; }
-
-	/** Sets the average color shade. */
-	void setMid(QRgb mid) { mid_ = mid; }
-	/** Sets the maximum color shade. */
-	void setMax(QRgb max) { max_ = max; }
-	/** Sets the minimum color shade. */
-	void setMin(QRgb min) { min_ = min; }
-
-	bool operator<(const color_range& b) const
+	ColorRange(QRgb mid = 0x808080,
+			   QRgb max = 0xFFFFFF,
+			   QRgb min = 0x000000)
+		: mid_(mid)
+		, max_(max)
+		, min_(min)
 	{
-		if(mid_ != b.mid()) {
-			return(mid_ < b.mid());
-		}
-		if(max_ != b.max()) {
-			return(max_ < b.max());
-		}
-		return(min_ < b.min());
 	}
 
-	bool operator==(const color_range& b) const
+	/**
+	 * Average color shade.
+	 */
+	QRgb mid() const
 	{
-		return(mid_ == b.mid() && max_ == b.max() && min_ == b.min());
+		return mid_;
 	}
 
-	color_range& operator=(const color_range& o)
+	/**
+	 * Sets the average color shade.
+	 */
+	void setMid(QRgb mid)
 	{
-		if(&o != this) {
-			mid_ = o.mid_;
-			max_ = o.max_;
-			min_ = o.min_;
-		}
-
-		return *this;
+		mid_ = mid;
 	}
+
+	/**
+	 * Maximum color shade.
+	 */
+	QRgb max() const
+	{
+		return max_;
+	}
+
+	/**
+	 * Sets the maximum color shade.
+	 */
+	void setMax(QRgb max)
+	{
+		max_ = max;
+	}
+
+	/**
+	 * Minimum color shade.
+	 */
+	QRgb min() const
+	{
+		return min_;
+	}
+
+	/**
+	 * Sets the minimum color shade.
+	 */
+	void setMin(QRgb min)
+	{
+		min_ = min;
+	}
+
+	/**
+	 * Transforms a source palette using this color_range object.
+	 *
+	 * @param palette Source palette.
+	 *
+	 * @return A color map, where the keys are source palette items, and the
+	 *         values mapped to them are the result of applying a color range
+	 *         transform to them.
+	 */
+	ColorMap applyToPalette(const ColorList& palette) const;
 
 private:
 	QRgb mid_ , max_ , min_;
 };
 
-typedef QMap<QRgb, QRgb> rc_map;
+inline bool operator<(const ColorRange& a, const ColorRange& b)
+{
+	if (a.mid() != b.mid())
+		return a.mid() < b.mid();
+	if (a.max() != b.max())
+		return a.max() < b.max();
+	return a.min() < b.min();
+}
+
+inline bool operator==(const ColorRange& a, const ColorRange& b)
+{
+	return a.mid() == b.mid() &&
+		   a.max() == b.max() &&
+		   a.min() == b.min();
+}
 
 /**
  * Converts a source palette using the specified color_range object.
  * This holds the main interface for range-based recoloring.
- * @param new_rgb Specifies parameters for the conversion.
- * @param old_rgb Source palette.
- * @return A STL map of colors, with the keys being source palette elements, and the values
- *         are the result of applying the color range conversion on it.
+ *
+ * @param new_rgb      Specifies parameters for the conversion.
+ *
+ * @param old_rgb      Source palette.
+ *
+ * @return A color map, where the keys are source palette items, and the
+ *         values mapped to them are the result of applying a color range
+ *         transform to them.
  */
-rc_map recolor_range(const color_range& new_rgb, const QList<QRgb>& old_rgb);
+ColorMap applyColorRange(const ColorRange& colorRange,
+						 const ColorList& palette);
 
-rc_map recolor_palettes(const QList<QRgb>& key, const QList<QRgb>& new_values);
+/**
+ * Generates a color map from two palettes.
+ *
+ * @param srcPalette   Source palette.
+ *
+ * @param newPalette   New palette.
+ *
+ * @return A color map, where the keys are source palette items, and the
+ *         values mapped to them are taken from their analogous index in th
+ *         new palette.
+ *
+ * @note If srcPalette and newPalette differ in size, the operation uses at
+ *       most the number of colors in the smallest palette.
+ */
+ColorMap generateColorMap(const ColorList& srcPalette,
+						  const ColorList& newPalette);
 
-QString generate_color_range_wml(const QString& name, const color_range& range);
+/**
+ * Generates Wesnoth Markup from a color range object.
+ *
+ * @param name         Color range name to be used for its WML id and
+ *                     human-friendly name in English.
+ *
+ * @param range        Color range object.
+ *
+ * @return A string containing WML code including a [color_range] tag.
+ */
+QString wmlFromColorRange(const QString& name,
+						  const ColorRange& range);
 
-QString generate_color_palette_wml(const QString& name, const QList<QRgb>& palette);
+/**
+ * Generates Wesnoth Markup from a color list.
+ *
+ * @param name         Color palette name to be used for its WML id and
+ *                     human-friendly name in English.
+ *
+ * @param palette      Color palette object.
+ *
+ * @return A string containing WML code including a [color_palette] tag.
+ */
+QString wmlFromColorList(const QString& name,
+						 const ColorList& palette);
 
-// kate: indent-mode normal; encoding utf-8; space-indent off; indent-width 4;
+
+/**
+ * Recolors a QImage using the specified color map.
+ *
+ * The color map provided may be obtained by e.g. calling ColorRange::apply()
+ * on an appropriate palette.
+ *
+ * @param input        Input image.
+ *
+ * @param colorMap     A color map to use for transforming the image.
+ *
+ * @return A recolored image, always in ARGB32 format regardless of the input
+ *         format.
+ */
+QImage recolorImage(const QImage& input,
+					const ColorMap& colorMap);

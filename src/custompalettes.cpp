@@ -37,11 +37,13 @@
 // their task so we don't need to have such inconvenient private
 // wrappers as the setTaskThingsEnabled() family.
 
-CustomPalettes::CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, const QMap<QString, color_range>& colorRanges, QWidget *parent) :
-    QDialog(parent),
-	ui(new Ui::CustomPalettes),
-	palettes_(initialPalettes),
-	ranges_(colorRanges)
+CustomPalettes::CustomPalettes(const QMap<QString, ColorList>& initialPalettes,
+							   const QMap<QString, ColorRange>& colorRanges,
+							   QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::CustomPalettes)
+	, palettes_(initialPalettes)
+	, ranges_(colorRanges)
 {
     ui->setupUi(this);
 	ui->listColors->setItemDelegate(new PaletteItemDelegate(ui->listPals));
@@ -119,9 +121,10 @@ QMenu* CustomPalettes::createRangesMenu()
 
 	Q_ASSERT(rangeUiNames.size() == mosOrderedRangeNames.size());
 
-	QMap<QString, color_range> sortedRanges = ranges_;
+	auto sortedRanges = ranges_;
 
-	for(int k = 0; k < mosOrderedRangeNames.size(); ++k) {
+	for (qsizetype k = 0; k < mosOrderedRangeNames.size(); ++k)
+	{
 		const QString& id = mosOrderedRangeNames[k];
 		// Use the copy of the color range in ranges_ in order to
 		// take into account potential user-overridden builtins.
@@ -133,8 +136,7 @@ QMenu* CustomPalettes::createRangesMenu()
 
 	menu->addSeparator();
 
-	for(QMap<QString, color_range>::const_iterator k = sortedRanges.constBegin();
-		k != sortedRanges.constEnd(); ++k)
+	for (auto k = sortedRanges.constBegin(); k != sortedRanges.constEnd(); ++k)
 	{
 		addRangesMenuEntry(menu, k.key(), k.value(), capitalize(k.key()));
 	}
@@ -142,7 +144,10 @@ QMenu* CustomPalettes::createRangesMenu()
 	return menu;
 }
 
-void CustomPalettes::addRangesMenuEntry(QMenu* menu, const QString& id, const color_range& range, const QString& text)
+void CustomPalettes::addRangesMenuEntry(QMenu* menu,
+										const QString& id,
+										const ColorRange& range,
+										const QString& text)
 {
 	// TODO: unique keyboard accel for each entry?
 	QAction* const act = menu->addAction(text);
@@ -161,8 +166,8 @@ void CustomPalettes::updatePaletteUI()
 
 		ui->listPals->clear();
 
-		for(QMap< QString, QList<QRgb> >::const_iterator i = palettes_.constBegin();
-			i != palettes_.constEnd(); ++i) {
+		for (auto i = palettes_.constBegin(); i != palettes_.constEnd(); ++i)
+		{
 			addPaletteListEntry(i.key());
 		}
 	}
@@ -181,7 +186,7 @@ void CustomPalettes::addPaletteListEntry(const QString& name)
 	lwi->setData(Qt::UserRole, name);
 	lwi->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
 
-	const QList<QRgb> palette = palettes_.value(name);
+	const auto& palette = palettes_.value(name);
 
 	if(!palette.empty()) {
 		lwi->setIcon(createColorIcon(palette.front(), ui->listPals));
@@ -209,7 +214,7 @@ void CustomPalettes::on_listPals_currentRowChanged(int currentRow)
 		return;
 
 	const QString& name = itemw->text();
-	QMap< QString, QList<QRgb> >::iterator pal_it = palettes_.find(name);
+	auto pal_it = palettes_.find(name);
 
 	if(pal_it == palettes_.end()) {
 		QMessageBox::critical(this, tr("Wesnoth RCX"),
@@ -306,7 +311,7 @@ void CustomPalettes::updatePaletteIcon()
 	QListWidgetItem* const palw = ui->listPals->currentItem();
 	Q_ASSERT(palw);
 
-	const QList<QRgb>& palette = palettes_.value(palw->data(Qt::UserRole).toString());
+	const auto& palette = palettes_.value(palw->data(Qt::UserRole).toString());
 
 	if(palette.empty()) {
 		palw->setIcon(createColorIcon(Qt::white, ui->listPals));
@@ -633,7 +638,7 @@ void CustomPalettes::on_cmdWml_clicked()
 
 	const QString& palName = itemw->data(Qt::UserRole).toString();
 	const QList<QRgb>& pal = palettes_.value(palName);
-	const QString& wml = generate_color_palette_wml(palName, pal);
+	const QString& wml = wmlFromColorList(palName, pal);
 
 	CodeSnippetDialog dlg(wml, this);
 	dlg.setWindowTitle(tr("Color Palette WML"));
@@ -649,7 +654,7 @@ void CustomPalettes::handleRcOption()
 
 	// If the color range is somehow missing, insert and use
 	// the default gray color range.
-	color_range& range = ranges_[act->data().toString()];
+	auto& colorRange = ranges_[act->data().toString()];
 
 	QListWidget* const listw = ui->listPals;
 	QListWidgetItem* const itemw = listw->currentItem();
@@ -659,14 +664,13 @@ void CustomPalettes::handleRcOption()
 
 	QList<QRgb>& pal = getCurrentPalette();
 
-	const QMap<QRgb, QRgb>& cvtMap = recolor_range(range, pal);
+	const auto& cvtMap = colorRange.applyToPalette(pal);
 	// The actual recoloring must be done manually here.
-	for(QList<QRgb>::iterator i = pal.begin(); i != pal.end(); ++i) {
-		QRgb& rgb = *i;
-
-		QMap<QRgb, QRgb>::const_iterator cvtIt = cvtMap.find(rgb);
-		if(cvtIt != cvtMap.constEnd()) {
-			rgb = cvtIt.value();
+	for (auto& color : pal)
+	{
+		auto cvtIt = cvtMap.find(color);
+		if (cvtIt != cvtMap.constEnd()) {
+			color = cvtIt.value();
 		}
 	}
 

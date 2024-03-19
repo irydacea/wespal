@@ -27,7 +27,7 @@ namespace {
 	const unsigned max_recent_files = 4;
 }
 
-void mos_config_load(QMap<QString, color_range> &ranges, QMap<QString, QList<QRgb> > &palettes)
+void mos_config_load(QMap<QString, ColorRange> &ranges, QMap<QString, ColorList> &palettes)
 {
 	QSettings s;
 
@@ -35,10 +35,10 @@ void mos_config_load(QMap<QString, color_range> &ranges, QMap<QString, QList<QRg
 
 	for(int i = 0; i < nranges; ++i) {
 		s.setArrayIndex(i);
-		const color_range r(
+		const ColorRange r{
 			s.value("avg").toUInt(),
 			s.value("max").toUInt(),
-			s.value("min").toUInt());
+			s.value("min").toUInt()};
 		ranges.insert(s.value("id").toString(), r);
 	}
 
@@ -50,7 +50,7 @@ void mos_config_load(QMap<QString, color_range> &ranges, QMap<QString, QList<QRg
 		s.setArrayIndex(i);
 
 		const QStringList vals = s.value("values").toString().split(",", Qt::SkipEmptyParts);
-		QList<QRgb> rgblist;
+		ColorList rgblist;
 
 		for(const QString& v : vals) {
 			rgblist.push_back(v.toUInt());
@@ -62,14 +62,14 @@ void mos_config_load(QMap<QString, color_range> &ranges, QMap<QString, QList<QRg
 	s.endArray();
 }
 
-void mos_config_save(const QMap<QString, color_range> &ranges, const QMap<QString, QList<QRgb> > &palettes)
+void mos_config_save(const QMap<QString, ColorRange> &ranges, const QMap<QString, ColorList> &palettes)
 {
 	QSettings s;
 	int j;
 
 	s.beginWriteArray("color_ranges");
 	j = 0;
-	for(QMap<QString, color_range>::const_iterator i = ranges.constBegin();
+	for(QMap<QString, ColorRange>::const_iterator i = ranges.constBegin();
 		i != ranges.constEnd(); ++i, ++j)
 	{
 		s.setArrayIndex(j);
@@ -82,7 +82,7 @@ void mos_config_save(const QMap<QString, color_range> &ranges, const QMap<QStrin
 
 	s.beginWriteArray("palettes");
 	j = 0;
-	for(QMap<QString, QList<QRgb> >::const_iterator i = palettes.constBegin();
+	for(QMap<QString, ColorList>::const_iterator i = palettes.constBegin();
 		i != palettes.constEnd(); ++i, ++j)
 	{
 		s.setArrayIndex(j);

@@ -42,7 +42,7 @@ public:
 
 	bool initial_open(const QString& initial_file);
 
-	QStringList do_run_jobs(QMap<QString, rc_map> &jobs);
+	QStringList do_run_jobs(QMap<QString, ColorMap> &jobs);
 
 protected:
     void changeEvent(QEvent *e);
@@ -55,11 +55,11 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 
 private:
-	QMap< QString, color_range > color_ranges_;
-	QMap< QString, QList<QRgb> > palettes_;
+	QMap<QString, ColorRange> color_ranges_;
+	QMap<QString, ColorList> palettes_;
 
-	QMap< QString, color_range > user_color_ranges_;
-	QMap< QString, QList<QRgb> > user_palettes_;
+	QMap<QString, ColorRange> user_color_ranges_;
+	QMap<QString, ColorList> user_palettes_;
 
 	/**
 	 * Merges user definitions with built-ins.

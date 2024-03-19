@@ -29,11 +29,14 @@
 namespace {
 
 /** Namespace wrapper for QObject::tr(). */
-inline QString tr(const char* text) { return QObject::tr(text); }
+inline QString tr(const char* text)
+{
+	return QObject::tr(text);
+}
 
 bool doJobNotification(QWidget* parent, const QString& message, const QString& details, QMessageBox::Icon icon)
 {
-	QMessageBox msg(parent);
+	QMessageBox msg{parent};
 
 	msg.setWindowTitle(tr("Wesnoth RCX"));
 	msg.setText(message);
@@ -41,7 +44,7 @@ bool doJobNotification(QWidget* parent, const QString& message, const QString& d
 	msg.setIcon(icon);
 	msg.setModal(true);
 
-	if(icon == QMessageBox::Question) {
+	if (icon == QMessageBox::Question) {
 		msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 	}
 
@@ -49,8 +52,8 @@ bool doJobNotification(QWidget* parent, const QString& message, const QString& d
 		QMessageBox::StandardButton(msg.exec());
 
 	return icon == QMessageBox::Question
-		? result == QMessageBox::Yes
-		: true;
+			? result == QMessageBox::Yes
+			: true;
 }
 
 bool doJobNotification(QWidget* parent, const QString& message, const QStringList& detailItems, QMessageBox::Icon icon)
@@ -115,15 +118,3 @@ void about(QWidget* parent)
 }
 
 } // end namespace JobNotifications
-
-QString capitalize(const QString& str)
-{
-	QString ret(str);
-
-	if(!ret.isEmpty()) {
-		auto c = ret[0];
-		c = c.toUpper();
-	}
-
-	return ret;
-}

@@ -31,7 +31,19 @@
 
 namespace {
 
-const QString wml_indent = "    ";
+const QString WML_INDENT = QStringLiteral("    ");
+
+const QString WML_COLOR_RANGE_DESC = QStringLiteral(
+	"# This code defines a Wesnoth color range. You may use it at global level\n"
+	"# (e.g. within the add-on's _main.cfg #ifdef) or in specific situations\n"
+	"# by providing the contents of the rgb= attribute (e.g. in [side] color=\n"
+	"# attributes or in ~RC() image path function specifications).\n");
+
+const QString WML_COLOR_PALETTE_DESC = QStringLiteral(
+	"# This code defines a Wesnoth color palette. You may use it at global level\n"
+	"# (e.g. within the add-on's _main.cfg #ifdef) or in specific situations by\n"
+	"# providing the comma-separated color list (e.g. in ~RC() image path function\n"
+	"# specifications).\n");
 
 QString makeIdentifier(const QString& name)
 {
@@ -52,144 +64,123 @@ QString makeWmlColor(QRgb rgb)
 {
 	QString ret = QColor(rgb).name().toUpper();
 	Q_ASSERT(!ret.isEmpty());
-	ret.remove(0, 1); // The leading #
-
-	return ret;
+	return ret.right(ret.length() - 1);
 }
 
-}
+} // end unnamed namespace #1
 
-QMap<QRgb, QRgb> recolor_range(const color_range& new_range, const QList<QRgb>& old_rgb){
-	QMap<QRgb, QRgb> map_rgb;
+ColorMap ColorRange::applyToPalette(const ColorList& palette) const
+{
+	ColorMap mapRgb;
 
-	short new_red  = qRed(new_range.mid());
-	short new_green= qGreen(new_range.mid());
-	short new_blue = qBlue(new_range.mid());
+	auto midR = qRed(mid_),
+		 midG = qGreen(mid_),
+		 midB = qBlue(mid_);
 
-	short max_red  = qRed(new_range.max());
-	short max_green= qGreen(new_range.max());
-	short max_blue = qBlue(new_range.max());
+	auto maxR = qRed(max_),
+		 maxG = qGreen(max_),
+		 maxB = qBlue(max_);
 
-	short min_red  = qRed(new_range.min());
-	short min_green= qGreen(new_range.min());
-	short min_blue = qBlue(new_range.min());
+	auto minR = qRed(min_),
+		 minG = qGreen(min_),
+		 minB = qBlue(min_);
 
 	// Map first color in vector to exact new color
-	QRgb temp_rgb = old_rgb.empty() ? 0 : old_rgb[0];
-	short old_r = qRed(temp_rgb);
-	short old_g = qGreen(temp_rgb);
-	short old_b = qBlue(temp_rgb);
-	short reference_avg = ((old_r + old_g + old_b) / 3);
+	QRgb tempRgb = palette.empty() ? 0 : palette.front();
+	auto oldR = qRed(tempRgb),
+		 oldG = qGreen(tempRgb),
+		 oldB = qBlue(tempRgb);
+	const auto referenceAvg = (oldR + oldG + oldB) / 3;
 
-	for(QList<QRgb>::const_iterator temp_rgb2 = old_rgb.begin();
-		  temp_rgb2 != old_rgb.end(); ++temp_rgb2)
+	for (auto color : palette)
 	{
-		short old_r = qRed(*temp_rgb2);
-		short old_g = qGreen(*temp_rgb2);
-		short old_b = qBlue(*temp_rgb2);
+		auto r = qRed(color),
+			 g = qGreen(color),
+			 b = qBlue(color);
+		const auto oldAvg = (r + g + b) / 3;
 
-		const short old_avg = ((old_r + old_g + old_b) / 3);
-		 // Calculate new color
-		QRgb new_r, new_g, new_b;
-
-		if(reference_avg && old_avg <= reference_avg) {
-			float old_rat = static_cast<float>(old_avg)/reference_avg;
-			new_r = QRgb(old_rat * new_red   + (1 - old_rat) * min_red);
-			new_g = QRgb(old_rat * new_green + (1 - old_rat) * min_green);
-			new_b = QRgb(old_rat * new_blue  + (1 - old_rat) * min_blue);
-		} else if(255 - reference_avg) {
-			float old_rat = (255.0f - static_cast<float>(old_avg)) /
-				(255.0f - reference_avg);
-
-			new_r = static_cast<QRgb>(old_rat * new_red   + (1 - old_rat) * max_red);
-			new_g = static_cast<QRgb>(old_rat * new_green + (1 - old_rat) * max_green);
-			new_b = static_cast<QRgb>(old_rat * new_blue  + (1 - old_rat) * max_blue);
+		// Calculate new color
+		if (referenceAvg && oldAvg <= referenceAvg) {
+			float oldRatio = float(oldAvg) / float(referenceAvg);
+			r = oldRatio * midR + (1 - oldRatio) * minR;
+			g = oldRatio * midG + (1 - oldRatio) * minG;
+			b = oldRatio * midB + (1 - oldRatio) * minB;
+		} else if (255 - referenceAvg) {
+			float oldRatio = (255.0f - float(oldAvg)) / (255.0f - float(referenceAvg));
+			r = oldRatio * midR + (1 - oldRatio) * maxR;
+			g = oldRatio * midG + (1 - oldRatio) * maxG;
+			b = oldRatio * midB + (1 - oldRatio) * maxB;
 		} else {
-			new_r = new_g = new_b = 0; // Suppress warning
+			r = g = b = 0;
 			Q_ASSERT(false);
 			// Should never get here.
-			// Would imply old_avg > reference_avg = 255
-		 }
+			// Would imply oldAvg > referenceAvg = 255
+		}
 
-		if(new_r > 255) new_r=255;
-		if(new_g > 255) new_g=255;
-		if(new_b > 255) new_b=255;
-
-		map_rgb[*temp_rgb2] = qRgba(new_r, new_g, new_b, 0);
+		mapRgb[color] = qRgb(qBound(0, r, 255),
+							 qBound(0, g, 255),
+							 qBound(0, b, 255));
 	}
 
-	return map_rgb;
+	return mapRgb;
 }
 
-QMap<QRgb, QRgb> recolor_palettes(const QList<QRgb> &key, const QList<QRgb> &new_values)
+ColorMap generateColorMap(const ColorList& srcPalette,
+						  const ColorList& newPalette)
 {
-	rc_map map;
+	ColorMap mapRgb;
 
-	for(int n = 0; n < qMin(key.count(), new_values.count()); ++n) {
-		map[key.at(n)] = new_values.at(n);
+	auto shortestEnd = qMin(srcPalette.count(), newPalette.count());
+
+	for (qsizetype i = 0; i < shortestEnd; ++i)
+	{
+		mapRgb[srcPalette[i]] = newPalette[i];
 	}
 
-	return map;
+	return mapRgb;
 }
 
-QString generate_color_range_wml(const QString& name, const color_range& range)
+QString wmlFromColorRange(const QString& name,
+						  const ColorRange& range)
 {
-	static const QString lead =
-		"# This code defines a Wesnoth color range.\n"
-		"# You may use it at global level (e.g. within\n"
-		"# the add-on's _main.cfg #ifdef) or in specific\n"
-		"# situations by providing the contents of the\n"
-		"# rgb= attribute (e.g. in [side] color=\n"
-		"# attributes or in ~RC() image path function\n"
-		"# specifications).\n"
-		"\n";
+	QString code = WML_COLOR_RANGE_DESC
+				   % "\n"
+				   % "[color_range]\n"
+				   % WML_INDENT % "id=\"" % makeIdentifier(name) % "\"\n"
+				   % WML_INDENT % "name= _ \"" % name % "\"\n"
+				   % WML_INDENT % "rgb=\"";
 
-	QString code = lead;
-
-	code += "[color_range]\n" +
-			wml_indent + "id=\"" + makeIdentifier(name) + "\"\n" +
-			wml_indent + "name= _ \"" + name + "\"\n" +
-			wml_indent + "rgb=\"";
-
-	const QString& strAvg = makeWmlColor(range.mid());
-	const QString& strMax = makeWmlColor(range.max());
-	const QString& strMin = makeWmlColor(range.min());
+	const auto& strAvg = makeWmlColor(range.mid());
+	const auto& strMax = makeWmlColor(range.max());
+	const auto& strMin = makeWmlColor(range.min());
 	// TODO: restore map marker color support in the color_range type and
 	//       allow users to pick one, or just warn them about it?
-	const QString& strMap = strAvg;
+	const auto& strMap = strAvg;
 
-	code += strAvg + "," + strMax + "," + strMin + "," + strMap + "\"\n" +
-			"[/color_range]\n";
-
+	code += strAvg % "," % strMax % "," % strMin % "," % strMap % "\"\n"
+			% "[/color_range]\n";
 
 	return code;
 }
 
-QString generate_color_palette_wml(const QString& name, const QList<QRgb>& palette)
+QString wmlFromColorList(const QString& name,
+						 const ColorList& palette)
 {
-	static const QString lead =
-		"# This code defines a Wesnoth color palette.\n"
-		"# You may use it at global level (e.g. within\n"
-		"# the add-on's _main.cfg #ifdef) or in specific\n"
-		"# situations by providing the comma-separated\n"
-		"# color list (e.g. in ~RC() image path function\n"
-		"# specifications).\n"
-		"\n";
-
-	QString code = lead;
-
-	code += "[color_palette]\n" +
-			wml_indent + makeIdentifier(name) + "=\"";
+	QString code = WML_COLOR_PALETTE_DESC
+				   % "\n"
+				   % "[color_palette]\n"
+				   % WML_INDENT % makeIdentifier(name) % "=\"";
 
 	bool first = true;
-	for(QRgb rgb : palette) {
+
+	for (auto color : palette) {
 		if(!first) {
-			code += ",";
+			code += ',';
 		} else {
 			first = false;
 		}
 
-		code += makeWmlColor(rgb);
+		code += makeWmlColor(color);
 	}
 
 	code += "\"\n";
@@ -198,4 +189,32 @@ QString generate_color_palette_wml(const QString& name, const QList<QRgb>& palet
 	return code;
 }
 
-// kate: indent-mode normal; encoding utf-8; space-indent off; indent-width 4;
+QImage recolorImage(const QImage& input,
+					const ColorMap& colorMap)
+{
+	QImage output;
+
+	// Copy input to output first. We force ARGB32 since that's the only
+	// format we (and Wesnoth) currently understand.
+	if(input.format() != QImage::Format_ARGB32) {
+		output = input.convertToFormat(QImage::Format_ARGB32);
+	} else {
+		output = input;
+	}
+
+	for(int y = 0; y < output.height(); ++y) for (int x = 0; x < output.width(); ++x)
+	{
+		auto color = output.pixel(x, y);
+
+		for(auto key : colorMap.keys())
+		{
+			if((key & 0xFFFFFF) != (color & 0xFFFFFF))
+				continue;
+			// Match found, replace everything except alpha
+			auto newColor = (color & 0xFF000000) + (colorMap[key] & 0xFFFFFF);
+			output.setPixel(x, y, newColor);
+		}
+	}
+
+	return output;
+}

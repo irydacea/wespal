@@ -31,8 +31,11 @@ enum PreviewBackgroundColor {
 	White,
 };
 
-void mos_config_load(QMap< QString, color_range >& ranges, QMap< QString, QList<QRgb> >& palettes);
-void mos_config_save(const QMap< QString, color_range >& ranges, const QMap< QString, QList<QRgb> >& palettes);
+void mos_config_load(QMap<QString, ColorRange>& ranges,
+					 QMap<QString, ColorList>& palettes);
+
+void mos_config_save(const QMap<QString, ColorRange>& ranges,
+					 const QMap<QString, ColorList>& palettes);
 
 QStringList mos_recent_files();
 void mos_add_recent_file(const QString& filepath);

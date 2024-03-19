@@ -24,6 +24,12 @@
 #include <QStringList>
 #include <QWidget>
 
+/**
+ * Helper class used to block signals from objects for a certain scope.
+ *
+ * @note The object's original blockSignals() value is restored once the
+ *       ObjectLock is destroyed, whether it was true or false.
+ */
 class ObjectLock
 {
 public:
@@ -45,7 +51,23 @@ private:
 	bool initial_state_;
 };
 
-QString capitalize(const QString& str);
+/**
+ * Capitalizes the first character in the provided string.
+ *
+ * @param str          Input string
+ *
+ * @return A capitalized string.
+ */
+inline QString capitalize(const QString& str)
+{
+	QString res{str};
+
+	if(!res.isEmpty()) {
+		res.front() = res.front().toUpper();
+	}
+
+	return res;
+}
 
 namespace MosUi {
 

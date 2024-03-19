@@ -34,10 +34,13 @@ namespace Ui {
 class CustomRanges : public QDialog {
     Q_OBJECT
 public:
-	CustomRanges(const QMap<QString, color_range>& initialRanges, QWidget *parent);
-    ~CustomRanges();
+	CustomRanges(const QMap<QString, ColorRange>& initialRanges,
+				 QWidget *parent);
 
-	const QMap<QString, color_range>& ranges() const {
+	~CustomRanges();
+
+	const QMap<QString, ColorRange>& ranges() const
+	{
 		return ranges_;
 	}
 
@@ -47,9 +50,9 @@ protected:
 private:
     Ui::CustomRanges *ui;
 
-	QMap<QString, color_range> ranges_;
+	QMap<QString, ColorRange> ranges_;
 
-	color_range& currentRange();
+	ColorRange& currentRange();
 
 	void updateColorButton(QAbstractButton* button, const QColor& color);
 	void updateRangeEditControls();

@@ -29,19 +29,18 @@
 #include <QMessageBox>
 #include <QMenu>
 
-CustomRanges::CustomRanges(const QMap<QString, color_range>& initialRanges, QWidget *parent) :
-    QDialog(parent),
-	ui(new Ui::CustomRanges),
-	ranges_(initialRanges)
+CustomRanges::CustomRanges(const QMap<QString, ColorRange>& initialRanges,
+						   QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::CustomRanges)
+	, ranges_(initialRanges)
 {
     ui->setupUi(this);
 
 	{
 		const ObjectLock lock(ui->listRanges);
 
-		for(QMap< QString, color_range >::const_iterator ci = ranges_.constBegin();
-			ci != ranges_.constEnd();
-			++ci)
+		for(auto ci = ranges_.constBegin(); ci != ranges_.constEnd(); ++ci)
 		{
 			addRangeListEntry(ci.key());
 		}
@@ -102,7 +101,7 @@ QString CustomRanges::generateNewRangeName(QString stem) const
 
 }
 
-color_range& CustomRanges::currentRange()
+ColorRange& CustomRanges::currentRange()
 {
 	QListWidget* const listw = ui->listRanges;
 	QListWidgetItem* const itemw = listw->currentItem();
@@ -164,7 +163,7 @@ void CustomRanges::updateRangeEditControls()
 		ui->leMax->clear();
 		updateColorButton(ui->tbMin, color);
 	} else {
-		color_range& range = currentRange();
+		auto& range = currentRange();
 		const QColor avg = range.mid(), min = range.min(), max = range.max();
 
 		ui->leAvg->setText(avg.name());
@@ -208,7 +207,7 @@ void CustomRanges::on_cmdAdd_clicked()
 	QListWidget* const listw = ui->listRanges;
 
 	const QString& raName = generateNewRangeName();
-	ranges_.insert(raName, color_range());
+	ranges_.insert(raName, {});
 	addRangeListEntry(raName);
 
 	listw->setCurrentRow(listw->count() - 1);
@@ -260,7 +259,7 @@ void CustomRanges::on_cmdDelete_clicked()
 
 	// Delete the actual color range.
 
-	QMap<QString, color_range>::iterator raIt = ranges_.find(raName);
+	auto raIt = ranges_.find(raName);
 
 	if(raIt != ranges_.end()) {
 		ranges_.erase(raIt);
@@ -320,9 +319,9 @@ void CustomRanges::on_listRanges_itemChanged(QListWidgetItem *item)
 	if(newName == oldName)
 		return;
 
-	QMap<QString, color_range>::iterator
-		oldIt = ranges_.find(oldName),
-		newIt = ranges_.find(newName);
+	auto oldIt = ranges_.find(oldName),
+		 newIt = ranges_.find(newName);
+
 	Q_ASSERT(oldIt != ranges_.end());
 	Q_ASSERT(oldIt != newIt);
 
@@ -343,7 +342,7 @@ void CustomRanges::on_listRanges_itemChanged(QListWidgetItem *item)
 			}
 		}
 	} else {
-		newIt = ranges_.insert(newName, color_range());
+		newIt = ranges_.insert(newName, {});
 	}
 
 	newIt.value() = oldIt.value();
@@ -360,9 +359,9 @@ void CustomRanges::on_cmdWml_clicked()
 	if(!itemw)
 		return;
 
-	const QString& raName = itemw->data(Qt::UserRole).toString();
-	const color_range& range = ranges_.value(raName);
-	const QString& wml = generate_color_range_wml(raName, range);
+	const auto& raName = itemw->data(Qt::UserRole).toString();
+	const auto& range = ranges_.value(raName);
+	const auto& wml = wmlFromColorRange(raName, range);
 
 	CodeSnippetDialog dlg(wml, this);
 	dlg.setWindowTitle(tr("Color Range WML"));

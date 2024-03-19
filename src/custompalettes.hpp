@@ -34,10 +34,16 @@ namespace Ui {
 class CustomPalettes : public QDialog {
     Q_OBJECT
 public:
-	CustomPalettes(const QMap< QString, QList<QRgb> >& initialPalettes, const QMap<QString, color_range>& colorRanges, QWidget* parent = nullptr);
+	CustomPalettes(const QMap<QString, ColorList>& initialPalettes,
+				   const QMap<QString, ColorRange>& colorRanges,
+				   QWidget* parent = nullptr);
+
 	~CustomPalettes();
 
-	const QMap<QString, QList<QRgb> >& getPalettes() const { return palettes_; }
+	const QMap<QString, ColorList>& getPalettes() const
+	{
+		return palettes_;
+	}
 
 protected:
     void changeEvent(QEvent *e);
@@ -77,24 +83,30 @@ private:
     Ui::CustomPalettes *ui;
 	//PaletteWidget *palw;
 
-	QMap< QString, QList<QRgb> > palettes_;
+	QMap<QString, ColorList> palettes_;
 
-	QMap<QString, color_range> ranges_;
+	QMap<QString, ColorRange> ranges_;
 
 	QMenu* createRangesMenu();
-	void addRangesMenuEntry(QMenu* menu, const QString& id, const color_range& range, const QString& text);
+	void addRangesMenuEntry(QMenu* menu,
+							const QString& id,
+							const ColorRange& range,
+							const QString& text);
 
 	void addPaletteListEntry(const QString& name);
 	void removePaletteListEntry(const QString& name);
 
-	void renamePaletteListEntry(const QString& old_name, const QString& new_name) {
+	void renamePaletteListEntry(const QString& old_name, const QString& new_name)
+	{
 		removePaletteListEntry(old_name);
 		addPaletteListEntry(new_name);
 	}
 
 	void populatePaletteView(const QList<QRgb>& pal);
 
-	/** Update the palette UI starting from scratch. */
+	/**
+	 * Update the palette UI starting from scratch.
+	 */
 	void updatePaletteUI();
 
 	void setColorEditControlsEnabled(bool enabled);
@@ -103,7 +115,7 @@ private:
 
 	void clearPaletteView();
 
-	QList<QRgb>& getCurrentPalette();
+	ColorList& getCurrentPalette();
 
 	void updatePaletteIcon();
 
