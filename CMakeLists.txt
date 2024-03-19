@@ -13,6 +13,7 @@ qt_add_executable(wesnoth-rcx WIN32 MACOSX_BUNDLE
     src/appconfig.cpp src/appconfig.hpp
     src/codesnippetdialog.cpp src/codesnippetdialog.hpp src/codesnippetdialog.ui
     src/colorlistinputdialog.cpp src/colorlistinputdialog.hpp src/colorlistinputdialog.ui
+	src/colortypes.hpp
     src/custompalettes.cpp src/custompalettes.hpp src/custompalettes.ui
     src/customranges.cpp src/customranges.hpp src/customranges.ui
     src/defs.cpp src/defs.hpp

@@ -228,7 +228,7 @@ void CustomPalettes::on_listPals_currentRowChanged(int currentRow)
 	setColorEditControlsEnabled(true);
 }
 
-void CustomPalettes::populatePaletteView(const QList<QRgb> &pal)
+void CustomPalettes::populatePaletteView(const ColorList& pal)
 {
 	QListWidget* const listw = ui->listColors;
 
@@ -293,7 +293,7 @@ void CustomPalettes::clearPaletteView()
 	ui->leColor->clear();
 }
 
-QList<QRgb>& CustomPalettes::getCurrentPalette()
+ColorList& CustomPalettes::getCurrentPalette()
 {
 	QListWidgetItem const* palItem = ui->listPals->currentItem();
 	Q_ASSERT(palItem);
@@ -370,7 +370,7 @@ void CustomPalettes::on_listColors_itemChanged(QListWidgetItem *item)
 
 	QListWidget* const listw = ui->listColors;
 
-	QList<QRgb>& pal = getCurrentPalette();
+	auto& pal = getCurrentPalette();
 	const int index = listw->currentRow();
 	Q_ASSERT(index < pal.size());
 	pal[index] = currentColor.rgb();
@@ -401,9 +401,9 @@ void CustomPalettes::on_listPals_itemChanged(QListWidgetItem *item)
 	if(newName == oldName)
 		return;
 
-	QMap<QString, QList<QRgb> >::iterator
-		oldIt = palettes_.find(oldName),
-		newIt = palettes_.find(newName);
+	auto oldIt = palettes_.find(oldName),
+		 newIt = palettes_.find(newName);
+
 	Q_ASSERT(oldIt != palettes_.end());
 	Q_ASSERT(oldIt != newIt);
 
@@ -424,7 +424,7 @@ void CustomPalettes::on_listPals_itemChanged(QListWidgetItem *item)
 			}
 		}
 	} else {
-		newIt = palettes_.insert(newName, QList<QRgb>());
+		newIt = palettes_.insert(newName, {});
 	}
 
 	newIt.value() = oldIt.value();
@@ -472,7 +472,7 @@ void CustomPalettes::on_cmdAddCol_clicked()
 
 	// Update palette definition.
 
-	QList<QRgb>& pal = getCurrentPalette();
+	auto& pal = getCurrentPalette();
 	pal.push_back(rgb);
 
 	// Notify widgets.
@@ -516,7 +516,7 @@ void CustomPalettes::on_cmdDelCol_clicked()
 
 	// Update palette definition.
 
-	QList<QRgb>& pal = getCurrentPalette();
+	auto& pal = getCurrentPalette();
 
 	Q_ASSERT(index < pal.count());
 	pal.removeAt(index);
@@ -592,7 +592,7 @@ void CustomPalettes::on_cmdDelPal_clicked()
 
 	// Delete palette definition.
 
-	QMap< QString, QList<QRgb> >::iterator palItem = palettes_.find(palId);
+	auto palItem = palettes_.find(palId);
 
 	if(palItem != palettes_.end()) {
 		palettes_.erase(palItem);
@@ -610,10 +610,10 @@ void CustomPalettes::on_cmdAddFromList_clicked()
 	ColorListInputDialog dlg(this);
 	dlg.exec();
 
-	const QList<QRgb>& colors = dlg.getColorList();
+	const auto& colors = dlg.getColorList();
 
 	if(colors.size()) {
-		QList<QRgb>& pal = getCurrentPalette();
+		auto& pal = getCurrentPalette();
 
 		const bool firstColorChanged = pal.empty();
 
@@ -636,9 +636,9 @@ void CustomPalettes::on_cmdWml_clicked()
 	if(!itemw)
 		return;
 
-	const QString& palName = itemw->data(Qt::UserRole).toString();
-	const QList<QRgb>& pal = palettes_.value(palName);
-	const QString& wml = wmlFromColorList(palName, pal);
+	const auto& palName = itemw->data(Qt::UserRole).toString();
+	const auto& pal = palettes_.value(palName);
+	const auto& wml = wmlFromColorList(palName, pal);
 
 	CodeSnippetDialog dlg(wml, this);
 	dlg.setWindowTitle(tr("Color Palette WML"));
@@ -662,7 +662,7 @@ void CustomPalettes::handleRcOption()
 	if(!itemw)
 		return;
 
-	QList<QRgb>& pal = getCurrentPalette();
+	auto& pal = getCurrentPalette();
 
 	const auto& cvtMap = colorRange.applyToPalette(pal);
 	// The actual recoloring must be done manually here.

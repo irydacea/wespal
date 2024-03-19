@@ -55,9 +55,9 @@ void ColorListInputDialog::on_buttonBox_accepted()
 	listString_ = ui->teColors->toPlainText();
 }
 
-QList<QRgb> ColorListInputDialog::getColorList() const
+ColorList ColorListInputDialog::getColorList() const
 {
-	QList<QRgb> ret;
+	ColorList ret;
 
 	if (!listString_.isEmpty()) {
 		const auto& colorNames = listString_.split(",", Qt::SkipEmptyParts);

@@ -96,13 +96,14 @@ private:
 	void addPaletteListEntry(const QString& name);
 	void removePaletteListEntry(const QString& name);
 
-	void renamePaletteListEntry(const QString& old_name, const QString& new_name)
+	void renamePaletteListEntry(const QString& old_name,
+								const QString& new_name)
 	{
 		removePaletteListEntry(old_name);
 		addPaletteListEntry(new_name);
 	}
 
-	void populatePaletteView(const QList<QRgb>& pal);
+	void populatePaletteView(const ColorList& pal);
 
 	/**
 	 * Update the palette UI starting from scratch.

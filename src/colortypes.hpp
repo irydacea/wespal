@@ -1,7 +1,7 @@
 //
 // codename Morning Star
 //
-// Copyright (C) 2012 - 2024 by Iris Morelle <iris@irydacea.me>
+// Copyright (C) 2024 by Iris Morelle <iris@irydacea.me>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,31 +20,8 @@
 
 #pragma once
 
-#include "colortypes.hpp"
+#include <QColor>
+#include <QMap>
 
-#include <QDialog>
-
-namespace Ui {
-class ColorListInputDialog;
-}
-
-class ColorListInputDialog : public QDialog
-{
-	Q_OBJECT
-	
-public:
-	explicit ColorListInputDialog(QWidget *parent = nullptr);
-	~ColorListInputDialog();
-
-	ColorList getColorList() const;
-	
-protected:
-	void changeEvent(QEvent *e);
-	
-private slots:
-	void on_buttonBox_accepted();
-
-private:
-	Ui::ColorListInputDialog *ui;
-	QString listString_;
-};
+using ColorList = QList<QRgb>;
+using ColorMap = QMap<QRgb, QRgb>;

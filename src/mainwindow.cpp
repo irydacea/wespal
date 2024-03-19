@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	mos_config_load(user_color_ranges_, user_palettes_);
 
-	const QSize& lastWindowSize = mos_get_main_window_size();
+	const auto& lastWindowSize = mos_get_main_window_size();
 
 	if(lastWindowSize.isValid()) {
 		resize(lastWindowSize);
@@ -118,7 +118,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->tbZoomIn->setIcon(QIcon::fromTheme("zoom-in", QIcon(":/zoom-in-16.png")));
 	ui->tbZoomOut->setIcon(QIcon::fromTheme("zoom-out", QIcon(":/zoom-out-16.png")));
 
-	for(unsigned k = 0; k < mos_max_recent_files(); ++k) {
+	for (unsigned k = 0; k < mos_max_recent_files(); ++k) {
 		QAction* act = new QAction(this);
 
 		act->setVisible(false);
@@ -307,11 +307,21 @@ void MainWindow::processRcDefinitions()
 
 	// NOTE: these names must correspond to the entries in mosOrderedRangeNames!
 	QStringList rangeUiNames = {
-		tr("Red"), tr("Blue"), tr("Green"),
-		tr("Purple"), tr("Black"), tr("Brown"),
-		tr("Orange"), tr("White"), tr("Teal"),
-		tr("Light Red"), tr("Dark Red"), tr("Light Blue"),
-		tr("Bright Green"), tr("Bright Orange"), tr("Gold"), /*
+		tr("Red"),
+		tr("Blue"),
+		tr("Green"),
+		tr("Purple"),
+		tr("Black"),
+		tr("Brown"),
+		tr("Orange"),
+		tr("White"),
+		tr("Teal"),
+		tr("Light Red"),
+		tr("Dark Red"),
+		tr("Light Blue"),
+		tr("Bright Green"),
+		tr("Bright Orange"),
+		tr("Gold"), /*
 		tr("Terrain Icon: Reef"),
 		tr("Terrain Icon: Shallow Water"),
 		tr("Terrain Icon: Deep Water"),
@@ -702,10 +712,10 @@ void MainWindow::refresh_previews()
 		return;
 
 	ColorMap cvtMap;
-	const QList<QRgb>& palData = current_pal_data();
+	const auto& palData = current_pal_data();
 
 	if(ui->staFunctionOpts->currentIndex()) {
-		const QList<QRgb>& targetPalData = current_pal_data(true);
+		const auto& targetPalData = current_pal_data(true);
 		cvtMap = generateColorMap(palData, targetPalData);
 	} else {
 		const auto& colorRange = color_ranges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
@@ -819,7 +829,7 @@ QString MainWindow::current_pal_name(bool palette_switch_mode) const
 	return palette_name;
 }
 
-QList<QRgb> MainWindow::current_pal_data(bool palette_switch_mode) const
+ColorList MainWindow::current_pal_data(bool palette_switch_mode) const
 {
 	return palettes_.value(current_pal_name(palette_switch_mode));
 }
@@ -833,11 +843,11 @@ QStringList MainWindow::do_save_single_recolor(QString &base)
 {
 	QMap<QString, ColorMap> jobs;
 
-	const QString& palId = current_pal_name();
-	const QList<QRgb>& palData = current_pal_data();
+	const auto& palId = current_pal_name();
+	const auto& palData = current_pal_data();
 
-	const QString& targetPalId = current_pal_name(true);
-	const QList<QRgb>& targetPalData = current_pal_data(true);
+	const auto& targetPalId = current_pal_name(true);
+	const auto& targetPalData = current_pal_data(true);
 
 	const QString& filePath = base + "/" + QFileInfo(img_path_).completeBaseName() +
 			"-PAL-" + palId + "-" + targetPalId + ".png";

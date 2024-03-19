@@ -22,13 +22,10 @@
 
 #pragma once
 
-#include <QColor>
-#include <QImage>
-#include <QMap>
-#include <QString>
+#include "colortypes.hpp"
 
-using ColorList = QList<QRgb>;
-using ColorMap = QMap<QRgb, QRgb>;
+#include <QImage>
+#include <QString>
 
 /**
  * A color range definition is made of four reference RGB colors, used
