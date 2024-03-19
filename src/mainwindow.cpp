@@ -558,15 +558,16 @@ QString MainWindow::supported_file_patterns() const
 	QString ret;
 
 	QMap<QString, QString> all_fmts = {
-		{ "*.png", tr("PNG image") },
-		{ "*.bmp", tr("Windows Bitmap") },
+		{ "*.png",  tr("PNG image") },
+		{ "*.webp", tr("WebP image") },
+		{ "*.bmp",  tr("Windows Bitmap") },
 	};
 
 	QMap<QString, QString> optional_fmts = {
-		{ "*.xcf", tr("GIMP image") },
-		{ "*.psd", tr("Photoshop image") },
-		{ "*.ora", tr("OpenRaster image") },
-		{ "*.kra", tr("Krita image") },
+		{ "*.xcf",  tr("GIMP image") },
+		{ "*.psd",  tr("Photoshop image") },
+		{ "*.ora",  tr("OpenRaster image") },
+		{ "*.kra",  tr("Krita image") },
 	};
 
 	QList<QByteArray> supported_list = QImageReader::supportedImageFormats();
