@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(wesnoth-rcx VERSION 1.0 LANGUAGES C CXX)
+project(wesnoth-rcx VERSION 0.4 LANGUAGES C CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
@@ -25,6 +25,14 @@ qt_add_executable(wesnoth-rcx WIN32 MACOSX_BUNDLE
     src/version.cpp src/version.hpp
     src/wesnothrc.cpp src/wesnothrc.hpp
 )
+
+target_compile_options(wesnoth-rcx PRIVATE
+	-Wall
+	-Wextra
+	-Werror=non-virtual-dtor
+	-Wold-style-cast
+)
+
 target_compile_definitions(wesnoth-rcx PRIVATE
     QT_NO_FOREACH
 )
