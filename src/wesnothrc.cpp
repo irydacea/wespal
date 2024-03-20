@@ -204,17 +204,27 @@ QImage recolorImage(const QImage& input,
 		output = input;
 	}
 
-	for (int y = 0; y < output.height(); ++y) for (int x = 0; x < output.width(); ++x)
-	{
-		auto color = output.pixel(x, y);
+	// Create a version of the color map without alpha values for faster
+	// lookups.
+	ColorMap plainRgbMap;
 
-		for (auto key : colorMap.keys())
+	for (auto i = colorMap.begin(); i != colorMap.end(); ++i)
+		plainRgbMap[i.key() & 0xFFFFFF] = i.value() & 0xFFFFFF;
+
+	auto maxY = output.height(), maxX = output.width();
+
+	for (int y = 0; y < maxY; ++y)
+	{
+		auto* line = reinterpret_cast<QRgb*>(output.scanLine(y));
+		for (int x = 0; x < maxX; ++x)
 		{
-			if ((key & 0xFFFFFF) != (color & 0xFFFFFF))
+			auto i = plainRgbMap.find(line[x] & 0xFFFFFF);
+
+			if (i == plainRgbMap.end())
 				continue;
+
 			// Match found, replace everything except alpha
-			auto newColor = (color & 0xFF000000) + (colorMap[key] & 0xFFFFFF);
-			output.setPixel(x, y, newColor);
+			line[x] = (line[x] & 0xFF000000) + i.value();
 		}
 	}
 
