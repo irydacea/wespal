@@ -287,16 +287,16 @@ void MainWindow::processRcDefinitions()
 	// User-defined palettes.
 	//
 
-	for (const auto& palName : user_palettes_.keys())
+	for (const auto& [palName, palette] : user_palettes_.asKeyValueRange())
 	{
 		if (wesnoth::builtinPalettes.hasName(palName)) {
 			// Skip redefinitions of built-in palettes, we only care about
 			// ids and names at this point.
 			continue;
 		}
-		auto color = user_palettes_[palName].empty()
+		auto color = palette.empty()
 					 ? 0U
-					 : user_palettes_[palName].front();
+					 : palette.front();
 		auto colorIcon = createColorIcon(color, colorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, capitalize(palName), palName);
 		cbNewPals->addItem(colorIcon, capitalize(palName), palName);
@@ -322,14 +322,14 @@ void MainWindow::processRcDefinitions()
 	// User-defined color ranges
 	//
 
-	for (const auto& id : user_color_ranges_.keys())
+	for (const auto& [id, colorRange] : user_color_ranges_.asKeyValueRange())
 	{
 		if (wesnoth::builtinColorRanges.hasName(id)) {
 			// Skip redefinitions of built-in ranges, we only care about
 			// ids and names at this point.
 			continue;
 		}
-		auto color = user_color_ranges_[id].mid();
+		auto color = colorRange.mid();
 		insertRangeListItem(id, capitalize(id), color);
 	}
 
