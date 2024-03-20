@@ -762,6 +762,8 @@ void MainWindow::enableWorkArea(bool enable)
 	}
 
 	auto elements = std::make_tuple(
+		ui->action_Reload,
+		ui->action_Save,
 		ui->radPal, ui->radRc,
 		ui->lblKeyPal, ui->cbxKeyPal,
 		ui->lblNewPal, ui->cbxNewPal,
