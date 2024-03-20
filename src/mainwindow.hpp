@@ -55,11 +55,30 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 
 private:
-	QMap<QString, ColorRange> color_ranges_;
+	Ui::MainWindow *ui;
+
+	QMap<QString, ColorRange> colorRanges_;
 	QMap<QString, ColorList> palettes_;
 
-	QMap<QString, ColorRange> user_color_ranges_;
-	QMap<QString, ColorList> user_palettes_;
+	QMap<QString, ColorRange> userColorRanges_;
+	QMap<QString, ColorList> userPalettes_;
+
+	QString imagePath_;
+
+	QImage originalImage_;
+	QImage transformedImage_;
+
+	qreal zoom_;
+	QList<qreal> zoomFactors_;
+
+	bool ignoreDrops_;
+	bool dragUseRecolored_;
+	bool dragStart_;
+	QPoint dragStartPos_;
+
+	QList<QAction*> recentFileActions_;
+
+	QString supportedImageFileFormats_;
 
 	/**
 	 * Merges user definitions with built-ins.
@@ -74,43 +93,30 @@ private:
 
 	void insertRangeListItem(const QString& id, const QString& display_name, const QColor& color);
 
-	Ui::MainWindow *ui;
-
-	QString img_path_;
-
-	QImage img_original_;
-	QImage img_transview_;
-
-	qreal zoom_;
-	bool ignore_drops_;
-	bool drag_use_rc_;
-	bool drag_start_;
-	QPoint drag_start_pos_;
-
-	QVector<QAction*> recent_file_acts_;
-
-	QList<qreal> zoom_factors_;
-
-	QString supportedImageFileFormats_;
-
 	void update_recent_files_menu();
 
-	void update_window_title(const QString& open_filename) {
-		QString display_string;
+	void updateWindowTitle(bool hasImage, const QString& filename = {})
+	{
+		QString appTitle = tr("Wesnoth RCX");
+		QString displayString;
 
-		if(open_filename.isEmpty()) {
-			this->setWindowFilePath("");
-			display_string = tr("Dropped file");
+		if (hasImage) {
+			if (filename.isEmpty()) {
+				this->setWindowFilePath({});
+				displayString = tr("Dropped file");
+			} else {
+				this->setWindowFilePath(filename);
+				displayString = QFileInfo(filename).fileName();
+			}
+
+			this->setWindowTitle(displayString % " \342\200\224 " % appTitle);
 		} else {
-			this->setWindowFilePath(open_filename);
-			display_string = QFileInfo(open_filename).fileName();
+			this->setWindowTitle(appTitle);
 		}
-
-		this->setWindowTitle(display_string + QString().fromUtf8(" \342\200\224 ") + tr("Wesnoth RCX"));
 	}
 
-	void toggle_page1(bool newstate);
-	void toggle_page2(bool newstate);
+	void togglePage1(bool newstate);
+	void togglePage2(bool newstate);
 
 	void do_save();
 	void do_close();
@@ -125,7 +131,7 @@ private:
 	QStringList do_save_color_ranges(QString& base);
 	QStringList do_save_single_recolor(QString& base);
 
-	void refresh_previews();
+	void refreshPreviews();
 
 	QString current_pal_name(bool palette_switch_mode = false) const;
 	ColorList current_pal_data(bool palette_switch_mode = false) const;

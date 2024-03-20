@@ -54,32 +54,37 @@ static const QSize colorIconSize{16, 16};
 
 } // end unnamed namespace
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+MainWindow::MainWindow(QWidget *parent)
+	: QMainWindow(parent)
 
-	color_ranges_(),
-	palettes_(),
+	, ui(new Ui::MainWindow)
 
-	user_color_ranges_(),
-	user_palettes_(),
+	, colorRanges_()
+	, palettes_()
 
-	ui(new Ui::MainWindow),
+	, userColorRanges_()
+	, userPalettes_()
 
-	img_path_(),
-	img_original_(),
-	img_transview_(),
-	zoom_(1.0),
-	ignore_drops_(false),
-	drag_use_rc_(false),
-	drag_start_(false),
-	drag_start_pos_(),
-	recent_file_acts_(),
-	zoom_factors_({ 0.5, 1.0, 2.0, 4.0, 8.0 }),
-	supportedImageFileFormats_(MosPlatform::supportedImageFileFormats())
+	, imagePath_()
+
+	, originalImage_()
+	, transformedImage_()
+
+	, zoom_(1.0)
+	, zoomFactors_({ 0.5, 1.0, 2.0, 4.0, 8.0 })
+
+	, ignoreDrops_(false)
+	, dragUseRecolored_(false)
+	, dragStart_(false)
+	, dragStartPos_()
+
+	, recentFileActions_()
+
+	, supportedImageFileFormats_(MosPlatform::supportedImageFileFormats())
 {
     ui->setupUi(this);
 
-	mos_config_load(user_color_ranges_, user_palettes_);
+	mos_config_load(userColorRanges_, userPalettes_);
 
 	const auto& lastWindowSize = mos_get_main_window_size();
 
@@ -127,7 +132,7 @@ MainWindow::MainWindow(QWidget *parent) :
 		connect(act, SIGNAL(triggered()), this, SLOT(handleRecent()));
 
 		ui->menu_File->insertAction(ui->action_RecentPlaceholder, act);
-		recent_file_acts_.push_back(act);
+		recentFileActions_.push_back(act);
 	}
 
 	ui->action_RecentPlaceholder->setVisible(false);
@@ -178,11 +183,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
-	toggle_page2(false);
-	toggle_page1(true);
+	togglePage2(false);
+	togglePage1(true);
 
 	ui->zoomSlider->setMinimum(0);
-	ui->zoomSlider->setMaximum(zoom_factors_.size() - 1);
+	ui->zoomSlider->setMaximum(zoomFactors_.size() - 1);
 	ui->zoomSlider->setValue(1);
 
 	ui->previewOriginalContainer->viewport()->setBackgroundRole(QPalette::Dark);
@@ -226,10 +231,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::generateMergedRcDefinitions()
 {
-	color_ranges_ = wesnoth::builtinColorRanges.objects();
-	color_ranges_.insert(user_color_ranges_);
+	colorRanges_ = wesnoth::builtinColorRanges.objects();
+	colorRanges_.insert(userColorRanges_);
 	palettes_ = wesnoth::builtinPalettes.objects();
-	palettes_.insert(user_palettes_);
+	palettes_.insert(userPalettes_);
 }
 
 void MainWindow::insertRangeListItem(const QString &id, const QString &display_name, const QColor& color)
@@ -287,7 +292,7 @@ void MainWindow::processRcDefinitions()
 	// User-defined palettes.
 	//
 
-	for (const auto& [palName, palette] : user_palettes_.asKeyValueRange())
+	for (const auto& [palName, palette] : userPalettes_.asKeyValueRange())
 	{
 		if (wesnoth::builtinPalettes.hasName(palName)) {
 			// Skip redefinitions of built-in palettes, we only care about
@@ -322,7 +327,7 @@ void MainWindow::processRcDefinitions()
 	// User-defined color ranges
 	//
 
-	for (const auto& [id, colorRange] : user_color_ranges_.asKeyValueRange())
+	for (const auto& [id, colorRange] : userColorRanges_.asKeyValueRange())
 	{
 		if (wesnoth::builtinColorRanges.hasName(id)) {
 			// Skip redefinitions of built-in ranges, we only care about
@@ -349,8 +354,8 @@ void MainWindow::update_recent_files_menu()
 {
 	const QStringList& recent = mos_recent_files();
 
-	for (int k = 0; k < recent_file_acts_.size(); ++k) {
-		QAction& act = *recent_file_acts_[k];
+	for (int k = 0; k < recentFileActions_.size(); ++k) {
+		QAction& act = *recentFileActions_[k];
 		if (k < recent.size()) {
 			act.setText(QString("&%1 %2").arg(k + 1).arg(QFileInfo(recent[k]).fileName()));
 			act.setData(recent[k]);
@@ -408,30 +413,30 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton && !img_original_.isNull() && !img_transview_.isNull()) {
-		this->drag_start_pos_ = event->pos();
-		this->drag_use_rc_ = ui->previewRcContainer->geometry().contains(event->pos());
-		this->drag_start_ = drag_use_rc_ || ui->previewOriginalContainer->geometry().contains(event->pos());
+	if (event->button() == Qt::LeftButton && !originalImage_.isNull() && !transformedImage_.isNull()) {
+		this->dragStartPos_ = event->pos();
+		this->dragUseRecolored_ = ui->previewRcContainer->geometry().contains(event->pos());
+		this->dragStart_ = dragUseRecolored_ || ui->previewOriginalContainer->geometry().contains(event->pos());
 	}
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-	if (drag_start_ && (event->buttons() & Qt::LeftButton) && (event->pos() - drag_start_pos_).manhattanLength() >= QApplication::startDragDistance()) {
+	if (dragStart_ && (event->buttons() & Qt::LeftButton) && (event->pos() - dragStartPos_).manhattanLength() >= QApplication::startDragDistance()) {
 
 		QDrag *d = new QDrag(this);
 		QMimeData *m = new QMimeData();
 
-		if (drag_use_rc_)
-			m->setImageData(this->img_transview_);
+		if (dragUseRecolored_)
+			m->setImageData(this->transformedImage_);
 		else
-			m->setImageData(this->img_original_);
+			m->setImageData(this->originalImage_);
 
 		d->setMimeData(m);
 
-		ignore_drops_ = true;
+		ignoreDrops_ = true;
 		d->exec(Qt::CopyAction);
-		ignore_drops_ = drag_start_ = false;
+		ignoreDrops_ = dragStart_ = false;
 	}
 }
 
@@ -443,7 +448,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 
 void MainWindow::dropEvent(QDropEvent *e)
 {
-	if (ignore_drops_)
+	if (ignoreDrops_)
 		return;
 
 	QImage newimg;
@@ -463,43 +468,43 @@ void MainWindow::dropEvent(QDropEvent *e)
 		return;
 	}
 
-	img_original_ = newimg.convertToFormat(QImage::Format_ARGB32);
+	originalImage_ = newimg.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
 	if (newpath.isEmpty() != true) {
-		img_path_ = newpath;
-		update_window_title(img_path_);
+		imagePath_ = newpath;
+		updateWindowTitle(true, imagePath_);
 	}
 	else {
-		update_window_title("");
+		updateWindowTitle(true, {});
 	}
 
-	refresh_previews();
+	refreshPreviews();
 	enableWorkArea(true);
 }
 
 void MainWindow::on_radRc_clicked()
 {
 	ui->staFunctionOpts->setCurrentIndex(0);
-	toggle_page1(true);
-	toggle_page2(false);
-	refresh_previews();
+	togglePage1(true);
+	togglePage2(false);
+	refreshPreviews();
 }
 
 void MainWindow::on_radPal_clicked()
 {
 	ui->staFunctionOpts->setCurrentIndex(1);
-	toggle_page1(false);
-	toggle_page2(true);
-	refresh_previews();
+	togglePage1(false);
+	togglePage2(true);
+	refreshPreviews();
 }
 
-void MainWindow::toggle_page1(bool newstate)
+void MainWindow::togglePage1(bool newstate)
 {
 	ui->listRanges->setEnabled(newstate);
 }
 
-void MainWindow::toggle_page2(bool newstate)
+void MainWindow::togglePage2(bool newstate)
 {
 	ui->cbxNewPal->setEnabled(newstate);
 	ui->lblNewPal->setEnabled(newstate);
@@ -563,14 +568,14 @@ void MainWindow::do_open(const QString &initial_file)
 			QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
 
 	if (initial_file.isNull() || initial_file.isEmpty()) {
-		if (img_path_.isEmpty()) {
+		if (imagePath_.isEmpty()) {
 			if (!picture_locations.empty()) {
 				start_dir = picture_locations.first();
 			} else {
 				start_dir = ".";
 			}
 		} else {
-			start_dir = QFileInfo(img_path_).absolutePath();
+			start_dir = QFileInfo(imagePath_).absolutePath();
 		}
 
 		path_temp = QFileDialog::getOpenFileName(
@@ -584,7 +589,7 @@ void MainWindow::do_open(const QString &initial_file)
 		path_temp = initial_file;
 	}
 
-	if (path_temp.isNull() && img_original_.isNull()) {
+	if (path_temp.isNull() && originalImage_.isNull()) {
 		return;
 	}
 
@@ -595,7 +600,7 @@ void MainWindow::do_open(const QString &initial_file)
 				this, tr("Could not load %1.").arg(path_temp));
 		}
 
-		if (img_original_.isNull()) {
+		if (originalImage_.isNull()) {
 			throw no_initial_file();
 		}
 
@@ -604,36 +609,36 @@ void MainWindow::do_open(const QString &initial_file)
 		return;
 	}
 
-	img_path_ = path_temp;
+	imagePath_ = path_temp;
 	// We want to work on actual ARGB data
-	img_original_ = img_temp.convertToFormat(QImage::Format_ARGB32);
+	originalImage_ = img_temp.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
-	mos_add_recent_file(img_path_);
+	mos_add_recent_file(imagePath_);
 	update_recent_files_menu();
-	update_window_title(img_path_);
-	refresh_previews();
+	updateWindowTitle(true, imagePath_);
+	refreshPreviews();
 
 	enableWorkArea(true);
 }
 
 void MainWindow::do_reload()
 {
-	QImage img{img_path_};
+	QImage img{imagePath_};
 	if (img.isNull()) {
-		MosUi::error(this, tr("Could not reload %1.").arg(img_path_));
+		MosUi::error(this, tr("Could not reload %1.").arg(imagePath_));
 		return;
 	}
 
-	img_original_ = img.convertToFormat(QImage::Format_ARGB32);
+	originalImage_ = img.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
-	refresh_previews();
+	refreshPreviews();
 }
 
-void MainWindow::refresh_previews()
+void MainWindow::refreshPreviews()
 {
-	if (this->img_original_.isNull() || this->signalsBlocked())
+	if (this->originalImage_.isNull() || this->signalsBlocked())
 		return;
 
 	ColorMap cvtMap;
@@ -643,16 +648,16 @@ void MainWindow::refresh_previews()
 		const auto& targetPalData = current_pal_data(true);
 		cvtMap = generateColorMap(palData, targetPalData);
 	} else {
-		const auto& colorRange = color_ranges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
+		const auto& colorRange = colorRanges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
 		cvtMap = colorRange.applyToPalette(palData);
 	}
 
-	img_transview_ = recolorImage(img_original_, cvtMap);
+	transformedImage_ = recolorImage(originalImage_, cvtMap);
 
-	const QSize& scaled_size = img_original_.size() * zoom_;
+	const QSize& scaled_size = originalImage_.size() * zoom_;
 
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(img_original_));
-	ui->previewRc->setPixmap(QPixmap::fromImage(img_transview_));
+	ui->previewOriginal->setPixmap(QPixmap::fromImage(originalImage_));
+	ui->previewRc->setPixmap(QPixmap::fromImage(transformedImage_));
 
 	ui->previewOriginal->resize(scaled_size);
 	ui->previewRc->resize(scaled_size);
@@ -680,11 +685,10 @@ void MainWindow::centerScrollArea(QScrollArea *scrollArea)
 void MainWindow::do_save()
 {
 	QString base = QFileDialog::getExistingDirectory(
-		this,
-		tr("Choose an output directory"),
-		QFileInfo(img_path_).absolutePath(),
-		QFileDialog::ShowDirsOnly
-	);
+					   this,
+					   tr("Choose an output directory"),
+					   QFileInfo(imagePath_).absolutePath(),
+					   QFileDialog::ShowDirsOnly);
 
 	if (base.isNull())
 		return;
@@ -710,8 +714,8 @@ void MainWindow::do_save()
 void MainWindow::do_close()
 {
 	enableWorkArea(false);
-	this->img_original_ = QImage{};
-	this->img_transview_ = QImage{};
+	this->originalImage_ = QImage{};
+	this->transformedImage_ = QImage{};
 }
 
 void MainWindow::do_about()
@@ -722,7 +726,7 @@ void MainWindow::do_about()
 void MainWindow::enableWorkArea(bool enable)
 {
 	if (!enable) {
-		this->setWindowTitle(tr("Wesnoth RCX"));
+		updateWindowTitle(false);
 	}
 
 	auto elements = std::make_tuple(
@@ -773,7 +777,7 @@ QStringList MainWindow::do_save_single_recolor(QString &base)
 	const auto& targetPalId = current_pal_name(true);
 	const auto& targetPalData = current_pal_data(true);
 
-	const QString& filePath = base + "/" + QFileInfo(img_path_).completeBaseName() +
+	const QString& filePath = base + "/" + QFileInfo(imagePath_).completeBaseName() +
 			"-PAL-" + palId + "-" + targetPalId + ".png";
 
 	jobs[filePath] = generateColorMap(palData, targetPalData);
@@ -802,11 +806,11 @@ QStringList MainWindow::do_save_color_ranges(QString &base)
 		if (itemw->checkState() == Qt::Checked) {
 			const QString& rangeId = itemw->data(Qt::UserRole).toString();
 
-			const QString& filePath = base + "/" + QFileInfo(img_path_).completeBaseName() +
+			const QString& filePath = base + "/" + QFileInfo(imagePath_).completeBaseName() +
 					"-RC-" + palId + "-" + QString::number(k + 1) +
 					"-" + rangeId + ".png";
 
-			const auto& colorRange = color_ranges_.value(rangeId);
+			const auto& colorRange = colorRanges_.value(rangeId);
 			jobs[filePath] = colorRange.applyToPalette(palData);
 
 			if (QFileInfo(filePath).exists()) {
@@ -836,7 +840,7 @@ QStringList MainWindow::do_run_jobs(QMap<QString, ColorMap> &jobs)
 		out.setFileName(k.key());
 		out.setText("", propaganda);
 
-		rc = recolorImage(img_original_, k.value());
+		rc = recolorImage(originalImage_, k.value());
 
 		if (out.write(rc)) {
 			succeeded.push_back(out.fileName());
@@ -862,26 +866,26 @@ void MainWindow::on_action_Save_triggered()
 
 void MainWindow::on_cbxKeyPal_currentIndexChanged(int /*index*/)
 {
-	refresh_previews();
+	refreshPreviews();
 }
 
 void MainWindow::on_cbxNewPal_currentIndexChanged(int /*index*/)
 {
-	refresh_previews();
+	refreshPreviews();
 }
 
 void MainWindow::on_listRanges_currentRowChanged(int /*currentRow*/)
 {
-	refresh_previews();
+	refreshPreviews();
 }
 
 void MainWindow::on_zoomSlider_valueChanged(int value)
 {
-	Q_ASSERT(value >= 0 && value < zoom_factors_.size());
-	zoom_ = zoom_factors_[value];
+	Q_ASSERT(value >= 0 && value < zoomFactors_.size());
+	zoom_ = zoomFactors_[value];
 
 	update_zoom_buttons();
-	refresh_previews();
+	refreshPreviews();
 }
 
 void MainWindow::on_tbZoomIn_clicked()
@@ -904,13 +908,13 @@ void MainWindow::update_zoom_buttons()
 
 void MainWindow::on_actionColor_ranges_triggered()
 {
-	CustomRanges dlg{user_color_ranges_, this};
+	CustomRanges dlg{userColorRanges_, this};
 	dlg.exec();
 
 	if (dlg.result() == QDialog::Rejected)
 		return;
 
-	user_color_ranges_ = dlg.ranges();
+	userColorRanges_ = dlg.ranges();
 
 	{
 		ObjectLock l{this};
@@ -918,20 +922,20 @@ void MainWindow::on_actionColor_ranges_triggered()
 		processRcDefinitions();
 	}
 
-	refresh_previews();
+	refreshPreviews();
 
-	mos_config_save(user_color_ranges_, user_palettes_);
+	mos_config_save(userColorRanges_, userPalettes_);
 }
 
 void MainWindow::on_action_Palettes_triggered()
 {
-	CustomPalettes dlg{user_palettes_, color_ranges_, this};
+	CustomPalettes dlg{userPalettes_, colorRanges_, this};
 	dlg.exec();
 
 	if (dlg.result() == QDialog::Rejected)
 		return;
 
-	user_palettes_ = dlg.getPalettes();
+	userPalettes_ = dlg.getPalettes();
 
 	{
 		ObjectLock l{this};
@@ -939,9 +943,9 @@ void MainWindow::on_action_Palettes_triggered()
 		processRcDefinitions();
 	}
 
-	refresh_previews();
+	refreshPreviews();
 
-	mos_config_save(user_color_ranges_, user_palettes_);
+	mos_config_save(userColorRanges_, userPalettes_);
 }
 
 void MainWindow::handlePreviewBgOption(bool checked)
