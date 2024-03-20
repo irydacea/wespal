@@ -506,12 +506,19 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuMru">
+     <property name="title">
+      <string>Open &amp;Recent</string>
+     </property>
+     <addaction name="action_MruPlaceholder"/>
+     <addaction name="separator"/>
+     <addaction name="action_ClearMru"/>
+    </widget>
     <addaction name="action_Open"/>
+    <addaction name="menuMru"/>
     <addaction name="action_Save"/>
     <addaction name="separator"/>
     <addaction name="action_Reload"/>
-    <addaction name="separator"/>
-    <addaction name="action_RecentPlaceholder"/>
     <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
@@ -653,6 +660,16 @@
    </property>
    <property name="text">
     <string>&amp;Custom...</string>
+   </property>
+  </action>
+  <action name="action_MruPlaceholder">
+   <property name="text">
+    <string>&lt;Recent files&gt;</string>
+   </property>
+  </action>
+  <action name="action_ClearMru">
+   <property name="text">
+    <string>&amp;Clear Menu</string>
    </property>
   </action>
  </widget>

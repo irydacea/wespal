@@ -20,137 +20,206 @@
 
 #include "appconfig.hpp"
 
+#include <QBuffer>
 #include <QSettings>
 #include <QMessageBox>
 
-namespace {
-	const unsigned max_recent_files = 4;
-}
+namespace MosConfig {
 
-void mos_config_load(QMap<QString, ColorRange> &ranges, QMap<QString, ColorList> &palettes)
+Manager::Manager()
+	: imageFilesMru_()
+	, customColorRanges_()
+	, customPalettes_()
+	, mainWindowSize_()
+	, previewBackgroundColor_()
 {
-	QSettings s;
+	QSettings qs;
 
-	const int nranges = s.beginReadArray("color_ranges");
+	//
+	// Workspace configuation
+	//
 
-	for (int i = 0; i < nranges; ++i) {
-		s.setArrayIndex(i);
-		const ColorRange r{
-			s.value("avg").toUInt(),
-			s.value("max").toUInt(),
-			s.value("min").toUInt()};
-		ranges.insert(s.value("id").toString(), r);
+	mainWindowSize_ = qs.value("mainwindow_size").toSize();
+
+	previewBackgroundColor_ = qs.value("preview_background").toString();
+
+	//
+	// User-defined color ranges
+	//
+
+	const int numRanges = qs.beginReadArray("color_ranges");
+
+	for (int i = 0; i < numRanges; ++i)
+	{
+		qs.setArrayIndex(i);
+
+		auto id = qs.value("id").toString();
+		auto mid = qs.value("avg").toUInt();
+		auto max = qs.value("max").toUInt();
+		auto min = qs.value("min").toUInt();
+
+		ColorRange colorRange{mid, max, min};
+
+		customColorRanges_.insert(id, colorRange);
 	}
 
-	s.endArray();
+	qs.endArray();
 
-	const int npals = s.beginReadArray("palettes");
+	//
+	// User-defined color palettes
+	//
 
-	for (int i = 0; i < npals; ++i) {
-		s.setArrayIndex(i);
+	const int numPals = qs.beginReadArray("palettes");
 
-		const QStringList vals = s.value("values").toString().split(",", Qt::SkipEmptyParts);
-		ColorList rgblist;
+	for (int i = 0; i < numPals; ++i)
+	{
+		qs.setArrayIndex(i);
 
-		for (const QString& v : vals) {
-			rgblist.push_back(v.toUInt());
+		// TODO: use QStringList variant instead
+
+		auto id = qs.value("id").toString();
+		auto values = qs.value("values").toString().split(',', Qt::SkipEmptyParts);
+
+		ColorList palette;
+		palette.reserve(values.count());
+
+		for (const auto& value : values)
+			palette.emplaceBack(value.toUInt());
+
+		customPalettes_.insert(id, palette);
+	}
+
+	qs.endArray();
+
+	//
+	// Recent files
+	//
+
+	const int numRecentFiles = qs.beginReadArray("recent_files");
+
+	for (int i = 0; i < numRecentFiles; ++i)
+	{
+		qs.setArrayIndex(i);
+
+		auto path = qs.value("path").toString();
+		auto thumbnailBase64 = qs.value("thumbnail").toString();
+
+		imageFilesMru_.push(path, thumbnailBase64);
+	}
+
+	qs.endArray();
+}
+
+void Manager::setMainWindowSize(const QSize& size)
+{
+	QSettings qs;
+
+	mainWindowSize_ = size;
+
+	qs.setValue("mainwindow_size", size);
+}
+
+void Manager::setPreviewBackgroundColor(const QString& previewBackgroundColor)
+{
+	QSettings qs;
+
+	previewBackgroundColor_ = previewBackgroundColor;
+
+	qs.setValue("preview_background", previewBackgroundColor);
+}
+
+void Manager::setCustomColorRanges(const QMap<QString, ColorRange>& colorRanges)
+{
+	QSettings qs;
+	int i = 0;
+
+	customColorRanges_ = colorRanges;
+
+	qs.beginWriteArray("color_ranges");
+
+	for (const auto& [id, colorRange] : customColorRanges_.asKeyValueRange())
+	{
+		qs.setArrayIndex(i);
+
+		qs.setValue("id", id);
+		qs.setValue("avg", colorRange.mid());
+		qs.setValue("max", colorRange.max());
+		qs.setValue("min", colorRange.min());
+
+		++i;
+	}
+
+	qs.endArray();
+}
+
+void Manager::setCustomPalettes(const QMap<QString, ColorList>& palettes)
+{
+	QSettings qs;
+	int i = 0;
+
+	customPalettes_ = palettes;
+
+	qs.beginWriteArray("palettes");
+
+	for (const auto& [id, palette] : customPalettes_.asKeyValueRange())
+	{
+		qs.setArrayIndex(i);
+
+		// TODO: use QStringList variant instead
+
+		QString colorList;
+
+		for (auto color : palette)
+		{
+			if (!colorList.isEmpty())
+				colorList += ',';
+			colorList += QString::number(color);
 		}
 
-		palettes.insert(s.value("id").toString(), rgblist);
+		qs.setValue("id", id);
+		qs.setValue("values", colorList);
+
+		++i;
 	}
 
-	s.endArray();
+	qs.endArray();
 }
 
-void mos_config_save(const QMap<QString, ColorRange> &ranges, const QMap<QString, ColorList> &palettes)
+void Manager::addRecentFile(const QString& filePath, const QImage& image)
 {
-	QSettings s;
-	int j;
+	QSettings qs;
+	int i = 0;
 
-	s.beginWriteArray("color_ranges");
-	j = 0;
-	for (auto i = ranges.constBegin(); i != ranges.constEnd(); ++i, ++j)
+	imageFilesMru_.push(filePath, image);
+
+	qs.beginWriteArray("recent_files");
+
+	for (const auto& entry : imageFilesMru_)
 	{
-		s.setArrayIndex(j);
-		s.setValue("id", i.key());
-		s.setValue("avg", i.value().mid());
-		s.setValue("max", i.value().max());
-		s.setValue("min", i.value().min());
-	}
-	s.endArray();
+		qs.setArrayIndex(i);
 
-	s.beginWriteArray("palettes");
-	j = 0;
-	for (auto i = palettes.constBegin(); i != palettes.constEnd(); ++i, ++j)
-	{
-		s.setArrayIndex(j);
-		s.setValue("id", i.key());
+		QBuffer thumbnail;
 
-		QString csv;
+		thumbnail.open(QIODevice::WriteOnly);
+		entry.thumbnail().save(&thumbnail, "PNG");
 
-		for (QRgb v : i.value()) {
-			if (!csv.isEmpty())
-				csv += ',';
-			csv += QString::number(v);
-		}
+		qs.setValue("path", entry.filePath());
+		qs.setValue("thumbnail", thumbnail.data().toBase64());
 
-		s.setValue("values", csv);
-	}
-	s.endArray();
-}
-
-unsigned mos_max_recent_files()
-{
-	return max_recent_files;
-}
-
-QStringList mos_recent_files()
-{
-	return QSettings().value("recent_files").toStringList();
-}
-
-void mos_add_recent_file(const QString& filepath)
-{
-	QSettings s;
-
-	QStringList recent = s.value("recent_files").toStringList();
-	recent.removeAll(filepath);
-
-	recent.push_front(filepath);
-
-	while (recent.size() > int(max_recent_files)) {
-		recent.pop_back();
+		++i;
 	}
 
-	s.setValue("recent_files", recent);
+	qs.endArray();
 }
 
-void mos_remove_recent_file(const QString& filepath)
+void Manager::clearRecentFiles()
 {
-	QSettings s;
+	QSettings qs;
 
-	QStringList recent = s.value("recent_files").toStringList();
-	recent.removeAll(filepath);
+	imageFilesMru_.clear();
 
-	s.setValue("recent_files", recent);
+	qs.beginWriteArray("recent_files");
+	qs.endArray();
 }
 
-QString mos_get_preview_background_color_name()
-{
-	return QSettings().value("preview_background").toString();
-}
-
-void mos_set_preview_background_color_name(const QString& colorName)
-{
-	QSettings().setValue("preview_background", colorName);
-}
-
-QSize mos_get_main_window_size()
-{
-	return QSettings().value("mainwindow_size").toSize();
-}
-
-void mos_set_main_window_size(const QSize& size)
-{
-	QSettings().setValue("mainwindow_size", size);
-}
+} // end namespace MosConfig

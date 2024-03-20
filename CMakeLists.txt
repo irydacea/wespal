@@ -32,6 +32,7 @@ qt_add_executable(wesnoth-rcx WIN32 MACOSX_BUNDLE
 	src/main.cpp
 	src/mainwindow.cpp src/mainwindow.hpp src/mainwindow.ui
 	src/paletteitem.cpp src/paletteitem.hpp
+	src/recentfiles.cpp src/recentfiles.hpp
 	src/util.cpp src/util.hpp
 	src/version.cpp src/version.hpp
 	src/wesnothrc.cpp src/wesnothrc.hpp

@@ -51,6 +51,7 @@ struct no_initial_file {};
 struct canceled_job    {};
 
 static const QSize colorIconSize{16, 16};
+static const QSize menuThumbnailSize{16, 16};
 
 } // end unnamed namespace
 
@@ -62,8 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
 	, colorRanges_()
 	, palettes_()
 
-	, userColorRanges_()
-	, userPalettes_()
+	, userColorRanges_(MosCurrentConfig().customColorRanges())
+	, userPalettes_(MosCurrentConfig().customPalettes())
 
 	, imagePath_()
 
@@ -82,11 +83,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 	, supportedImageFileFormats_(MosPlatform::supportedImageFileFormats())
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
-	mos_config_load(userColorRanges_, userPalettes_);
-
-	const auto& lastWindowSize = mos_get_main_window_size();
+	const auto& lastWindowSize = MosCurrentConfig().mainWindowSize();
 
 	if (lastWindowSize.isValid()) {
 		resize(lastWindowSize);
@@ -124,23 +123,29 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->tbZoomIn->setIcon(QIcon::fromTheme("zoom-in", QIcon(":/zoom-in-16.png")));
 	ui->tbZoomOut->setIcon(QIcon::fromTheme("zoom-out", QIcon(":/zoom-out-16.png")));
 
-	for (unsigned k = 0; k < mos_max_recent_files(); ++k) {
+	auto maxMruEntries = MosCurrentConfig().recentFiles().max();
+
+	recentFileActions_.reserve(maxMruEntries);
+
+	for (unsigned k = 0; k < maxMruEntries; ++k) {
 		QAction* act = new QAction(this);
 
+		act->setEnabled(false);
 		act->setVisible(false);
+		act->setIconVisibleInMenu(true);
 
 		connect(act, SIGNAL(triggered()), this, SLOT(handleRecent()));
 
-		ui->menu_File->insertAction(ui->action_RecentPlaceholder, act);
+		ui->menuMru->insertAction(ui->action_MruPlaceholder, act);
 		recentFileActions_.push_back(act);
 	}
 
-	ui->action_RecentPlaceholder->setVisible(false);
+	ui->action_MruPlaceholder->setVisible(false);
 
 	updateRecentFilesMenu();
 
-	const QString& bgColorName = mos_get_preview_background_color_name();
 
+	const QString& bgColorName = MosCurrentConfig().previewBackgroundColor();
 	QActionGroup* bgColorActs = new QActionGroup(this);
 
 	// The Custom Color entry goes into the list first so that it is preemptively
@@ -352,20 +357,46 @@ void MainWindow::handleRecent()
 
 void MainWindow::updateRecentFilesMenu()
 {
-	const QStringList& recent = mos_recent_files();
+	int k = 0;
 
-	for (int k = 0; k < recentFileActions_.size(); ++k) {
-		QAction& act = *recentFileActions_[k];
-		if (k < recent.size()) {
-			act.setText(QString("&%1 %2").arg(k + 1).arg(QFileInfo(recent[k]).fileName()));
-			act.setData(recent[k]);
-			act.setEnabled(true);
-			act.setVisible(true);
-		} else {
-			act.setEnabled(false);
-			act.setVisible(false);
-		}
+	for (const auto& entry : MosCurrentConfig().recentFiles())
+	{
+		if (k >= recentFileActions_.size())
+			break;
+
+		auto& act = *recentFileActions_[k];
+
+		const auto& filePath = entry.filePath();
+		const auto& fileName = QFileInfo(filePath).fileName();
+		const auto& label =
+				QString("&%1 %2").arg(k + 1).arg(fileName);
+		const auto& thumbnail =
+				QPixmap::fromImage(entry.thumbnail().scaled(menuThumbnailSize));
+
+		act.setText(label);
+		act.setIcon(thumbnail);
+		act.setData(filePath);
+
+		act.setEnabled(true);
+		act.setVisible(true);
+
+		++k;
 	}
+
+	// Disable and hide any extra menu items (e.g. after MruList has coalesced
+	// duplicates).
+
+	for (; k < recentFileActions_.size(); ++k)
+	{
+		auto& act = *recentFileActions_[k];
+
+		act.setEnabled(false);
+		act.setVisible(false);
+	}
+
+	// Disable the menu entirely if there are no MRU items.
+
+	ui->menuMru->setEnabled(k != 0);
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -383,7 +414,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::closeEvent(QCloseEvent * /*e*/)
 {
-	mos_set_main_window_size(size());
+	MosCurrentConfig().setMainWindowSize(size());
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -604,7 +635,8 @@ void MainWindow::doOpenFile(const QString& initialFile)
 			throw no_initial_file();
 		}
 
-		mos_remove_recent_file(path_temp);
+		// TODO
+		//MosCurrentConfig().removeRecentFile(path_temp);
 
 		return;
 	}
@@ -614,7 +646,7 @@ void MainWindow::doOpenFile(const QString& initialFile)
 	originalImage_ = img_temp.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
-	mos_add_recent_file(imagePath_);
+	MosCurrentConfig().addRecentFile(imagePath_, originalImage_);
 	updateRecentFilesMenu();
 	updateWindowTitle(true, imagePath_);
 	refreshPreviews();
@@ -926,7 +958,7 @@ void MainWindow::on_actionColor_ranges_triggered()
 
 	refreshPreviews();
 
-	mos_config_save(userColorRanges_, userPalettes_);
+	MosCurrentConfig().setCustomColorRanges(userColorRanges_);
 }
 
 void MainWindow::on_action_Palettes_triggered()
@@ -947,7 +979,7 @@ void MainWindow::on_action_Palettes_triggered()
 
 	refreshPreviews();
 
-	mos_config_save(userColorRanges_, userPalettes_);
+	MosCurrentConfig().setCustomPalettes(userPalettes_);
 }
 
 void MainWindow::handlePreviewBgOption(bool checked)
@@ -996,7 +1028,7 @@ void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 		ui->previewRcContainer->viewport()->setStyleSheet({});
 	}
 
-	mos_set_preview_background_color_name(colorName);
+	MosCurrentConfig().setPreviewBackgroundColor(colorName);
 }
 
 void MainWindow::on_cmdOpen_clicked()
@@ -1004,3 +1036,9 @@ void MainWindow::on_cmdOpen_clicked()
 	doOpenFile({});
 }
 
+
+void MainWindow::on_action_ClearMru_triggered()
+{
+	MosCurrentConfig().clearRecentFiles();
+	updateRecentFilesMenu();
+}

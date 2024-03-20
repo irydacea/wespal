@@ -166,4 +166,5 @@ private slots:
 
 	void handlePreviewBgOption(bool checked);
 	void on_cmdOpen_clicked();
+	void on_action_ClearMru_triggered();
 };

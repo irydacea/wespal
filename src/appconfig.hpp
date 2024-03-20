@@ -20,31 +20,133 @@
 
 #pragma once
 
+#include "recentfiles.hpp"
 #include "wesnothrc.hpp"
 
-#include <QList>
 #include <QSize>
-#include <QStringList>
 
-enum PreviewBackgroundColor {
-	SystemColor,
-	White,
+namespace MosConfig {
+
+class Manager
+{
+public:
+	/**
+	 * Retrieves the current config instance.
+	 */
+	static Manager& instance()
+	{
+		static Manager configManager;
+		return configManager;
+	}
+
+	// original character do not steal
+	Manager(const Manager&) = delete;
+	Manager(Manager&&) = delete;
+	Manager& operator=(const Manager&) = delete;
+
+	/**
+	 * Retrieves the current recent files.
+	 */
+	const MruList& recentFiles() const
+	{
+		return imageFilesMru_;
+	}
+
+	/**
+	 * Adds a new recent file entry.
+	 *
+	 * @param filePath       File path.
+	 * @param image          Image contents of the file which will be used for
+	 *                       generating a thumbnail.
+	 */
+	void addRecentFile(const QString& filePath, const QImage& image);
+
+	/**
+	 * Clears the recent files list.
+	 */
+	void clearRecentFiles();
+
+	// TODO
+	//void removeRecentFile(const QString& filePath);
+
+	/**
+	 * Retrieves the list of custom color ranges.
+	 */
+	const QMap<QString, ColorRange>& customColorRanges() const
+	{
+		return customColorRanges_;
+	}
+
+	/**
+	 * Sets the list of custom color ranges.
+	 */
+	void setCustomColorRanges(const QMap<QString, ColorRange>& colorRanges);
+
+	//void addCustomColorRange(const QString& name, const ColorRange& colorRange);
+
+	//void deleteCustomColorRange(const QString& name);
+
+	/**
+	 * Retrieves the list of custom palettes.
+	 */
+	const QMap<QString, ColorList>& customPalettes() const
+	{
+		return customPalettes_;
+	}
+
+	/**
+	 * Sets the list of custom palettes.
+	 */
+	void setCustomPalettes(const QMap<QString, ColorList>& palettes);
+
+	//void addCustomPalette(const QString& name, const ColorList& palette);
+
+	//void deleteCustomPalette(const QString& palette);
+
+	/**
+	 * Retrieves the saved main window size.
+	 */
+	const QSize& mainWindowSize() const
+	{
+		return mainWindowSize_;
+	}
+
+	/**
+	 * Sets the saved main window size.
+	 */
+	void setMainWindowSize(const QSize& size);
+
+	/**
+	 * Retrieves the preview background color.
+	 */
+	const QString& previewBackgroundColor() const
+	{
+		return previewBackgroundColor_;
+	}
+
+	/**
+	 * Sets the preview background color.
+	 */
+	void setPreviewBackgroundColor(const QString& previewBackgroundColor);
+
+private:
+	Manager();
+
+	MruList imageFilesMru_;
+	QMap<QString, ColorRange> customColorRanges_;
+	QMap<QString, ColorList> customPalettes_;
+	QSize mainWindowSize_;
+	QString previewBackgroundColor_;
 };
 
-void mos_config_load(QMap<QString, ColorRange>& ranges,
-					 QMap<QString, ColorList>& palettes);
+inline Manager& current()
+{
+	return Manager::instance();
+}
 
-void mos_config_save(const QMap<QString, ColorRange>& ranges,
-					 const QMap<QString, ColorList>& palettes);
+} // end namespace MosConfig
 
-QStringList mos_recent_files();
-void mos_add_recent_file(const QString& filepath);
-void mos_remove_recent_file(const QString& filepath);
-
-unsigned mos_max_recent_files();
-
-QString mos_get_preview_background_color_name();
-void mos_set_preview_background_color_name(const QString& colorName);
-
-QSize mos_get_main_window_size();
-void mos_set_main_window_size(const QSize& size);
+inline MosConfig::Manager& MosCurrentConfig()
+{
+	return MosConfig::Manager::instance();
+}
