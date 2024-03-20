@@ -93,7 +93,7 @@ private:
 
 	void insertRangeListItem(const QString& id, const QString& display_name, const QColor& color);
 
-	void update_recent_files_menu();
+	void updateRecentFilesMenu();
 
 	void updateWindowTitle(bool hasImage, const QString& filename = {})
 	{
@@ -118,32 +118,32 @@ private:
 	void togglePage1(bool newstate);
 	void togglePage2(bool newstate);
 
-	void do_save();
-	void do_close();
-	void do_open(const QString& initial_file = QString());
-	void do_reload();
-	void do_about();
+	void doSaveFile();
+	void doCloseFile();
+	void doOpenFile(const QString& initialFile = QString());
+	void doReloadFile();
+	void doAboutDialog();
 
 	void enableWorkArea(bool enable);
 
-	bool confirm_existing_files(const QStringList& paths);
+	bool confirmFileOverwrite(const QStringList& paths);
 
-	QStringList do_save_color_ranges(QString& base);
-	QStringList do_save_single_recolor(QString& base);
+	QStringList doSaveColorRanges(QString& base);
+	QStringList doSaveSingleRecolor(QString& base);
 
 	void refreshPreviews();
 
-	QString current_pal_name(bool palette_switch_mode = false) const;
-	ColorList current_pal_data(bool palette_switch_mode = false) const;
+	QString currentPaletteName(bool paletteSwitchMode = false) const;
+	ColorList currentPalette(bool paletteSwitchMode = false) const;
 
-	void update_zoom_buttons();
+	void updateZoomButtons();
 
 	void setPreviewBackgroundColor(const QString &colorName);
 
 	void centerScrollArea(QScrollArea* scrollArea);
 
-	void do_custom_preview_color_option();
-	void do_custom_preview_color_icon();
+	void doCustomPreviewBgSelect();
+	void updateCustomPreviewBgIcon();
 
 private slots:
 	void on_action_Reload_triggered();

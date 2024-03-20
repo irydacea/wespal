@@ -137,7 +137,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	ui->action_RecentPlaceholder->setVisible(false);
 
-	update_recent_files_menu();
+	updateRecentFilesMenu();
 
 	const QString& bgColorName = mos_get_preview_background_color_name();
 
@@ -179,7 +179,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// Make custom bg color icon always visible even on macOS
 	ui->actionPreviewBgCustom->setIconVisibleInMenu(true);
-	do_custom_preview_color_icon();
+	updateCustomPreviewBgIcon();
 
 	ui->radRc->setChecked(true);
 	ui->staFunctionOpts->setCurrentIndex(0);
@@ -346,11 +346,11 @@ void MainWindow::handleRecent()
 {
 	QAction* act = qobject_cast<QAction*>(sender());
 	if (act) {
-		this->do_open(act->data().toString());
+		this->doOpenFile(act->data().toString());
 	}
 }
 
-void MainWindow::update_recent_files_menu()
+void MainWindow::updateRecentFilesMenu()
 {
 	const QStringList& recent = mos_recent_files();
 
@@ -512,7 +512,7 @@ void MainWindow::togglePage2(bool newstate)
 
 void MainWindow::on_actionAbout_Morning_Star_triggered()
 {
-	do_about();
+	doAboutDialog();
 }
 
 void MainWindow::on_buttonBox_clicked(QAbstractButton* button)
@@ -521,10 +521,10 @@ void MainWindow::on_buttonBox_clicked(QAbstractButton* button)
 
 	switch (btype) {
 		case QDialogButtonBox::Save:
-			do_save();
+		doSaveFile();
 			break;
 		case QDialogButtonBox::Close:
-			do_close();
+		doCloseFile();
 			break;
 		default:
 			;
@@ -533,24 +533,24 @@ void MainWindow::on_buttonBox_clicked(QAbstractButton* button)
 
 void MainWindow::on_action_Open_triggered()
 {
-	do_open();
+	doOpenFile();
 }
 
 void MainWindow::on_action_Quit_triggered()
 {
-	do_close();
+	doCloseFile();
 	this->close();
 }
 
 void MainWindow::on_action_Reload_triggered()
 {
-	do_reload();
+	doReloadFile();
 }
 
 bool MainWindow::initial_open(const QString &initial_file)
 {
 	try {
-		this->do_open(initial_file);
+		this->doOpenFile(initial_file);
 	}
 	catch (no_initial_file const&) {
 		return false;
@@ -559,7 +559,7 @@ bool MainWindow::initial_open(const QString &initial_file)
 	return true;
 }
 
-void MainWindow::do_open(const QString &initial_file)
+void MainWindow::doOpenFile(const QString& initialFile)
 {
 	QString path_temp;
 	QString start_dir;
@@ -567,7 +567,7 @@ void MainWindow::do_open(const QString &initial_file)
 	QStringList picture_locations =
 			QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
 
-	if (initial_file.isNull() || initial_file.isEmpty()) {
+	if (initialFile.isNull() || initialFile.isEmpty()) {
 		if (imagePath_.isEmpty()) {
 			if (!picture_locations.empty()) {
 				start_dir = picture_locations.first();
@@ -586,7 +586,7 @@ void MainWindow::do_open(const QString &initial_file)
 		);
 	}
 	else {
-		path_temp = initial_file;
+		path_temp = initialFile;
 	}
 
 	if (path_temp.isNull() && originalImage_.isNull()) {
@@ -615,14 +615,14 @@ void MainWindow::do_open(const QString &initial_file)
 
 	// Refresh UI
 	mos_add_recent_file(imagePath_);
-	update_recent_files_menu();
+	updateRecentFilesMenu();
 	updateWindowTitle(true, imagePath_);
 	refreshPreviews();
 
 	enableWorkArea(true);
 }
 
-void MainWindow::do_reload()
+void MainWindow::doReloadFile()
 {
 	QImage img{imagePath_};
 	if (img.isNull()) {
@@ -642,10 +642,10 @@ void MainWindow::refreshPreviews()
 		return;
 
 	ColorMap cvtMap;
-	const auto& palData = current_pal_data();
+	const auto& palData = currentPalette();
 
 	if (ui->staFunctionOpts->currentIndex()) {
-		const auto& targetPalData = current_pal_data(true);
+		const auto& targetPalData = currentPalette(true);
 		cvtMap = generateColorMap(palData, targetPalData);
 	} else {
 		const auto& colorRange = colorRanges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
@@ -682,7 +682,7 @@ void MainWindow::centerScrollArea(QScrollArea *scrollArea)
 	scrollArea->ensureVisible(childSize.width()/2, childSize.height()/2, viewSize.width()/2, viewSize.height()/2);
 }
 
-void MainWindow::do_save()
+void MainWindow::doSaveFile()
 {
 	QString base = QFileDialog::getExistingDirectory(
 					   this,
@@ -697,10 +697,10 @@ void MainWindow::do_save()
 
 	try {
 		if (ui->staFunctionOpts->currentIndex()) {
-			succeeded = do_save_single_recolor(base);
+			succeeded = doSaveSingleRecolor(base);
 		}
 		else {
-			succeeded = do_save_color_ranges(base);
+			succeeded = doSaveColorRanges(base);
 		}
 
 		MosUi::message(this, tr("The output files have been saved successfully."), succeeded);
@@ -711,14 +711,14 @@ void MainWindow::do_save()
 	}
 }
 
-void MainWindow::do_close()
+void MainWindow::doCloseFile()
 {
 	enableWorkArea(false);
 	this->originalImage_ = QImage{};
 	this->transformedImage_ = QImage{};
 }
 
-void MainWindow::do_about()
+void MainWindow::doAboutDialog()
 {
 	MosUi::about(this);
 }
@@ -745,56 +745,58 @@ void MainWindow::enableWorkArea(bool enable)
 	ui->staWorkAreaParent->setCurrentIndex(enable ? 0 : 1);
 }
 
-QString MainWindow::current_pal_name(bool palette_switch_mode) const
+QString MainWindow::currentPaletteName(bool paletteSwitchMode) const
 {
-	QComboBox* combow = palette_switch_mode ? ui->cbxNewPal : ui->cbxKeyPal;
+	auto* combow = paletteSwitchMode
+				   ? ui->cbxNewPal
+				   : ui->cbxKeyPal;
 
 	const int choice = combow->currentIndex();
-	const QString& palette_name = combow->itemData(choice).toString();
+	const auto& palette_name = combow->itemData(choice).toString();
 
 	Q_ASSERT(!palette_name.isEmpty());
 
 	return palette_name;
 }
 
-ColorList MainWindow::current_pal_data(bool palette_switch_mode) const
+ColorList MainWindow::currentPalette(bool paletteSwitchMode) const
 {
-	return palettes_.value(current_pal_name(palette_switch_mode));
+	return palettes_.value(currentPaletteName(paletteSwitchMode));
 }
 
-bool MainWindow::confirm_existing_files(const QStringList& paths)
+bool MainWindow::confirmFileOverwrite(const QStringList& paths)
 {
 	return MosUi::prompt(this, tr("The chosen directory already contains files with the same names required for output. Do you wish to overwrite them and continue?"), paths);
 }
 
-QStringList MainWindow::do_save_single_recolor(QString &base)
+QStringList MainWindow::doSaveSingleRecolor(QString &base)
 {
 	QMap<QString, ColorMap> jobs;
 
-	const auto& palId = current_pal_name();
-	const auto& palData = current_pal_data();
+	const auto& palId = currentPaletteName();
+	const auto& palData = currentPalette();
 
-	const auto& targetPalId = current_pal_name(true);
-	const auto& targetPalData = current_pal_data(true);
+	const auto& targetPalId = currentPaletteName(true);
+	const auto& targetPalData = currentPalette(true);
 
 	const QString& filePath = base + "/" + QFileInfo(imagePath_).completeBaseName() +
 			"-PAL-" + palId + "-" + targetPalId + ".png";
 
 	jobs[filePath] = generateColorMap(palData, targetPalData);
 
-	if (QFileInfo(filePath).exists() && !confirm_existing_files(QStringList(filePath))) {
+	if (QFileInfo(filePath).exists() && !confirmFileOverwrite(QStringList(filePath))) {
 		throw canceled_job();
 	}
 
 	return do_run_jobs(jobs);
 }
 
-QStringList MainWindow::do_save_color_ranges(QString &base)
+QStringList MainWindow::doSaveColorRanges(QString &base)
 {
 	QMap<QString, ColorMap> jobs;
 
-	const auto& palId = current_pal_name();
-	const auto& palData = current_pal_data();
+	const auto& palId = currentPaletteName();
+	const auto& palData = currentPalette();
 
 	QStringList needOverwriteFiles;
 
@@ -819,7 +821,7 @@ QStringList MainWindow::do_save_color_ranges(QString &base)
 		}
 	}
 
-	if (!needOverwriteFiles.isEmpty() && !confirm_existing_files(needOverwriteFiles)) {
+	if (!needOverwriteFiles.isEmpty() && !confirmFileOverwrite(needOverwriteFiles)) {
 		throw canceled_job();
 	}
 
@@ -861,7 +863,7 @@ QStringList MainWindow::do_run_jobs(QMap<QString, ColorMap> &jobs)
 
 void MainWindow::on_action_Save_triggered()
 {
-	do_save();
+	doSaveFile();
 }
 
 void MainWindow::on_cbxKeyPal_currentIndexChanged(int /*index*/)
@@ -884,7 +886,7 @@ void MainWindow::on_zoomSlider_valueChanged(int value)
 	Q_ASSERT(value >= 0 && value < zoomFactors_.size());
 	zoom_ = zoomFactors_[value];
 
-	update_zoom_buttons();
+	updateZoomButtons();
 	refreshPreviews();
 }
 
@@ -898,7 +900,7 @@ void MainWindow::on_tbZoomOut_clicked()
 	ui->zoomSlider->setValue(ui->zoomSlider->value() - 1);
 }
 
-void MainWindow::update_zoom_buttons()
+void MainWindow::updateZoomButtons()
 {
 	QSlider& zoomSlider= *ui->zoomSlider;
 
@@ -961,23 +963,23 @@ void MainWindow::handlePreviewBgOption(bool checked)
 	if (act == ui->actionPreviewBgCustom) {
 		// We want to give the user the option to customize the preview color
 		// first.
-		do_custom_preview_color_option();
+		doCustomPreviewBgSelect();
 	}
 
 	setPreviewBackgroundColor(act->data().toString());
 }
 
-void MainWindow::do_custom_preview_color_option()
+void MainWindow::doCustomPreviewBgSelect()
 {
 	auto* act = ui->actionPreviewBgCustom;
 	QColor userColor = QColorDialog::getColor(QColor(act->data().toString()), this);
 	if (userColor.isValid()) {
 		act->setData(userColor.name());
-		do_custom_preview_color_icon();
+		updateCustomPreviewBgIcon();
 	}
 }
 
-void MainWindow::do_custom_preview_color_icon()
+void MainWindow::updateCustomPreviewBgIcon()
 {
 	auto* act = ui->actionPreviewBgCustom;
 	act->setIcon(createColorIcon({act->data().toString()}, this));
@@ -999,6 +1001,6 @@ void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 
 void MainWindow::on_cmdOpen_clicked()
 {
-	do_open({});
+	doOpenFile({});
 }
 
