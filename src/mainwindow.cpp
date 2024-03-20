@@ -818,7 +818,7 @@ QStringList MainWindow::doSaveSingleRecolor(QString &base)
 
 	jobs[filePath] = generateColorMap(palData, targetPalData);
 
-	if (QFileInfo(filePath).exists() && !confirmFileOverwrite(QStringList(filePath))) {
+	if (QFileInfo::exists(filePath) && !confirmFileOverwrite(QStringList(filePath))) {
 		throw canceled_job();
 	}
 
@@ -849,7 +849,7 @@ QStringList MainWindow::doSaveColorRanges(QString &base)
 			const auto& colorRange = colorRanges_.value(rangeId);
 			jobs[filePath] = colorRange.applyToPalette(palData);
 
-			if (QFileInfo(filePath).exists()) {
+			if (QFileInfo::exists(filePath)) {
 				needOverwriteFiles.push_back(filePath);
 			}
 		}
