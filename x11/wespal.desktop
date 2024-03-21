@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Wesnoth RCX
+Name=Wespal
 GenericName=Image Recoloring Tool
 Comment=A Wesnoth graphics team-coloring/recoloring tool.
-Icon=wesnoth-rcx
-Exec=wesnoth-rcx
+Icon=wespal
+Exec=wespal
 Categories=Graphics;2DGraphics;RasterGraphics;Qt;X-KDE-More;

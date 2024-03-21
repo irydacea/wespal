@@ -15,7 +15,7 @@
 // Icon resources
 //
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDI_ICON1          ICON           "./wesnoth-rcx.ico"
+IDI_ICON1          ICON           "./wespal.ico"
 
 
 
@@ -38,10 +38,10 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
         {
             VALUE "FileDescription", "Wesnoth team-coloring tool"
             VALUE "FileVersion", MOS_VERSION_STRING
-            VALUE "InternalName", "wesnoth-rcx"
+            VALUE "InternalName", "wespal"
             VALUE "LegalCopyright", "Copyright (C) 2008 - 2019 by Iris Morelle <shadowm2006@gmail.com>"
-            VALUE "OriginalFilename", "wesnoth-rcx.exe"
-            VALUE "ProductName", "Wesnoth RCX"
+            VALUE "OriginalFilename", "wespal.exe"
+            VALUE "ProductName", "Wespal"
             VALUE "ProductVersion", MOS_VERSION_STRING
         }
     }

@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="wesnoth-rcx-icon-64.png">icons/64x64/wesnoth-rcx.png</file>
-        <file alias="wesnoth-rcx-icon-128.png">icons/128x128/wesnoth-rcx.png</file>
-        <file alias="wesnoth-rcx-icon-256.png">icons/256x256/wesnoth-rcx.png</file>
+        <file alias="wespal-icon-64.png">icons/64x64/wespal.png</file>
+        <file alias="wespal-icon-128.png">icons/128x128/wespal.png</file>
+        <file alias="wespal-icon-256.png">icons/256x256/wespal.png</file>
         <file alias="edit-copy-16.png">icons/16x16/edit-copy.png</file>
         <file alias="list-add-16.png">icons/16x16/list-add.png</file>
         <file alias="list-remove-16.png">icons/16x16/list-remove.png</file>

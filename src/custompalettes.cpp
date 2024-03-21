@@ -188,7 +188,7 @@ void CustomPalettes::on_listPals_currentRowChanged(int currentRow)
 	auto pal_it = palettes_.find(name);
 
 	if (pal_it == palettes_.end()) {
-		QMessageBox::critical(this, tr("Wesnoth RCX"),
+		QMessageBox::critical(this, tr("Wespal"),
 			tr("The palette \"%1\" does not exist.").arg(name));
 		removePaletteListEntry(name);
 		return;

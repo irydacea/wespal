@@ -1,2 +1,2 @@
 #!/bin/sh
-git archive --format=tar --prefix=wesnoth-rcx-$1/ $1 | bzip2 > wesnoth-rcx-$1.tar.bz2
+git archive --format=tar --prefix=wespal-$1/ $1 | bzip2 > wespal-$1.tar.bz2

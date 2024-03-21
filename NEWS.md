@@ -4,6 +4,7 @@ Changelog
 Version 0.4.0
 -------------
 
+* Rebranded to Wespal.
 * WebP file format enabled where supported.
 * It is now possible to close the active file without quitting the app.
 * Not opening a file on startup no longer causes the app to quit.

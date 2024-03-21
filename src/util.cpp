@@ -43,7 +43,7 @@ bool doJobNotification(QWidget* parent, const QString& message, const QString& d
 {
 	QMessageBox msg{parent};
 
-	msg.setWindowTitle(tr("Wesnoth RCX"));
+	msg.setWindowTitle(tr("Wespal"));
 	msg.setText(message);
 	msg.setDetailedText(details);
 	msg.setIcon(icon);
@@ -104,7 +104,7 @@ void error(QWidget* parent, const QString& message, const QStringList& detailIte
 void about(QWidget* parent)
 {
 	QString text =
-		tr("<h3>Wesnoth RCX %1</h3>").arg(mos_version) %
+		tr("<h3>Wespal %1</h3>").arg(mos_version) %
 		"<p>" %
 		tr(
 			"Copyright &copy; 2008 &#8211; 2024 by "
@@ -125,7 +125,7 @@ void about(QWidget* parent)
 			"See the <a href='%1'>"
 			"GNU General Public License</a> for more details.").arg(LICENSE_URL) %
 		"</p>";
-	QMessageBox::about(parent, tr("Wesnoth RCX"), text);
+	QMessageBox::about(parent, tr("Wespal"), text);
 }
 
 } // end namespace JobNotifications

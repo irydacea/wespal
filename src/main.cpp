@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
 
-	a.setWindowIcon(QIcon{":/wesnoth-rcx-icon-64.png"});
+	a.setWindowIcon(QIcon{":/wespal-icon-64.png"});
 
 	MainWindow w;
 	w.show();

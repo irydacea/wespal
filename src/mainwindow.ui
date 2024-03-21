@@ -26,7 +26,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>Wesnoth RCX</string>
+   <string>Wespal</string>
   </property>
   <widget class="QWidget" name="grid">
    <layout class="QGridLayout" name="gridLayout">
@@ -654,7 +654,7 @@
   </action>
   <action name="actionAbout_Morning_Star">
    <property name="text">
-    <string>About Wesnoth &amp;RCX...</string>
+    <string>About &amp;Wespal...</string>
    </property>
   </action>
   <action name="action_Save">

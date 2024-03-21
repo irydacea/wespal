@@ -240,7 +240,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateWindowTitle(bool hasImage, const QString& filename)
 {
-	QString appTitle = tr("Wesnoth RCX");
+	QString appTitle = tr("Wespal");
 	QString displayString;
 
 	if (hasImage) {

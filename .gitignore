@@ -13,3 +13,6 @@ obj/
 *.tar.*
 .qmake.stash
 wesnoth-rcx.app
+wespal
+wespal.exe
+Wespal.app
