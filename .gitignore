@@ -1,18 +1,44 @@
-*.o
+#
+# IDE files
+#
+
 *.user
+*.kate.swp
+.vscode/
+.vstags
+
+#
+# OS files
+#
+
+.DS_Store
+[Tt]humbs.db
+.directory
+
+#
+# Qt automatically-generated code
+#
+
 moc_*
 qrc_*
 ui_*
-morningstar
-morningstar.exe
-wesnoth-rcx
-wesnoth-rcx.exe
-Makefile
-obj/
+
+#
+# Distribution files
+#
+
 *.tar
 *.tar.*
-.qmake.stash
-wesnoth-rcx.app
+
+#
+# Build output
+#
+
+*.o
+*.obj
+*.a
+*.lib
+*.pdb
 wespal
 wespal.exe
 Wespal.app
