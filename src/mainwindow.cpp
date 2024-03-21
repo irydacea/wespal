@@ -51,7 +51,6 @@ struct no_initial_file {};
 struct canceled_job    {};
 
 static const QSize colorIconSize{16, 16};
-static const QSize menuThumbnailSize{16, 16};
 
 } // end unnamed namespace
 
@@ -142,8 +141,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 	ui->action_MruPlaceholder->setVisible(false);
 
-	updateRecentFilesMenu();
+	ui->listMru->setIconSize(MosConfig::MruEntry::thumbnailSize() * 0.66);
+	ui->listMru->setWordWrap(true);
+	ui->listMru->setWrapping(false);
 
+	connect(ui->listMru, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(handleRecent()));
+
+	updateRecentFilesMenu();
 
 	const QString& bgColorName = MosCurrentConfig().previewBackgroundColor();
 	QActionGroup* bgColorActs = new QActionGroup(this);
@@ -349,15 +353,22 @@ void MainWindow::processRcDefinitions()
 
 void MainWindow::handleRecent()
 {
-	QAction* act = qobject_cast<QAction*>(sender());
-	if (act) {
+	if (auto* act = qobject_cast<QAction*>(sender()); act) {
 		this->doOpenFile(act->data().toString());
+		return;
+	}
+
+	if (auto* listMru = qobject_cast<QListWidget*>(sender()); listMru) {
+		this->doOpenFile(listMru->currentItem()->data(Qt::UserRole).toString());
+		//return;
 	}
 }
 
 void MainWindow::updateRecentFilesMenu()
 {
 	int k = 0;
+
+	ui->listMru->clear();
 
 	for (const auto& entry : MosCurrentConfig().recentFiles())
 	{
@@ -371,14 +382,24 @@ void MainWindow::updateRecentFilesMenu()
 		const auto& label =
 				QString("&%1 %2").arg(k + 1).arg(fileName);
 		const auto& thumbnail =
-				QPixmap::fromImage(entry.thumbnail().scaled(menuThumbnailSize));
+				QPixmap::fromImage(entry.thumbnail());
+		const auto& miniThumbnail =
+				QPixmap::fromImage(entry.miniThumbnail());
 
 		act.setText(label);
-		act.setIcon(thumbnail);
+		act.setIcon(miniThumbnail);
 		act.setData(filePath);
 
 		act.setEnabled(true);
 		act.setVisible(true);
+
+		auto* listItem = new QListWidgetItem(ui->listMru);
+
+		listItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+		listItem->setText(fileName);
+		listItem->setToolTip(filePath);
+		listItem->setIcon(thumbnail);
+		listItem->setData(Qt::UserRole, filePath);
 
 		++k;
 	}
@@ -397,6 +418,10 @@ void MainWindow::updateRecentFilesMenu()
 	// Disable the menu entirely if there are no MRU items.
 
 	ui->menuMru->setEnabled(k != 0);
+
+	// The MRU panel gets fully hidden to avoid confusion due to its styling.
+
+	ui->panelMru->setVisible(k != 0);
 }
 
 void MainWindow::changeEvent(QEvent *e)

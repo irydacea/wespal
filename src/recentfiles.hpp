@@ -34,6 +34,7 @@ public:
 	MruEntry()
 		: filePath_()
 		, thumbnail_()
+		, miniThumbnail_()
 	{
 	}
 
@@ -43,7 +44,8 @@ public:
 	 * @param filePath         Path to the file.
 	 * @param thumbnailData    Thumbnail as base 64 data.
 	 */
-	MruEntry(const QString& filePath, const QString& thumbnailData);
+	MruEntry(const QString& filePath,
+			 const QString& thumbnailData);
 
 	/**
 	 * Constructs a MRU entry with an automatically-generated thumbnail.
@@ -79,6 +81,14 @@ public:
 	}
 
 	/**
+	 * Returns the current associated small thumbnail.
+	 */
+	const QImage& miniThumbnail() const
+	{
+		return miniThumbnail_;
+	}
+
+	/**
 	 * Replaces the previously-set thumbnail.
 	 */
 	void setThumbnail(const QImage& thumbnail)
@@ -86,15 +96,27 @@ public:
 		thumbnail_ = thumbnail;
 	}
 
+	/**
+	 * Returns the standard thumbnail size.
+	 */
+	static const QSize& thumbnailSize();
+
+	/**
+	 * Returns the small thumbnail size.
+	 */
+	static const QSize& miniThumbnailSize();
+
 private:
 	MruEntry(const QString& filePath)
 		: filePath_(filePath)
 		, thumbnail_()
+		, miniThumbnail_()
 	{
 	}
 
 	QString filePath_;
 	QImage thumbnail_;
+	QImage miniThumbnail_;
 };
 
 class MruList

@@ -26,9 +26,21 @@ namespace MosConfig {
 
 namespace {
 
-constexpr QSize MRU_THUMBNAIL_SIZE = { 16, 16 };
+constexpr QSize MRU_THUMBNAIL_SIZE = { 72, 72 };
+
+constexpr QSize MRU_MINI_THUMBNAIL_SIZE = { 16, 16 };
 
 } // end unnamed namespace
+
+const QSize& MruEntry::thumbnailSize()
+{
+	return MRU_THUMBNAIL_SIZE;
+}
+
+const QSize& MruEntry::miniThumbnailSize()
+{
+	return MRU_MINI_THUMBNAIL_SIZE;
+}
 
 MruEntry::MruEntry(const QString& filePath, const QString& thumbnailData)
 	: filePath_(filePath)
@@ -42,6 +54,10 @@ MruEntry::MruEntry(const QString& filePath, const QString& thumbnailData)
 									   Qt::KeepAspectRatio,
 									   Qt::SmoothTransformation);
 	}
+
+	miniThumbnail_ = thumbnail_.scaled(MRU_MINI_THUMBNAIL_SIZE,
+									   Qt::KeepAspectRatio,
+									   Qt::FastTransformation);
 }
 
 MruEntry::MruEntry(const QString& filePath, const QImage& image)
@@ -52,6 +68,9 @@ MruEntry::MruEntry(const QString& filePath, const QImage& image)
 		thumbnail_ = image.scaled(MRU_THUMBNAIL_SIZE,
 								  Qt::KeepAspectRatio,
 								  Qt::SmoothTransformation);
+		miniThumbnail_ = image.scaled(MRU_MINI_THUMBNAIL_SIZE,
+									  Qt::KeepAspectRatio,
+									  Qt::FastTransformation);
 	}
 }
 
