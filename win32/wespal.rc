@@ -39,7 +39,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
             VALUE "FileDescription", "Wesnoth team-coloring tool"
             VALUE "FileVersion", MOS_VERSION_STRING
             VALUE "InternalName", "wespal"
-            VALUE "LegalCopyright", "Copyright (C) 2008 - 2019 by Iris Morelle <shadowm2006@gmail.com>"
+            VALUE "LegalCopyright", "Copyright (C) 2008 - 2024 by Iris Morelle <iris@irydacea.me>"
             VALUE "OriginalFilename", "wespal.exe"
             VALUE "ProductName", "Wespal"
             VALUE "ProductVersion", MOS_VERSION_STRING
