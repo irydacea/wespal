@@ -44,12 +44,14 @@ set_target_properties(wespal
 
 qt_import_plugins(wespal INCLUDE XCFPlugin)
 
-target_compile_options(wespal PRIVATE
-	-Wall
-	-Wextra
-	-Werror=non-virtual-dtor
-	-Wold-style-cast
-)
+if(NOT MSVC)
+	target_compile_options(wespal PRIVATE
+		-Wall
+		-Wextra
+		-Werror=non-virtual-dtor
+		-Wold-style-cast
+	)
+endif()
 
 target_compile_definitions(wespal PRIVATE
 	QT_NO_FOREACH
