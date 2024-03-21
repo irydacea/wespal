@@ -38,6 +38,10 @@ qt_add_executable(wespal WIN32 MACOSX_BUNDLE
 	src/wesnothrc.cpp src/wesnothrc.hpp
 )
 
+set_target_properties(wespal
+	PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Wespal"
+)
+
 qt_import_plugins(wespal INCLUDE XCFPlugin)
 
 target_compile_options(wespal PRIVATE
