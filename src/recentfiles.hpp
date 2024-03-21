@@ -128,7 +128,7 @@ public:
 	typedef ListType::reverse_iterator       IteratorType;
 	typedef ListType::const_reverse_iterator ConstIteratorType;
 
-	MruList(unsigned size = 4)
+	MruList(unsigned size = 8)
 		: mru_()
 		, size_(size)
 	{
