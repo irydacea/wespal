@@ -54,7 +54,7 @@ Configuration
   `HKEY_CURRENT_USER\Software\Wesnoth\Morning Star`
 
 * On macOS, the configuration will be stored in the file
-  `$HOME/Library/Preferences/com.Wesnoth.Morning Star.plist`
+  `$HOME/Library/Preferences/org.wesnoth.Morning Star.plist`
 
 
 Reporting bugs
