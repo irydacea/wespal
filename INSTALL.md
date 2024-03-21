@@ -9,19 +9,21 @@ Dependencies
 
 You will need a basic development environment (e.g. GCC with the C++ compiler) as well as the Qt development files.
 
-Wespal should build and run with Qt 5.11 and later, and GCC 8 and later. Slightly older versions may work as well but no support will be provided for them.
+Wespal should build and run with Qt 6.4 and later, and any compiler with decent C++17 support. Slightly older versions may work as well but no support will be provided for them.
 
-KDE Frameworks 5 is not required to build or run Wespal, but it may provide additional image format plugins to handle layered GIMP `.xcf` and Adobe Photoshop `.psd` files. If detected at runtime, Wespal will support these formats as well.
+KDE Frameworks is not required to build or run Wespal, but if installed and properly configured, the KImageFormats component may provide additional image format plugins to handle Krita (`.kra`), OpenRaster (`.ora`) and Adobe Photoshop (`.psd`) files.
 
 
 Building from source
 --------------------
 
-First you need to generate a Makefile:
+First, after unpacking the source code you need to set up the CMake build directory:
 
 ```
 $ cd wespal-X.Y.Z/
-$ qmake -config release
+$ mkdir build
+$ cd build
+$ cmake ..
 ```
 
 Then you can build the application:
