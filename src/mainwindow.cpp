@@ -102,10 +102,8 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->menu_Help->insertSeparator(ui->actionAbout_Morning_Star);
 
 	QPushButton* const save = ui->buttonBox->button(QDialogButtonBox::Save);
-	QPushButton* const close = ui->buttonBox->button(QDialogButtonBox::Close);
 
 	save->setWhatsThis(tr("Saves the current recolor job."));
-	close->setWhatsThis(tr("Abandons the current job and exits."));
 
 #ifdef Q_OS_MACOS
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
@@ -597,10 +595,14 @@ void MainWindow::on_buttonBox_clicked(QAbstractButton* button)
 
 	switch (btype) {
 		case QDialogButtonBox::Save:
-		doSaveFile();
+			doSaveFile();
 			break;
 		case QDialogButtonBox::Close:
-		doCloseFile();
+			if (originalImage_.isNull()) {
+				this->close();
+			} else {
+				doCloseFile();
+			}
 			break;
 		default:
 			;
@@ -814,14 +816,23 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->lblNewPal, ui->cbxNewPal,
 		ui->listRanges,
 		ui->zoomSlider, ui->tbZoomIn, ui->tbZoomOut,
-		ui->buttonBox->button(QDialogButtonBox::Save),
-		ui->buttonBox->button(QDialogButtonBox::Close));
+		ui->buttonBox->button(QDialogButtonBox::Save));
 
 	std::apply([enable](auto&&... widget) {
 		(widget->setEnabled(enable), ...);
 	}, elements);
 
 	ui->staWorkAreaParent->setCurrentIndex(enable ? 0 : 1);
+
+	auto* closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
+
+	if (enable) {
+		closeButton->setText(tr("Close"));
+		closeButton->setWhatsThis(tr("Closes the current image."));
+	} else {
+		closeButton->setText(tr("Quit"));
+		closeButton->setWhatsThis(tr("Quits Wespal."));
+	}
 }
 
 QString MainWindow::currentPaletteName(bool paletteSwitchMode) const
