@@ -238,6 +238,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::updateWindowTitle(bool hasImage, const QString& filename)
+{
+	QString appTitle = tr("Wesnoth RCX");
+	QString displayString;
+
+	if (hasImage) {
+		if (filename.isEmpty()) {
+			this->setWindowFilePath({});
+			displayString = tr("Dropped file");
+		} else {
+			this->setWindowFilePath(filename);
+			displayString = QFileInfo(filename).fileName();
+		}
+
+		this->setWindowTitle(displayString % " \342\200\224 " % appTitle);
+	} else {
+		this->setWindowTitle(appTitle);
+	}
+}
+
 void MainWindow::generateMergedRcDefinitions()
 {
 	colorRanges_ = wesnoth::builtinColorRanges.objects();

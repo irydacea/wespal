@@ -95,25 +95,7 @@ private:
 
 	void updateRecentFilesMenu();
 
-	void updateWindowTitle(bool hasImage, const QString& filename = {})
-	{
-		QString appTitle = tr("Wesnoth RCX");
-		QString displayString;
-
-		if (hasImage) {
-			if (filename.isEmpty()) {
-				this->setWindowFilePath({});
-				displayString = tr("Dropped file");
-			} else {
-				this->setWindowFilePath(filename);
-				displayString = QFileInfo(filename).fileName();
-			}
-
-			this->setWindowTitle(displayString % " \342\200\224 " % appTitle);
-		} else {
-			this->setWindowTitle(appTitle);
-		}
-	}
+	void updateWindowTitle(bool hasImage, const QString& filename = {});
 
 	void togglePage1(bool newstate);
 	void togglePage2(bool newstate);
