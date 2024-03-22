@@ -20,6 +20,12 @@ target_link_libraries(xcfplugin PRIVATE
 	Qt::Gui
 )
 
+if(WIN32)
+	set(wespal_platform_files win32/wespal.rc)
+else()
+	set(wespal_platform_files "")
+endif()
+
 qt_add_executable(wespal WIN32 MACOSX_BUNDLE
 	src/appconfig.cpp src/appconfig.hpp
 	src/codesnippetdialog.cpp src/codesnippetdialog.hpp src/codesnippetdialog.ui
@@ -29,13 +35,14 @@ qt_add_executable(wespal WIN32 MACOSX_BUNDLE
 	src/customranges.cpp src/customranges.hpp src/customranges.ui
 	src/defs.cpp src/defs.hpp
 	src/imagelabel.cpp src/imagelabel.hpp
-	src/main.cpp
 	src/mainwindow.cpp src/mainwindow.hpp src/mainwindow.ui
 	src/paletteitem.cpp src/paletteitem.hpp
 	src/recentfiles.cpp src/recentfiles.hpp
 	src/util.cpp src/util.hpp
 	src/version.cpp src/version.hpp
 	src/wesnothrc.cpp src/wesnothrc.hpp
+	${wespal_platform_files}
+	src/main.cpp
 )
 
 set_target_properties(wespal
