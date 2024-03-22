@@ -50,11 +50,3 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
         VALUE "Translation", 0x0409, 0xFDE9
     }
 }
-
-
-
-//
-// Manifest resources
-//
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-1                  RT_MANIFEST    "./manifest.xml"
