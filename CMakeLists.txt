@@ -22,6 +22,11 @@ target_link_libraries(xcfplugin PRIVATE
 
 if(WIN32)
 	set(wespal_platform_files win32/wespal.rc)
+elseif(APPLE)
+	set(MACOSX_BUNDLE_ICON_FILE Wespal.icns)
+	set(wespal_platform_files macos/${MACOSX_BUNDLE_ICON_FILE})
+	set_source_files_properties(${wespal_platform_files} PROPERTIES
+		MACOSX_PACKAGE_LOCATION "Resources")
 else()
 	set(wespal_platform_files "")
 endif()
@@ -72,9 +77,6 @@ target_link_libraries(wespal PRIVATE
 )
 
 # Resources:
-set_source_files_properties("icons/128x128/wespal.png"
-	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-128.png"
-)
 set_source_files_properties("icons/16x16/edit-copy.png"
 	PROPERTIES QT_RESOURCE_ALIAS "edit-copy-16.png"
 )
@@ -90,21 +92,36 @@ set_source_files_properties("icons/16x16/zoom-in.png"
 set_source_files_properties("icons/16x16/zoom-out.png"
 	PROPERTIES QT_RESOURCE_ALIAS "zoom-out-16.png"
 )
-set_source_files_properties("icons/256x256/wespal.png"
-	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-256.png"
+set_source_files_properties("icons/16x16/wespal.png"
+	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-16.png"
+)
+set_source_files_properties("icons/32x32/wespal.png"
+	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-32.png"
 )
 set_source_files_properties("icons/64x64/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-64.png"
 )
+set_source_files_properties("icons/128x128/wespal.png"
+	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-128.png"
+)
+set_source_files_properties("icons/256x256/wespal.png"
+	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-256.png"
+)
+set_source_files_properties("icons/512x512/wespal.png"
+	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-512.png"
+)
 set(morningstar_resource_files
-	"icons/128x128/wespal.png"
 	"icons/16x16/edit-copy.png"
 	"icons/16x16/list-add.png"
 	"icons/16x16/list-remove.png"
 	"icons/16x16/zoom-in.png"
 	"icons/16x16/zoom-out.png"
-	"icons/256x256/wespal.png"
+	"icons/16x16/wespal.png"
+	"icons/32x32/wespal.png"
 	"icons/64x64/wespal.png"
+	"icons/128x128/wespal.png"
+	"icons/256x256/wespal.png"
+	"icons/512x512/wespal.png"
 )
 
 qt_add_resources(wespal "morningstar"

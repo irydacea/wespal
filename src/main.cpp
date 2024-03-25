@@ -42,8 +42,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_MACOS
 	QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
-
-	a.setWindowIcon(QIcon{":/wespal-icon-64.png"});
+	a.setWindowIcon(QIcon{":/wespal-icon-512.png"});
 
 	MainWindow w;
 	w.show();
