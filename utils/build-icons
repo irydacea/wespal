@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+'''
+Builds Wespal's platform-specific icon files (Apple, Win32)
+'''
+
+import argparse
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+from tempfile import TemporaryDirectory
+
+SIPS = 'sips'
+
+IMAGEMAGICK_CONVERT = 'convert'
+
+ICONUTIL = 'iconutil'
+
+# Assume the input is this size in pixels
+INPUT_SIZE = 1024
+
+# Based on recommendations from
+# <https://learn.microsoft.com/en-us/windows/apps/design/style/iconography/app-icon-construction#icon-scaling>
+WIN32_ICON_FORMATS = (
+    16,
+    24,
+    32,
+    48,
+    256,
+    )
+
+# Based on recommendations from
+# <https://developer.apple.com/design/human-interface-guidelines/app-icons#Specifications>
+APPLE_ICON_FORMATS = (
+    ('16x16',        16, 16),
+    ('16x16@2x',     32, 32),
+    ('32x32',        32, 32),
+    ('32x32@2x',     64, 64),
+    ('128x128',     128, 128),
+    ('128x128@2x',  256, 256),
+    ('256x256',     256, 256),
+    ('256x256@2x',  512, 512),
+    ('512x512',     512, 512),
+    ('512x512@2x', 1024, 1024),
+    )
+
+
+def _log_header(text: str):
+    print(f'{"-" * len(text)}\n{text}\n{"-" * len(text)}')
+
+
+def _check_existing_output(output_file: Path):
+    if output_file.exists():
+        if output_file.is_dir():
+            sys.exit(f'Output file "{output_file}" already exists and is a directory')
+        print(f'WARNING: Output file "{output_file}" already exists and will be overwritten')
+
+
+def build_win32_ico(input_file: Path,
+                    output_file: Path):
+    '''
+    Runs ImageMagick convert with the specified arguments.
+    '''
+    _log_header('Building Win32 .ico')
+    _check_existing_output(output_file)
+
+    with TemporaryDirectory() as tmpdir:
+        # Convert input file to target sizes first
+        inputs = []
+        for size in WIN32_ICON_FORMATS:
+            if size != INPUT_SIZE:
+                # Generate size version
+                inputs.append(f'{tmpdir}/{size}.png')
+                print(f' * Generate {size}x{size} version...')
+                #print(f' * Generate {size}x{size} version as {inputs[-1]}...')
+                subprocess.run([IMAGEMAGICK_CONVERT, input_file, '-resize', f'{size}x{size}', inputs[-1]],
+                               check=True)
+            else:
+                # Just feed the original to ImageMagick later
+                print(f' * Reusing input for {size}x{size} version...')
+                inputs.append(input_file)
+        print(f' * Generating ICO file {output_file}...', end='')
+        subprocess.run([IMAGEMAGICK_CONVERT] + inputs + [output_file],
+                       check=True)
+        print('OK')
+
+
+def build_macos_iconset(input_file: Path,
+                        output_file: Path):
+    '''
+    Runs IconUtil with the specified arguments.
+    '''
+    _log_header('Building macOS .icns')
+    _check_existing_output(output_file)
+
+    with TemporaryDirectory() as tmpdir:
+        # Create iconset and target sizes for iconutil first
+        tmp_iconset_name = f'{output_file.name.removesuffix('.icns')}.iconset'
+        tmp_iconset = Path(f'{tmpdir}/{tmp_iconset_name}')
+        tmp_iconset.mkdir()
+        for format_id, width, height in APPLE_ICON_FORMATS:
+            partial_fn = f'{tmp_iconset}/icon_{format_id}.png'
+            if width != INPUT_SIZE and height != INPUT_SIZE:
+                print(f' * Generate {format_id} version...')
+                #print(f' * Generate {format_id} version as {partial_fn}...')
+                subprocess.run([IMAGEMAGICK_CONVERT, input_file, '-resize', f'{width}x{height}', partial_fn],
+                               check=True)
+            else:
+                # We need to copy the original into the destination
+                print(f' * Copy input to {format_id} version...')
+                #print(f' * Copy input to {format_id} version as {partial_fn}...')
+                shutil.copyfile(input_file, partial_fn)
+        print(f' * Generating icns {output_file}...', end='')
+        subprocess.run([ICONUTIL, '-c', 'icns', '-o', output_file, tmp_iconset],
+                       check=True)
+        print('OK')
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--format', action='store', dest='format',
+                        choices=['ico', 'icns'], required=True)
+    parser.add_argument('input_path', metavar='input_path')
+    parser.add_argument('output_path', metavar='output_path')
+
+    args = parser.parse_args()
+    input_path = Path(args.input_path)
+    output_path = Path(args.output_path)
+
+    if not input_path.exists():
+        sys.exit(f'Input not found: {input_path}')
+
+    if args.format == 'ico':
+        build_win32_ico(input_path, output_path)
+    elif args.format == 'icns':
+        build_macos_iconset(input_path, output_path)
+    else:
+        raise RuntimeError
