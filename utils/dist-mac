@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# Builds and deploys Wespal for macOS
+#
 
 set -e
 set -o nounset
@@ -10,27 +13,51 @@ qtdir="$HOME/Local/Qt/6.6.2"
 qtcmakedir="$HOME/Local/Qt/Tools/CMake"
 
 cmake="$qtdir/macos/bin/qt-cmake"
+ninjapath="$HOME/Local/Qt/Tools/Ninja"
 macdeployqt="$qtdir/macos/bin/macdeployqt"
 
-distdir=./dist
+distdir=./dist/macos
 builddir=./build-dist-macos
+
+#
+# Set up development environment
+#
+
+export PATH="$ninjapath:$qtcmakedir/CMake.app/Contents/bin:$PATH"
+
+#
+# Create and change into build directory
+#
 
 rm -rf $builddir
 mkdir -p $builddir
 cd $builddir
 
-export PATH="$qtcmakedir/CMake.app/Contents/bin:$PATH"
+#
+# Configure and build the app
+#
 
-$cmake -S .. -B . -G Ninja -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64'
-
+$cmake -S .. -B . -G Ninja -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=Release
 ninja
 
+#
+# Use macdeployqt to deploy frameworks and create the .dmg image
+#
+
 $macdeployqt $bundle -dmg
+
+#
+# Move bundle and .dmg into dist directory
+#
 
 cd -
 mkdir -p $distdir
 mv $builddir/$bundle $distdir/
 mv $builddir/$image $distdir/
+
+#
+# Cleanup and report
+#
 
 rm -rf $builddir
 
