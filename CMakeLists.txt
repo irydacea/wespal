@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.21.1)
 project(wespal VERSION 0.4 LANGUAGES C CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -23,8 +23,8 @@ target_link_libraries(xcfplugin PRIVATE
 if(WIN32)
 	set(wespal_platform_files win32/wespal.rc)
 elseif(APPLE)
-	set(MACOSX_BUNDLE_ICON_FILE Wespal.icns)
-	set(wespal_platform_files macos/${MACOSX_BUNDLE_ICON_FILE})
+	# Icon resource
+	set(wespal_platform_files macos/Wespal.icns)
 	set_source_files_properties(${wespal_platform_files} PROPERTIES
 		MACOSX_PACKAGE_LOCATION "Resources")
 else()
@@ -50,8 +50,11 @@ qt_add_executable(wespal WIN32 MACOSX_BUNDLE
 	src/main.cpp
 )
 
-set_target_properties(wespal
-	PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "Wespal"
+set_target_properties(wespal PROPERTIES
+	MACOSX_BUNDLE_BUNDLE_NAME "Wespal"
+	MACOSX_BUNDLE_GUI_IDENTIFIER "me.irydacea.wespal"
+	MACOSX_BUNDLE_COPYRIGHT "© 2008 - 2024 by Iris Morelle"
+	MACOSX_BUNDLE_ICON_FILE Wespal.icns
 )
 
 qt_import_plugins(wespal INCLUDE XCFPlugin)
