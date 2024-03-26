@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+set -o nounset
+
+bundle=wespal.app
+image=wespal.dmg
+
+qtdir="$HOME/Local/Qt/6.6.2"
+qtcmakedir="$HOME/Local/Qt/Tools/CMake"
+
+cmake="$qtdir/macos/bin/qt-cmake"
+macdeployqt="$qtdir/macos/bin/macdeployqt"
+
+distdir=./dist
+builddir=./build-dist-macos
+
+rm -rf $builddir
+mkdir -p $builddir
+cd $builddir
+
+export PATH="$qtcmakedir/CMake.app/Contents/bin:$PATH"
+
+$cmake -S .. -B . -G Ninja -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64'
+
+ninja
+
+$macdeployqt $bundle -dmg
+
+cd -
+mkdir -p $distdir
+mv $builddir/$bundle $distdir/
+mv $builddir/$image $distdir/
+
+rm -rf $builddir
+
+echo "Saved deployment files under $distdir/:"
+echo '  *' $bundle
+echo '  *' $image

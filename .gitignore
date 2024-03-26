@@ -34,6 +34,7 @@ ui_*
 # Build output
 #
 
+dist/
 *.o
 *.obj
 *.a
