@@ -1,4 +1,5 @@
 @echo off
+
 rem
 rem Builds and deploys Wespal for Windows
 rem
@@ -67,7 +68,7 @@ rem
 mkdir dist-prep
 move %appexe% dist-prep
 cd dist-prep
-"%windeployqt%" %appexe%
+"%windeployqt%" --no-system-d3d-compiler --no-translations --no-opengl-sw --no-virtualkeyboard --no-quick-import --no-network --exclude-plugins qgif,qicns,qjpeg,qpdf,qsvg,qtga,qtiff,qsvgicon %appexe%
 
 rem
 rem Move deployed files into dist directory
