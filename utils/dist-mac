@@ -6,8 +6,11 @@
 set -e
 set -o nounset
 
+version="$(sed -En 's/^[[:space:]]*project[[:space:]]*\([[:space:]]*wespal[[:space:]]+VERSION[[:space:]]([^[:space:]]+).*$/\1/ p' CMakeLists.txt)"
+
 bundle=wespal.app
 image=wespal.dmg
+image_final=Wespal-$version.dmg
 
 qtdir="$HOME/Local/Qt/6.6.2"
 qtcmakedir="$HOME/Local/Qt/Tools/CMake"
@@ -52,8 +55,8 @@ $macdeployqt $bundle -dmg
 
 cd -
 mkdir -p $distdir
-mv $builddir/$bundle $distdir/
-mv $builddir/$image $distdir/
+mv -f $builddir/$bundle $distdir/
+mv -f $builddir/$image $distdir/$image_final
 
 #
 # Cleanup and report
@@ -63,4 +66,4 @@ rm -rf $builddir
 
 echo "Saved deployment files under $distdir/:"
 echo '  *' $bundle
-echo '  *' $image
+echo '  *' $image_final
