@@ -4,10 +4,39 @@ project(wespal VERSION 0.4.0 LANGUAGES C CXX)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 
+#
+# Optional build-time settings
+#
+
+set(SANITIZE "" CACHE STRING "Comma-separated list of compiler -fsanitize instrumentation to enable")
+
+set(cxx_sanitizer_flags "")
+if(SANITIZE)
+	set(cxx_sanitizer_flags "-fsanitize=${SANITIZE}")
+endif()
+
+set(cxx_warning_flags "")
+if(NOT MSVC)
+	set(cxx_warning_flags
+		-Wall
+		-Wextra
+		-Werror=non-virtual-dtor
+		-Wold-style-cast
+	)
+endif()
+
+#
+# Dependency/Qt and compiler setup
+#
+
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Gui Widgets)
 
 qt_standard_project_setup()
+
+#
+# xcfplugin
+#
 
 qt_add_plugin(xcfplugin STATIC CLASS_NAME XCFPlugin
 	src/kimageformats/gimp_p.h
@@ -20,10 +49,20 @@ target_link_libraries(xcfplugin PRIVATE
 	Qt::Gui
 )
 
+# No warning flags because it's not our code
+target_compile_options(xcfplugin PRIVATE
+	${cxx_sanitizer_flags}
+)
+
+#
+# Wespal
+#
+
 if(WIN32)
+	# Windows resource file, including native icon
 	set(wespal_platform_files win32/wespal.rc)
 elseif(APPLE)
-	# Icon resource
+	# macOS native icon
 	set(wespal_platform_files macos/Wespal.icns)
 	set_source_files_properties(${wespal_platform_files} PROPERTIES
 		MACOSX_PACKAGE_LOCATION "Resources")
@@ -59,17 +98,13 @@ set_target_properties(wespal PROPERTIES
 
 qt_import_plugins(wespal INCLUDE XCFPlugin)
 
-if(NOT MSVC)
-	target_compile_options(wespal PRIVATE
-		-Wall
-		-Wextra
-		-Werror=non-virtual-dtor
-		-Wold-style-cast
-	)
-endif()
-
 target_compile_definitions(wespal PRIVATE
 	QT_NO_FOREACH
+)
+
+target_compile_options(wespal PRIVATE
+	${cxx_warning_flags}
+	${cxx_sanitizer_flags}
 )
 
 target_link_libraries(wespal PRIVATE
@@ -133,6 +168,10 @@ qt_add_resources(wespal "morningstar"
 	FILES
 		${morningstar_resource_files}
 )
+
+#
+# Deployment
+#
 
 install(TARGETS wespal
 	BUNDLE DESTINATION .
