@@ -97,7 +97,7 @@ Manager::Manager()
 
 	const int numRecentFiles = qs.beginReadArray("recent_files");
 
-	for (int i = 0; i < numRecentFiles; ++i)
+	for (int i = numRecentFiles - 1; i >= 0; --i)
 	{
 		qs.setArrayIndex(i);
 
