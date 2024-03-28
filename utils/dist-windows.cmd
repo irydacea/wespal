@@ -21,13 +21,13 @@ goto baddevenv
 
 :vs
 rem Visual Studio 2022 host
-set qtprefix=C:\Qt\6.6.2\msvc2019_64
+set qtprefix=C:\Qt\6.6.3\msvc2019_64
 set devenvcmd="C:\Program Files\Microsoft Visual Studio\2022\Community"\VC\Auxiliary\Build\vcvars64.bat
 goto common
 
 :mingw
 rem Mingw host
-set qtprefix=C:\Qt\6.6.2\mingw_64
+set qtprefix=C:\Qt\6.6.3\mingw_64
 set PATH=C:\Qt\Tools\mingw1120_64\bin;%PATH%
 goto common
 

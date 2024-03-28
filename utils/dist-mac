@@ -12,7 +12,7 @@ bundle=wespal.app
 image=wespal.dmg
 image_final=Wespal-$version.dmg
 
-qtdir="$HOME/Local/Qt/6.6.2"
+qtdir="$HOME/Local/Qt/6.6.3"
 qtcmakedir="$HOME/Local/Qt/Tools/CMake"
 
 cmake="$qtdir/macos/bin/qt-cmake"
