@@ -26,7 +26,6 @@
 #include "paletteitem.hpp"
 #include "ui_mainwindow.h"
 #include "util.hpp"
-#include "version.hpp"
 
 #include <QActionGroup>
 #include <QColorDialog>
