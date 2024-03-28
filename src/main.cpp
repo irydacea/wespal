@@ -27,11 +27,11 @@
 int main(int argc, char *argv[])
 {
 	QApplication a{argc, argv};
-	QString initial_file;
+	QString initialFile;
 	QStringList argvq = a.arguments();
 
 	if (argvq.count() > 1) {
-		initial_file = argvq.last();
+		initialFile = argvq.last();
 	}
 
 	QCoreApplication::setApplicationName("Morning Star");
@@ -45,6 +45,10 @@ int main(int argc, char *argv[])
 	a.setWindowIcon(QIcon{":/wespal-icon-512.png"});
 
 	MainWindow w;
+
+	if (!initialFile.isEmpty())
+		w.openFile(initialFile);
+
 	w.show();
 
 	return a.exec();
