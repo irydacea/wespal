@@ -638,43 +638,43 @@ bool MainWindow::initial_open(const QString &initial_file)
 
 void MainWindow::doOpenFile(const QString& initialFile)
 {
-	QString path_temp;
-	QString start_dir;
+	QString selectedPath;
+	QString startingDir;
 
-	QStringList picture_locations =
+	QStringList pictureLocations =
 			QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
 
 	if (initialFile.isNull() || initialFile.isEmpty()) {
 		if (imagePath_.isEmpty()) {
-			if (!picture_locations.empty()) {
-				start_dir = picture_locations.first();
+			if (!pictureLocations.empty()) {
+				startingDir = pictureLocations.first();
 			} else {
-				start_dir = ".";
+				startingDir = ".";
 			}
 		} else {
-			start_dir = QFileInfo(imagePath_).absolutePath();
+			startingDir = QFileInfo(imagePath_).absolutePath();
 		}
 
-		path_temp = QFileDialog::getOpenFileName(
+		selectedPath = QFileDialog::getOpenFileName(
 			this,
 			tr("Choose source image"),
-			start_dir,
+			startingDir,
 			supportedImageFileFormats_
 		);
 	}
 	else {
-		path_temp = initialFile;
+		selectedPath = initialFile;
 	}
 
-	if (path_temp.isNull() && originalImage_.isNull()) {
+	if (selectedPath.isNull() && originalImage_.isNull()) {
 		return;
 	}
 
-	QImage img_temp{path_temp};
-	if (img_temp.isNull()) {
-		if (path_temp.isNull() != true) {
+	QImage selectedImage{selectedPath};
+	if (selectedImage.isNull()) {
+		if (selectedPath.isNull() != true) {
 			MosUi::error(
-				this, tr("Could not load %1.").arg(path_temp));
+				this, tr("Could not load %1.").arg(selectedPath));
 		}
 
 		if (originalImage_.isNull()) {
@@ -687,9 +687,9 @@ void MainWindow::doOpenFile(const QString& initialFile)
 		return;
 	}
 
-	imagePath_ = path_temp;
+	imagePath_ = selectedPath;
 	// We want to work on actual ARGB data
-	originalImage_ = img_temp.convertToFormat(QImage::Format_ARGB32);
+	originalImage_ = selectedImage.convertToFormat(QImage::Format_ARGB32);
 
 	// Refresh UI
 	MosCurrentConfig().addRecentFile(imagePath_, originalImage_);
