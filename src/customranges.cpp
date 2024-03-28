@@ -243,11 +243,16 @@ void CustomRanges::on_cmdDelete_clicked()
 {
 	QListWidget* const listw = ui->listRanges;
 
-	ObjectLock lock(listw);
-
 	const int remaining = listw->count();
+
 	if (remaining == 0)
 		return;
+
+	// If there are at least two remaining items (including the one that's
+	// about to be deleted), it's safe to allow some signals to go through.
+	// Otherwise, we need to disable them.
+
+	ConditionalObjectLock lockList{listw, remaining == 1};
 
 	QListWidgetItem* const itemw = listw->takeItem(listw->currentRow());
 	Q_ASSERT(itemw);

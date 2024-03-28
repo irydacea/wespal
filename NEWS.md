@@ -12,7 +12,9 @@ Version 0.4.0
 * Various fixes for Qt 6 compatibility.
 * Various changes to make the app feel more native on macOS.
 * Color Range Editor:
-  * Added a "From List" option to allow copying color values from WML.
+  * Added a "From List" option to allow copying color values straight from WML.
+  * Fixed right side panel still displaying the colors of the deleted range
+    after deleting a range.
 
 Version 0.3.0
 -------------
