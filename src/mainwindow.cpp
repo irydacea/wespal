@@ -371,12 +371,12 @@ void MainWindow::processRcDefinitions()
 void MainWindow::handleRecent()
 {
 	if (auto* act = qobject_cast<QAction*>(sender()); act) {
-		this->doOpenFile(act->data().toString());
+		openFile(act->data().toString());
 		return;
 	}
 
 	if (auto* listMru = qobject_cast<QListWidget*>(sender()); listMru) {
-		this->doOpenFile(listMru->currentItem()->data(Qt::UserRole).toString());
+		openFile(listMru->currentItem()->data(Qt::UserRole).toString());
 		//return;
 	}
 }
@@ -610,7 +610,7 @@ void MainWindow::on_buttonBox_clicked(QAbstractButton* button)
 
 void MainWindow::on_action_Open_triggered()
 {
-	doOpenFile();
+	openFile();
 }
 
 void MainWindow::on_action_Quit_triggered()
@@ -624,19 +624,7 @@ void MainWindow::on_action_Reload_triggered()
 	doReloadFile();
 }
 
-bool MainWindow::initial_open(const QString &initial_file)
-{
-	try {
-		this->doOpenFile(initial_file);
-	}
-	catch (no_initial_file const&) {
-		return false;
-	}
-
-	return true;
-}
-
-void MainWindow::doOpenFile(const QString& initialFile)
+void MainWindow::openFile(const QString& fileName)
 {
 	QString selectedPath;
 	QString startingDir;
@@ -644,7 +632,9 @@ void MainWindow::doOpenFile(const QString& initialFile)
 	QStringList pictureLocations =
 			QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
 
-	if (initialFile.isNull() || initialFile.isEmpty()) {
+	if (!fileName.isEmpty()) {
+		selectedPath = fileName;
+	} else {
 		if (imagePath_.isEmpty()) {
 			if (!pictureLocations.empty()) {
 				startingDir = pictureLocations.first();
@@ -662,23 +652,17 @@ void MainWindow::doOpenFile(const QString& initialFile)
 			supportedImageFileFormats_
 		);
 	}
-	else {
-		selectedPath = initialFile;
-	}
 
-	if (selectedPath.isNull() && originalImage_.isNull()) {
+	if (selectedPath.isEmpty() && originalImage_.isNull()) {
 		return;
 	}
 
 	QImage selectedImage{selectedPath};
+
 	if (selectedImage.isNull()) {
 		if (selectedPath.isNull() != true) {
 			MosUi::error(
 				this, tr("Could not load %1.").arg(selectedPath));
-		}
-
-		if (originalImage_.isNull()) {
-			throw no_initial_file();
 		}
 
 		// TODO
@@ -1088,7 +1072,7 @@ void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 
 void MainWindow::on_cmdOpen_clicked()
 {
-	doOpenFile({});
+	openFile();
 }
 
 

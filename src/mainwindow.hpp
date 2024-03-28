@@ -40,7 +40,10 @@ public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
-	bool initial_open(const QString& initial_file);
+	/**
+	 * Opens the specified file, or prompts the user to select one.
+	 */
+	void openFile(const QString& fileName = {});
 
 	QStringList doRunJobs(const QMap<QString, ColorMap>& jobs);
 
@@ -102,7 +105,6 @@ private:
 
 	void doSaveFile();
 	void doCloseFile();
-	void doOpenFile(const QString& initialFile = QString());
 	void doReloadFile();
 	void doAboutDialog();
 
