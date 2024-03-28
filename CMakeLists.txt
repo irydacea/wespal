@@ -120,11 +120,20 @@ target_link_libraries(wespal PRIVATE
 set_source_files_properties("icons/16x16/edit-copy.png"
 	PROPERTIES QT_RESOURCE_ALIAS "edit-copy-16.png"
 )
+set_source_files_properties("icons/16x16/edit-copy@2x.png"
+	PROPERTIES QT_RESOURCE_ALIAS "edit-copy-16@2x.png"
+)
 set_source_files_properties("icons/16x16/list-add.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-add-16.png"
 )
+set_source_files_properties("icons/16x16/list-add@2x.png"
+	PROPERTIES QT_RESOURCE_ALIAS "list-add-16@2x.png"
+)
 set_source_files_properties("icons/16x16/list-remove.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-remove-16.png"
+)
+set_source_files_properties("icons/16x16/list-remove@2x.png"
+	PROPERTIES QT_RESOURCE_ALIAS "list-remove-16@2x.png"
 )
 set_source_files_properties("icons/16x16/zoom-in.png"
 	PROPERTIES QT_RESOURCE_ALIAS "zoom-in-16.png"
@@ -152,8 +161,11 @@ set_source_files_properties("icons/512x512/wespal.png"
 )
 set(morningstar_resource_files
 	"icons/16x16/edit-copy.png"
+	"icons/16x16/edit-copy@2x.png"
 	"icons/16x16/list-add.png"
+	"icons/16x16/list-add@2x.png"
 	"icons/16x16/list-remove.png"
+	"icons/16x16/list-remove@2x.png"
 	"icons/16x16/zoom-in.png"
 	"icons/16x16/zoom-out.png"
 	"icons/16x16/wespal.png"
