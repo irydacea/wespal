@@ -45,7 +45,7 @@
             <string>&amp;Add</string>
            </property>
            <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextBesideIcon</enum>
+            <enum>Qt::ToolButtonFollowStyle</enum>
            </property>
            <property name="autoRaise">
             <bool>true</bool>
@@ -58,7 +58,7 @@
             <string>&amp;Delete</string>
            </property>
            <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextBesideIcon</enum>
+            <enum>Qt::ToolButtonFollowStyle</enum>
            </property>
            <property name="autoRaise">
             <bool>true</bool>
