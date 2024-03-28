@@ -39,7 +39,7 @@ public:
 	{
 	}
 
-	~ObjectLock()
+	virtual ~ObjectLock()
 	{
 		if(o_) {
 			o_->blockSignals(initial_state_);
@@ -49,6 +49,25 @@ public:
 private:
 	QPointer<QObject> o_;
 	bool initial_state_;
+};
+
+/**
+ * Helper class used to block signals from objects for a certain scope.
+ *
+ * Unlike ObjectLock, this only has an effect if the specified condition is
+ * true at construction time.
+ */
+class ConditionalObjectLock : public ObjectLock
+{
+public:
+	ConditionalObjectLock(QObject* o, bool condition)
+		: ObjectLock(condition ? o : nullptr)
+	{
+	}
+
+	virtual ~ConditionalObjectLock()
+	{
+	}
 };
 
 /**
