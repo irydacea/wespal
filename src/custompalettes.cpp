@@ -456,7 +456,7 @@ void CustomPalettes::on_cmdAddCol_clicked()
 	// If this is the first row we might as well update
 	// the palette icon.
 
-	if (first == NULL) {
+	if (first == nullptr) {
 		updatePaletteIcon();
 	}
 }
@@ -474,7 +474,7 @@ void CustomPalettes::on_cmdDelCol_clicked()
 	// about to be deleted), it's safe to allow some signals to go through.
 	// Otherwise, we need to disable them.
 
-	QScopedPointer<ObjectLock> lock(remaining == 1 ? new ObjectLock(listw) : NULL);
+	ConditionalObjectLock lock{listw, remaining == 1};
 
 	const int index = listw->currentRow();
 
@@ -547,8 +547,8 @@ void CustomPalettes::on_cmdDelPal_clicked()
 	// about to be deleted), it's safe to allow some signals to go through.
 	// Otherwise, we need to disable them.
 
-	QScopedPointer<ObjectLock> lockPals(remaining == 1 ? new ObjectLock(listw) : NULL);
-	QScopedPointer<ObjectLock> lockColors(remaining == 1 ? new ObjectLock(ui->listColors) : NULL);
+	ConditionalObjectLock lockPals{listw, remaining == 1};
+	ConditionalObjectLock lockColors{ui->listColors, remaining == 1};
 
 	QListWidgetItem* const itemw = listw->takeItem(listw->currentRow());
 	Q_ASSERT(itemw);
