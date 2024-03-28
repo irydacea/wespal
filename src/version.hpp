@@ -30,6 +30,6 @@
 
 #include <QString>
 
-extern const QString mos_version;
+extern const QString MOS_VERSION;
 
 #endif

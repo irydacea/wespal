@@ -104,7 +104,7 @@ void error(QWidget* parent, const QString& message, const QStringList& detailIte
 void about(QWidget* parent)
 {
 	QString text =
-		tr("<h3>Wespal %1</h3>").arg(mos_version) %
+		tr("<h3>Wespal %1</h3>").arg(MOS_VERSION) %
 		"<p>" %
 		tr(
 			"Copyright &copy; 2008 &#8211; 2024 by "
