@@ -28,6 +28,7 @@
 #include "wesnothrc.hpp"
 
 #include <QRegularExpression>
+#include <QStringBuilder>
 
 namespace {
 

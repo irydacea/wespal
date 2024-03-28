@@ -41,6 +41,7 @@
 #include <QPushButton>
 #include <QScrollBar>
 #include <QStandardPaths>
+#include <QStringBuilder>
 #include <QStyle>
 #include <QUrl>
 #include <QWhatsThis>
@@ -250,7 +251,7 @@ void MainWindow::updateWindowTitle(bool hasImage, const QString& filename)
 			displayString = QFileInfo(filename).fileName();
 		}
 
-		this->setWindowTitle(displayString % " \342\200\224 " % appTitle);
+		this->setWindowTitle(displayString % QString::fromUtf8(" \342\200\224 ") % appTitle);
 	} else {
 		this->setWindowTitle(appTitle);
 	}

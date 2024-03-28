@@ -38,7 +38,9 @@ qt_standard_project_setup()
 # xcfplugin
 #
 
-qt_add_plugin(xcfplugin STATIC CLASS_NAME XCFPlugin
+qt_add_plugin(xcfplugin STATIC CLASS_NAME XCFPlugin)
+
+target_sources(xcfplugin PRIVATE
 	src/kimageformats/gimp_p.h
 	src/kimageformats/util_p.h
 	src/kimageformats/xcf.cpp src/kimageformats/xcf_p.h
@@ -96,7 +98,7 @@ set_target_properties(wespal PROPERTIES
 	MACOSX_BUNDLE_ICON_FILE Wespal.icns
 )
 
-qt_import_plugins(wespal INCLUDE XCFPlugin)
+qt_import_plugins(wespal INCLUDE xcfplugin)
 
 target_compile_definitions(wespal PRIVATE
 	QT_NO_FOREACH

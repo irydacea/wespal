@@ -26,6 +26,7 @@
 #include <QClipboard>
 #include <QFileDialog>
 #include <QPushButton>
+#include <QStringBuilder>
 #include <QStyle>
 #include <QTextStream>
 
