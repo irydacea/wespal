@@ -42,7 +42,7 @@ public:
 
 	bool initial_open(const QString& initial_file);
 
-	QStringList do_run_jobs(QMap<QString, ColorMap> &jobs);
+	QStringList doRunJobs(const QMap<QString, ColorMap>& jobs);
 
 protected:
     void changeEvent(QEvent *e);

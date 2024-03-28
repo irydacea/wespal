@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QFileInfo>
 #include <QPointer>
 #include <QStringList>
 #include <QWidget>
@@ -71,6 +72,28 @@ public:
 };
 
 /**
+ * Used to set a cursor for the duration of scope.
+ */
+class ScopedCursor
+{
+public:
+	ScopedCursor(QWidget& target,
+				 const QCursor& newCursor)
+		: target_(target)
+	{
+		target.setCursor(newCursor);
+	}
+
+	~ScopedCursor()
+	{
+		target_.unsetCursor();
+	}
+
+private:
+	QWidget& target_;
+};
+
+/**
  * Capitalizes the first character in the provided string.
  *
  * @param str          Input string
@@ -86,6 +109,13 @@ inline QString capitalize(const QString& str)
 	}
 
 	return res;
+}
+
+inline QString cleanFileName(const QString& fileName)
+{
+	QFileInfo qfi{fileName};
+
+	return qfi.baseName() + '.' + qfi.completeSuffix();
 }
 
 namespace MosPlatform {

@@ -218,3 +218,20 @@ QString wmlFromColorList(const QString& name,
  */
 QImage recolorImage(const QImage& input,
 					const ColorMap& colorMap);
+
+namespace MosIO {
+
+/**
+ * Writes a QImage to disk as a PNG file.
+ *
+ * @param input        Input image (see notes).
+ * @param fileName     Image file name.
+ *
+ * @note @a input is assumed to be in ARGB32 format, although this is not
+ *       a particularly significant assumption anyway. More importantly, this
+ *       function may MODIFY its input to ensure that its color space
+ *       configuration is correct for the intended output format.
+ */
+bool writePng(QImage& input, const QString& fileName);
+
+} // end namespace MosIO
