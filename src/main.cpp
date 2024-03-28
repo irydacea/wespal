@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
 		initialFile = argvq.last();
 	}
 
-	QCoreApplication::setApplicationName("Morning Star");
-	QCoreApplication::setOrganizationName("Wesnoth");
-	QCoreApplication::setOrganizationDomain("wesnoth.org");
+	QCoreApplication::setApplicationName("Wespal");
+	QCoreApplication::setOrganizationName("Irydacea");
+	QCoreApplication::setOrganizationDomain("irydacea.me");
 	QCoreApplication::setApplicationVersion(MOS_VERSION);
 
 #ifdef Q_OS_MACOS

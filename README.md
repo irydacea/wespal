@@ -48,13 +48,13 @@ Configuration
 -------------
 
 * On Linux, the configuration will be stored in the file
-  `$HOME/.config/Wesnoth/Morning Star.conf`
+  `$HOME/.config/Irydacea/Wespal.conf`
 
 * On Windows, the configuration will be stored in the system Registry, under
-  `HKEY_CURRENT_USER\Software\Wesnoth\Morning Star`
+  `HKEY_CURRENT_USER\Software\Irydacea\Wespal`
 
 * On macOS, the configuration will be stored in the file
-  `$HOME/Library/Preferences/org.wesnoth.Morning Star.plist`
+  `$HOME/Library/Preferences/me.irydacea.Wespal.plist`
 
 
 Reporting bugs
