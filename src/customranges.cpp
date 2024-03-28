@@ -22,6 +22,7 @@
 #include "ui_customranges.h"
 
 #include "codesnippetdialog.hpp"
+#include "colorlistinputdialog.hpp"
 #include "paletteitem.hpp"
 #include "util.hpp"
 
@@ -350,6 +351,35 @@ void CustomRanges::on_listRanges_itemChanged(QListWidgetItem *item)
 	ranges_.erase(oldIt);
 
 	item->setData(Qt::UserRole, newName);
+}
+
+void CustomRanges::on_cmdAddFromList_clicked()
+{
+	QListWidget* const listw = ui->listRanges;
+	QListWidgetItem* const itemw = listw->currentItem();
+
+	if (!itemw)
+		return;
+
+	ColorListInputDialog dlg{this};
+	dlg.exec();
+
+	const auto& colors = dlg.getColorList();
+
+	if (!colors.empty()) {
+		if (colors.size() >= 1) {
+			currentRange().setMid(colors[0]);
+			itemw->setIcon(createColorIcon(colors[0], ui->listRanges));
+		}
+		if (colors.size() >= 2) {
+			currentRange().setMax(colors[1]);
+		}
+		if (colors.size() >= 3) {
+			currentRange().setMin(colors[2]);
+		}
+
+		updateRangeEditControls();
+	}
 }
 
 void CustomRanges::on_cmdWml_clicked()

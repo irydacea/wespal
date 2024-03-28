@@ -11,6 +11,8 @@ Version 0.4.0
 * Not opening a file on startup no longer causes the app to quit.
 * Various fixes for Qt 6 compatibility.
 * Various changes to make the app feel more native on macOS.
+* Color Range Editor:
+  * Added a "From List" option to allow copying color values from WML.
 
 Version 0.3.0
 -------------
