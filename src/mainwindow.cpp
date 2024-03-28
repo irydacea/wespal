@@ -45,7 +45,6 @@
 
 namespace {
 
-struct no_initial_file {};
 struct canceled_job    {};
 
 static const QSize colorIconSize{16, 16};
