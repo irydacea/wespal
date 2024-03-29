@@ -7,11 +7,13 @@ These instructions apply to the source code only. If you are using the provided 
 Dependencies
 ------------
 
-You will need a basic development environment (e.g. GCC with the C++ compiler) as well as the Qt development files.
-
-Wespal should build and run with Qt 6.4 and later, and any compiler with decent C++17 support. Slightly older versions may work as well but no support will be provided for them.
+ * CMake 3.21.1 or later
+ * GCC 7 or later / Clang 5 or later / another C++17-compatible compiler
+ * Qt 6.4 or later
 
 KDE Frameworks is not required to build or run Wespal, but if installed and properly configured, the KImageFormats component may provide additional image format plugins to handle Krita (`.kra`), OpenRaster (`.ora`) and Adobe Photoshop (`.psd`) files.
+
+*(Tip: If you have KDE Plasma or KDE applications installed you will probably already have KImageFormats installed as well.)*
 
 
 Building from source
@@ -23,31 +25,19 @@ First, after unpacking the source code you need to set up the CMake build direct
 $ cd wespal-X.Y.Z/
 $ mkdir build
 $ cd build
-$ cmake ..
+$ cmake .. -DCMAKE_BUILD_TYPE=Release
 ```
 
-Then you can build the application:
+Then you can build the application as follows. Adding `-jN` to the command line, replacing N with the number of CPU cores available (e.g. 4) can speed up compilation significantly:
 
 ```
-$ make
+$ make -j4
 ```
 
-An executable file `wespal` will be generated in the current directory.
-
-
-Installing
-----------
-
-For your convenience, the provided `install` target will install Wespal to `/usr/local/bin` and add an applications menu entry for you:
+An executable file `wespal` will be generated in the build directory. You can either run Wespal straight from here, or follow the next step to install it system-wide to `/usr/local` or a custom location you may specify by including `-DCMAKE_INSTALL_PREFIX=/your/location/here` to CMake in step 1:
 
 ```
 $ sudo make install
 ```
 
-Or (as root):
-
-```
-# make install
-```
-
-If this does not suit your needs, you can copy the executable file generated in the previous step to a different location, such as `$HOME/bin`, or just keep it where it is — installation is *not* strictly necessary. However, you may want to manually create a desktop or applications menu launcher for easy access.
+Installing Wespal system-wide has the added benefit of generating a desktop application menu entry for you. If you choose to run Wespal from its build directory you may want to grab a copy of the template in `x11/wespal.desktop` and edit it to point to the Wespal binary to make it easier to launch.

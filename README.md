@@ -1,11 +1,13 @@
 Wespal
 ======
 
-This is a small GUI application to allow [Wesnoth][1] artists and content authors to easily preview graphics as they would be recolored by the game's unit team coloring system without needing to run the game itself.
+![Main window screenshot](github/wespal-screenshot-main.png)
+
+This is a small app which allows [Wesnoth][1] artists and content authors to easily preview graphics as they would be recolored by the game’s unit team coloring system, without needing to run or modify the game itself.
 
 [1]: <https://www.wesnoth.org/>
 
-It provides a simple preview functionality, as well as the option to save the results to disk for other purposes. A built-in visual palette and color range editor allows artists and coders to play around with the various possibilities offered by Wesnoth’s team coloring and generate WML code for use in add-ons.
+It provides a simple image preview functionality, as well as the option to save the results to disk for other purposes. A built-in visual palette and color range editor allows artists and coders to play around with the various possibilities offered by Wesnoth’s team coloring and generate WML code for use in add-ons.
 
 
 License
@@ -29,40 +31,61 @@ Code from [KDE KImageFormats][2] licensed under the GNU Lesser General Public Li
 Installing
 ----------
 
-Windows and macOS users should use the binary packages provided on the [Wespal web page][3]. For Windows, no actual installation is required and the provided `.exe` file will work out of the box and can be placed anywhere.
+Windows and macOS users should use the binary packages provided on the [Wespal web page][3] — these support Windows 10 and later, and macOS 11 Big Sur and later. Users on Linux and other platforms should see the `INSTALL.md` file for instructions on building from source.
 
 [3]: <https://irydacea.me/projects/wespal>
 
-Users building from source should see the `INSTALL.md` file for instructions.
+### Windows
+
+For Windows users, after extracting the downloaded `.zip` file you can move and run the contained `Wespal.exe` file anywhere.
+
+**The first time you launch a new version of Wespal you may see a warning like this:**
+
+> Windows protected your PC
+>
+> Windows Defender SmartScreen prevented an unrecognized app from starting.
+
+To add an exception for the app, click on the More Info link, and then click on the newly-revealed Run Anyway button at the bottom.
+
+### macOS
+
+For macOS users, after double-clicking the downloaded `.dmg` file, you can drag Wespal to your Applications folder.
+
+**The first time you launch a new version of Wespal you may see a warning like this:**
+
+> “Wespal” can’t be opened because Apple cannot check it for malicious software.
+>
+> This software needs to be updated. Contact the developer for more information.
+
+To add an exception for the app, you need to use Finder to browse to the folder where Wespal is installed, and attempt to open it **twice** using right-click + Open. The second time you do this, there will be an Open button underneath the warning, which you can then click on to allow Wespal to launch.
 
 
 Usage
 -----
 
-To start Wespal, just run the `wespal` executable. You’ll be presented with an empty main window where you can choose to open an image file. Once you have opened a file, you can preview the effects of various Wesnoth recoloring systems on it. You can also generate pre-recolored copies of the original image file.
+To start Wespal, just double click the `wespal` executable.
 
-The Tools menu allows access to the color range and palette editors, which allow you to define your own color ranges and palette editors for use in Wespal. Any items you create will be remembered and stored in the application’s configuration. You can also choose to generate WML code for your custom palettes and ranges, and copy it to clipboard, or simply save it to a file.
+You’ll be presented with an empty main window where you can choose to open an image file. Once you have opened a file, you can preview the effects of various Wesnoth recoloring systems on it. You can also generate pre-recolored copies of the original image file.
 
 
 Configuration
 -------------
 
-* On Linux, the configuration will be stored in the file
-  `$HOME/.config/Irydacea/Wespal.conf`
+The Tools menu allows access to the color range and palette editors, which allow you to define your own color ranges and palette editors for use in Wespal. You can also choose to generate WML code for your custom palettes and ranges, and copy it to clipboard, or simply save it to a file.
 
-* On Windows, the configuration will be stored in the system Registry, under
-  `HKEY_CURRENT_USER\Software\Irydacea\Wespal`
+Wespal’s configuration, including any created custom palettes and ranges, is stored in a platform-dependent location:
 
-* On macOS, the configuration will be stored in the file
-  `$HOME/Library/Preferences/me.irydacea.Wespal.plist`
+* Linux: `$HOME/.config/Irydacea/Wespal.conf`
+* Windows: `HKEY_CURRENT_USER\Software\Irydacea\Wespal` (in the Registry)
+* macOS: `$HOME/Library/Preferences/me.irydacea.Wespal.plist`
 
 
 Reporting bugs
 --------------
 
-There is an issue tracker on [Github][4]. Alternatively, you may post in the [Wesnoth.org forum topic][5].
+There is an issue tracker on [GitHub][4]. Alternatively, you may post in the [Wesnoth.org forum topic][5].
 
-[4]: https://github.com/irydacea/morningstar/issues
+[4]: https://github.com/irydacea/wespal/issues
 [5]: https://r.wesnoth.org/t31965
 
 When reporting a bug, make sure to provide as much relevant information as possible, including your operating system version (e.g. Windows 10 1903) and Wespal version. If you experience issues with a specific image or palette/color range, be sure to provide those as well.
