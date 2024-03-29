@@ -104,6 +104,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 #ifdef Q_OS_MACOS
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
+#else
+	ui->cmdOpen->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton, nullptr, ui->cmdOpen));
 #endif
 
 	ui->action_Open->setIcon(this->style()->standardIcon(QStyle::SP_DialogOpenButton, nullptr, dynamic_cast<QWidget*>(ui->action_Open)));
