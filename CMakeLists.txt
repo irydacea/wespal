@@ -117,55 +117,55 @@ target_link_libraries(wespal PRIVATE
 )
 
 # Resources:
-set_source_files_properties("icons/16x16/edit-copy.png"
+set_source_files_properties("icons/hicolor/16x16/actions/edit-copy.png"
 	PROPERTIES QT_RESOURCE_ALIAS "edit-copy-16.png"
 )
-set_source_files_properties("icons/16x16/edit-copy@2x.png"
+set_source_files_properties("icons/hicolor/16x16/actions/edit-copy@2x.png"
 	PROPERTIES QT_RESOURCE_ALIAS "edit-copy-16@2x.png"
 )
-set_source_files_properties("icons/16x16/list-add.png"
+set_source_files_properties("icons/hicolor/16x16/actions/list-add.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-add-16.png"
 )
-set_source_files_properties("icons/16x16/list-add@2x.png"
+set_source_files_properties("icons/hicolor/16x16/actions/list-add@2x.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-add-16@2x.png"
 )
-set_source_files_properties("icons/16x16/list-remove.png"
+set_source_files_properties("icons/hicolor/16x16/actions/list-remove.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-remove-16.png"
 )
-set_source_files_properties("icons/16x16/list-remove@2x.png"
+set_source_files_properties("icons/hicolor/16x16/actions/list-remove@2x.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-remove-16@2x.png"
 )
-set_source_files_properties("icons/16x16/wespal.png"
+set_source_files_properties("icons/hicolor/16x16/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-16.png"
 )
-set_source_files_properties("icons/32x32/wespal.png"
+set_source_files_properties("icons/hicolor/32x32/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-32.png"
 )
-set_source_files_properties("icons/64x64/wespal.png"
+set_source_files_properties("icons/hicolor/64x64/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-64.png"
 )
-set_source_files_properties("icons/128x128/wespal.png"
+set_source_files_properties("icons/hicolor/128x128/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-128.png"
 )
-set_source_files_properties("icons/256x256/wespal.png"
+set_source_files_properties("icons/hicolor/256x256/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-256.png"
 )
-set_source_files_properties("icons/512x512/wespal.png"
+set_source_files_properties("icons/hicolor/512x512/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-512.png"
 )
 set(morningstar_resource_files
-	"icons/16x16/edit-copy.png"
-	"icons/16x16/edit-copy@2x.png"
-	"icons/16x16/list-add.png"
-	"icons/16x16/list-add@2x.png"
-	"icons/16x16/list-remove.png"
-	"icons/16x16/list-remove@2x.png"
-	"icons/16x16/wespal.png"
-	"icons/32x32/wespal.png"
-	"icons/64x64/wespal.png"
-	"icons/128x128/wespal.png"
-	"icons/256x256/wespal.png"
-	"icons/512x512/wespal.png"
+	"icons/hicolor/16x16/actions/edit-copy.png"
+	"icons/hicolor/16x16/actions/edit-copy@2x.png"
+	"icons/hicolor/16x16/actions/list-add.png"
+	"icons/hicolor/16x16/actions/list-add@2x.png"
+	"icons/hicolor/16x16/actions/list-remove.png"
+	"icons/hicolor/16x16/actions/list-remove@2x.png"
+	"icons/hicolor/16x16/apps/wespal.png"
+	"icons/hicolor/32x32/apps/wespal.png"
+	"icons/hicolor/64x64/apps/wespal.png"
+	"icons/hicolor/128x128/apps/wespal.png"
+	"icons/hicolor/256x256/apps/wespal.png"
+	"icons/hicolor/512x512/apps/wespal.png"
 )
 
 qt_add_resources(wespal "morningstar"
@@ -182,4 +182,14 @@ qt_add_resources(wespal "morningstar"
 install(TARGETS wespal
 	BUNDLE DESTINATION .
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(FILES desktop/me.irydacea.Wespal.desktop
+	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
+)
+
+# Only wespal.png is public
+install(DIRECTORY icons/hicolor
+	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons
+	FILES_MATCHING PATTERN "wespal.png"
 )
