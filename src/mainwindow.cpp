@@ -68,7 +68,6 @@ MainWindow::MainWindow(QWidget *parent)
 	, transformedImage_()
 
 	, zoom_(1.0)
-	, zoomFactors_({ 0.5, 1.0, 2.0, 4.0, 8.0 })
 
 	, ignoreDrops_(false)
 	, dragUseRecolored_(false)

@@ -58,6 +58,15 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 
 private:
+	// These can only be values that look good with NN scaling
+	static constexpr std::array zoomFactors_ = {
+		0.5,
+		1.0,
+		2.0,
+		4.0,
+		8.0
+	};
+
 	Ui::MainWindow *ui;
 
 	QMap<QString, ColorRange> colorRanges_;
@@ -72,7 +81,6 @@ private:
 	QImage transformedImage_;
 
 	qreal zoom_;
-	QList<qreal> zoomFactors_;
 
 	bool ignoreDrops_;
 	bool dragUseRecolored_;
