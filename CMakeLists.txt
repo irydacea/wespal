@@ -117,22 +117,22 @@ target_link_libraries(wespal PRIVATE
 )
 
 # Resources:
-set_source_files_properties("icons/hicolor/16x16/actions/edit-copy.png"
+set_source_files_properties("icons/private/edit-copy.png"
 	PROPERTIES QT_RESOURCE_ALIAS "edit-copy-16.png"
 )
-set_source_files_properties("icons/hicolor/16x16/actions/edit-copy@2x.png"
+set_source_files_properties("icons/private/edit-copy@2x.png"
 	PROPERTIES QT_RESOURCE_ALIAS "edit-copy-16@2x.png"
 )
-set_source_files_properties("icons/hicolor/16x16/actions/list-add.png"
+set_source_files_properties("icons/private/list-add.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-add-16.png"
 )
-set_source_files_properties("icons/hicolor/16x16/actions/list-add@2x.png"
+set_source_files_properties("icons/private/list-add@2x.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-add-16@2x.png"
 )
-set_source_files_properties("icons/hicolor/16x16/actions/list-remove.png"
+set_source_files_properties("icons/private/list-remove.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-remove-16.png"
 )
-set_source_files_properties("icons/hicolor/16x16/actions/list-remove@2x.png"
+set_source_files_properties("icons/private/list-remove@2x.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-remove-16@2x.png"
 )
 set_source_files_properties("icons/hicolor/16x16/apps/wespal.png"
@@ -154,12 +154,12 @@ set_source_files_properties("icons/hicolor/512x512/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-512.png"
 )
 set(morningstar_resource_files
-	"icons/hicolor/16x16/actions/edit-copy.png"
-	"icons/hicolor/16x16/actions/edit-copy@2x.png"
-	"icons/hicolor/16x16/actions/list-add.png"
-	"icons/hicolor/16x16/actions/list-add@2x.png"
-	"icons/hicolor/16x16/actions/list-remove.png"
-	"icons/hicolor/16x16/actions/list-remove@2x.png"
+	"icons/private/edit-copy.png"
+	"icons/private/edit-copy@2x.png"
+	"icons/private/list-add.png"
+	"icons/private/list-add@2x.png"
+	"icons/private/list-remove.png"
+	"icons/private/list-remove@2x.png"
 	"icons/hicolor/16x16/apps/wespal.png"
 	"icons/hicolor/32x32/apps/wespal.png"
 	"icons/hicolor/64x64/apps/wespal.png"
