@@ -642,9 +642,6 @@
    <property name="text">
     <string>Reloa&amp;d</string>
    </property>
-   <property name="shortcut">
-    <string>F5</string>
-   </property>
   </action>
   <action name="action_RecentPlaceholder">
    <property name="text">

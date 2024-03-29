@@ -101,9 +101,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	save->setWhatsThis(tr("Saves the current recolor job."));
 
-#ifdef Q_OS_MACOS
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
-#endif
 
 	// Set native icons
 	if (auto qStyle = style(); qStyle) {
