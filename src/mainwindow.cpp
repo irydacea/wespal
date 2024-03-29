@@ -257,6 +257,7 @@ void MainWindow::updateWindowTitle(bool hasImage, const QString& filename)
 
 		this->setWindowTitle(displayString % QString::fromUtf8(" \342\200\224 ") % appTitle);
 	} else {
+		this->setWindowFilePath({});
 		this->setWindowTitle(appTitle);
 	}
 }
