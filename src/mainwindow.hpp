@@ -58,6 +58,12 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 
 private:
+	enum ZoomDirection
+	{
+		ZoomIn,
+		ZoomOut,
+	};
+
 	// These can only be values that look good with NN scaling
 	static constexpr std::array zoomFactors_ = {
 		0.5,
@@ -128,7 +134,7 @@ private:
 	QString currentPaletteName(bool paletteSwitchMode = false) const;
 	ColorList currentPalette(bool paletteSwitchMode = false) const;
 
-	void updateZoomButtons();
+	void adjustZoom(ZoomDirection direction);
 
 	void setPreviewBackgroundColor(const QString &colorName);
 
@@ -140,8 +146,6 @@ private:
 private slots:
 	void on_action_Reload_triggered();
 	void on_actionColor_ranges_triggered();
-	void on_tbZoomOut_clicked();
-	void on_tbZoomIn_clicked();
 	void on_listRanges_currentRowChanged(int currentRow);
 	void on_cbxNewPal_currentIndexChanged(int index);
 	void on_cbxKeyPal_currentIndexChanged(int index);

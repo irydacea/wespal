@@ -112,12 +112,6 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->action_Reload->setIcon(this->style()->standardIcon(QStyle::SP_BrowserReload, nullptr, dynamic_cast<QWidget*>(ui->action_Reload)));
 	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, nullptr, dynamic_cast<QWidget*>(ui->action_Quit)));
 
-	// Use theme icons for some buttons on X11. This is not
-	// in the .ui file for Qt 4.6 - 4.7 compatibility.
-
-	ui->tbZoomIn->setIcon(QIcon::fromTheme("zoom-in", QIcon(":/zoom-in-16.png")));
-	ui->tbZoomOut->setIcon(QIcon::fromTheme("zoom-out", QIcon(":/zoom-out-16.png")));
-
 	auto maxMruEntries = MosCurrentConfig().recentFiles().max();
 
 	recentFileActions_.reserve(maxMruEntries);
@@ -461,9 +455,9 @@ void MainWindow::closeEvent(QCloseEvent * /*e*/)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
 	if (event->matches(QKeySequence::ZoomIn)) {
-		on_tbZoomIn_clicked();
+		adjustZoom(ZoomIn);
 	} else if (event->matches(QKeySequence::ZoomOut)) {
-		on_tbZoomOut_clicked();
+		adjustZoom(ZoomOut);
 	} else {
 		QMainWindow::keyPressEvent(event);
 	}
@@ -471,12 +465,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-	if (event->angleDelta().x() == 0 && event->modifiers() & Qt::ControlModifier)
-	{
+	if (event->angleDelta().x() == 0 && event->modifiers() & Qt::ControlModifier) {
 		if (event->angleDelta().y() > 0) {
-			on_tbZoomIn_clicked();
+			adjustZoom(ZoomIn);
 		} else if (event->angleDelta().y() < 0) {
-			on_tbZoomOut_clicked();
+			adjustZoom(ZoomOut);
 		}
 		event->accept();
 		return;
@@ -797,7 +790,7 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->lblKeyPal, ui->cbxKeyPal,
 		ui->lblNewPal, ui->cbxNewPal,
 		ui->listRanges,
-		ui->zoomSlider, ui->tbZoomIn, ui->tbZoomOut,
+		ui->zoomSlider,
 		ui->buttonBox->button(QDialogButtonBox::Save));
 
 	std::apply([enable](auto&&... widget) {
@@ -953,29 +946,21 @@ void MainWindow::on_listRanges_currentRowChanged(int /*currentRow*/)
 
 void MainWindow::on_zoomSlider_valueChanged(int value)
 {
-	Q_ASSERT(value >= 0 && value < zoomFactors_.size());
-	zoom_ = zoomFactors_[value];
+	zoom_ = zoomFactors_[qBound(0, value, int(zoomFactors_.size() - 1))];
 
-	updateZoomButtons();
 	refreshPreviews();
 }
 
-void MainWindow::on_tbZoomIn_clicked()
+void MainWindow::adjustZoom(ZoomDirection direction)
 {
-	ui->zoomSlider->setValue(ui->zoomSlider->value() + 1);
-}
-
-void MainWindow::on_tbZoomOut_clicked()
-{
-	ui->zoomSlider->setValue(ui->zoomSlider->value() - 1);
-}
-
-void MainWindow::updateZoomButtons()
-{
-	QSlider& zoomSlider= *ui->zoomSlider;
-
-	ui->tbZoomOut->setEnabled(zoomSlider.value() != zoomSlider.minimum());
-	ui->tbZoomIn->setEnabled(zoomSlider.value() != zoomSlider.maximum());
+	switch (direction)
+	{
+		case ZoomOut:
+			ui->zoomSlider->setValue(ui->zoomSlider->value() - 1);
+			break;
+		case ZoomIn:
+			ui->zoomSlider->setValue(ui->zoomSlider->value() + 1);
+	}
 }
 
 void MainWindow::on_actionColor_ranges_triggered()

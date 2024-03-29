@@ -135,12 +135,6 @@ set_source_files_properties("icons/16x16/list-remove.png"
 set_source_files_properties("icons/16x16/list-remove@2x.png"
 	PROPERTIES QT_RESOURCE_ALIAS "list-remove-16@2x.png"
 )
-set_source_files_properties("icons/16x16/zoom-in.png"
-	PROPERTIES QT_RESOURCE_ALIAS "zoom-in-16.png"
-)
-set_source_files_properties("icons/16x16/zoom-out.png"
-	PROPERTIES QT_RESOURCE_ALIAS "zoom-out-16.png"
-)
 set_source_files_properties("icons/16x16/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-16.png"
 )
@@ -166,8 +160,6 @@ set(morningstar_resource_files
 	"icons/16x16/list-add@2x.png"
 	"icons/16x16/list-remove.png"
 	"icons/16x16/list-remove@2x.png"
-	"icons/16x16/zoom-in.png"
-	"icons/16x16/zoom-out.png"
 	"icons/16x16/wespal.png"
 	"icons/32x32/wespal.png"
 	"icons/64x64/wespal.png"
