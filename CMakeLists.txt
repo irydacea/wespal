@@ -141,6 +141,9 @@ set_source_files_properties("icons/hicolor/16x16/apps/wespal.png"
 set_source_files_properties("icons/hicolor/32x32/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-32.png"
 )
+set_source_files_properties("icons/hicolor/48x48/apps/wespal.png"
+	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-48.png"
+)
 set_source_files_properties("icons/hicolor/64x64/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-64.png"
 )
@@ -162,6 +165,7 @@ set(morningstar_resource_files
 	"icons/private/list-remove@2x.png"
 	"icons/hicolor/16x16/apps/wespal.png"
 	"icons/hicolor/32x32/apps/wespal.png"
+	"icons/hicolor/48x48/apps/wespal.png"
 	"icons/hicolor/64x64/apps/wespal.png"
 	"icons/hicolor/128x128/apps/wespal.png"
 	"icons/hicolor/256x256/apps/wespal.png"
