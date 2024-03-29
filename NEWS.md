@@ -15,6 +15,9 @@ Version 0.4.0
   * Added a "From List" option to allow copying color values straight from WML.
   * Fixed right side panel still displaying the colors of the deleted range
     after deleting a range.
+* Increased Recent Files menu size from 4 to 8.
+* New start screen workflow including a more visible display of recently-opened
+  files.
 
 Version 0.3.0
 -------------
