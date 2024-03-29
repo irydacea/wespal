@@ -6,10 +6,11 @@ Version 0.4.0
 
 * New icon.
 * Rebranded to Wespal.
+* Now requires Qt 6.4 or later, CMake 3.21.1 or later, GCC 7 or later / Clang 5 or later / another C++17-compatible compiler.
 * WebP file format enabled where supported.
+* XCF image format plugin from KImageFormats is included and enabled for all platforms to avoid depending on KDE Frameworks runtime.
 * It is now possible to close the active file without quitting the app.
 * Not opening a file on startup no longer causes the app to quit.
-* Various fixes for Qt 6 compatibility.
 * Various changes to make the app feel more native on macOS.
 * Color Range Editor:
   * Added a "From List" option to allow copying color values straight from WML.
