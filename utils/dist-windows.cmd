@@ -15,8 +15,9 @@ set appexe=wespal.exe
 set archive=Wespal-%version%.zip
 
 set devenvcmd=
-if .%devenv%==.vs    goto vs
-if .%devenv%==.mingw goto mingw
+if .%devenv%==.vs     goto vs
+if .%devenv%==.mingw  goto mingw
+if .%devenv%==.static goto static
 goto baddevenv
 
 :vs
@@ -28,6 +29,8 @@ goto common
 :mingw
 rem Mingw host
 set qtprefix=C:\Qt\6.6.3\mingw_64
+rem Static-linked version
+if .%devenv%==.static set qtprefix=..\dist\windows-qt-6.6.3-static
 set PATH=C:\Qt\Tools\mingw1120_64\bin;%PATH%
 goto common
 
@@ -50,7 +53,7 @@ rem
 rem Create and change into build directory
 rem
 
-rmdir /S /Q %builddir% > NUL
+rmdir /S /Q %builddir% 2> NUL
 mkdir %builddir%
 cd %builddir%
 
@@ -75,7 +78,7 @@ rem Move deployed files into dist directory
 rem
 
 cd ..\..
-mkdir %distdir% > NUL
+mkdir %distdir% 2> NUL
 move %builddir%\dist-prep %distdir%\%appdir%
 
 rem
@@ -88,7 +91,7 @@ rem
 rem Cleanup and report
 rem
 
-rmdir /S /Q %builddir% > NUL
+rmdir /S /Q %builddir% 2> NUL
 goto end
 
 :end
