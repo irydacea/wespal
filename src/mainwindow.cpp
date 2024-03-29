@@ -101,6 +101,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	save->setWhatsThis(tr("Saves the current recolor job."));
 
+	ui->action_Close->setShortcut(QKeySequence::Close);
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
 
 	// Set native icons
@@ -790,6 +791,7 @@ void MainWindow::enableWorkArea(bool enable)
 
 	auto elements = std::make_tuple(
 		ui->action_Reload,
+		ui->action_Close,
 		ui->action_Save,
 		ui->radPal, ui->radRc,
 		ui->lblKeyPal, ui->cbxKeyPal,
@@ -1069,4 +1071,9 @@ void MainWindow::on_action_ClearMru_triggered()
 {
 	MosCurrentConfig().clearRecentFiles();
 	updateRecentFilesMenu();
+}
+
+void MainWindow::on_action_Close_triggered()
+{
+	doCloseFile();
 }

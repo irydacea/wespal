@@ -560,6 +560,8 @@
     <addaction name="separator"/>
     <addaction name="action_Reload"/>
     <addaction name="separator"/>
+    <addaction name="action_Close"/>
+    <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -707,6 +709,11 @@
   <action name="action_ClearMru">
    <property name="text">
     <string>&amp;Clear Menu</string>
+   </property>
+  </action>
+  <action name="action_Close">
+   <property name="text">
+    <string>Close</string>
    </property>
   </action>
  </widget>
