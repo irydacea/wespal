@@ -10,7 +10,7 @@ set version=%2
 
 if .%version%==. goto badversion
 
-set appdir=Wespal
+set appdir=Wespal-%version%
 set appexe=wespal.exe
 set archive=Wespal-%version%.zip
 
