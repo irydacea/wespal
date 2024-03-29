@@ -103,14 +103,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 #ifdef Q_OS_MACOS
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
-#else
-	ui->cmdOpen->setIcon(style()->standardIcon(QStyle::SP_DialogOpenButton, nullptr, ui->cmdOpen));
 #endif
 
-	ui->action_Open->setIcon(this->style()->standardIcon(QStyle::SP_DialogOpenButton, nullptr, dynamic_cast<QWidget*>(ui->action_Open)));
-	ui->action_Save->setIcon(this->style()->standardIcon(QStyle::SP_DialogSaveButton, nullptr, dynamic_cast<QWidget*>(ui->action_Save)));
-	ui->action_Reload->setIcon(this->style()->standardIcon(QStyle::SP_BrowserReload, nullptr, dynamic_cast<QWidget*>(ui->action_Reload)));
-	ui->action_Quit->setIcon(this->style()->standardIcon(QStyle::SP_DialogCloseButton, nullptr, dynamic_cast<QWidget*>(ui->action_Quit)));
+	// Set native icons
+	if (auto qStyle = style(); qStyle) {
+#ifndef Q_OS_MACOS
+		ui->cmdOpen->setIcon(qStyle->standardIcon(
+								 QStyle::SP_DialogOpenButton,
+								 nullptr,
+								 ui->cmdOpen));
+#endif
+		ui->action_Open->setIcon(qStyle->standardIcon(QStyle::SP_DialogOpenButton, nullptr, ui->menu_File));
+		ui->action_Save->setIcon(qStyle->standardIcon(QStyle::SP_DialogSaveButton, nullptr, ui->menu_File));
+		ui->action_Reload->setIcon(qStyle->standardIcon(QStyle::SP_BrowserReload, nullptr, ui->menu_File));
+		ui->action_Quit->setIcon(qStyle->standardIcon(QStyle::SP_DialogCloseButton, nullptr, ui->menu_File));
+	}
 
 	auto maxMruEntries = MosCurrentConfig().recentFiles().max();
 
