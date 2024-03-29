@@ -6,4 +6,4 @@
 set -e
 set -o nounset
 
-git archive --format=tar --prefix=wespal-$1/ $1 | xz > wespal-$1.tar.xz
+git archive --format=tar --prefix=wespal-$1/ $1 | bzip2 > wespal-$1.tar.bz2
