@@ -26,6 +26,7 @@ set qtprefix=C:\Qt\6.6.3\msvc2019_64
 set devenvcmd="C:\Program Files\Microsoft Visual Studio\2022\Community"\VC\Auxiliary\Build\vcvars64.bat
 goto common
 
+:static
 :mingw
 rem Mingw host
 set qtprefix=C:\Qt\6.6.3\mingw_64
@@ -85,7 +86,7 @@ rem
 rem Create distribution archive
 rem
 
-powershell -Command "Compress-Archive %distdir%\%appdir% %distdir%\%archive%"
+powershell -Command "Compress-Archive -Force %distdir%\%appdir% %distdir%\%archive%"
 
 rem
 rem Cleanup and report
