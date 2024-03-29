@@ -112,10 +112,17 @@ MainWindow::MainWindow(QWidget *parent)
 								 nullptr,
 								 ui->cmdOpen));
 #endif
-		ui->action_Open->setIcon(qStyle->standardIcon(QStyle::SP_DialogOpenButton, nullptr, ui->menu_File));
-		ui->action_Save->setIcon(qStyle->standardIcon(QStyle::SP_DialogSaveButton, nullptr, ui->menu_File));
-		ui->action_Reload->setIcon(qStyle->standardIcon(QStyle::SP_BrowserReload, nullptr, ui->menu_File));
-		ui->action_Quit->setIcon(qStyle->standardIcon(QStyle::SP_DialogCloseButton, nullptr, ui->menu_File));
+		// The .ui has menu icons which are normally provided by the theme on
+		// Freedesktop.org-compliant platforms. If the Close icon is missing
+		// then that's a good indication that we need to query QStyle for
+		// fallback versions.
+		if (ui->action_Close->icon().isNull()) {
+			ui->action_Open->setIcon(qStyle->standardIcon(QStyle::SP_DialogOpenButton, nullptr, ui->menu_File));
+			ui->action_Save->setIcon(qStyle->standardIcon(QStyle::SP_DialogSaveButton, nullptr, ui->menu_File));
+			ui->action_Reload->setIcon(qStyle->standardIcon(QStyle::SP_BrowserReload, nullptr, ui->menu_File));
+			ui->action_Close->setIcon(qStyle->standardIcon(QStyle::SP_DialogCloseButton, nullptr, ui->menu_File));
+			ui->action_Quit->setIcon(qStyle->standardIcon(QStyle::SP_DialogCancelButton, nullptr, ui->menu_File));
+		}
 	}
 
 	auto maxMruEntries = MosCurrentConfig().recentFiles().max();

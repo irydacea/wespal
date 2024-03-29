@@ -550,6 +550,9 @@
      <property name="title">
       <string>Open &amp;Recent</string>
      </property>
+     <property name="icon">
+      <iconset theme="document-open-recent"/>
+     </property>
      <addaction name="action_MruPlaceholder"/>
      <addaction name="separator"/>
      <addaction name="action_ClearMru"/>
@@ -599,6 +602,9 @@
    <addaction name="menu_Help"/>
   </widget>
   <action name="action_Open">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
     <string>&amp;Open...</string>
    </property>
@@ -607,6 +613,9 @@
    </property>
   </action>
   <action name="action_Quit">
+   <property name="icon">
+    <iconset theme="application-exit"/>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -620,6 +629,9 @@
    </property>
   </action>
   <action name="action_Save">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
    <property name="text">
     <string>&amp;Save...</string>
    </property>
@@ -641,6 +653,9 @@
    </property>
   </action>
   <action name="action_Reload">
+   <property name="icon">
+    <iconset theme="view-refresh"/>
+   </property>
    <property name="text">
     <string>Reloa&amp;d</string>
    </property>
@@ -712,6 +727,9 @@
    </property>
   </action>
   <action name="action_Close">
+   <property name="icon">
+    <iconset theme="window-close"/>
+   </property>
    <property name="text">
     <string>Close</string>
    </property>
