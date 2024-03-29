@@ -370,7 +370,7 @@
              <string>Selects color range-based (a.k.a. &quot;team color&quot;) recoloring.</string>
             </property>
             <property name="text">
-             <string>Color &amp;range (TC)</string>
+             <string>Color &amp;range/Team color</string>
             </property>
            </widget>
           </item>
@@ -386,7 +386,7 @@
              <string>Selects palette switching mode, to replace original colors with new ones using a color values list instead of ranges.</string>
             </property>
             <property name="text">
-             <string>Palette &amp;switch</string>
+             <string>Palette &amp;swap</string>
             </property>
            </widget>
           </item>
@@ -400,7 +400,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="lblKeyPal">
             <property name="text">
-             <string>Palette &amp;key:</string>
+             <string>&amp;Key palette:</string>
             </property>
             <property name="buddy">
              <cstring>cbxKeyPal</cstring>
