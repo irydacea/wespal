@@ -1,2 +1,9 @@
 #!/bin/sh
-git archive --format=tar --prefix=wespal-$1/ $1 | bzip2 > wespal-$1.tar.bz2
+#
+# Builds the source code distribution tarball
+#
+
+set -e
+set -o nounset
+
+git archive --format=tar --prefix=wespal-$1/ $1 | xz > wespal-$1.tar.xz
