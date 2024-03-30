@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master", "github-ci-test" ]
+  pull_request:
+    branches: [ "master", "github-ci-test" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        build_type: [Debug, Release]
+        c_compiler: [gcc, clang, cl]
+        # NOTE:
+        # While the idea of building with Clang on Ubuntu sounds nice on
+        # paper, in practice it's going to be a waste of time since most
+        # people don't build with it and we keep our C++ rather conservative
+        # for the moment anyway. Let's keep it disabled for now.
+        include:
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+        exclude:
+          - os: windows-latest
+            c_compiler: gcc
+          - os: windows-latest
+            c_compiler: clang
+          - os: ubuntu-latest
+            c_compiler: clang
+          - os: ubuntu-latest
+            c_compiler: cl
+          - os: macos-latest
+            c_compiler: gcc
+          - os: macos-latest
+            c_compiler: cl
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "build-install-dir=${{ github.workspace }}/build-install-prefix" >> "$GITHUB_OUTPUT"
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      # NOTE: We intentionally stick to our MINIMUM required version here
+      with:
+        version: 6.4.3
+        cache: true
+
+    - name: Configure and build Wespal
+      run: |
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ steps.strings.outputs.build-install-dir }} -S ${{ github.workspace }}
+        cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Install Wespal (Linux only)
+      if: matrix.os == 'ubuntu-latest'
+      run: cmake --install ${{ steps.strings.outputs.build-output-dir }}
+
+# FIXME: we don't have tests yet!!! we need those
+#    - name: Test
+#      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+#      run: ctest --build-config ${{ matrix.build_type }}
