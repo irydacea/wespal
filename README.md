@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/github/license/irydacea/wespal)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) [![Release](https://img.shields.io/github/v/release/irydacea/wespal)](https://github.com/irydacea/wespal/releases) [![CI Status](https://img.shields.io/github/actions/workflow/status/irydacea/wespal/ci-build.yml)](https://github.com/irydacea/wespal/actions)
+
 Wespal
 ======
 
