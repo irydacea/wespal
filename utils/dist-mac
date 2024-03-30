@@ -19,7 +19,7 @@ cmake="$qtdir/macos/bin/qt-cmake"
 ninjapath="$HOME/Local/Qt/Tools/Ninja"
 macdeployqt="$qtdir/macos/bin/macdeployqt"
 
-distdir=./dist/macos
+distdir=$HOME/Projects/dist/wespal
 builddir=./build-dist-macos
 
 #
@@ -50,12 +50,11 @@ ninja
 $macdeployqt $bundle -dmg
 
 #
-# Move bundle and .dmg into dist directory
+# Move .dmg into dist directory
 #
 
 cd -
 mkdir -p $distdir
-mv -f $builddir/$bundle $distdir/
 mv -f $builddir/$image $distdir/$image_final
 
 #

@@ -6,4 +6,8 @@
 set -e
 set -o nounset
 
-git archive --format=tar --prefix=wespal-$1/ $1 | bzip2 > wespal-$1.tar.bz2
+distdir=$HOME/Projects/dist/wespal
+
+git archive --format=tar --prefix=wespal-$1/ $1 | bzip2 > $distdir/wespal-$1.tar.bz2
+
+shasum -a 256 $distdir/*-$1.*

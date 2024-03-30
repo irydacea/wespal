@@ -40,7 +40,7 @@ set cmakepath=C:\Qt\Tools\CMake_64\bin
 set ninjapath=C:\Qt\Tools\Ninja
 set windeployqt=%qtprefix%\bin\windeployqt.exe
 
-set distdir=.\dist\windows
+set distdir=U:\wespal
 set builddir=.\build-dist-windows
 
 rem
@@ -56,7 +56,7 @@ rem
 
 rmdir /S /Q %builddir% 2> NUL
 mkdir %builddir%
-cd %builddir%
+pushd %builddir%
 
 rem
 rem Configure and build the app
@@ -69,35 +69,28 @@ rem
 rem Use windeployqt to deploy DLLs
 rem
 
-mkdir dist-prep
-move %appexe% dist-prep
-cd dist-prep
+mkdir %appdir%
+move %appexe% %appdir%
+pushd %appdir%
 "%windeployqt%" --no-system-d3d-compiler --no-translations --no-opengl-sw --no-virtualkeyboard --no-quick-import --no-network --exclude-plugins qgif,qicns,qjpeg,qpdf,qsvg,qtga,qtiff,qsvgicon %appexe%
-
-rem
-rem Move deployed files into dist directory
-rem
-
-cd ..\..
-mkdir %distdir% 2> NUL
-move %builddir%\dist-prep %distdir%\%appdir%
 
 rem
 rem Create distribution archive
 rem
 
-powershell -Command "Compress-Archive -Force %distdir%\%appdir% %distdir%\%archive%"
+popd
+powershell -Command "Compress-Archive -Force %appdir% %distdir%\%archive%"
 
 rem
 rem Cleanup and report
 rem
 
+popd
 rmdir /S /Q %builddir% 2> NUL
 goto end
 
 :end
 echo Saved deployment files under %distdir%\:
-echo   * %appdir%\
 echo   * %archive%
 goto :eof
 
@@ -110,5 +103,6 @@ echo You need to specify a version number in the command line:
 goto usage
 
 :usage
-echo   dist-windows.cmd vs    (version number)
-echo   dist-windows.cmd mingw (version number)
+echo   dist-windows.cmd vs     (version number)
+echo   dist-windows.cmd mingw  (version number)
+echo   dist-windows.cmd static (version number)
