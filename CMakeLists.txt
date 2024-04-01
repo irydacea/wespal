@@ -101,7 +101,6 @@ if(ENABLE_TESTS)
 		morningstar
 	)
 
-	set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
     enable_testing()
 
 	add_test(NAME wespal_tests COMMAND wespal_tests)
