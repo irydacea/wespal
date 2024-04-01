@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 0.4.1
+-------------
+
+* Added unit tests to ensure the recoloring algorithm never breaks silently
+  before a release.
+
 Version 0.4.0
 -------------
 
