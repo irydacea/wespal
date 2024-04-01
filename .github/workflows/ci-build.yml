@@ -69,7 +69,7 @@ jobs:
         cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Run unit tests
-      run: ctest --output-on-failure --test-dir ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --test-dir ${{ steps.strings.outputs.build-output-dir }} --build-config ${{ matrix.build_type }} --output-on-failure
 
     - name: Install Wespal (Linux only)
       if: matrix.os == 'ubuntu-latest'
