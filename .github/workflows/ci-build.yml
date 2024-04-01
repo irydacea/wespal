@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "master", "github-ci-test" ]
+    branches: [ "master", "ci-tests" ]
   pull_request:
-    branches: [ "master", "github-ci-test" ]
+    branches: [ "master", "ci-tests" ]
 
 jobs:
   build:
@@ -65,14 +65,12 @@ jobs:
 
     - name: Configure and build Wespal
       run: |
-        cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ steps.strings.outputs.build-install-dir }} -S ${{ github.workspace }}
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_INSTALL_PREFIX=${{ steps.strings.outputs.build-install-dir }} -DENABLE_TESTS -S ${{ github.workspace }}
         cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Run unit tests
+      run: ctest --output-on-failure --test-dir ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Install Wespal (Linux only)
       if: matrix.os == 'ubuntu-latest'
       run: cmake --install ${{ steps.strings.outputs.build-output-dir }}
-
-# FIXME: we don't have tests yet!!! we need those
-#    - name: Test
-#      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-#      run: ctest --build-config ${{ matrix.build_type }}
