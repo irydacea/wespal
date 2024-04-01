@@ -57,6 +57,28 @@ target_compile_options(xcfplugin PRIVATE
 )
 
 #
+# libmorningstar
+#
+
+qt_add_library(morningstar STATIC
+	src/colortypes.hpp
+	src/defs.cpp src/defs.hpp
+	src/recentfiles.cpp src/recentfiles.hpp
+	src/version.cpp src/version.hpp
+	src/wesnothrc.cpp src/wesnothrc.hpp
+)
+
+target_link_libraries(morningstar PRIVATE
+	Qt::Core
+	Qt::Gui
+)
+
+target_compile_options(morningstar PRIVATE
+	${cxx_warning_flags}
+	${cxx_sanitizer_flags}
+)
+
+#
 # Wespal
 #
 
@@ -76,17 +98,12 @@ qt_add_executable(wespal WIN32 MACOSX_BUNDLE
 	src/appconfig.cpp src/appconfig.hpp
 	src/codesnippetdialog.cpp src/codesnippetdialog.hpp src/codesnippetdialog.ui
 	src/colorlistinputdialog.cpp src/colorlistinputdialog.hpp src/colorlistinputdialog.ui
-	src/colortypes.hpp
 	src/custompalettes.cpp src/custompalettes.hpp src/custompalettes.ui
 	src/customranges.cpp src/customranges.hpp src/customranges.ui
-	src/defs.cpp src/defs.hpp
 	src/imagelabel.cpp src/imagelabel.hpp
 	src/mainwindow.cpp src/mainwindow.hpp src/mainwindow.ui
 	src/paletteitem.cpp src/paletteitem.hpp
-	src/recentfiles.cpp src/recentfiles.hpp
 	src/util.cpp src/util.hpp
-	src/version.cpp src/version.hpp
-	src/wesnothrc.cpp src/wesnothrc.hpp
 	${wespal_platform_files}
 	src/main.cpp
 )
@@ -114,6 +131,7 @@ target_link_libraries(wespal PRIVATE
 	Qt::Gui
 	Qt::Widgets
 	xcfplugin
+	morningstar
 )
 
 # Resources:
