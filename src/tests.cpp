@@ -108,7 +108,6 @@ void TestMorningStar::testRecolorAlgorithm()
 	using namespace wesnoth;
 
 	auto numColorRanges = builtinColorRanges.orderedObjects().count();
-	const auto& colorRangeNames = builtinColorRanges.orderedNames();
 	const auto& colorRangeHandles = builtinColorRanges.orderedObjects();
 
 	QCOMPARE_GE(numColorRanges, qsizetype(tcSwatches.size()));
