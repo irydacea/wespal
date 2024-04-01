@@ -103,7 +103,9 @@ if(ENABLE_TESTS)
 
     enable_testing()
 
-	add_test(NAME wespal_tests COMMAND wespal_tests)
+	add_test(NAME wespal_tests COMMAND
+		wespal_tests -platform offscreen
+	)
 endif()
 
 #
