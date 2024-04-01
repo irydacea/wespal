@@ -174,7 +174,7 @@ set_source_files_properties("icons/hicolor/256x256/apps/wespal.png"
 set_source_files_properties("icons/hicolor/512x512/apps/wespal.png"
 	PROPERTIES QT_RESOURCE_ALIAS "wespal-icon-512.png"
 )
-set(morningstar_resource_files
+set(wespal_resource_files
 	"icons/private/edit-copy.png"
 	"icons/private/edit-copy@2x.png"
 	"icons/private/list-add.png"
@@ -190,11 +190,9 @@ set(morningstar_resource_files
 	"icons/hicolor/512x512/apps/wespal.png"
 )
 
-qt_add_resources(wespal "morningstar"
-	PREFIX
-		"/"
-	FILES
-		${morningstar_resource_files}
+qt_add_resources(wespal "wespal"
+	PREFIX "/"
+	FILES ${wespal_resource_files}
 )
 
 #
