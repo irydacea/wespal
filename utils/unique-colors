@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+'''
+Extracts a list of unique colors from an image file.
+'''
+
+import argparse
+from PIL import Image
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--ordered', action='store_true',
+                        dest='ordered', default=False,
+                        help='Outputs a list in the order the colors were countered, from the top-left corner')
+    parser.add_argument('--ignore-transparent', action='store_true',
+                        dest='ignore_transparent', default=False,
+                        help='Ignores fully transparent pixels (alpha == 0)')
+    parser.add_argument('input_paths', metavar='input_path', nargs='+')
+
+    args = parser.parse_args()
+
+    for img_path in args.input_paths:
+        unique_colors = set()
+        ordered = []
+
+        with Image.open(img_path) as img:
+            rgba_img = img.convert(mode='RGBA')
+            for y in range(rgba_img.height):
+                for x in range(rgba_img.width):
+                    r, g, b, a = rgba_img.getpixel((x, y))
+                    if a == 0 and args.ignore_transparent:
+                        continue
+                    hex_rgb = f'0x{r:02X}{g:02X}{b:02X}'
+                    if args.ordered and hex_rgb not in unique_colors:
+                        ordered.append(hex_rgb)
+                    unique_colors.add(hex_rgb)
+
+        if args.ordered:
+            hex_values = ', '.join(ordered)
+        else:
+            hex_values = ', '.join(unique_colors)
+
+        print(f'// {img_path}\n{{ {hex_values} }}')
