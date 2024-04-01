@@ -9,6 +9,7 @@ set(CMAKE_AUTOUIC ON)
 #
 
 set(SANITIZE "" CACHE STRING "Comma-separated list of compiler -fsanitize instrumentation to enable")
+option(ENABLE_TESTS "Build unit tests")
 
 set(cxx_sanitizer_flags "")
 if(SANITIZE)
@@ -30,7 +31,7 @@ endif()
 #
 
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Gui Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Gui Widgets OPTIONAL_COMPONENTS Test)
 
 qt_standard_project_setup()
 
@@ -77,6 +78,34 @@ target_compile_options(morningstar PRIVATE
 	${cxx_warning_flags}
 	${cxx_sanitizer_flags}
 )
+
+#
+# Test suite
+#
+
+if(ENABLE_TESTS)
+	qt_add_executable(wespal_tests WIN32
+		src/tests.cpp src/tests.hpp
+	)
+
+    target_compile_options(wespal_tests PRIVATE
+		${cxx_warning_flags}
+		${cxx_sanitizer_flags}
+	)
+
+    target_link_libraries(wespal_tests PRIVATE
+		Qt::Core
+		Qt::Gui
+		Qt::Test
+		Qt::Widgets
+		morningstar
+	)
+
+	set(CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+    enable_testing()
+
+	add_test(NAME wespal_tests COMMAND wespal_tests)
+endif()
 
 #
 # Wespal
