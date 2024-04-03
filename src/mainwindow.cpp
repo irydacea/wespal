@@ -47,6 +47,18 @@ namespace {
 
 struct canceled_job    {};
 
+enum WorkAreaPage {
+	WorkAreaStartPage = 0,
+	WorkAreaSplitRc,
+	WorkAreaCompositeRc,
+};
+
+enum WorkAreaDisplayMode {
+	WorkAreaSplit = 0,
+	WorkAreaSliding = 1,
+	WorkAreaOnionSkin = 2,
+};
+
 static const QSize colorIconSize{16, 16};
 
 } // end unnamed namespace
@@ -204,6 +216,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	ui->previewOriginalContainer->viewport()->setBackgroundRole(QPalette::Dark);
 	ui->previewRcContainer->viewport()->setBackgroundRole(QPalette::Dark);
+	ui->previewCompositeContainer->viewport()->setBackgroundRole(QPalette::Dark);
 
 	//
 	// FIXME: hack to prevent Oxygen stealing our drag events when dragging
@@ -219,6 +232,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	ui->previewOriginalContainer->setProperty("_kde_no_window_grab", true);
 	ui->previewRcContainer->setProperty("_kde_no_window_grab", true);
+	ui->previewComposite->setProperty("_kde_no_window_grab", true);
 
 	connect(
 		ui->previewOriginalContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
@@ -372,7 +386,7 @@ void MainWindow::processRcDefinitions()
 	}
 
 	ui->listRanges->setCurrentRow(0);
-	ui->staWorkAreaParent->setCurrentIndex(1);
+	ui->staWorkAreaParent->setCurrentIndex(WorkAreaStartPage);
 }
 
 void MainWindow::handleRecent()
@@ -724,19 +738,26 @@ void MainWindow::refreshPreviews()
 
 	const QSize& scaled_size = originalImage_.size() * zoom_;
 
-	ui->previewOriginal->setPixmap(QPixmap::fromImage(originalImage_));
-	ui->previewRc->setPixmap(QPixmap::fromImage(transformedImage_));
+	auto pixmapOriginal = QPixmap::fromImage(originalImage_);
+	auto pixmapTransformed = QPixmap::fromImage(transformedImage_);
+
+	ui->previewOriginal->setPixmap(pixmapOriginal);
+	ui->previewRc->setPixmap(pixmapTransformed);
+	ui->previewComposite->setLeftImage(originalImage_);
+	ui->previewComposite->setRightImage(transformedImage_);
+	ui->previewComposite->setZoom(zoom_);
 
 	ui->previewOriginal->resize(scaled_size);
 	ui->previewRc->resize(scaled_size);
+	ui->previewComposite->resize(scaled_size);
 
 	ui->previewOriginal->parentWidget()->adjustSize();
 	ui->previewRc->parentWidget()->adjustSize();
+	ui->previewComposite->parentWidget()->adjustSize();
 
 	centerScrollArea(ui->previewOriginalContainer);
 	centerScrollArea(ui->previewRcContainer);
-
-	ui->staWorkAreaParent->setCurrentIndex(0);
+	centerScrollArea(ui->previewCompositeContainer);
 }
 
 void MainWindow::centerScrollArea(QScrollArea *scrollArea)
@@ -806,13 +827,14 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->lblNewPal, ui->cbxNewPal,
 		ui->listRanges,
 		ui->zoomSlider,
+		ui->cbxViewMode,
 		ui->buttonBox->button(QDialogButtonBox::Save));
 
 	std::apply([enable](auto&&... widget) {
 		(widget->setEnabled(enable), ...);
 	}, elements);
 
-	ui->staWorkAreaParent->setCurrentIndex(enable ? 0 : 1);
+	ui->staWorkAreaParent->setCurrentIndex(enable ? WorkAreaCompositeRc : WorkAreaStartPage);
 
 	auto* closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
 
@@ -963,6 +985,7 @@ void MainWindow::on_zoomSlider_valueChanged(int value)
 {
 	zoom_ = zoomFactors_[qBound(0, value, int(zoomFactors_.size() - 1))];
 
+	ui->previewComposite->setZoom(zoom_);
 	refreshPreviews();
 }
 
@@ -1065,9 +1088,11 @@ void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 		const QString ss = "* { background-color: " % colorName % "; }";
 		ui->previewOriginalContainer->viewport()->setStyleSheet(ss);
 		ui->previewRcContainer->viewport()->setStyleSheet(ss);
+		ui->previewCompositeContainer->viewport()->setStyleSheet(ss);
 	} else {
 		ui->previewOriginalContainer->viewport()->setStyleSheet({});
 		ui->previewRcContainer->viewport()->setStyleSheet({});
+		ui->previewCompositeContainer->viewport()->setStyleSheet({});
 	}
 
 	MosCurrentConfig().setPreviewBackgroundColor(colorName);
@@ -1078,7 +1103,6 @@ void MainWindow::on_cmdOpen_clicked()
 	openFile();
 }
 
-
 void MainWindow::on_action_ClearMru_triggered()
 {
 	MosCurrentConfig().clearRecentFiles();
@@ -1088,4 +1112,30 @@ void MainWindow::on_action_ClearMru_triggered()
 void MainWindow::on_action_Close_triggered()
 {
 	doCloseFile();
+}
+
+void MainWindow::on_cbxViewMode_currentIndexChanged(int index)
+{
+	auto mode = WorkAreaDisplayMode(index);
+
+	switch (mode)
+	{
+		case WorkAreaSliding:
+		case WorkAreaOnionSkin:
+			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
+			if (mode == WorkAreaSliding) {
+				ui->previewComposite->setDisplayMode(CompositeImageLabel::CompositeDisplaySliding);
+			} else {
+				ui->previewComposite->setDisplayMode(CompositeImageLabel::CompositeDisplayOnionSkin);
+			}
+			break;
+		default:
+			ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
+			break;
+	}
+}
+
+void MainWindow::on_viewSlider_valueChanged(int value)
+{
+	ui->previewComposite->setDisplayRatio(qreal(value) / qreal(ui->viewSlider->maximum()));
 }

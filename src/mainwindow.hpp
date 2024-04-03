@@ -164,4 +164,6 @@ private slots:
 	void on_cmdOpen_clicked();
 	void on_action_ClearMru_triggered();
 	void on_action_Close_triggered();
+	void on_cbxViewMode_currentIndexChanged(int index);
+	void on_viewSlider_valueChanged(int value);
 };

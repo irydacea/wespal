@@ -39,103 +39,8 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
-      <widget class="QWidget" name="pageWorkArea">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <layout class="QHBoxLayout" name="hlPreviews">
-          <item>
-           <widget class="QScrollArea" name="previewOriginalContainer">
-            <property name="whatsThis">
-             <string>This is the original image's preview.</string>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOn</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOn</enum>
-            </property>
-            <property name="widgetResizable">
-             <bool>false</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents_2">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>27</y>
-               <width>270</width>
-               <height>162</height>
-              </rect>
-             </property>
-             <property name="whatsThis">
-              <string/>
-             </property>
-             <widget class="ImageLabel" name="previewOriginal" native="true">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>72</width>
-                <height>72</height>
-               </rect>
-              </property>
-             </widget>
-            </widget>
-           </widget>
-          </item>
-          <item>
-           <widget class="QScrollArea" name="previewRcContainer">
-            <property name="whatsThis">
-             <string>This is a preview of a single transformation of the original image.</string>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOn</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOn</enum>
-            </property>
-            <property name="widgetResizable">
-             <bool>false</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents_3">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>27</y>
-               <width>271</width>
-               <height>162</height>
-              </rect>
-             </property>
-             <widget class="ImageLabel" name="previewRc" native="true">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>72</width>
-                <height>72</height>
-               </rect>
-              </property>
-             </widget>
-            </widget>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="pageNoFile">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -291,6 +196,163 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="pageWorkArea">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="hlPreviews">
+          <item>
+           <widget class="QScrollArea" name="previewOriginalContainer">
+            <property name="whatsThis">
+             <string>This is the original image's preview.</string>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_2">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>270</width>
+               <height>162</height>
+              </rect>
+             </property>
+             <property name="whatsThis">
+              <string/>
+             </property>
+             <widget class="ImageLabel" name="previewOriginal" native="true">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>72</width>
+                <height>72</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QScrollArea" name="previewRcContainer">
+            <property name="whatsThis">
+             <string>This is a preview of a single transformation of the original image.</string>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOn</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>271</width>
+               <height>162</height>
+              </rect>
+             </property>
+             <widget class="ImageLabel" name="previewRc" native="true">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>72</width>
+                <height>72</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageWorkAreaComposite">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QScrollArea" name="previewCompositeContainer">
+          <property name="whatsThis">
+           <string>This is a composite preview of the image. Use the View selector to choose the display mode.</string>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>false</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <widget class="QWidget" name="previewCompositeContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>495</width>
+             <height>181</height>
+            </rect>
+           </property>
+           <widget class="CompositeImageLabel" name="previewComposite" native="true">
+            <property name="geometry">
+             <rect>
+              <x>210</x>
+              <y>50</y>
+              <width>120</width>
+              <height>80</height>
+             </rect>
+            </property>
+           </widget>
+          </widget>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QSlider" name="viewSlider">
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="pageStep">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>500</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
     <item row="1" column="0">
@@ -302,6 +364,28 @@
     </item>
     <item row="6" column="0">
      <layout class="QHBoxLayout" name="hlCommands">
+      <item>
+       <widget class="QComboBox" name="cbxViewMode">
+        <property name="whatsThis">
+         <string>Selects the display mode for the composite view.</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Split</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Swipe</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Onion Skin</string>
+         </property>
+        </item>
+       </widget>
+      </item>
       <item>
        <widget class="QSlider" name="zoomSlider">
         <property name="maximumSize">
@@ -747,6 +831,12 @@
    <class>ImageLabel</class>
    <extends>QWidget</extends>
    <header>src/imagelabel.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>CompositeImageLabel</class>
+   <extends>QWidget</extends>
+   <header>src/compositeimagelabel.hpp</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

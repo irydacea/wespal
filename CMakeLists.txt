@@ -128,6 +128,7 @@ qt_add_executable(wespal WIN32 MACOSX_BUNDLE
 	src/appconfig.cpp src/appconfig.hpp
 	src/codesnippetdialog.cpp src/codesnippetdialog.hpp src/codesnippetdialog.ui
 	src/colorlistinputdialog.cpp src/colorlistinputdialog.hpp src/colorlistinputdialog.ui
+	src/compositeimagelabel.cpp src/compositeimagelabel.hpp
 	src/custompalettes.cpp src/custompalettes.hpp src/custompalettes.ui
 	src/customranges.cpp src/customranges.hpp src/customranges.ui
 	src/imagelabel.cpp src/imagelabel.hpp
