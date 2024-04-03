@@ -23,6 +23,7 @@
 #include "tests.hpp"
 
 #include "defs.hpp"
+#include "recentfiles.hpp"
 #include "wesnothrc.hpp"
 
 QTEST_MAIN(TestMorningStar)
@@ -170,4 +171,77 @@ void TestMorningStar::testWesnothRcImage()
 
 		QCOMPARE(rcOutput, imgColorSwatch);
 	}
+}
+
+void TestMorningStar::testMru()
+{
+	using namespace MosConfig;
+
+	// Non-standard size on purpose
+	MruList subject{7};
+
+	QStringList files = {
+		"../tests/magenta-palette-RC-magenta-1-red.png",	// 0
+		"../tests/magenta-palette-RC-magenta-2-blue.png",	// 1
+		"../tests/magenta-palette-RC-magenta-3-green.png",	// 2
+		"../tests/magenta-palette-RC-magenta-4-purple.png",	// 3
+		"../tests/magenta-palette-RC-magenta-5-black.png",	// 4
+		"../tests/magenta-palette-RC-magenta-6-brown.png",	// 5
+		"../tests/magenta-palette-RC-magenta-7-orange.png",	// 6
+		"../tests/magenta-palette-RC-magenta-8-white.png",	// 7
+		"../tests/magenta-palette-RC-magenta-9-teal.png",	// 8
+		"../tests/magenta-palette.png",						// 9
+	};
+
+	QString mruBack = QFINDTESTDATA("../tests/magenta-palette-RC-magenta-4-purple.png");
+	QString mruBack2 = QFINDTESTDATA("../tests/magenta-palette-RC-magenta-5-black.png");
+	QString mruFront = QFINDTESTDATA("../tests/magenta-palette.png");
+	QString mruFront2 = QFINDTESTDATA("../tests/magenta-palette-RC-magenta-1-red.png");
+	QString mruFront3 = QFINDTESTDATA("../tests/magenta-palette-RC-magenta-9-teal.png");
+
+	for (auto& file : files)
+	{
+		file = QFINDTESTDATA(file);
+		QImage image{file, "PNG"};
+
+		subject.push(file, image);
+	}
+
+	QCOMPARE(subject.count(), qMin(files.count(), subject.max()));
+	QCOMPARE(subject.back().filePath(), mruBack);
+	QCOMPARE(subject.front().filePath(), mruFront);
+
+	subject.push(mruFront2, QImage{mruFront2, "PNG"});
+
+	QCOMPARE(subject.back().filePath(), mruBack2);
+	QCOMPARE(subject.front().filePath(), mruFront2);
+
+	// Pushing an existing element just moves it to the top
+	subject.push(mruFront3, QImage{mruFront3, "PNG"});
+
+	QStringList newMru = {
+		"../tests/magenta-palette-RC-magenta-9-teal.png",	// 0
+		"../tests/magenta-palette-RC-magenta-1-red.png",	// 1
+		"../tests/magenta-palette.png",						// 2
+		"../tests/magenta-palette-RC-magenta-8-white.png",	// 3
+		"../tests/magenta-palette-RC-magenta-7-orange.png",	// 4
+		"../tests/magenta-palette-RC-magenta-6-brown.png",	// 5
+		"../tests/magenta-palette-RC-magenta-5-black.png",	// 6
+	};
+
+	qsizetype i = 0;
+
+	for (auto it = subject.begin(); it != subject.end(); ++it, ++i)
+	{
+		QCOMPARE_LT(i, newMru.count());
+		QCOMPARE(it->filePath(), QFINDTESTDATA(newMru[i]));
+	}
+
+	// Re-pushing the top is a no-op
+	subject.push(mruFront3, QImage{});
+	subject.push(mruFront3, QImage{});
+	subject.push(mruFront3, QImage{});
+
+	QCOMPARE_NE(subject.begin(), subject.begin() + 1);
+	QCOMPARE((subject.begin() + 1)->filePath(), QFINDTESTDATA(newMru[1]));
 }

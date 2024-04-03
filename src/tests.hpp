@@ -27,6 +27,7 @@ class TestMorningStar: public QObject
 	Q_OBJECT
 
 private slots:
+	void testMru();
 	void testBuiltinObjects();
 	void testRecolorAlgorithm();
 	void testWesnothRcImage();
