@@ -173,6 +173,69 @@ void TestMorningStar::testWesnothRcImage()
 	}
 }
 
+void TestMorningStar::testPaletteSwapImage()
+{
+	using namespace wesnoth;
+
+	const auto& palMagenta = builtinPalettes["magenta"];
+	const auto& colorRangeOrange = builtinColorRanges["orange"];
+
+	// This test primarily focusses on operations on images with non-binary
+	// alpha channels. We use reference images with binary alpha only to
+	// ensure alpha information isn't lost in recolorImage().
+
+	auto pathMagentaSwatch = QFINDTESTDATA("../tests/magenta-palette.png");
+	QImage imgMagentaSwatch{pathMagentaSwatch, "PNG"};
+
+	auto pathOrangeSwatch = QFINDTESTDATA("../tests/magenta-palette-RC-magenta-7-orange.png");
+	QImage imgOrangeSwatch{pathOrangeSwatch, "PNG"};
+
+	auto pathAlphaMagentaSwatch = QFINDTESTDATA("../tests/alpha-magenta.png");
+	QImage imgAlphaMagentaSwatch{pathAlphaMagentaSwatch, "PNG"};
+
+	auto pathAlphaOrangeSwatch = QFINDTESTDATA("../tests/alpha-magenta-to-orange.png");
+	QImage imgAlphaOrangeSwatch{pathAlphaOrangeSwatch, "PNG"};
+
+	// Normalise formats
+	imgMagentaSwatch.convertTo(QImage::Format_ARGB32);
+	imgOrangeSwatch.convertTo(QImage::Format_ARGB32);
+	imgAlphaMagentaSwatch.convertTo(QImage::Format_ARGB32);
+	imgAlphaOrangeSwatch.convertTo(QImage::Format_ARGB32);
+
+	const auto& colorMap = colorRangeOrange.applyToPalette(palMagenta);
+
+	QImage rcOutput = recolorImage(imgAlphaMagentaSwatch, colorMap);
+
+	QCOMPARE(rcOutput, imgAlphaOrangeSwatch);
+	QCOMPARE_NE(rcOutput, imgOrangeSwatch);
+
+	// Generate reverse color map
+	ColorMap reverseColorMap;
+	for (const auto& [key, value] : colorMap.asKeyValueRange())
+	{
+		reverseColorMap.insert(value, key);
+	}
+
+	QImage reverseRcOutput = recolorImage(rcOutput, reverseColorMap);
+
+	QCOMPARE(reverseRcOutput, imgAlphaMagentaSwatch);
+	QCOMPARE_NE(reverseRcOutput, imgMagentaSwatch);
+
+	// Idempotent color map
+	ColorMap sameColorMap;
+	for (auto i = colorMap.begin(); i != colorMap.end(); ++i)
+	{
+		sameColorMap.insert(i.key(), i.key());
+	}
+
+	QImage idempotentRcOutput = recolorImage(reverseRcOutput, sameColorMap);
+
+	QCOMPARE(idempotentRcOutput, reverseRcOutput);
+	// By this point we've guaranteed alpha information is never lost
+	QCOMPARE(idempotentRcOutput, imgAlphaMagentaSwatch);
+	QCOMPARE_NE(idempotentRcOutput, imgMagentaSwatch);
+}
+
 void TestMorningStar::testMru()
 {
 	using namespace MosConfig;

@@ -31,4 +31,5 @@ private slots:
 	void testBuiltinObjects();
 	void testRecolorAlgorithm();
 	void testWesnothRcImage();
+	void testPaletteSwapImage();
 };
