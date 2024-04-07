@@ -195,6 +195,30 @@ QString wmlFromColorList(const QString& name,
 	return code;
 }
 
+ColorSet uniqueColorsFromImage(const QImage& input)
+{
+	QImage rgbaInput;
+
+	// Force ARGB32 since that's the only format we (and Wesnoth) currently
+	// undertand.
+	rgbaInput = input.convertToFormat(QImage::Format_ARGB32);
+
+	ColorSet res;
+
+	auto maxY = rgbaInput.height(), maxX = rgbaInput.width();
+
+	for (int y = 0; y < maxY; ++y)
+	{
+		const auto* line = reinterpret_cast<const QRgb*>(rgbaInput.constScanLine(y));
+		for (int x = 0; x < maxX; ++x)
+		{
+			res << (line[x] & 0xFFFFFFU);
+		}
+	}
+
+	return res;
+}
+
 QImage recolorImage(const QImage& input,
 					const ColorMap& colorMap)
 {

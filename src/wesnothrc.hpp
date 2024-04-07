@@ -201,6 +201,15 @@ QString wmlFromColorRange(const QString& name,
 QString wmlFromColorList(const QString& name,
 						 const ColorList& palette);
 
+/**
+ * Extracts a set of unique colors in an image.
+ *
+ * @param input        Input image.
+ *
+ * @return An ordered set of unique colors found in the input, with alpha
+ *         values set to zero.
+ */
+ColorSet uniqueColorsFromImage(const QImage& input);
 
 /**
  * Recolors a QImage using the specified color map.

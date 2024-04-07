@@ -25,3 +25,4 @@
 
 using ColorList = QList<QRgb>;
 using ColorMap = QMap<QRgb, QRgb>;
+using ColorSet = QSet<QRgb>;

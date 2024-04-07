@@ -308,3 +308,23 @@ void TestMorningStar::testMru()
 	QCOMPARE_NE(subject.begin(), subject.begin() + 1);
 	QCOMPARE((subject.begin() + 1)->filePath(), QFINDTESTDATA(newMru[1]));
 }
+
+void TestMorningStar::testUniqueColorsFromImage()
+{
+	using namespace wesnoth;
+
+	const auto& palMagenta = builtinPalettes["magenta"];
+
+	ColorSet reference{palMagenta.begin(), palMagenta.end()};
+
+	// The transparent portions of the test image have a colour value of
+	// exactly 255,255,255
+	reference << 0xFFFFFFU;
+
+	auto pathMagentaSwatch = QFINDTESTDATA("../tests/magenta-palette.png");
+	QImage imgMagentaSwatch{pathMagentaSwatch, "PNG"};
+
+	const auto& result = uniqueColorsFromImage(imgMagentaSwatch);
+
+	QCOMPARE(result, reference);
+}
