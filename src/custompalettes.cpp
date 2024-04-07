@@ -128,6 +128,7 @@ void CustomPalettes::addRangesMenuEntry(QMenu* menu,
 
 	act->setData(id);
 	act->setIcon(createColorIcon(range.mid(), menu));
+	act->setIconVisibleInMenu(true);
 
 	connect(act, SIGNAL(triggered()), this, SLOT(handleRcOption()));
 }

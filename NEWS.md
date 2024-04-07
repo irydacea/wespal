@@ -5,6 +5,7 @@ Version 0.4.1
 -------------
 
 * Added an option to generate palette colors from the currently open image.
+* Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Added unit tests to ensure the recoloring algorithm never breaks silently
   before a release.
 
