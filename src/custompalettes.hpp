@@ -67,7 +67,7 @@ private slots:
 
 	void on_listPals_itemChanged(QListWidgetItem *item);
 
-	void on_cmdAddFromList_clicked();
+	void on_cmdFromList_clicked();
 
 	void on_cmdWml_clicked();
 

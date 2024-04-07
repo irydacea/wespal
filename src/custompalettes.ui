@@ -177,12 +177,12 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="cmdAddFromList">
+             <widget class="QPushButton" name="cmdFromList">
               <property name="whatsThis">
                <string>Adds multiple colors from a comma-separated lists.</string>
               </property>
               <property name="text">
-               <string>Add from &amp;List</string>
+               <string>From &amp;List</string>
               </property>
              </widget>
             </item>
@@ -273,7 +273,7 @@
   <tabstop>tbEditColor</tabstop>
   <tabstop>cmdAddCol</tabstop>
   <tabstop>cmdDelCol</tabstop>
-  <tabstop>cmdAddFromList</tabstop>
+  <tabstop>cmdFromList</tabstop>
   <tabstop>cmdWml</tabstop>
   <tabstop>cmdRc</tabstop>
   <tabstop>buttonBox</tabstop>

@@ -243,7 +243,7 @@ void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
 {
 	ui->listColors->setEnabled(enabled);
 	ui->cmdAddCol->setEnabled(enabled);
-	ui->cmdAddFromList->setEnabled(enabled);
+	ui->cmdFromList->setEnabled(enabled);
 	ui->cmdWml->setEnabled(enabled);
 	ui->cmdRc->setEnabled(enabled);
 
@@ -570,7 +570,7 @@ void CustomPalettes::on_cmdDelPal_clicked()
 	}
 }
 
-void CustomPalettes::on_cmdAddFromList_clicked()
+void CustomPalettes::on_cmdFromList_clicked()
 {
 	QListWidget* const listw = ui->listPals;
 	QListWidgetItem* const itemw = listw->currentItem();
