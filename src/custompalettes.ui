@@ -148,7 +148,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,0,2,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0,0,0,2,0,0">
             <item>
              <widget class="QPushButton" name="cmdAddCol">
               <property name="text">
@@ -183,6 +183,16 @@
               </property>
               <property name="text">
                <string>From &amp;List</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cmdFromImage">
+              <property name="whatsThis">
+               <string>Adds colors from the currently opened image.</string>
+              </property>
+              <property name="text">
+               <string>From &amp;Image</string>
               </property>
              </widget>
             </item>
@@ -274,9 +284,9 @@
   <tabstop>cmdAddCol</tabstop>
   <tabstop>cmdDelCol</tabstop>
   <tabstop>cmdFromList</tabstop>
+  <tabstop>cmdFromImage</tabstop>
   <tabstop>cmdWml</tabstop>
   <tabstop>cmdRc</tabstop>
-  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
  <connections>

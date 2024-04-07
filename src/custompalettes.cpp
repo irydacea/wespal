@@ -44,6 +44,7 @@ CustomPalettes::CustomPalettes(const QMap<QString, ColorList>& initialPalettes,
 	, ui(new Ui::CustomPalettes)
 	, palettes_(initialPalettes)
 	, ranges_(colorRanges)
+	, referenceImage_()
 {
     ui->setupUi(this);
 	ui->listColors->setItemDelegate(new PaletteItemDelegate(ui->listPals));
@@ -64,6 +65,8 @@ CustomPalettes::CustomPalettes(const QMap<QString, ColorList>& initialPalettes,
 	ui->cmdDelPal->setIcon(QIcon::fromTheme("list-remove", QIcon(":/list-remove-16.png")));
 	ui->action_Rename->setIcon(QIcon::fromTheme("edit-rename"));
 	ui->action_Duplicate->setIcon(QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-16.png")));
+
+	ui->cmdFromImage->setEnabled(false);
 }
 
 CustomPalettes::~CustomPalettes()
@@ -244,6 +247,7 @@ void CustomPalettes::setPaletteEditControlsEnabled(bool enabled)
 	ui->listColors->setEnabled(enabled);
 	ui->cmdAddCol->setEnabled(enabled);
 	ui->cmdFromList->setEnabled(enabled);
+	ui->cmdFromImage->setEnabled(enabled && !referenceImage_.isNull());
 	ui->cmdWml->setEnabled(enabled);
 	ui->cmdRc->setEnabled(enabled);
 
@@ -663,4 +667,38 @@ void CustomPalettes::on_leColor_textEdited(const QString &arg1)
 
 	const QRgb rgb = color.rgb();
 	itemw->setData(Qt::UserRole, rgb);
+}
+
+void CustomPalettes::setReferenceImage(const QImage& referenceImage)
+{
+	referenceImage_ = referenceImage;
+	ui->cmdFromImage->setEnabled(!referenceImage_.isNull());
+}
+
+void CustomPalettes::on_cmdFromImage_clicked()
+{
+	if (referenceImage_.isNull())
+		return;
+
+	const auto& colors = uniqueColorsFromImage(referenceImage_);
+
+	if (!colors.empty()) {
+		auto& pal = getCurrentPalette();
+
+		const bool firstColorChanged = pal.empty();
+
+		pal.reserve(pal.count() + colors.count());
+		for (const auto& color : colors)
+		{
+			pal.append(color);
+		}
+
+		// Force refresh the current palette colors view.
+		populatePaletteView(pal);
+		setPaletteEditControlsEnabled(true);
+
+		if (firstColorChanged) {
+			updatePaletteIcon();
+		}
+	}
 }

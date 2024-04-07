@@ -1002,6 +1002,10 @@ void MainWindow::on_actionColor_ranges_triggered()
 void MainWindow::on_action_Palettes_triggered()
 {
 	CustomPalettes dlg{userPalettes_, colorRanges_, this};
+
+	if (!originalImage_.isNull())
+		dlg.setReferenceImage(originalImage_);
+
 	dlg.exec();
 
 	if (dlg.result() == QDialog::Rejected)

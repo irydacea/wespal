@@ -40,6 +40,8 @@ public:
 
 	~CustomPalettes();
 
+	void setReferenceImage(const QImage& referenceImage);
+
 	const QMap<QString, ColorList>& getPalettes() const
 	{
 		return palettes_;
@@ -69,6 +71,8 @@ private slots:
 
 	void on_cmdFromList_clicked();
 
+	void on_cmdFromImage_clicked();
+
 	void on_cmdWml_clicked();
 
 	void on_leColor_textEdited(const QString &arg1);
@@ -86,6 +90,8 @@ private:
 	QMap<QString, ColorList> palettes_;
 
 	QMap<QString, ColorRange> ranges_;
+
+	QImage referenceImage_;
 
 	QMenu* createRangesMenu();
 	void addRangesMenuEntry(QMenu* menu,
