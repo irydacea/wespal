@@ -58,6 +58,19 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 
 private:
+	enum ViewMode
+	{
+		ViewSplit,
+		ViewSwipe,
+		ViewOnionSkin,
+	};
+
+	enum RcMode
+	{
+		RcColorRange,
+		RcPaletteSwap,
+	};
+
 	enum ZoomDirection
 	{
 		ZoomIn,
@@ -85,6 +98,9 @@ private:
 
 	QImage originalImage_;
 	QImage transformedImage_;
+
+	ViewMode viewMode_;
+	RcMode   rcMode_;
 
 	qreal zoom_;
 
@@ -114,14 +130,13 @@ private:
 
 	void updateWindowTitle(bool hasImage, const QString& filename = {});
 
-	void togglePage1(bool newstate);
-	void togglePage2(bool newstate);
-
 	void doSaveFile();
 	void doCloseFile();
 	void doReloadFile();
 	void doAboutDialog();
 
+	void setViewMode(ViewMode newViewMode);
+	void setRcMode(RcMode rcMode);
 	void enableWorkArea(bool enable);
 
 	bool confirmFileOverwrite(const QStringList& paths);

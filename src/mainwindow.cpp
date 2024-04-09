@@ -47,6 +47,11 @@ namespace {
 
 struct canceled_job    {};
 
+enum RcModePage {
+	RcModeColorRangePage = 0,
+	RcModePaletteSwapPage,
+};
+
 enum WorkAreaPage {
 	WorkAreaStartPage = 0,
 	WorkAreaSplitRc,
@@ -206,9 +211,6 @@ MainWindow::MainWindow(QWidget *parent)
 	updateCustomPreviewBgIcon();
 
 	ui->radRc->setChecked(true);
-	ui->staFunctionOpts->setCurrentIndex(0);
-	togglePage2(false);
-	togglePage1(true);
 
 	ui->zoomSlider->setMinimum(0);
 	ui->zoomSlider->setMaximum(zoomFactors_.size() - 1);
@@ -234,6 +236,8 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->previewRcContainer->setProperty("_kde_no_window_grab", true);
 	ui->previewComposite->setProperty("_kde_no_window_grab", true);
 
+	// Ensure split view scrollbars are in sync on both sides
+
 	connect(
 		ui->previewOriginalContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewRcContainer->horizontalScrollBar(), SLOT(setValue(int)));
@@ -247,6 +251,12 @@ MainWindow::MainWindow(QWidget *parent)
 		ui->previewRcContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
 		ui->previewOriginalContainer->verticalScrollBar(), SLOT(setValue(int)));
 
+	//
+	// Finalise initial workarea setup
+	//
+
+	setRcMode(RcColorRange);
+	setViewMode(ViewSplit);
 	enableWorkArea(false);
 }
 
@@ -386,7 +396,6 @@ void MainWindow::processRcDefinitions()
 	}
 
 	ui->listRanges->setCurrentRow(0);
-	ui->staWorkAreaParent->setCurrentIndex(WorkAreaStartPage);
 }
 
 void MainWindow::handleRecent()
@@ -578,29 +587,12 @@ void MainWindow::dropEvent(QDropEvent *e)
 
 void MainWindow::on_radRc_clicked()
 {
-	ui->staFunctionOpts->setCurrentIndex(0);
-	togglePage1(true);
-	togglePage2(false);
-	refreshPreviews();
+	setRcMode(RcColorRange);
 }
 
 void MainWindow::on_radPal_clicked()
 {
-	ui->staFunctionOpts->setCurrentIndex(1);
-	togglePage1(false);
-	togglePage2(true);
-	refreshPreviews();
-}
-
-void MainWindow::togglePage1(bool newstate)
-{
-	ui->listRanges->setEnabled(newstate);
-}
-
-void MainWindow::togglePage2(bool newstate)
-{
-	ui->cbxNewPal->setEnabled(newstate);
-	ui->lblNewPal->setEnabled(newstate);
+	setRcMode(RcPaletteSwap);
 }
 
 void MainWindow::on_actionAbout_Morning_Star_triggered()
@@ -812,6 +804,56 @@ void MainWindow::doAboutDialog()
 	MosUi::about(this);
 }
 
+void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
+{
+	if (viewMode_ == newViewMode)
+		return;
+
+	viewMode_ = newViewMode;
+
+	switch (viewMode_)
+	{
+		case ViewSwipe:
+		case ViewOnionSkin: {
+			auto compositeDisplayMode = viewMode_ == ViewSwipe
+										? CompositeImageLabel::CompositeDisplaySliding
+										: CompositeImageLabel::CompositeDisplayOnionSkin;
+			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
+			ui->previewComposite->setDisplayMode(compositeDisplayMode);
+			break;
+		}
+		default:
+			ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
+			break;
+	}
+}
+
+void MainWindow::setRcMode(MainWindow::RcMode newRcMode)
+{
+	if (rcMode_ == newRcMode)
+		return;
+
+	rcMode_ = newRcMode;
+
+	switch (rcMode_)
+	{
+		case RcPaletteSwap:
+			ui->staFunctionOpts->setCurrentIndex(RcModePaletteSwapPage);
+			ui->listRanges->setEnabled(false);
+			ui->cbxNewPal->setEnabled(true);
+			ui->lblNewPal->setEnabled(true);
+			break;
+		default:
+			ui->staFunctionOpts->setCurrentIndex(RcModeColorRangePage);
+			ui->listRanges->setEnabled(true);
+			ui->cbxNewPal->setEnabled(false);
+			ui->lblNewPal->setEnabled(false);
+			break;
+	}
+
+	refreshPreviews();
+}
+
 void MainWindow::enableWorkArea(bool enable)
 {
 	if (!enable) {
@@ -834,7 +876,17 @@ void MainWindow::enableWorkArea(bool enable)
 		(widget->setEnabled(enable), ...);
 	}, elements);
 
-	ui->staWorkAreaParent->setCurrentIndex(enable ? WorkAreaCompositeRc : WorkAreaStartPage);
+	if (!enable) {
+		ui->staWorkAreaParent->setCurrentIndex(WorkAreaStartPage);
+	} else switch (viewMode_) {
+		case ViewSwipe:
+		case ViewOnionSkin:
+			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
+			break;
+		default:
+			ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
+			break;
+	}
 
 	auto* closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
 
@@ -1116,23 +1168,7 @@ void MainWindow::on_action_Close_triggered()
 
 void MainWindow::on_cbxViewMode_currentIndexChanged(int index)
 {
-	auto mode = WorkAreaDisplayMode(index);
-
-	switch (mode)
-	{
-		case WorkAreaSliding:
-		case WorkAreaOnionSkin:
-			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
-			if (mode == WorkAreaSliding) {
-				ui->previewComposite->setDisplayMode(CompositeImageLabel::CompositeDisplaySliding);
-			} else {
-				ui->previewComposite->setDisplayMode(CompositeImageLabel::CompositeDisplayOnionSkin);
-			}
-			break;
-		default:
-			ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
-			break;
-	}
+	setViewMode(ViewMode(index));
 }
 
 void MainWindow::on_viewSlider_valueChanged(int value)

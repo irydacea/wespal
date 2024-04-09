@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pageNoFile">
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -224,7 +224,7 @@
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
+               <y>27</y>
                <width>270</width>
                <height>162</height>
               </rect>
@@ -269,7 +269,7 @@
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
+               <y>27</y>
                <width>271</width>
                <height>162</height>
               </rect>
@@ -840,15 +840,19 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>cmdOpen</tabstop>
+  <tabstop>listMru</tabstop>
   <tabstop>previewOriginalContainer</tabstop>
   <tabstop>previewRcContainer</tabstop>
+  <tabstop>previewCompositeContainer</tabstop>
+  <tabstop>viewSlider</tabstop>
   <tabstop>radRc</tabstop>
   <tabstop>radPal</tabstop>
   <tabstop>cbxKeyPal</tabstop>
   <tabstop>listRanges</tabstop>
   <tabstop>cbxNewPal</tabstop>
+  <tabstop>cbxViewMode</tabstop>
   <tabstop>zoomSlider</tabstop>
-  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
  <connections/>
