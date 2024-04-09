@@ -78,6 +78,9 @@ MainWindow::MainWindow(QWidget *parent)
 	, originalImage_()
 	, transformedImage_()
 
+	, viewMode_()
+	, rcMode_()
+
 	, zoom_(1.0)
 
 	, ignoreDrops_(false)
