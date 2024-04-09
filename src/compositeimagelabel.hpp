@@ -152,7 +152,6 @@ public slots:
 
 protected:
 	virtual void paintEvent(QPaintEvent* event) override;
-	virtual void resizeEvent(QResizeEvent* event) override;
 
 private:
 	void buildComposite();

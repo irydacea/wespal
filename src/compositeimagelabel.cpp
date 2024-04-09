@@ -152,8 +152,3 @@ void CompositeImageLabel::paintEvent(QPaintEvent* event)
 
 	p.drawImage(rect(), compositeCache_);
 }
-
-void CompositeImageLabel::resizeEvent(QResizeEvent* event)
-{
-	qDebug() << "RESIZE EVENT:" << event->oldSize() << "->" << size() << "(hint =" << sizeHint() << size() << ')';
-}
