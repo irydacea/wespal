@@ -60,12 +60,7 @@ public:
 
 	virtual QSize minimumSizeHint() const override
 	{
-		return leftImage_.size() * zoom_;
-	}
-
-	virtual QSize sizeHint() const override
-	{
-		return minimumSizeHint();
+		return leftImage_.size();
 	}
 
 	/**
@@ -151,31 +146,6 @@ public:
 	 */
 	void setRightImage(const QImage& rightImage);
 
-	/**
-	 * Retrieves the current zoom level.
-	 */
-	qreal zoom() const
-	{
-		return zoom_;
-	}
-
-	/**
-	 * Changes the zoom level.
-	 *
-	 * The @a zoom value should be a positive, non-zero value. Values out of
-	 * range will be ignored.
-	 */
-	void setZoom(qreal zoom)
-	{
-		if (zoom <= 0.0)
-			return;
-
-		zoom_ = zoom;
-
-		updateGeometry();
-		update();
-	}
-
 signals:
 
 public slots:
@@ -190,7 +160,6 @@ private:
 	CompositeDisplayMode displayMode_;
 
 	qreal displayRatio_;
-	qreal zoom_;
 
 	QImage leftImage_;
 	QImage rightImage_;

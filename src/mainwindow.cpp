@@ -737,7 +737,6 @@ void MainWindow::refreshPreviews()
 	ui->previewRc->setPixmap(pixmapTransformed);
 	ui->previewComposite->setLeftImage(originalImage_);
 	ui->previewComposite->setRightImage(transformedImage_);
-	ui->previewComposite->setZoom(zoom_);
 
 	ui->previewOriginal->resize(scaled_size);
 	ui->previewRc->resize(scaled_size);
@@ -1036,8 +1035,6 @@ void MainWindow::on_listRanges_currentRowChanged(int /*currentRow*/)
 void MainWindow::on_zoomSlider_valueChanged(int value)
 {
 	zoom_ = zoomFactors_[qBound(0, value, int(zoomFactors_.size() - 1))];
-
-	ui->previewComposite->setZoom(zoom_);
 	refreshPreviews();
 }
 

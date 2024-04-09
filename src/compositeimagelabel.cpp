@@ -29,7 +29,6 @@ CompositeImageLabel::CompositeImageLabel(QWidget* parent)
 	: QWidget(parent)
 	, displayMode_(CompositeDisplaySliding)
 	, displayRatio_(0.5)
-	, zoom_(1.0)
 	, leftImage_()
 	, rightImage_()
 {
