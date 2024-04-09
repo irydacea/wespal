@@ -43,6 +43,8 @@ Manager::Manager()
 
 	previewBackgroundColor_ = qs.value("preview_background").toString();
 
+	imageViewMode_ = qs.value("preview/mode", ImageViewVSplit).value<ImageViewMode>();
+
 	//
 	// User-defined color ranges
 	//
@@ -126,6 +128,15 @@ void Manager::setPreviewBackgroundColor(const QString& previewBackgroundColor)
 	previewBackgroundColor_ = previewBackgroundColor;
 
 	qs.setValue("preview_background", previewBackgroundColor);
+}
+
+void Manager::setImageViewMode(ImageViewMode imageViewMode)
+{
+	QSettings qs;
+
+	imageViewMode_ = imageViewMode;
+
+	qs.setValue("preview/mode", imageViewMode);
 }
 
 void Manager::setCustomColorRanges(const QMap<QString, ColorRange>& colorRanges)

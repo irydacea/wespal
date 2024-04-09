@@ -253,7 +253,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 
 	setRcMode(RcColorRange);
-	setViewMode(ViewVSplit);
+	setViewMode(MosCurrentConfig().imageViewMode());
 	enableWorkArea(false);
 }
 
@@ -806,9 +806,9 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 
 	switch (viewMode_)
 	{
-		case ViewSwipe:
-		case ViewOnionSkin: {
-			auto compositeDisplayMode = viewMode_ == ViewSwipe
+		case MosConfig::ImageViewSwipe:
+		case MosConfig::ImageViewOnionSkin: {
+			auto compositeDisplayMode = viewMode_ == MosConfig::ImageViewSwipe
 										? CompositeImageLabel::CompositeDisplaySliding
 										: CompositeImageLabel::CompositeDisplayOnionSkin;
 			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
@@ -816,7 +816,7 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 			break;
 		}
 		default: {
-			auto* newLayout = viewMode_ == ViewHSplit
+			auto* newLayout = viewMode_ == MosConfig::ImageViewHSplit
 							  ? static_cast<QLayout*>(new QHBoxLayout)
 							  : static_cast<QLayout*>(new QVBoxLayout);
 			auto* oldLayout = ui->pageWorkAreaSplit->layout();
@@ -835,6 +835,12 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 			break;
 		}
 	}
+
+	MosCurrentConfig().setImageViewMode(viewMode_);
+
+	// Ensure the combobox selection is correct if we came from the class ctor
+	// (it will call us again but since the values are identical it's a no-op)
+	ui->cbxViewMode->setCurrentIndex(viewMode_);
 }
 
 void MainWindow::setRcMode(MainWindow::RcMode newRcMode)
@@ -889,8 +895,8 @@ void MainWindow::enableWorkArea(bool enable)
 	if (!enable) {
 		ui->staWorkAreaParent->setCurrentIndex(WorkAreaStartPage);
 	} else switch (viewMode_) {
-		case ViewSwipe:
-		case ViewOnionSkin:
+		case MosConfig::ImageViewSwipe:
+		case MosConfig::ImageViewOnionSkin:
 			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
 			break;
 		default:

@@ -27,6 +27,18 @@
 
 namespace MosConfig {
 
+Q_NAMESPACE
+
+enum ImageViewMode
+{
+	ImageViewVSplit,
+	ImageViewHSplit,
+	ImageViewSwipe,
+	ImageViewOnionSkin,
+};
+
+Q_ENUM_NS(ImageViewMode)
+
 class Manager
 {
 public:
@@ -129,6 +141,19 @@ public:
 	 */
 	void setPreviewBackgroundColor(const QString& previewBackgroundColor);
 
+	/**
+	 * Retrieves the image view mode.
+	 */
+	ImageViewMode imageViewMode() const
+	{
+		return imageViewMode_;
+	}
+
+	/**
+	 * Sets the image view mode.
+	 */
+	void setImageViewMode(ImageViewMode imageViewMode);
+
 private:
 	Manager();
 
@@ -137,6 +162,7 @@ private:
 	QMap<QString, ColorList> customPalettes_;
 	QSize mainWindowSize_;
 	QString previewBackgroundColor_;
+	ImageViewMode imageViewMode_;
 };
 
 inline Manager& current()

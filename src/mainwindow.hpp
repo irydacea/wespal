@@ -22,6 +22,8 @@
 
 #include "wesnothrc.hpp"
 
+#include "appconfig.hpp"
+
 #include <QAbstractButton>
 #include <QDropEvent>
 #include <QDragEnterEvent>
@@ -58,13 +60,7 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 
 private:
-	enum ViewMode
-	{
-		ViewVSplit,
-		ViewHSplit,
-		ViewSwipe,
-		ViewOnionSkin,
-	};
+	using ViewMode = MosConfig::ImageViewMode;
 
 	enum RcMode
 	{
