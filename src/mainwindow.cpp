@@ -58,12 +58,6 @@ enum WorkAreaPage {
 	WorkAreaCompositeRc,
 };
 
-enum WorkAreaDisplayMode {
-	WorkAreaSplit = 0,
-	WorkAreaSliding = 1,
-	WorkAreaOnionSkin = 2,
-};
-
 static const QSize colorIconSize{16, 16};
 
 } // end unnamed namespace
