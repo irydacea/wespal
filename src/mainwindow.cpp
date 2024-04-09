@@ -455,11 +455,11 @@ void MainWindow::updateRecentFilesMenu()
 
 	// Disable the menu entirely if there are no MRU items.
 
-	ui->menuMru->setEnabled(k != 0);
+	ui->menuMru->setEnabled(!MosCurrentConfig().recentFiles().empty());
 
 	// The MRU panel gets fully hidden to avoid confusion due to its styling.
 
-	ui->panelMru->setVisible(k != 0);
+	ui->panelMru->setVisible(!MosCurrentConfig().recentFiles().empty());
 }
 
 void MainWindow::changeEvent(QEvent *e)
