@@ -43,7 +43,7 @@
            </sizepolicy>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="pageNoFile">
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -200,98 +200,106 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="pageWorkArea">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <widget class="QWidget" name="pageWorkAreaSplit">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
-             <layout class="QHBoxLayout" name="hlPreviews">
-              <item>
-               <widget class="QScrollArea" name="previewOriginalContainer">
-                <property name="whatsThis">
-                 <string>This is the original image's preview.</string>
+             <widget class="QScrollArea" name="previewOriginalContainer">
+              <property name="whatsThis">
+               <string>This is the original image's preview.</string>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
+              <property name="verticalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOn</enum>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOn</enum>
+              </property>
+              <property name="widgetResizable">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_2">
+               <property name="geometry">
+                <rect>
+                 <x>87</x>
+                 <y>31</y>
+                 <width>270</width>
+                 <height>162</height>
+                </rect>
+               </property>
+               <property name="whatsThis">
+                <string/>
+               </property>
+               <widget class="ImageLabel" name="previewOriginal" native="true">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>72</width>
+                  <height>72</height>
+                 </rect>
                 </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="verticalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOn</enum>
-                </property>
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOn</enum>
-                </property>
-                <property name="widgetResizable">
-                 <bool>false</bool>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_2">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>144</y>
-                   <width>270</width>
-                   <height>162</height>
-                  </rect>
-                 </property>
-                 <property name="whatsThis">
-                  <string/>
-                 </property>
-                 <widget class="ImageLabel" name="previewOriginal" native="true">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>72</width>
-                    <height>72</height>
-                   </rect>
-                  </property>
-                 </widget>
-                </widget>
                </widget>
-              </item>
-              <item>
-               <widget class="QScrollArea" name="previewRcContainer">
-                <property name="whatsThis">
-                 <string>This is a preview of a single transformation of the original image.</string>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="previewRcContainer">
+              <property name="whatsThis">
+               <string>This is a preview of a single transformation of the original image.</string>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
+              <property name="verticalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOn</enum>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOn</enum>
+              </property>
+              <property name="widgetResizable">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_3">
+               <property name="geometry">
+                <rect>
+                 <x>87</x>
+                 <y>31</y>
+                 <width>271</width>
+                 <height>162</height>
+                </rect>
+               </property>
+               <widget class="ImageLabel" name="previewRc" native="true">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>72</width>
+                  <height>72</height>
+                 </rect>
                 </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="verticalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOn</enum>
-                </property>
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOn</enum>
-                </property>
-                <property name="widgetResizable">
-                 <bool>false</bool>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_3">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>144</y>
-                   <width>271</width>
-                   <height>162</height>
-                  </rect>
-                 </property>
-                 <widget class="ImageLabel" name="previewRc" native="true">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>72</width>
-                    <height>72</height>
-                   </rect>
-                  </property>
-                 </widget>
-                </widget>
                </widget>
-              </item>
-             </layout>
+              </widget>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -337,7 +345,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>117</y>
+                 <y>0</y>
                  <width>495</width>
                  <height>181</height>
                 </rect>
@@ -419,7 +427,12 @@
             </property>
             <item>
              <property name="text">
-              <string>Split</string>
+              <string>Vertical Split</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Horizontal Split</string>
              </property>
             </item>
             <item>

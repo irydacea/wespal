@@ -250,7 +250,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//
 
 	setRcMode(RcColorRange);
-	setViewMode(ViewSplit);
+	setViewMode(ViewVSplit);
 	enableWorkArea(false);
 }
 
@@ -812,9 +812,25 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 			ui->previewComposite->setDisplayMode(compositeDisplayMode);
 			break;
 		}
-		default:
+		default: {
+			auto* newLayout = viewMode_ == ViewHSplit
+							  ? static_cast<QLayout*>(new QHBoxLayout)
+							  : static_cast<QLayout*>(new QVBoxLayout);
+			auto* oldLayout = ui->pageWorkAreaSplit->layout();
+
+			oldLayout->removeWidget(ui->previewOriginalContainer);
+			oldLayout->removeWidget(ui->previewRcContainer);
+
+			delete ui->pageWorkAreaSplit->layout();
+			ui->pageWorkAreaSplit->setLayout(newLayout);
+
+			newLayout->setContentsMargins(0, 0, 0, 0);
+			newLayout->addWidget(ui->previewOriginalContainer);
+			newLayout->addWidget(ui->previewRcContainer);
+
 			ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
 			break;
+		}
 	}
 }
 

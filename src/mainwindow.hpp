@@ -60,7 +60,8 @@ protected:
 private:
 	enum ViewMode
 	{
-		ViewSplit,
+		ViewVSplit,
+		ViewHSplit,
 		ViewSwipe,
 		ViewOnionSkin,
 	};
