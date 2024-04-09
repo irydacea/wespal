@@ -39,9 +39,9 @@ Manager::Manager()
 	// Workspace configuation
 	//
 
-	mainWindowSize_ = qs.value("mainwindow_size").toSize();
+	mainWindowSize_ = qs.value("preview/windowSize").toSize();
 
-	previewBackgroundColor_ = qs.value("preview_background").toString();
+	previewBackgroundColor_ = qs.value("preview/background").toString();
 
 	imageViewMode_ = qs.value("preview/mode", ImageViewVSplit).value<ImageViewMode>();
 
@@ -118,7 +118,7 @@ void Manager::setMainWindowSize(const QSize& size)
 
 	mainWindowSize_ = size;
 
-	qs.setValue("mainwindow_size", size);
+	qs.setValue("preview/windowSize", size);
 }
 
 void Manager::setPreviewBackgroundColor(const QString& previewBackgroundColor)
@@ -127,7 +127,7 @@ void Manager::setPreviewBackgroundColor(const QString& previewBackgroundColor)
 
 	previewBackgroundColor_ = previewBackgroundColor;
 
-	qs.setValue("preview_background", previewBackgroundColor);
+	qs.setValue("preview/background", previewBackgroundColor);
 }
 
 void Manager::setImageViewMode(ImageViewMode imageViewMode)

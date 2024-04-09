@@ -7,6 +7,7 @@ Version 0.4.1
 * Added alternative view modes to the original Split mode: Swipe, Onion Skin.
 * Added an option to generate palette colors from the currently open image.
 * Redesigned main window.
+* Changed storage for the main window size and preview background settings - this will cause these settings from previous versions to be forgotten.
 * Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Added unit tests to ensure the recoloring algorithm never breaks silently
   before a release.
