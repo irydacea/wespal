@@ -878,6 +878,7 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->lblNewPal, ui->cbxNewPal,
 		ui->listRanges,
 		ui->zoomSlider,
+		ui->lblViewMode,
 		ui->cbxViewMode,
 		ui->buttonBox->button(QDialogButtonBox::Save));
 
