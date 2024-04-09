@@ -26,49 +26,22 @@
 
 ImageLabel::ImageLabel(QWidget *parent) :
 	QWidget(parent),
-	pixmap_()
+	image_()
 {
+}
+
+void ImageLabel::setImage(const QImage& image)
+{
+	image_ = image.convertedTo(QImage::Format_ARGB32_Premultiplied);
+	update();
 }
 
 void ImageLabel::paintEvent(QPaintEvent* event)
 {
-	// We only paint the pixmap in this subclass.
-	QPixmap const * const pm = pixmap();
+	QPainter p{this};
 
-	if (!pm) {
-		return;
-	}
-
-	QPainter p(this);
+	p.setClipRect(event->rect());
 	p.setRenderHint(QPainter::SmoothPixmapTransform, false);
 
-	const qreal xRatio = qreal(width()) / qreal(pm->width());
-	const qreal yRatio = qreal(height()) / qreal(pm->height());
-
-	QRect partialDestRect = event->rect();
-
-	p.setClipRect(partialDestRect);
-
-	// We must maintain a fixed aspect ratio when scaling up,
-	// otherwise pixels cease to be squares.
-
-	const int intXRatio = qCeil(xRatio);
-	if (partialDestRect.width() % intXRatio != 0) {
-		partialDestRect.setWidth((partialDestRect.width()/intXRatio + 1) * intXRatio);
-	}
-
-	const int intYRatio = qCeil(yRatio);
-	if (partialDestRect.height() % intYRatio != 0) {
-		partialDestRect.setHeight((partialDestRect.height()/intYRatio + 1) * intYRatio);
-	}
-
-	QRect partialSrcRect(
-		int(partialDestRect.x() / xRatio),
-		int(partialDestRect.y() / yRatio),
-		int(partialDestRect.width() / xRatio),
-		int(partialDestRect.height() / yRatio));
-
-	//qDebug() << partialSrcRect << " --> " << partialDestRect << " (scale " << xRatio << "x" << yRatio << ")";
-
-	p.drawPixmap(partialDestRect, *pm, partialSrcRect);
+	p.drawImage(rect(), image_);
 }

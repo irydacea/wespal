@@ -724,11 +724,8 @@ void MainWindow::refreshPreviews()
 
 	const QSize& scaled_size = originalImage_.size() * zoom_;
 
-	auto pixmapOriginal = QPixmap::fromImage(originalImage_);
-	auto pixmapTransformed = QPixmap::fromImage(transformedImage_);
-
-	ui->previewOriginal->setPixmap(pixmapOriginal);
-	ui->previewRc->setPixmap(pixmapTransformed);
+	ui->previewOriginal->setImage(originalImage_);
+	ui->previewRc->setImage(transformedImage_);
 	ui->previewComposite->setLeftImage(originalImage_);
 	ui->previewComposite->setRightImage(transformedImage_);
 

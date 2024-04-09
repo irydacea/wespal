@@ -22,29 +22,46 @@
 
 #include <QWidget>
 
+/**
+ * Widget used for rendering a single image.
+ */
 class ImageLabel : public QWidget
 {
 	Q_OBJECT
-	Q_PROPERTY(QPixmap pixmap READ pixmap WRITE setPixmap)
+	Q_PROPERTY(QImage image READ image WRITE setImage)
 public:
+	/**
+	 * Constructor.
+	 *
+	 * @param parent Sets the parent of this widget.
+	 */
 	explicit ImageLabel(QWidget* parent = nullptr);
+
+	virtual QSize minimumSizeHint() const override
+	{
+		return image_.size();
+	}
 	
-	const QPixmap* pixmap() const {
-		return &pixmap_;
+	/**
+	 * Retrieves the current image.
+	 */
+	const QImage& image() const
+	{
+		return image_;
 	}
 
-	void setPixmap(const QPixmap& pixmap) {
-		pixmap_ = pixmap;
-		update();
-	}
+	/**
+	 * Sets a new image to display.
+	 */
+	void setImage(const QImage& image);
 
 signals:
 	
 public slots:
 
 protected:
-	virtual void paintEvent(QPaintEvent* event);
+	virtual void paintEvent(QPaintEvent* event) override;
 
 private:
-	QPixmap pixmap_;
+	QImage image_;
 };
