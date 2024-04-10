@@ -35,6 +35,7 @@ enum ImageViewMode
 	ImageViewHSplit,
 	ImageViewSwipe,
 	ImageViewOnionSkin,
+	ImageViewSize,
 };
 
 Q_ENUM_NS(ImageViewMode)

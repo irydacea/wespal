@@ -89,6 +89,8 @@ MainWindow::MainWindow(QWidget *parent)
 	, dragStartPos_()
 
 	, recentFileActions_()
+	, zoomActions_()
+	, viewModeActions_()
 
 	, supportedImageFileFormats_(MosPlatform::supportedImageFileFormats())
 {
@@ -139,6 +141,10 @@ MainWindow::MainWindow(QWidget *parent)
 		}
 	}
 
+	//
+	// MRU menu & list widget
+	//
+
 	auto maxMruEntries = MosCurrentConfig().recentFiles().max();
 
 	recentFileActions_.reserve(maxMruEntries);
@@ -165,6 +171,86 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(ui->listMru, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(handleRecent()));
 
 	updateRecentFilesMenu();
+
+	//
+	// Zoom slider & menu items
+	//
+
+	ui->zoomSlider->setMinimum(0);
+	ui->zoomSlider->setMaximum(zoomFactors_.size() - 1);
+	ui->zoomSlider->setValue(1);
+
+	QActionGroup* zoomMenuActs = new QActionGroup(this);
+	std::array zoomMenuItems = {
+		ui->actionZoom50,
+		ui->actionZoom100,
+		ui->actionZoom200,
+		ui->actionZoom400,
+		ui->actionZoom800,
+	};
+
+	static_assert(zoomFactors_.size() == zoomMenuItems.size());
+
+	for (unsigned k = 0; k < zoomMenuItems.size(); ++k)
+	{
+		auto* item = zoomMenuItems[k];
+
+		zoomMenuActs->addAction(item);
+		item->setData(k);
+		item->setChecked(zoomFactors_[k] == zoom_);
+
+		connect(item, &QAction::triggered, this, [this](bool) {
+			QAction* const act = qobject_cast<QAction*>(sender());
+
+			if (!act)
+				return;
+
+			ui->zoomSlider->setValue(act->data().toInt());
+		});
+	}
+
+	zoomActions_ = zoomMenuActs->actions();
+
+	//
+	// View mode menu items
+	//
+
+	// NOTE: Our view mode will be committed later at the end of setup
+	auto viewMode = MosCurrentConfig().imageViewMode();
+
+	QActionGroup* viewMenuActs = new QActionGroup(this);
+	std::array viewMenuItems = {
+		ui->actionViewVSplit,
+		ui->actionViewHSplit,
+		ui->actionViewSwipe,
+		ui->actionViewOnionSkin,
+	};
+
+	static_assert(MosConfig::ImageViewSize == viewMenuItems.size());
+
+	for (unsigned k = 0; k < viewMenuItems.size(); ++k)
+	{
+		auto* item = viewMenuItems[k];
+
+		viewMenuActs->addAction(item);
+		item->setData(k);
+		item->setChecked(k == viewMode);
+
+		connect(item, &QAction::triggered, this, [this](bool) {
+			QAction* const act = qobject_cast<QAction*>(sender());
+
+			if (!act)
+				return;
+
+			setViewMode(ViewMode(act->data().toUInt()));
+		});
+	}
+
+	viewModeActions_ = viewMenuActs->actions();
+
+	//
+	// Background color menu
+	//
 
 	const QString& bgColorName = MosCurrentConfig().previewBackgroundColor();
 	QActionGroup* bgColorActs = new QActionGroup(this);
@@ -207,12 +293,6 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->actionPreviewBgCustom->setIconVisibleInMenu(true);
 	updateCustomPreviewBgIcon();
 
-	ui->radRc->setChecked(true);
-
-	ui->zoomSlider->setMinimum(0);
-	ui->zoomSlider->setMaximum(zoomFactors_.size() - 1);
-	ui->zoomSlider->setValue(1);
-
 	ui->previewOriginalContainer->viewport()->setBackgroundRole(QPalette::Dark);
 	ui->previewRcContainer->viewport()->setBackgroundRole(QPalette::Dark);
 	ui->previewCompositeContainer->viewport()->setBackgroundRole(QPalette::Dark);
@@ -252,8 +332,9 @@ MainWindow::MainWindow(QWidget *parent)
 	// Finalise initial workarea setup
 	//
 
+	ui->radRc->setChecked(true);
 	setRcMode(RcColorRange);
-	setViewMode(MosCurrentConfig().imageViewMode());
+	setViewMode(viewMode);
 	enableWorkArea(false);
 }
 
@@ -484,17 +565,6 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::closeEvent(QCloseEvent * /*e*/)
 {
 	MosCurrentConfig().setMainWindowSize(size());
-}
-
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-	if (event->matches(QKeySequence::ZoomIn)) {
-		adjustZoom(ZoomIn);
-	} else if (event->matches(QKeySequence::ZoomOut)) {
-		adjustZoom(ZoomOut);
-	} else {
-		QMainWindow::keyPressEvent(event);
-	}
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event)
@@ -1051,8 +1121,19 @@ void MainWindow::on_listRanges_currentRowChanged(int /*currentRow*/)
 
 void MainWindow::on_zoomSlider_valueChanged(int value)
 {
-	zoom_ = zoomFactors_[qBound(0, value, int(zoomFactors_.size() - 1))];
+	qreal newZoom = zoomFactors_[qBound(0, value, int(zoomFactors_.size() - 1))];
+	if (zoom_ == newZoom)
+		return;
+
+	zoom_ = newZoom;
 	refreshPreviews();
+
+	for (auto* action : zoomActions_)
+	{
+		if (action->data() == value && !action->isChecked()) {
+			action->setChecked(true);
+		}
+	}
 }
 
 void MainWindow::adjustZoom(ZoomDirection direction)
@@ -1182,10 +1263,31 @@ void MainWindow::on_action_Close_triggered()
 
 void MainWindow::on_cbxViewMode_currentIndexChanged(int index)
 {
-	setViewMode(ViewMode(index));
+	auto newMode = ViewMode(index);
+	if (newMode == viewMode_)
+		return;
+
+	setViewMode(newMode);
+
+	for (auto* action : viewModeActions_)
+	{
+		if (action->data() == newMode && !action->isChecked()) {
+			action->setChecked(true);
+		}
+	}
 }
 
 void MainWindow::on_viewSlider_valueChanged(int value)
 {
 	ui->previewComposite->setDisplayRatio(qreal(value) / qreal(ui->viewSlider->maximum()));
+}
+
+void MainWindow::on_actionZoomIn_triggered()
+{
+	adjustZoom(ZoomIn);
+}
+
+void MainWindow::on_actionZoomOut_triggered()
+{
+	adjustZoom(ZoomOut);
 }

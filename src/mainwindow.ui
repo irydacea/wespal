@@ -357,7 +357,7 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>129</y>
+                 <y>0</y>
                  <width>495</width>
                  <height>181</height>
                 </rect>
@@ -721,7 +721,33 @@
     <addaction name="actionColor_ranges"/>
     <addaction name="action_Palettes"/>
    </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menu_Zoom">
+     <property name="title">
+      <string>&amp;Zoom</string>
+     </property>
+     <addaction name="actionZoomIn"/>
+     <addaction name="actionZoomOut"/>
+     <addaction name="separator"/>
+     <addaction name="actionZoom50"/>
+     <addaction name="actionZoom100"/>
+     <addaction name="actionZoom200"/>
+     <addaction name="actionZoom400"/>
+     <addaction name="actionZoom800"/>
+    </widget>
+    <addaction name="menu_Zoom"/>
+    <addaction name="separator"/>
+    <addaction name="actionViewVSplit"/>
+    <addaction name="actionViewHSplit"/>
+    <addaction name="actionViewSwipe"/>
+    <addaction name="actionViewOnionSkin"/>
+    <addaction name="separator"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menu_View"/>
    <addaction name="menu_Tools"/>
    <addaction name="menu_Help"/>
   </widget>
@@ -868,6 +894,127 @@
    </property>
    <property name="text">
     <string>Close</string>
+   </property>
+  </action>
+  <action name="actionViewVSplit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Vertical Split</string>
+   </property>
+   <property name="shortcut">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="actionViewHSplit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Horizontal Split</string>
+   </property>
+   <property name="shortcut">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="actionViewSwipe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Swipe</string>
+   </property>
+   <property name="shortcut">
+    <string>3</string>
+   </property>
+  </action>
+  <action name="actionViewOnionSkin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Onion Skin</string>
+   </property>
+   <property name="shortcut">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="actionZoom50">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;50%</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+5</string>
+   </property>
+  </action>
+  <action name="actionZoom100">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;100%</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionZoom200">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;200%</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="actionZoom400">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;400%</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="actionZoom800">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;800%</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="icon">
+    <iconset theme="zoom-in"/>
+   </property>
+   <property name="text">
+    <string>Zoom &amp;In</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="icon">
+    <iconset theme="zoom-out"/>
+   </property>
+   <property name="text">
+    <string>Zoom &amp;Out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
  </widget>

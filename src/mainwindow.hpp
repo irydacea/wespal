@@ -56,7 +56,6 @@ protected:
 	void dropEvent(QDropEvent *e);
 	void mouseMoveEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
-	void keyPressEvent(QKeyEvent *event);
 	void wheelEvent(QWheelEvent *event);
 
 private:
@@ -107,6 +106,8 @@ private:
 	QPoint dragStartPos_;
 
 	QList<QAction*> recentFileActions_;
+	QList<QAction*> zoomActions_;
+	QList<QAction*> viewModeActions_;
 
 	QString supportedImageFileFormats_;
 
@@ -178,4 +179,6 @@ private slots:
 	void on_action_Close_triggered();
 	void on_cbxViewMode_currentIndexChanged(int index);
 	void on_viewSlider_valueChanged(int value);
+	void on_actionZoomIn_triggered();
+	void on_actionZoomOut_triggered();
 };
