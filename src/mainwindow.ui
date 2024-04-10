@@ -704,20 +704,6 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
-    <widget class="QMenu" name="menuPreview_Background">
-     <property name="title">
-      <string>Preview &amp;Background</string>
-     </property>
-     <addaction name="actionPreviewBgDefault"/>
-     <addaction name="actionPreviewBgWhite"/>
-     <addaction name="actionPreviewBgLight"/>
-     <addaction name="actionPreviewBgDark"/>
-     <addaction name="actionPreviewBgBlack"/>
-     <addaction name="separator"/>
-     <addaction name="actionPreviewBgCustom"/>
-    </widget>
-    <addaction name="menuPreview_Background"/>
-    <addaction name="separator"/>
     <addaction name="actionColor_ranges"/>
     <addaction name="action_Palettes"/>
    </widget>
@@ -738,7 +724,21 @@
      <addaction name="actionZoom400"/>
      <addaction name="actionZoom800"/>
     </widget>
+    <widget class="QMenu" name="menuBgColor">
+     <property name="title">
+      <string>&amp;Background</string>
+     </property>
+     <addaction name="actionPreviewBgDefault"/>
+     <addaction name="actionPreviewBgWhite"/>
+     <addaction name="actionPreviewBgLight"/>
+     <addaction name="actionPreviewBgDark"/>
+     <addaction name="actionPreviewBgBlack"/>
+     <addaction name="separator"/>
+     <addaction name="actionPreviewBgCustom"/>
+    </widget>
     <addaction name="menu_Zoom"/>
+    <addaction name="separator"/>
+    <addaction name="menuBgColor"/>
     <addaction name="separator"/>
     <addaction name="actionViewVSplit"/>
     <addaction name="actionViewHSplit"/>
@@ -825,57 +825,6 @@
   <action name="action_RecentPlaceholder">
    <property name="text">
     <string>&lt;Recent files&gt;</string>
-   </property>
-  </action>
-  <action name="actionPreviewBgWhite">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;White</string>
-   </property>
-  </action>
-  <action name="actionPreviewBgLight">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Light</string>
-   </property>
-  </action>
-  <action name="actionPreviewBgDark">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Da&amp;rk</string>
-   </property>
-  </action>
-  <action name="actionPreviewBgBlack">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Black</string>
-   </property>
-  </action>
-  <action name="actionPreviewBgDefault">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Default</string>
-   </property>
-  </action>
-  <action name="actionPreviewBgCustom">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>&amp;Custom...</string>
    </property>
   </action>
   <action name="action_MruPlaceholder">
@@ -1015,6 +964,57 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgCustom">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Custom...</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgDefault">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Default</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgBlack">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Black</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgDark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Da&amp;rk</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgLight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Light</string>
+   </property>
+  </action>
+  <action name="actionPreviewBgWhite">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;White</string>
    </property>
   </action>
  </widget>
