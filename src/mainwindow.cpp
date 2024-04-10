@@ -37,6 +37,7 @@
 #include <QMimeData>
 #include <QPushButton>
 #include <QScrollBar>
+#include <QSplitter>
 #include <QStandardPaths>
 #include <QStringBuilder>
 #include <QStyle>
@@ -108,6 +109,11 @@ MainWindow::MainWindow(QWidget* parent)
 	if (lastWindowSize.isValid()) {
 		resize(lastWindowSize);
 	}
+
+	auto* workAreaSplitter = new QSplitter(this);
+	ui->workAreaRootLayout->addWidget(workAreaSplitter);
+	workAreaSplitter->addWidget(ui->workAreaImagePanel);
+	workAreaSplitter->addWidget(ui->workAreaOptionsPanel);
 
 	//
 	// Wesnoth recoloring system data
