@@ -126,10 +126,22 @@ MainWindow::MainWindow(QWidget* parent)
 	// General menu setup
 	//
 
-	auto* act_whatsthis = QWhatsThis::createAction(this);
+	const auto& helpMenuActions = ui->menu_Help->actions();
+	auto* firstHelpAction = helpMenuActions.empty()
+							? nullptr
+							: helpMenuActions[0];
 
-	ui->menu_Help->insertAction(ui->actionAbout_Morning_Star, act_whatsthis);
-	ui->menu_Help->insertSeparator(ui->actionAbout_Morning_Star);
+	auto* whatsThisAction = QWhatsThis::createAction(this);
+
+	ui->menu_Help->insertAction(firstHelpAction, whatsThisAction);
+	ui->menu_Help->insertSeparator(firstHelpAction);
+
+	connect(ui->actionChangeLog, &QAction::triggered, this, []() {
+		MosUi::openReleaseNotes();
+	});
+	connect(ui->actionReportBugs, &QAction::triggered, this, []() {
+		MosUi::openIssueTracker();
+	});
 
 	ui->action_Close->setShortcut(QKeySequence::Close);
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);

@@ -22,6 +22,7 @@
 
 #include "version.hpp"
 
+#include <QDesktopServices>
 #include <QIcon>
 #include <QImageReader>
 #include <QMessageBox>
@@ -30,6 +31,10 @@
 namespace {
 
 const QString ABOUT_AUTHOR_URL = QStringLiteral("https://irydacea.me/");
+
+const QString BUG_REPORTS_URL = QStringLiteral("https://wespal.irydacea.me/issues");
+
+const QString CHANGELOG_URL_TEMPLATE = QStringLiteral("https://wespal.irydacea.me/release/%1");
 
 const QString LICENSE_URL = QStringLiteral("https://www.gnu.org/licenses/old-licenses/gpl-2.0.html#SEC1");
 
@@ -128,7 +133,20 @@ void about(QWidget* parent)
 	QMessageBox::about(parent, tr("Wespal"), text);
 }
 
-} // end namespace JobNotifications
+void openReleaseNotes()
+{
+	static const bool isDevVersion = MOS_VERSION.endsWith("-dev");
+	static const QString changeLogUrl =
+			CHANGELOG_URL_TEMPLATE.arg(isDevVersion ? "dev" : MOS_VERSION);
+	QDesktopServices::openUrl({changeLogUrl});
+}
+
+void openIssueTracker()
+{
+	QDesktopServices::openUrl({BUG_REPORTS_URL});
+}
+
+} // end namespace MosUi
 
 namespace MosPlatform {
 

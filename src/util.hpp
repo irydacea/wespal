@@ -142,4 +142,8 @@ void error(QWidget* parent, const QString& message, const QStringList& detailIte
 
 void about(QWidget* parent = nullptr);
 
+void openReleaseNotes();
+
+void openIssueTracker();
+
 } // end namespace JobUi

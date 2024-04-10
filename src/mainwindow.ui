@@ -695,6 +695,9 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionChangeLog"/>
+    <addaction name="actionReportBugs"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout_Morning_Star"/>
    </widget>
    <widget class="QMenu" name="menu_Tools">
@@ -1027,6 +1030,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+5</string>
+   </property>
+  </action>
+  <action name="actionReportBugs">
+   <property name="text">
+    <string>Report &amp;Issues</string>
+   </property>
+  </action>
+  <action name="actionChangeLog">
+   <property name="text">
+    <string>Release &amp;Notes</string>
    </property>
   </action>
  </widget>
