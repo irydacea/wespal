@@ -611,7 +611,7 @@ void MainWindow::wheelEvent(QWheelEvent* event)
 
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
-	if (event->button() == Qt::LeftButton && !originalImage_.isNull())
+	if (event->button() == Qt::LeftButton && hasImage())
 	{
 		//
 		// Drag-to-copy action
@@ -621,7 +621,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 		dragUseRecolored_ = ui->previewRcContainer->geometry().contains(event->pos());
 		dragStart_ = dragUseRecolored_ || ui->previewOriginalContainer->geometry().contains(event->pos());
 	}
-	else if (event->button() == Qt::MiddleButton && !originalImage_.isNull())
+	else if (event->button() == Qt::MiddleButton && hasImage())
 	{
 		//
 		// Image preview panning
@@ -778,7 +778,7 @@ void MainWindow::on_buttonBox_clicked(QAbstractButton* button)
 			doSaveFile();
 			break;
 		case QDialogButtonBox::Close:
-			if (originalImage_.isNull()) {
+			if (!hasImage()) {
 				close();
 			} else {
 				doCloseFile();
@@ -834,7 +834,7 @@ void MainWindow::openFile(const QString& fileName)
 		);
 	}
 
-	if (selectedPath.isEmpty() && originalImage_.isNull()) {
+	if (selectedPath.isEmpty() && !hasImage()) {
 		return;
 	}
 
@@ -881,7 +881,7 @@ void MainWindow::doReloadFile()
 
 void MainWindow::refreshPreviews()
 {
-	if (originalImage_.isNull() || signalsBlocked())
+	if (!hasImage() || signalsBlocked())
 		return;
 
 	ColorMap cvtMap;
@@ -1283,7 +1283,7 @@ void MainWindow::on_action_Palettes_triggered()
 {
 	CustomPalettes dlg{userPalettes_, colorRanges_, this};
 
-	if (!originalImage_.isNull())
+	if (hasImage())
 		dlg.setReferenceImage(originalImage_);
 
 	dlg.exec();

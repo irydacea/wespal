@@ -120,6 +120,11 @@ private:
 
 	QString supportedImageFileFormats_;
 
+	bool hasImage() const
+	{
+		return !originalImage_.isNull();
+	}
+
 	/**
 	 * Merges user definitions with built-ins.
 	 *
