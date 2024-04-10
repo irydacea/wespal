@@ -3,6 +3,7 @@
 #
 
 *.user
+*.user.*
 *.kate.swp
 .vscode/
 .vstags
