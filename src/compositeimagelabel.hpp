@@ -115,6 +115,9 @@ public:
 	 */
 	void setDisplayRatio(qreal displayRatio)
 	{
+		if (displayRatio == displayRatio_)
+			return;
+
 		displayRatio_ = qBound(0.0, displayRatio, 1.0);
 		buildComposite();
 		update();
