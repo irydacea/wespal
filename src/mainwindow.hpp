@@ -55,6 +55,7 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *e);
 	void dropEvent(QDropEvent *e);
 	void mouseMoveEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 	void wheelEvent(QWheelEvent *event);
 
@@ -104,6 +105,9 @@ private:
 	bool dragUseRecolored_;
 	bool dragStart_;
 	QPoint dragStartPos_;
+
+	bool panStart_;
+	QPoint panStartPos_;
 
 	QList<QAction*> recentFileActions_;
 	QList<QAction*> zoomActions_;

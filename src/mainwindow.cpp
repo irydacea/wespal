@@ -88,6 +88,9 @@ MainWindow::MainWindow(QWidget *parent)
 	, dragStart_(false)
 	, dragStartPos_()
 
+	, panStart_(false)
+	, panStartPos_()
+
 	, recentFileActions_()
 	, zoomActions_()
 	, viewModeActions_()
@@ -588,11 +591,38 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 		this->dragUseRecolored_ = ui->previewRcContainer->geometry().contains(event->pos());
 		this->dragStart_ = dragUseRecolored_ || ui->previewOriginalContainer->geometry().contains(event->pos());
 	}
+
+	if (event->button() == Qt::MiddleButton && !originalImage_.isNull()) {
+		switch (viewMode_)
+		{
+			case MosConfig::ImageViewSwipe:
+			case MosConfig::ImageViewOnionSkin: {
+				panStart_ = ui->previewCompositeContainer->geometry().contains(event->pos());
+				break;
+			}
+			default: {
+				panStart_ = ui->previewOriginalContainer->geometry().contains(event->pos()) ||
+							ui->previewRcContainer->geometry().contains(event->pos());
+				break;
+			}
+		}
+
+		panStartPos_ = event->pos();
+	}
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event)
+void MainWindow::mouseMoveEvent(QMouseEvent* event)
 {
-	if (dragStart_ && (event->buttons() & Qt::LeftButton) && (event->pos() - dragStartPos_).manhattanLength() >= QApplication::startDragDistance()) {
+	if (dragStart_ && (event->buttons() & Qt::LeftButton))
+	{
+		//
+		// Drag-to-copy action
+		//
+
+		auto delta = event->pos() - dragStartPos_;
+
+		if (delta.manhattanLength() < QApplication::startDragDistance())
+			return;
 
 		auto *d = new QDrag(this);
 		auto *m = new QMimeData();
@@ -607,6 +637,46 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 		ignoreDrops_ = true;
 		d->exec(Qt::CopyAction);
 		ignoreDrops_ = dragStart_ = false;
+	}
+	else if (panStart_ && (event->buttons() & Qt::MiddleButton))
+	{
+		//
+		// Image preview panning
+		//
+
+		QScrollArea* target;
+
+		switch (viewMode_)
+		{
+			case MosConfig::ImageViewSwipe:
+			case MosConfig::ImageViewOnionSkin:
+				target = ui->previewCompositeContainer;
+				break;
+			default:
+				target = ui->previewOriginalContainer;
+				break;
+		}
+
+		// Because the split view container scrollbars are connected together
+		// via signals, we only ever need to adjust the scrollbars for one of
+		// the view containers instead of both sets, yay~ ^-^
+
+		auto* vScroll = target->verticalScrollBar();
+		auto* hScroll = target->horizontalScrollBar();
+
+		auto delta = panStartPos_ - event->pos();
+
+		vScroll->setValue(vScroll->value() + delta.y());
+		hScroll->setValue(hScroll->value() + delta.x());
+
+		panStartPos_ = event->pos();
+	}
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent*)
+{
+	if (panStart_) {
+		panStart_ = false;
 	}
 }
 
