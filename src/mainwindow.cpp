@@ -62,7 +62,7 @@ static const QSize colorIconSize{16, 16};
 
 } // end unnamed namespace
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
 	: QMainWindow(parent)
 
 	, ui(new Ui::MainWindow)
@@ -658,18 +658,14 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event)
 		if (delta.manhattanLength() < QApplication::startDragDistance())
 			return;
 
-		auto *d = new QDrag(this);
-		auto *m = new QMimeData();
+		auto* drag = new QDrag(this);
+		auto* mime = new QMimeData();
 
-		if (dragUseRecolored_)
-			m->setImageData(transformedImage_);
-		else
-			m->setImageData(originalImage_);
-
-		d->setMimeData(m);
+		mime->setImageData(dragUseRecolored_ ? transformedImage_ : originalImage_);
+		drag->setMimeData(mime);
 
 		ignoreDrops_ = true;
-		d->exec(Qt::CopyAction);
+		drag->exec(Qt::CopyAction);
 		ignoreDrops_ = dragStart_ = false;
 	}
 	else if (panStart_ && (event->buttons() & Qt::MiddleButton))
@@ -845,7 +841,7 @@ void MainWindow::openFile(const QString& fileName)
 	QImage selectedImage{selectedPath};
 
 	if (selectedImage.isNull()) {
-		if (selectedPath.isNull() != true) {
+		if (!selectedPath.isEmpty()) {
 			MosUi::error(
 				this, tr("Could not load %1.").arg(selectedPath));
 		}
@@ -921,7 +917,7 @@ void MainWindow::refreshPreviews()
 	centerScrollArea(ui->previewCompositeContainer);
 }
 
-void MainWindow::centerScrollArea(QScrollArea *scrollArea)
+void MainWindow::centerScrollArea(QScrollArea* scrollArea)
 {
 	if (!scrollArea || !scrollArea->widget())
 		return;
@@ -929,7 +925,10 @@ void MainWindow::centerScrollArea(QScrollArea *scrollArea)
 	const QSize& childSize = scrollArea->widget()->size();
 	const QSize& viewSize = scrollArea->viewport()->size();
 
-	scrollArea->ensureVisible(childSize.width()/2, childSize.height()/2, viewSize.width()/2, viewSize.height()/2);
+	scrollArea->ensureVisible(childSize.width() / 2,
+							  childSize.height() / 2,
+							  viewSize.width() / 2,
+							  viewSize.height() / 2);
 }
 
 void MainWindow::doSaveFile()
@@ -940,7 +939,7 @@ void MainWindow::doSaveFile()
 					   QFileInfo(imagePath_).absolutePath(),
 					   QFileDialog::ShowDirsOnly);
 
-	if (base.isNull())
+	if (base.isEmpty())
 		return;
 
 	QStringList succeeded;

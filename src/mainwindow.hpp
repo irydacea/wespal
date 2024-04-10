@@ -39,7 +39,7 @@ namespace Ui {
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-	MainWindow(QWidget *parent = nullptr);
+	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
 	/**
@@ -88,7 +88,7 @@ private:
 		16.0,
 	};
 
-	Ui::MainWindow *ui;
+	Ui::MainWindow* ui;
 
 	QMap<QString, ColorRange> colorRanges_;
 	QMap<QString, ColorList> palettes_;
@@ -158,7 +158,7 @@ private:
 
 	void adjustZoom(ZoomDirection direction);
 
-	void setPreviewBackgroundColor(const QString &colorName);
+	void setPreviewBackgroundColor(const QString& colorName);
 
 	void centerScrollArea(QScrollArea* scrollArea);
 
