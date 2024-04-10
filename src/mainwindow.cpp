@@ -97,6 +97,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 	, supportedImageFileFormats_(MosPlatform::supportedImageFileFormats())
 {
+	//
+	// Window initialisation
+	//
+
 	ui->setupUi(this);
 
 	const auto& lastWindowSize = MosCurrentConfig().mainWindowSize();
@@ -105,21 +109,27 @@ MainWindow::MainWindow(QWidget *parent)
 		resize(lastWindowSize);
 	}
 
+	//
+	// Wesnoth recoloring system data
+	//
+
+	generateMergedRcDefinitions();
+
+	// Set icon sizes before generating entries in processRcDefinitions()
 	ui->cbxKeyPal->setIconSize(colorIconSize);
 	ui->cbxNewPal->setIconSize(colorIconSize);
 	ui->listRanges->setIconSize(colorIconSize);
 
-	generateMergedRcDefinitions();
 	processRcDefinitions();
+
+	//
+	// General menu setup
+	//
 
 	auto* act_whatsthis = QWhatsThis::createAction(this);
 
 	ui->menu_Help->insertAction(ui->actionAbout_Morning_Star, act_whatsthis);
 	ui->menu_Help->insertSeparator(ui->actionAbout_Morning_Star);
-
-	auto* saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
-
-	saveButton->setWhatsThis(tr("Saves the current recolor job."));
 
 	ui->action_Close->setShortcut(QKeySequence::Close);
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
@@ -144,6 +154,14 @@ MainWindow::MainWindow(QWidget *parent)
 			ui->action_Quit->setIcon(qStyle->standardIcon(QStyle::SP_DialogCancelButton, nullptr, ui->menu_File));
 		}
 	}
+
+	//
+	// Button box
+	//
+
+	auto* saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
+
+	saveButton->setWhatsThis(tr("Saves the current recolor job."));
 
 	//
 	// MRU menu & list widget
@@ -297,40 +315,40 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->actionPreviewBgCustom->setIconVisibleInMenu(true);
 	updateCustomPreviewBgIcon();
 
+	//
+	// Image preview widgets
+	//
+
 	ui->previewOriginalContainer->viewport()->setBackgroundRole(QPalette::Dark);
 	ui->previewRcContainer->viewport()->setBackgroundRole(QPalette::Dark);
 	ui->previewCompositeContainer->viewport()->setBackgroundRole(QPalette::Dark);
 
+	// FIXME: hack to prevent Oxygen/Breeze stealing our drag events when
+	// dragging windows from empty areas is enabled.
 	//
-	// FIXME: hack to prevent Oxygen stealing our drag events when dragging
-	// windows from empty areas is enabled.
-	//
-	// http://lists.kde.org/?l=kde-devel&m=130530904703913&w=2
+	// <https://marc.info/?l=kde-devel&m=130530904703913&w=2>
 	//
 	// We should probably figure out a better way to do this later, as well
 	// as the preview panels themselves; the proper way according to the
 	// Oxygen dev is to prevent (at the widget level) propagation of the event
 	// to the window widget.
-	//
-
 	ui->previewOriginalContainer->setProperty("_kde_no_window_grab", true);
 	ui->previewRcContainer->setProperty("_kde_no_window_grab", true);
 	ui->previewComposite->setProperty("_kde_no_window_grab", true);
 
 	// Ensure split view scrollbars are in sync on both sides
 
-	connect(
-		ui->previewOriginalContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
-		ui->previewRcContainer->horizontalScrollBar(), SLOT(setValue(int)));
-	connect(
-		ui->previewRcContainer->horizontalScrollBar(), SIGNAL(valueChanged(int)),
-		ui->previewOriginalContainer->horizontalScrollBar(), SLOT(setValue(int)));
-	connect(
-		ui->previewOriginalContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
-		ui->previewRcContainer->verticalScrollBar(), SLOT(setValue(int)));
-	connect(
-		ui->previewRcContainer->verticalScrollBar(), SIGNAL(valueChanged(int)),
-		ui->previewOriginalContainer->verticalScrollBar(), SLOT(setValue(int)));
+	auto* originalHScroll = ui->previewOriginalContainer->horizontalScrollBar();
+	auto* rcHScroll = ui->previewRcContainer->horizontalScrollBar();
+
+	auto* originalVScroll = ui->previewOriginalContainer->verticalScrollBar();
+	auto* rcVScroll = ui->previewRcContainer->verticalScrollBar();
+
+	connect(originalHScroll, SIGNAL(valueChanged(int)), rcHScroll, SLOT(setValue(int)));
+	connect(rcHScroll, SIGNAL(valueChanged(int)), originalHScroll, SLOT(setValue(int)));
+
+	connect(originalVScroll, SIGNAL(valueChanged(int)), rcVScroll, SLOT(setValue(int)));
+	connect(rcVScroll, SIGNAL(valueChanged(int)), originalVScroll, SLOT(setValue(int)));
 
 	//
 	// Finalise initial workarea setup
