@@ -28,6 +28,8 @@ ColorListInputDialog::ColorListInputDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	setWindowFlags(Qt::Sheet);
+
 	const auto& monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 	ui->teColors->setFont(monoFont);
 }

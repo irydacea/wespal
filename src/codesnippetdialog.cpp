@@ -35,6 +35,8 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
 	ui(new Ui::CodeSnippetDialog)
 {
 	ui->setupUi(this);
+
+	setWindowFlags(Qt::Sheet);
 	ui->teContents->setPlainText(contents);
 
 	auto* const closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
