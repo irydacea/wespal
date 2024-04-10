@@ -209,6 +209,7 @@ MainWindow::MainWindow(QWidget *parent)
 		ui->actionZoom200,
 		ui->actionZoom400,
 		ui->actionZoom800,
+		ui->actionZoom1600,
 	};
 
 	static_assert(zoomFactors_.size() == zoomMenuItems.size());
