@@ -109,13 +109,14 @@ MainWindow::MainWindow(QWidget *parent)
 	generateMergedRcDefinitions();
 	processRcDefinitions();
 
-	QAction* const act_whatsthis = QWhatsThis::createAction(this);
+	auto* act_whatsthis = QWhatsThis::createAction(this);
+
 	ui->menu_Help->insertAction(ui->actionAbout_Morning_Star, act_whatsthis);
 	ui->menu_Help->insertSeparator(ui->actionAbout_Morning_Star);
 
-	QPushButton* const save = ui->buttonBox->button(QDialogButtonBox::Save);
+	auto* saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
 
-	save->setWhatsThis(tr("Saves the current recolor job."));
+	saveButton->setWhatsThis(tr("Saves the current recolor job."));
 
 	ui->action_Close->setShortcut(QKeySequence::Close);
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
@@ -150,7 +151,7 @@ MainWindow::MainWindow(QWidget *parent)
 	recentFileActions_.reserve(maxMruEntries);
 
 	for (unsigned k = 0; k < maxMruEntries; ++k) {
-		QAction* act = new QAction(this);
+		auto* act = new QAction(this);
 
 		act->setEnabled(false);
 		act->setVisible(false);
@@ -180,7 +181,7 @@ MainWindow::MainWindow(QWidget *parent)
 	ui->zoomSlider->setMaximum(zoomFactors_.size() - 1);
 	ui->zoomSlider->setValue(1);
 
-	QActionGroup* zoomMenuActs = new QActionGroup(this);
+	auto* zoomMenuActs = new QActionGroup(this);
 	std::array zoomMenuItems = {
 		ui->actionZoom50,
 		ui->actionZoom100,
@@ -218,7 +219,7 @@ MainWindow::MainWindow(QWidget *parent)
 	// NOTE: Our view mode will be committed later at the end of setup
 	auto viewMode = MosCurrentConfig().imageViewMode();
 
-	QActionGroup* viewMenuActs = new QActionGroup(this);
+	auto* viewMenuActs = new QActionGroup(this);
 	std::array viewMenuItems = {
 		ui->actionViewVSplit,
 		ui->actionViewHSplit,
@@ -252,8 +253,8 @@ MainWindow::MainWindow(QWidget *parent)
 	// Background color menu
 	//
 
-	const QString& bgColorName = MosCurrentConfig().previewBackgroundColor();
-	QActionGroup* bgColorActs = new QActionGroup(this);
+	const auto& bgColorName = MosCurrentConfig().previewBackgroundColor();
+	auto* bgColorActs = new QActionGroup(this);
 
 	// The Custom Color entry goes into the list first so that it is preemptively
 	// selected first on the next loop in case the color saved in preferences isn't
@@ -374,7 +375,7 @@ void MainWindow::generateMergedRcDefinitions()
 
 void MainWindow::insertRangeListItem(const QString &id, const QString &display_name, const QColor& color)
 {
-	QListWidgetItem* lwi = new QListWidgetItem(ui->listRanges);
+	auto* lwi = new QListWidgetItem(ui->listRanges);
 	auto colorIcon = createColorIcon(color, colorIconSize, ui->listRanges);
 
 	lwi->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
@@ -593,8 +594,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
 	if (dragStart_ && (event->buttons() & Qt::LeftButton) && (event->pos() - dragStartPos_).manhattanLength() >= QApplication::startDragDistance()) {
 
-		QDrag *d = new QDrag(this);
-		QMimeData *m = new QMimeData();
+		auto *d = new QDrag(this);
+		auto *m = new QMimeData();
 
 		if (dragUseRecolored_)
 			m->setImageData(this->transformedImage_);
