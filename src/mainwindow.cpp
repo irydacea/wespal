@@ -954,6 +954,7 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->lblNewPal, ui->cbxNewPal,
 		ui->listRanges,
 		ui->zoomSlider,
+		ui->menu_Zoom,
 		ui->lblViewMode,
 		ui->cbxViewMode,
 		ui->buttonBox->button(QDialogButtonBox::Save));
@@ -961,6 +962,10 @@ void MainWindow::enableWorkArea(bool enable)
 	std::apply([enable](auto&&... widget) {
 		(widget->setEnabled(enable), ...);
 	}, elements);
+
+	for (auto* action : viewModeActions_) {
+		action->setEnabled(enable);
+	}
 
 	if (!enable) {
 		ui->staWorkAreaParent->setCurrentIndex(WorkAreaStartPage);
