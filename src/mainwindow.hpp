@@ -195,4 +195,5 @@ private slots:
 	void on_viewSlider_valueChanged(int value);
 	void on_actionZoomIn_triggered();
 	void on_actionZoomOut_triggered();
+	void on_actionAppSettings_triggered();
 };

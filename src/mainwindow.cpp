@@ -24,6 +24,7 @@
 #include "customranges.hpp"
 #include "mainwindow.hpp"
 #include "paletteitem.hpp"
+#include "settingsdialog.hpp"
 #include "ui_mainwindow.h"
 #include "util.hpp"
 
@@ -1430,4 +1431,29 @@ void MainWindow::on_actionZoomIn_triggered()
 void MainWindow::on_actionZoomOut_triggered()
 {
 	adjustZoom(ZoomOut);
+}
+
+void MainWindow::on_actionAppSettings_triggered()
+{
+	SettingsDialog dlg{
+		QList<qreal>(zoomFactors_.cbegin(), zoomFactors_.cend()),
+		originalImage_,
+		this
+	};
+
+	dlg.exec();
+
+	if (dlg.result() == QDialog::Rejected)
+		return;
+
+	userColorRanges_ = MosCurrentConfig().customColorRanges();
+	userPalettes_ = MosCurrentConfig().customPalettes();
+
+	{
+		ObjectLock l{this};
+		generateMergedRcDefinitions();
+		processRcDefinitions();
+	}
+
+	refreshPreviews();
 }

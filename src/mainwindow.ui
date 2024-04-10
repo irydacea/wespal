@@ -243,8 +243,8 @@
              <widget class="QWidget" name="scrollAreaWidgetContents_2">
               <property name="geometry">
                <rect>
-                <x>103</x>
-                <y>34</y>
+                <x>0</x>
+                <y>0</y>
                 <width>270</width>
                 <height>162</height>
                </rect>
@@ -288,8 +288,8 @@
              <widget class="QWidget" name="scrollAreaWidgetContents_3">
               <property name="geometry">
                <rect>
-                <x>103</x>
-                <y>34</y>
+                <x>0</x>
+                <y>0</y>
                 <width>271</width>
                 <height>162</height>
                </rect>
@@ -369,7 +369,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>130</y>
+                <y>0</y>
                 <width>495</width>
                 <height>181</height>
                </rect>
@@ -749,6 +749,7 @@
     </property>
     <addaction name="actionColor_ranges"/>
     <addaction name="action_Palettes"/>
+    <addaction name="actionAppSettings"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -1075,6 +1076,14 @@
   <action name="actionChangeLog">
    <property name="text">
     <string>Release &amp;Notes</string>
+   </property>
+  </action>
+  <action name="actionAppSettings">
+   <property name="text">
+    <string>&amp;Settings...</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
  </widget>

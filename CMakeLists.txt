@@ -144,6 +144,7 @@ qt_add_executable(wespal WIN32 MACOSX_BUNDLE
 	src/custompalettes.cpp src/custompalettes.hpp src/custompalettes.ui
 	src/customranges.cpp src/customranges.hpp src/customranges.ui
 	src/imagelabel.cpp src/imagelabel.hpp
+	src/settingsdialog.hpp src/settingsdialog.cpp src/settingsdialog.ui
 	src/mainwindow.cpp src/mainwindow.hpp src/mainwindow.ui
 	src/paletteitem.cpp src/paletteitem.hpp
 	src/util.cpp src/util.hpp

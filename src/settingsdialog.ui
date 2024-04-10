@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>640</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="mainTab">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QCheckBox" name="rememberWindowSizeCheckbox">
+         <property name="text">
+          <string>Remember &amp;window size on exit</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="rememberImageViewModeCheckbox">
+         <property name="text">
+          <string>Remember last &amp;view mode</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="defaultZoomLabel">
+           <property name="text">
+            <string>Default &amp;zoom:</string>
+           </property>
+           <property name="buddy">
+            <cstring>defaultZoomList</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="defaultZoomList"/>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="colorRangesTab">
+      <attribute name="title">
+       <string>Color Ranges</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <layout class="QVBoxLayout" name="colorRangeListLayout">
+         <item>
+          <widget class="QListWidget" name="colorRangeList">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="colorRangeToolsLayout" stretch="0,0,0,0">
+           <item>
+            <widget class="QToolButton" name="colorRangeAdd">
+             <property name="text">
+              <string>&amp;New</string>
+             </property>
+             <property name="icon">
+              <iconset theme="list-add">
+               <normaloff>:/list-add-16.png</normaloff>:/list-add-16.png</iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="colorRangeDel">
+             <property name="text">
+              <string>&amp;Delete</string>
+             </property>
+             <property name="icon">
+              <iconset theme="list-remove">
+               <normaloff>:/list-remove-16.png</normaloff>:/list-remove-16.png</iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="colorRangeMenuButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>&amp;More </string>
+             </property>
+             <property name="popupMode">
+              <enum>QToolButton::InstantPopup</enum>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="colorRangeEditor">
+         <property name="whatsThis">
+          <string>The average shade of the image's recolored portions.</string>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="whatsThis">
+             <string>The average shade of an image's recolored portions.</string>
+            </property>
+            <property name="text">
+             <string>A&amp;verage:</string>
+            </property>
+            <property name="buddy">
+             <cstring>avgColorEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLineEdit" name="avgColorEdit">
+              <property name="whatsThis">
+               <string>The average shade of an image's recolored portions.</string>
+              </property>
+              <property name="text">
+               <string>#888888</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="avgColorPick">
+              <property name="whatsThis">
+               <string>The average shade of an image's recolored portions.</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="whatsThis">
+             <string>The maximum highlight shade of an image's recolored portions.</string>
+            </property>
+            <property name="text">
+             <string>&amp;Highlight:</string>
+            </property>
+            <property name="buddy">
+             <cstring>maxColorEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLineEdit" name="maxColorEdit">
+              <property name="whatsThis">
+               <string>The maximum highlight shade of an image's recolored portions.</string>
+              </property>
+              <property name="text">
+               <string>#ffffff</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="maxColorPick">
+              <property name="whatsThis">
+               <string>The maximum highlight shade of an image's recolored portions.</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="whatsThis">
+             <string>The minimum shadow shade of an image's recolored portions.</string>
+            </property>
+            <property name="text">
+             <string>&amp;Shadow:</string>
+            </property>
+            <property name="buddy">
+             <cstring>minColorEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QLineEdit" name="minColorEdit">
+              <property name="whatsThis">
+               <string>The minimum shadow shade of an image's recolored portions.</string>
+              </property>
+              <property name="text">
+               <string>#000000</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="minColorPick">
+              <property name="whatsThis">
+               <string>The minimum shadow shade of an image's recolored portions.</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="colorRangeFromList">
+              <property name="text">
+               <string>From &amp;List</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="colorRangeWml">
+              <property name="whatsThis">
+               <string>Generates a sample Wesnoth Markup Language snippet containing a single color range definition, which you can save to a file or clipboard for later inclusion in your own project.</string>
+              </property>
+              <property name="text">
+               <string>Generate &amp;WML</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="repColorLabel">
+            <property name="text">
+             <string>&amp;Icon:</string>
+            </property>
+            <property name="buddy">
+             <cstring>repColorEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLineEdit" name="repColorEdit">
+              <property name="text">
+               <string>#333333</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="repColorPick">
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="palettesTab">
+      <attribute name="title">
+       <string>Palettes</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <layout class="QVBoxLayout" name="paletteListLayout">
+         <item>
+          <widget class="QListWidget" name="paletteList">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="paletteOptionsLayout" stretch="1,1,1,0">
+           <item>
+            <widget class="QToolButton" name="paletteAdd">
+             <property name="text">
+              <string>&amp;New</string>
+             </property>
+             <property name="icon">
+              <iconset theme="list-add">
+               <normaloff>:/list-add-16.png</normaloff>:/list-add-16.png</iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="paletteDel">
+             <property name="text">
+              <string>&amp;Delete</string>
+             </property>
+             <property name="icon">
+              <iconset theme="list-remove">
+               <normaloff>:/list-remove-16.png</normaloff>:/list-remove-16.png</iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonIconOnly</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="paletteMenuButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>&amp;More </string>
+             </property>
+             <property name="popupMode">
+              <enum>QToolButton::InstantPopup</enum>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="paletteEditor">
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <layout class="QVBoxLayout" name="paletteColorsLayout">
+            <item>
+             <widget class="QListWidget" name="paletteColorsList">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::DoubleClicked</set>
+              </property>
+              <property name="uniformItemSizes">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="paletteColorEditorPanel">
+              <layout class="QHBoxLayout" name="paletteColorEditorLayout">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="paletteColorEditLabel">
+                 <property name="whatsThis">
+                  <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+                 </property>
+                 <property name="text">
+                  <string>He&amp;x:</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>paletteColorEdit</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="paletteColorEdit">
+                 <property name="whatsThis">
+                  <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="paletteColorPick">
+                 <property name="whatsThis">
+                  <string>Displays controls to allow you to choose a new color.</string>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="paletteColorToolsPanel">
+            <layout class="QVBoxLayout" name="paletteColorToolsLayout" stretch="0,0,1,0,0,0,2,0">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="paletteColorAdd">
+               <property name="text">
+                <string>&amp;Add Color</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="paletteColorDel">
+               <property name="text">
+                <string>Re&amp;move Color</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="paletteColorsFromList">
+               <property name="whatsThis">
+                <string>Adds multiple colors from a comma-separated lists.</string>
+               </property>
+               <property name="text">
+                <string>From &amp;List</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="paletteColorsFromImage">
+               <property name="whatsThis">
+                <string>Adds colors from the currently opened image.</string>
+               </property>
+               <property name="text">
+                <string>From &amp;Image</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="paletteWml">
+               <property name="whatsThis">
+                <string>Generates a sample Wesnoth Markup Language snippet containing a single color palette definition, which you can save to a file or clipboard for later inclusion in your own project.</string>
+               </property>
+               <property name="text">
+                <string>Generate &amp;WML</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="paletteRecolor">
+               <property name="whatsThis">
+                <string>Recolors the palette using a given color range.</string>
+               </property>
+               <property name="text">
+                <string>&amp;Recolor</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionRenameColorRange">
+   <property name="icon">
+    <iconset theme="edit-rename"/>
+   </property>
+   <property name="text">
+    <string>&amp;Rename</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionDuplicateColorRange">
+   <property name="icon">
+    <iconset theme="edit-copy"/>
+   </property>
+   <property name="text">
+    <string>&amp;Duplicate</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionRenamePalette">
+   <property name="icon">
+    <iconset theme="edit-rename"/>
+   </property>
+   <property name="text">
+    <string>&amp;Rename</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionDuplicatePalette">
+   <property name="icon">
+    <iconset theme="edit-copy"/>
+   </property>
+   <property name="text">
+    <string>&amp;Duplicate</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>rememberWindowSizeCheckbox</tabstop>
+  <tabstop>rememberImageViewModeCheckbox</tabstop>
+  <tabstop>defaultZoomList</tabstop>
+  <tabstop>colorRangeList</tabstop>
+  <tabstop>colorRangeAdd</tabstop>
+  <tabstop>colorRangeDel</tabstop>
+  <tabstop>colorRangeMenuButton</tabstop>
+  <tabstop>avgColorEdit</tabstop>
+  <tabstop>avgColorPick</tabstop>
+  <tabstop>maxColorEdit</tabstop>
+  <tabstop>maxColorPick</tabstop>
+  <tabstop>minColorEdit</tabstop>
+  <tabstop>minColorPick</tabstop>
+  <tabstop>repColorEdit</tabstop>
+  <tabstop>repColorPick</tabstop>
+  <tabstop>colorRangeFromList</tabstop>
+  <tabstop>colorRangeWml</tabstop>
+  <tabstop>paletteList</tabstop>
+  <tabstop>paletteAdd</tabstop>
+  <tabstop>paletteDel</tabstop>
+  <tabstop>paletteMenuButton</tabstop>
+  <tabstop>paletteColorsList</tabstop>
+  <tabstop>paletteColorEdit</tabstop>
+  <tabstop>paletteColorPick</tabstop>
+  <tabstop>paletteColorAdd</tabstop>
+  <tabstop>paletteColorDel</tabstop>
+  <tabstop>paletteColorsFromList</tabstop>
+  <tabstop>paletteColorsFromImage</tabstop>
+  <tabstop>paletteWml</tabstop>
+  <tabstop>paletteRecolor</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>SettingsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SettingsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
