@@ -354,17 +354,17 @@ void MainWindow::updateWindowTitle(bool hasImage, const QString& filename)
 
 	if (hasImage) {
 		if (filename.isEmpty()) {
-			this->setWindowFilePath({});
+			setWindowFilePath({});
 			displayString = tr("Dropped file");
 		} else {
-			this->setWindowFilePath(filename);
+			setWindowFilePath(filename);
 			displayString = QFileInfo(filename).fileName();
 		}
 
-		this->setWindowTitle(displayString % QString::fromUtf8(" \342\200\224 ") % appTitle);
+		setWindowTitle(displayString % QString::fromUtf8(" \342\200\224 ") % appTitle);
 	} else {
-		this->setWindowFilePath({});
-		this->setWindowTitle(appTitle);
+		setWindowFilePath({});
+		setWindowTitle(appTitle);
 	}
 }
 
@@ -553,11 +553,12 @@ void MainWindow::updateRecentFilesMenu()
 	ui->panelMru->setVisible(!MosCurrentConfig().recentFiles().empty());
 }
 
-void MainWindow::changeEvent(QEvent *e)
+void MainWindow::changeEvent(QEvent* event)
 {
-    QMainWindow::changeEvent(e);
+	QMainWindow::changeEvent(event);
 
-	switch (e->type()) {
+	switch (event->type())
+	{
 		case QEvent::LanguageChange:
 			ui->retranslateUi(this);
 			break;
@@ -566,33 +567,47 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent * /*e*/)
+void MainWindow::closeEvent(QCloseEvent*)
 {
 	MosCurrentConfig().setMainWindowSize(size());
 }
 
-void MainWindow::wheelEvent(QWheelEvent *event)
+void MainWindow::wheelEvent(QWheelEvent* event)
 {
-	if (event->angleDelta().x() == 0 && event->modifiers() & Qt::ControlModifier) {
+	if (event->angleDelta().x() == 0 && event->modifiers() & Qt::ControlModifier)
+	{
+		//
+		// Ctrl+Scroll wheel zoom
+		//
+
 		if (event->angleDelta().y() > 0) {
 			adjustZoom(ZoomIn);
 		} else if (event->angleDelta().y() < 0) {
 			adjustZoom(ZoomOut);
 		}
+
 		event->accept();
-		return;
 	}
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event)
+void MainWindow::mousePressEvent(QMouseEvent* event)
 {
-	if (event->button() == Qt::LeftButton && !originalImage_.isNull() && !transformedImage_.isNull()) {
-		this->dragStartPos_ = event->pos();
-		this->dragUseRecolored_ = ui->previewRcContainer->geometry().contains(event->pos());
-		this->dragStart_ = dragUseRecolored_ || ui->previewOriginalContainer->geometry().contains(event->pos());
-	}
+	if (event->button() == Qt::LeftButton && !originalImage_.isNull())
+	{
+		//
+		// Drag-to-copy action
+		//
 
-	if (event->button() == Qt::MiddleButton && !originalImage_.isNull()) {
+		dragStartPos_ = event->pos();
+		dragUseRecolored_ = ui->previewRcContainer->geometry().contains(event->pos());
+		dragStart_ = dragUseRecolored_ || ui->previewOriginalContainer->geometry().contains(event->pos());
+	}
+	else if (event->button() == Qt::MiddleButton && !originalImage_.isNull())
+	{
+		//
+		// Image preview panning
+		//
+
 		switch (viewMode_)
 		{
 			case MosConfig::ImageViewSwipe:
@@ -628,9 +643,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event)
 		auto *m = new QMimeData();
 
 		if (dragUseRecolored_)
-			m->setImageData(this->transformedImage_);
+			m->setImageData(transformedImage_);
 		else
-			m->setImageData(this->originalImage_);
+			m->setImageData(originalImage_);
 
 		d->setMimeData(m);
 
@@ -680,13 +695,14 @@ void MainWindow::mouseReleaseEvent(QMouseEvent*)
 	}
 }
 
-void MainWindow::dragEnterEvent(QDragEnterEvent *e)
+void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 {
-	if (e->mimeData()->hasImage() || e->mimeData()->hasUrls())
-		e->acceptProposedAction();
+	if (event->mimeData()->hasImage() || event->mimeData()->hasUrls()) {
+		event->acceptProposedAction();
+	}
 }
 
-void MainWindow::dropEvent(QDropEvent *e)
+void MainWindow::dropEvent(QDropEvent* event)
 {
 	if (ignoreDrops_)
 		return;
@@ -694,13 +710,13 @@ void MainWindow::dropEvent(QDropEvent *e)
 	QImage newimg;
 	QString newpath;
 
-	e->acceptProposedAction();
+	event->acceptProposedAction();
 
-	if (e->mimeData()->hasImage()) {
-		newimg = qvariant_cast<QImage>(e->mimeData()->imageData());
+	if (event->mimeData()->hasImage()) {
+		newimg = qvariant_cast<QImage>(event->mimeData()->imageData());
 	}
-	else if (e->mimeData()->hasUrls()) {
-		newpath = e->mimeData()->urls().front().path();
+	else if (event->mimeData()->hasUrls()) {
+		newpath = event->mimeData()->urls().front().path();
 		newimg.load(newpath);
 	}
 
@@ -748,7 +764,7 @@ void MainWindow::on_buttonBox_clicked(QAbstractButton* button)
 			break;
 		case QDialogButtonBox::Close:
 			if (originalImage_.isNull()) {
-				this->close();
+				close();
 			} else {
 				doCloseFile();
 			}
@@ -766,7 +782,7 @@ void MainWindow::on_action_Open_triggered()
 void MainWindow::on_action_Quit_triggered()
 {
 	doCloseFile();
-	this->close();
+	close();
 }
 
 void MainWindow::on_action_Reload_triggered()
@@ -850,7 +866,7 @@ void MainWindow::doReloadFile()
 
 void MainWindow::refreshPreviews()
 {
-	if (this->originalImage_.isNull() || this->signalsBlocked())
+	if (originalImage_.isNull() || signalsBlocked())
 		return;
 
 	ColorMap cvtMap;
@@ -929,8 +945,8 @@ void MainWindow::doSaveFile()
 void MainWindow::doCloseFile()
 {
 	enableWorkArea(false);
-	this->originalImage_ = QImage{};
-	this->transformedImage_ = QImage{};
+	originalImage_ = QImage{};
+	transformedImage_ = QImage{};
 }
 
 void MainWindow::doAboutDialog()

@@ -50,14 +50,18 @@ public:
 	QStringList doRunJobs(const QMap<QString, ColorMap>& jobs);
 
 protected:
-    void changeEvent(QEvent *e);
-	void closeEvent(QCloseEvent *e);
-	void dragEnterEvent(QDragEnterEvent *e);
-	void dropEvent(QDropEvent *e);
-	void mouseMoveEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	void mousePressEvent(QMouseEvent *event);
-	void wheelEvent(QWheelEvent *event);
+	virtual void changeEvent(QEvent* event) override;
+
+	virtual void closeEvent(QCloseEvent* event) override;
+
+	virtual void wheelEvent(QWheelEvent* event) override;
+
+	virtual void mousePressEvent(QMouseEvent* event) override;
+	virtual void mouseMoveEvent(QMouseEvent* event) override;
+	virtual void mouseReleaseEvent(QMouseEvent* event) override;
+
+	virtual void dragEnterEvent(QDragEnterEvent* event) override;
+	virtual void dropEvent(QDropEvent* event) override;
 
 private:
 	using ViewMode = MosConfig::ImageViewMode;
