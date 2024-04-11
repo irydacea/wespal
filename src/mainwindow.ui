@@ -883,11 +883,6 @@
     <string>Reloa&amp;d</string>
    </property>
   </action>
-  <action name="action_RecentPlaceholder">
-   <property name="text">
-    <string>&lt;Recent files&gt;</string>
-   </property>
-  </action>
   <action name="action_MruPlaceholder">
    <property name="text">
     <string>&lt;Recent files&gt;</string>
