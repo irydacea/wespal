@@ -38,6 +38,12 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>400</width>
+        <height>0</height>
+       </size>
+      </property>
       <layout class="QVBoxLayout" name="workAreaImagePanelLayout">
        <property name="leftMargin">
         <number>0</number>
@@ -260,7 +266,7 @@
              <widget class="QWidget" name="scrollAreaWidgetContents_2">
               <property name="geometry">
                <rect>
-                <x>90</x>
+                <x>105</x>
                 <y>32</y>
                 <width>270</width>
                 <height>162</height>
@@ -305,7 +311,7 @@
              <widget class="QWidget" name="scrollAreaWidgetContents_3">
               <property name="geometry">
                <rect>
-                <x>90</x>
+                <x>105</x>
                 <y>32</y>
                 <width>271</width>
                 <height>162</height>
@@ -380,7 +386,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>119</y>
+                <y>0</y>
                 <width>495</width>
                 <height>181</height>
                </rect>
@@ -489,6 +495,24 @@
     </item>
     <item>
      <widget class="QFrame" name="workAreaOptionsPanel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <layout class="QGridLayout" name="workAreaOptionsPanelLayout">
        <property name="leftMargin">
         <number>0</number>
@@ -507,9 +531,6 @@
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <layout class="QFormLayout" name="flKeyPal">
-            <property name="fieldGrowthPolicy">
-             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="lblKeyPal">
               <property name="text">
@@ -523,7 +544,7 @@
             <item row="0" column="1">
              <widget class="QComboBox" name="cbxKeyPal">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -610,7 +631,7 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <layout class="QFormLayout" name="formLayout_2">
+             <layout class="QVBoxLayout" name="verticalLayout_6">
               <property name="leftMargin">
                <number>0</number>
               </property>
@@ -623,7 +644,7 @@
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item row="0" column="0">
+              <item>
                <widget class="QListWidget" name="listRanges">
                 <property name="whatsThis">
                  <string>Allows to select color ranges to apply. Click on an item to preview the transformation to the right.</string>
@@ -668,7 +689,7 @@
               <item row="0" column="1">
                <widget class="QComboBox" name="cbxNewPal">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
