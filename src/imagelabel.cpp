@@ -36,6 +36,12 @@ void ImageLabel::setImage(const QImage& image)
 	update();
 }
 
+void ImageLabel::clear()
+{
+	image_ = QImage{};
+	update();
+}
+
 void ImageLabel::paintEvent(QPaintEvent* event)
 {
 	if (image_.isNull())

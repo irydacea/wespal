@@ -149,6 +149,11 @@ public:
 	 */
 	void setRightImage(const QImage& rightImage);
 
+	/**
+	 * Removes the left and right images.
+	 */
+	void clear();
+
 signals:
 
 public slots:

@@ -55,6 +55,11 @@ public:
 	 */
 	void setImage(const QImage& image);
 
+	/**
+	 * Removes the displayed image.
+	 */
+	void clear();
+
 signals:
 	
 public slots:

@@ -53,6 +53,15 @@ void CompositeImageLabel::setRightImage(const QImage& rightImage)
 	update();
 }
 
+void CompositeImageLabel::clear()
+{
+	compositeCache_ = rightImage_ = leftImage_ = QImage{};
+
+	buildComposite();
+	updateGeometry();
+	update();
+}
+
 void CompositeImageLabel::buildComposite()
 {
 	auto& left = leftImage_;
