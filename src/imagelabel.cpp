@@ -38,6 +38,9 @@ void ImageLabel::setImage(const QImage& image)
 
 void ImageLabel::paintEvent(QPaintEvent* event)
 {
+	if (image_.isNull())
+		return;
+
 	QPainter p{this};
 
 	p.setClipRect(event->rect());

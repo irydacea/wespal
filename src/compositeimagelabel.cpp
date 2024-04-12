@@ -132,6 +132,9 @@ void CompositeImageLabel::buildComposite()
 
 void CompositeImageLabel::paintEvent(QPaintEvent* event)
 {
+	if (leftImage_.isNull())
+		return;
+
 	auto& left = leftImage_;
 	auto& right = rightImage_;
 
