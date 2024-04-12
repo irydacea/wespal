@@ -243,7 +243,7 @@
              <widget class="QWidget" name="scrollAreaWidgetContents_2">
               <property name="geometry">
                <rect>
-                <x>105</x>
+                <x>103</x>
                 <y>34</y>
                 <width>270</width>
                 <height>162</height>
@@ -288,7 +288,7 @@
              <widget class="QWidget" name="scrollAreaWidgetContents_3">
               <property name="geometry">
                <rect>
-                <x>105</x>
+                <x>103</x>
                 <y>34</y>
                 <width>271</width>
                 <height>162</height>
@@ -340,6 +340,12 @@
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
+             <property name="tickPosition">
+              <enum>QSlider::TicksAbove</enum>
+             </property>
+             <property name="tickInterval">
+              <number>250</number>
+             </property>
             </widget>
            </item>
            <item row="0" column="0">
@@ -363,7 +369,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
+                <y>130</y>
                 <width>495</width>
                 <height>181</height>
                </rect>
