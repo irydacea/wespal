@@ -1021,6 +1021,7 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 			ui->pageWorkAreaSplit->setLayout(newLayout);
 
 			newLayout->setContentsMargins(0, 0, 0, 0);
+			newLayout->setSpacing(2);
 			newLayout->addWidget(ui->previewOriginalContainer);
 			newLayout->addWidget(ui->previewRcContainer);
 
