@@ -135,23 +135,9 @@ void CompositeImageLabel::paintEvent(QPaintEvent* event)
 	if (leftImage_.isNull())
 		return;
 
-	auto& left = leftImage_;
-	auto& right = rightImage_;
-
 	QPainter p{this};
 
 	p.setClipRect(event->rect());
 	p.setRenderHint(QPainter::SmoothPixmapTransform, false);
-
-	// Optimise the best case scenarios by drawing a single image.
-
-	if (displayRatio_ == 0.0) {
-		p.drawImage(rect(), left);
-		return;
-	} else if (displayRatio_ == 1.0) {
-		p.drawImage(rect(), right);
-		return;
-	}
-
 	p.drawImage(rect(), compositeCache_);
 }
