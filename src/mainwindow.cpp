@@ -981,8 +981,11 @@ void MainWindow::doSaveFile()
 void MainWindow::doCloseFile()
 {
 	enableWorkArea(false);
-	originalImage_ = QImage{};
-	transformedImage_ = QImage{};
+
+	originalImage_ = transformedImage_ = QImage{};
+
+	ui->previewOriginal->clear();
+	ui->previewComposite->clear();
 }
 
 void MainWindow::doAboutDialog()
