@@ -117,6 +117,19 @@ public:
 	//void deleteCustomPalette(const QString& palette);
 
 	/**
+	 * Retrieves whether the main window size should be remembered.
+	 */
+	bool rememberMainWindowSize() const
+	{
+		return rememberMainWindowSize_;
+	}
+
+	/**
+	 * Sets whether the main window size should be remembered.
+	 */
+	void setRememberMainWindowSize(bool remember);
+
+	/**
 	 * Retrieves the saved main window size.
 	 */
 	const QSize& mainWindowSize() const
@@ -161,6 +174,7 @@ private:
 	MruList imageFilesMru_;
 	QMap<QString, ColorRange> customColorRanges_;
 	QMap<QString, ColorList> customPalettes_;
+	bool rememberMainWindowSize_;
 	QSize mainWindowSize_;
 	QString previewBackgroundColor_;
 	ImageViewMode imageViewMode_;

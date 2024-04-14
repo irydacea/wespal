@@ -30,6 +30,7 @@ Manager::Manager()
 	: imageFilesMru_()
 	, customColorRanges_()
 	, customPalettes_()
+	, rememberMainWindowSize_()
 	, mainWindowSize_()
 	, previewBackgroundColor_()
 	, imageViewMode_()
@@ -39,6 +40,8 @@ Manager::Manager()
 	//
 	// Workspace configuation
 	//
+
+	rememberMainWindowSize_ = qs.value("preview/rememberWindowSize", true).toBool();
 
 	mainWindowSize_ = qs.value("preview/windowSize").toSize();
 
@@ -111,6 +114,15 @@ Manager::Manager()
 	}
 
 	qs.endArray();
+}
+
+void Manager::setRememberMainWindowSize(bool remember)
+{
+	QSettings qs;
+
+	rememberMainWindowSize_ = remember;
+
+	qs.setValue("preview/rememberWindowSize", remember);
 }
 
 void Manager::setMainWindowSize(const QSize& size)
