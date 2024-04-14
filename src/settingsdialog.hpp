@@ -147,23 +147,11 @@ private:
 	template<typename ArtifactT>
 	ArtifactMap<ArtifactT>& artifactCollection();
 
-	template<>
-	ColorRangeMap& artifactCollection();
-
-	template<>
-	ColorListMap& artifactCollection();
-
 	/**
 	 * Retrieves the QListWidget for the specified artifact collection.
 	 */
 	template<typename ArtifactT>
 	QListWidget* artifactSelector();
-
-	template<>
-	QListWidget* artifactSelector<ColorRange>();
-
-	template<>
-	QListWidget* artifactSelector<ColorList>();
 
 	/**
 	 * Retrieves the currently-selected artifact of the specifed type.

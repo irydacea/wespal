@@ -177,28 +177,24 @@ void SettingsDialog::setupSingleColorEditSlots(QLineEdit* lineEdit,
 	});
 }
 
-template<>
-SettingsDialog::ColorRangeMap& SettingsDialog::artifactCollection()
+template<typename ArtifactT>
+SettingsDialog::ArtifactMap<ArtifactT>& SettingsDialog::artifactCollection()
 {
-	return ranges_;
+	if constexpr (std::is_same_v<ArtifactT, ColorRange>) {
+		return ranges_;
+	} else if constexpr (std::is_same_v<ArtifactT, ColorList>) {
+		return palettes_;
+	}
 }
 
-template<>
-SettingsDialog::ColorListMap& SettingsDialog::artifactCollection()
+template<typename ArtifactT>
+QListWidget* SettingsDialog::artifactSelector()
 {
-	return palettes_;
-}
-
-template<>
-QListWidget* SettingsDialog::artifactSelector<ColorRange>()
-{
-	return ui->colorRangeList;
-}
-
-template<>
-QListWidget* SettingsDialog::artifactSelector<ColorList>()
-{
-	return ui->paletteList;
+	if constexpr (std::is_same_v<ArtifactT, ColorRange>) {
+		return ui->colorRangeList;
+	} else if constexpr (std::is_same_v<ArtifactT, ColorList>) {
+		return ui->paletteList;
+	}
 }
 
 template<typename ArtifactT>
