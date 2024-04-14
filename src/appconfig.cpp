@@ -32,6 +32,7 @@ Manager::Manager()
 	, customPalettes_()
 	, rememberMainWindowSize_()
 	, mainWindowSize_()
+	, defaultZoom_()
 	, previewBackgroundColor_()
 	, rememberImageViewMode_()
 	, imageViewMode_()
@@ -45,6 +46,8 @@ Manager::Manager()
 	rememberMainWindowSize_ = qs.value("preview/rememberWindowSize", true).toBool();
 
 	mainWindowSize_ = qs.value("preview/windowSize").toSize();
+
+	defaultZoom_ = qs.value("preview/defaultZoom", qreal(1.0)).toReal();
 
 	previewBackgroundColor_ = qs.value("preview/background").toString();
 
@@ -135,6 +138,15 @@ void Manager::setMainWindowSize(const QSize& size)
 	mainWindowSize_ = size;
 
 	qs.setValue("preview/windowSize", size);
+}
+
+void Manager::setDefaultZoom(qreal zoom)
+{
+	QSettings qs;
+
+	defaultZoom_ = zoom;
+
+	qs.setValue("preview/defaultZoom", zoom);
 }
 
 void Manager::setPreviewBackgroundColor(const QString& previewBackgroundColor)

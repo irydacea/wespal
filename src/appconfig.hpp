@@ -143,6 +143,25 @@ public:
 	void setMainWindowSize(const QSize& size);
 
 	/**
+	 * Retrieves the default preview zoom level.
+	 *
+	 * The zoom value is a numeric factor (e.g. 1.0x, 2.0x) rather than a
+	 * percentage.
+	 */
+	qreal defaultZoom() const
+	{
+		return defaultZoom_;
+	}
+
+	/**
+	 * Sets the default preview zoom level.
+	 *
+	 * The zoom value is a numeric factor (e.g. 1.0x, 2.0x) rather than a
+	 * percentage.
+	 */
+	void setDefaultZoom(qreal zoom);
+
+	/**
 	 * Retrieves the preview background color.
 	 */
 	const QString& previewBackgroundColor() const
@@ -189,6 +208,7 @@ private:
 	QMap<QString, ColorList> customPalettes_;
 	bool rememberMainWindowSize_;
 	QSize mainWindowSize_;
+	qreal defaultZoom_;
 	QString previewBackgroundColor_;
 	bool rememberImageViewMode_;
 	ImageViewMode imageViewMode_;
