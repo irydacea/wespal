@@ -104,10 +104,12 @@ MainWindow::MainWindow(QWidget* parent)
 
 	ui->setupUi(this);
 
-	const auto& lastWindowSize = MosCurrentConfig().mainWindowSize();
+	if (MosCurrentConfig().rememberMainWindowSize()) {
+		const auto& lastWindowSize = MosCurrentConfig().mainWindowSize();
 
-	if (lastWindowSize.isValid()) {
-		resize(lastWindowSize);
+		if (lastWindowSize.isValid()) {
+			resize(lastWindowSize);
+		}
 	}
 
 	auto* workAreaSplitter = new QSplitter(this);
@@ -606,7 +608,9 @@ void MainWindow::changeEvent(QEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent*)
 {
-	MosCurrentConfig().setMainWindowSize(size());
+	if (MosCurrentConfig().rememberMainWindowSize()) {
+		MosCurrentConfig().setMainWindowSize(size());
+	}
 }
 
 void MainWindow::wheelEvent(QWheelEvent* event)
