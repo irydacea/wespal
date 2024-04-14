@@ -9,6 +9,7 @@ Version 0.4.1
 * Added middle-mouse panning to image previews.
 * Added 1600% zoom factor.
 * Redesigned main window.
+* Merged Color Range Editor and Palette Editor into a single Settings window with additional global settings.
 * Changed storage for the main window size and preview background settings - this will cause these settings from previous versions to be forgotten.
 * Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Added unit tests to ensure the recoloring algorithm never breaks silently
