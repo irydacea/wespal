@@ -241,6 +241,9 @@ MainWindow::MainWindow(QWidget* parent)
 		item->setData(k);
 		item->setChecked(zoomFactors_[k] == zoom_);
 
+		if (zoomFactors_[k] == zoom_)
+			ui->zoomSlider->setValue(k);
+
 		connect(item, &QAction::triggered, this, [this](bool) {
 			QAction* const act = qobject_cast<QAction*>(sender());
 
