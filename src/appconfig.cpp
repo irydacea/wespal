@@ -32,6 +32,7 @@ Manager::Manager()
 	, customPalettes_()
 	, mainWindowSize_()
 	, previewBackgroundColor_()
+	, imageViewMode_()
 {
 	QSettings qs;
 
