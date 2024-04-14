@@ -57,6 +57,10 @@ target_compile_options(xcfplugin PRIVATE
 	${cxx_sanitizer_flags}
 )
 
+target_link_options(xcfplugin PRIVATE
+	${cxx_sanitizer_flags}
+)
+
 #
 # libmorningstar
 #
@@ -79,6 +83,10 @@ target_compile_options(morningstar PRIVATE
 	${cxx_sanitizer_flags}
 )
 
+target_link_options(morningstar PRIVATE
+	${cxx_sanitizer_flags}
+)
+
 #
 # Test suite
 #
@@ -90,6 +98,10 @@ if(ENABLE_TESTS)
 
     target_compile_options(wespal_tests PRIVATE
 		${cxx_warning_flags}
+		${cxx_sanitizer_flags}
+	)
+
+	target_link_options(wespal_tests PRIVATE
 		${cxx_sanitizer_flags}
 	)
 
@@ -154,6 +166,10 @@ target_compile_definitions(wespal PRIVATE
 
 target_compile_options(wespal PRIVATE
 	${cxx_warning_flags}
+	${cxx_sanitizer_flags}
+)
+
+target_link_options(wespal PRIVATE
 	${cxx_sanitizer_flags}
 )
 
