@@ -130,8 +130,7 @@
               <string>&amp;New</string>
              </property>
              <property name="icon">
-              <iconset theme="list-add">
-               <normaloff>:/list-add-16.png</normaloff>:/list-add-16.png</iconset>
+              <iconset theme="list-add"/>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonIconOnly</enum>
@@ -147,8 +146,7 @@
               <string>&amp;Delete</string>
              </property>
              <property name="icon">
-              <iconset theme="list-remove">
-               <normaloff>:/list-remove-16.png</normaloff>:/list-remove-16.png</iconset>
+              <iconset theme="list-remove"/>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonIconOnly</enum>
@@ -418,8 +416,7 @@
               <string>&amp;New</string>
              </property>
              <property name="icon">
-              <iconset theme="list-add">
-               <normaloff>:/list-add-16.png</normaloff>:/list-add-16.png</iconset>
+              <iconset theme="list-add"/>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonIconOnly</enum>
@@ -435,8 +432,7 @@
               <string>&amp;Delete</string>
              </property>
              <property name="icon">
-              <iconset theme="list-remove">
-               <normaloff>:/list-remove-16.png</normaloff>:/list-remove-16.png</iconset>
+              <iconset theme="list-remove"/>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonIconOnly</enum>

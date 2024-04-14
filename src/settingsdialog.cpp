@@ -51,6 +51,24 @@ SettingsDialog::SettingsDialog(const QList<qreal>& zoomValues,
 
 	ui->setupUi(this);
 
+	// Set theme icons
+
+	auto listAddIcon = QIcon::fromTheme("list-add", QIcon{":/list-add-16.png"});
+	ui->colorRangeAdd->setIcon(listAddIcon);
+	ui->paletteAdd->setIcon(listAddIcon);
+
+	auto listRemoveIcon = QIcon::fromTheme("list-remove", QIcon{":/list-remove-16.png"});
+	ui->colorRangeDel->setIcon(listRemoveIcon);
+	ui->paletteDel->setIcon(listRemoveIcon);
+
+	auto editCopyIcon = QIcon::fromTheme("edit-copy", QIcon{":/edit-copy-16.png"});
+	ui->actionDuplicateColorRange->setIcon(editCopyIcon);
+	ui->actionDuplicatePalette->setIcon(editCopyIcon);
+
+	auto editRenameIcon = QIcon::fromTheme("edit-rename");
+	ui->actionRenameColorRange->setIcon(editRenameIcon);
+	ui->actionRenamePalette->setIcon(editRenameIcon);
+
 	// Both initColorRangesPage() and initPalettesPage() touch this. It's also
 	// needed later on during event handling.
 	paletteRecolorMenu_ = new QMenu(this);
