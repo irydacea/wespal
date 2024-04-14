@@ -156,6 +156,19 @@ public:
 	void setPreviewBackgroundColor(const QString& previewBackgroundColor);
 
 	/**
+	 * Retrieves whether the image view mode should be remembered.
+	 */
+	bool rememberImageViewMode() const
+	{
+		return rememberImageViewMode_;
+	}
+
+	/**
+	 * Sets whether the image view mode should be remembered.
+	 */
+	void setRememberImageViewMode(bool remember);
+
+	/**
 	 * Retrieves the image view mode.
 	 */
 	ImageViewMode imageViewMode() const
@@ -177,6 +190,7 @@ private:
 	bool rememberMainWindowSize_;
 	QSize mainWindowSize_;
 	QString previewBackgroundColor_;
+	bool rememberImageViewMode_;
 	ImageViewMode imageViewMode_;
 };
 

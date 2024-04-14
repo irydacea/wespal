@@ -33,6 +33,7 @@ Manager::Manager()
 	, rememberMainWindowSize_()
 	, mainWindowSize_()
 	, previewBackgroundColor_()
+	, rememberImageViewMode_()
 	, imageViewMode_()
 {
 	QSettings qs;
@@ -46,6 +47,8 @@ Manager::Manager()
 	mainWindowSize_ = qs.value("preview/windowSize").toSize();
 
 	previewBackgroundColor_ = qs.value("preview/background").toString();
+
+	rememberImageViewMode_ = qs.value("preview/rememberMode", true).toBool();
 
 	imageViewMode_ = qs.value("preview/mode", ImageViewVSplit).value<ImageViewMode>();
 
@@ -141,6 +144,15 @@ void Manager::setPreviewBackgroundColor(const QString& previewBackgroundColor)
 	previewBackgroundColor_ = previewBackgroundColor;
 
 	qs.setValue("preview/background", previewBackgroundColor);
+}
+
+void Manager::setRememberImageViewMode(bool remember)
+{
+	QSettings qs;
+
+	rememberImageViewMode_ = remember;
+
+	qs.setValue("preview/rememberMode", remember);
 }
 
 void Manager::setImageViewMode(ImageViewMode imageViewMode)
