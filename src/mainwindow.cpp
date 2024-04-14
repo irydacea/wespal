@@ -259,7 +259,9 @@ MainWindow::MainWindow(QWidget* parent)
 	//
 
 	// NOTE: Our view mode will be committed later at the end of setup
-	auto viewMode = MosCurrentConfig().imageViewMode();
+	auto viewMode = MosCurrentConfig().rememberImageViewMode()
+					? MosCurrentConfig().imageViewMode()
+					: MosConfig::ImageViewMode();
 
 	auto* viewMenuActs = new QActionGroup(this);
 	std::array viewMenuItems = {
@@ -1037,7 +1039,9 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 		}
 	}
 
-	MosCurrentConfig().setImageViewMode(viewMode_);
+	if (MosCurrentConfig().rememberImageViewMode()) {
+		MosCurrentConfig().setImageViewMode(viewMode_);
+	}
 
 	// Ensure the combobox selection is correct if we came from the class ctor
 	// (it will call us again but since the values are identical it's a no-op)
