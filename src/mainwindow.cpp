@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget* parent)
 	, viewMode_()
 	, rcMode_()
 
-	, zoom_(1.0)
+	, zoom_(MosCurrentConfig().defaultZoom())
 
 	, ignoreDrops_(false)
 	, dragUseRecolored_(false)
