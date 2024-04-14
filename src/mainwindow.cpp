@@ -20,8 +20,6 @@
 
 #include "appconfig.hpp"
 #include "defs.hpp"
-#include "custompalettes.hpp"
-#include "customranges.hpp"
 #include "mainwindow.hpp"
 #include "paletteitem.hpp"
 #include "settingsdialog.hpp"
@@ -1287,52 +1285,6 @@ void MainWindow::adjustZoom(ZoomDirection direction)
 		case ZoomIn:
 			ui->zoomSlider->setValue(ui->zoomSlider->value() + 1);
 	}
-}
-
-void MainWindow::on_actionColor_ranges_triggered()
-{
-	CustomRanges dlg{userColorRanges_, this};
-	dlg.exec();
-
-	if (dlg.result() == QDialog::Rejected)
-		return;
-
-	userColorRanges_ = dlg.ranges();
-
-	{
-		ObjectLock l{this};
-		generateMergedRcDefinitions();
-		processRcDefinitions();
-	}
-
-	refreshPreviews();
-
-	MosCurrentConfig().setCustomColorRanges(userColorRanges_);
-}
-
-void MainWindow::on_action_Palettes_triggered()
-{
-	CustomPalettes dlg{userPalettes_, colorRanges_, this};
-
-	if (hasImage())
-		dlg.setReferenceImage(originalImage_);
-
-	dlg.exec();
-
-	if (dlg.result() == QDialog::Rejected)
-		return;
-
-	userPalettes_ = dlg.getPalettes();
-
-	{
-		ObjectLock l{this};
-		generateMergedRcDefinitions();
-		processRcDefinitions();
-	}
-
-	refreshPreviews();
-
-	MosCurrentConfig().setCustomPalettes(userPalettes_);
 }
 
 void MainWindow::handlePreviewBgOption(bool checked)

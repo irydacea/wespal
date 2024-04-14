@@ -747,8 +747,6 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
-    <addaction name="actionColor_ranges"/>
-    <addaction name="action_Palettes"/>
     <addaction name="actionAppSettings"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -838,25 +836,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionColor_ranges">
-   <property name="text">
-    <string>Custom Color &amp;Ranges...</string>
-   </property>
-   <property name="visible">
-    <bool>true</bool>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::ApplicationSpecificRole</enum>
-   </property>
-  </action>
-  <action name="action_Palettes">
-   <property name="text">
-    <string>Custom &amp;Palettes...</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::ApplicationSpecificRole</enum>
    </property>
   </action>
   <action name="action_Reload">

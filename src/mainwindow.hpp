@@ -172,7 +172,6 @@ private:
 
 private slots:
 	void on_action_Reload_triggered();
-	void on_actionColor_ranges_triggered();
 	void on_listRanges_currentRowChanged(int currentRow);
 	void on_cbxNewPal_currentIndexChanged(int index);
 	void on_cbxKeyPal_currentIndexChanged(int index);
@@ -185,7 +184,6 @@ private slots:
 	void on_radRc_clicked();
 	void handleRecent();
 	void on_zoomSlider_valueChanged(int value);
-	void on_action_Palettes_triggered();
 
 	void handlePreviewBgOption(bool checked);
 	void on_cmdOpen_clicked();
