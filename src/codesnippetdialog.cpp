@@ -30,9 +30,10 @@
 #include <QStyle>
 #include <QTextStream>
 
-CodeSnippetDialog::CodeSnippetDialog(const QString& contents, QWidget *parent) :
-    QDialog(parent),
-	ui(new Ui::CodeSnippetDialog)
+CodeSnippetDialog::CodeSnippetDialog(const QString& contents,
+									 QWidget* parent)
+	: QDialog(parent)
+	, ui(new Ui::CodeSnippetDialog)
 {
 	ui->setupUi(this);
 
@@ -71,11 +72,11 @@ CodeSnippetDialog::~CodeSnippetDialog()
 	delete ui;
 }
 
-void CodeSnippetDialog::changeEvent(QEvent *e)
+void CodeSnippetDialog::changeEvent(QEvent* event)
 {
-	QDialog::changeEvent(e);
+	QDialog::changeEvent(event);
 
-	switch (e->type()) {
+	switch (event->type()) {
 		case QEvent::LanguageChange:
 			ui->retranslateUi(this);
 			break;

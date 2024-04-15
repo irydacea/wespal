@@ -33,14 +33,14 @@ class ColorListInputDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit ColorListInputDialog(QWidget *parent = nullptr);
+	explicit ColorListInputDialog(QWidget* parent = nullptr);
 	~ColorListInputDialog();
 
 	ColorList getColorList() const;
 	
 protected:
-	void changeEvent(QEvent *e);
-	
+	virtual void changeEvent(QEvent* event) override;
+
 private slots:
 	void on_buttonBox_accepted();
 

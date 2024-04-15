@@ -29,7 +29,7 @@ namespace {
 
 struct PainterRestorer
 {
-	PainterRestorer(QPainter *painter)
+	PainterRestorer(QPainter* painter)
 		: painter_(painter)
 	{
 		painter_->save();

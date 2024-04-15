@@ -24,7 +24,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 
-ImageLabel::ImageLabel(QWidget *parent) :
+ImageLabel::ImageLabel(QWidget* parent) :
 	QWidget(parent),
 	image_()
 {

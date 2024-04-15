@@ -21,10 +21,10 @@
 #include "colorlistinputdialog.hpp"
 #include "ui_colorlistinputdialog.h"
 
-ColorListInputDialog::ColorListInputDialog(QWidget *parent) :
-    QDialog(parent),
-	ui(new Ui::ColorListInputDialog),
-	listString_()
+ColorListInputDialog::ColorListInputDialog(QWidget* parent)
+	: QDialog(parent)
+	, ui(new Ui::ColorListInputDialog)
+	, listString_()
 {
 	ui->setupUi(this);
 
@@ -39,11 +39,11 @@ ColorListInputDialog::~ColorListInputDialog()
 	delete ui;
 }
 
-void ColorListInputDialog::changeEvent(QEvent *e)
+void ColorListInputDialog::changeEvent(QEvent* event)
 {
-	QDialog::changeEvent(e);
+	QDialog::changeEvent(event);
 
-	switch (e->type()) {
+	switch (event->type()) {
 		case QEvent::LanguageChange:
 			ui->retranslateUi(this);
 			break;
