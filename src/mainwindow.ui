@@ -1061,6 +1061,9 @@
    <property name="text">
     <string>&amp;Settings...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+,</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
    </property>
