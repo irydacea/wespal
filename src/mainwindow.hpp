@@ -36,6 +36,8 @@ namespace Ui {
     class MainWindow;
 }
 
+class QButtonGroup;
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -118,6 +120,8 @@ private:
 	QList<QAction*> zoomActions_;
 	QList<QAction*> viewModeActions_;
 
+	QButtonGroup* compositeShortcutsGroup_;
+
 	QString supportedImageFileFormats_;
 
 	bool hasImage() const
@@ -194,4 +198,6 @@ private slots:
 	void on_actionZoomIn_triggered();
 	void on_actionZoomOut_triggered();
 	void on_actionAppSettings_triggered();
+	void on_compositeOriginalOnlyToggle_toggled(bool checked);
+	void on_compositeRcOnlyToggle_toggled(bool checked);
 };

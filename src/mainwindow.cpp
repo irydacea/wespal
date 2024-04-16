@@ -27,6 +27,7 @@
 #include "util.hpp"
 
 #include <QActionGroup>
+#include <QButtonGroup>
 #include <QColorDialog>
 #include <QDesktopServices>
 #include <QDrag>
@@ -378,6 +379,26 @@ MainWindow::MainWindow(QWidget* parent)
 
 	connect(originalVScroll, SIGNAL(valueChanged(int)), rcVScroll, SLOT(setValue(int)));
 	connect(rcVScroll, SIGNAL(valueChanged(int)), originalVScroll, SLOT(setValue(int)));
+
+	compositeShortcutsGroup_ = new QButtonGroup(this);
+
+	compositeShortcutsGroup_->setExclusive(true);
+	compositeShortcutsGroup_->addButton(ui->compositeOriginalOnlyToggle);
+	compositeShortcutsGroup_->addButton(ui->compositeRcOnlyToggle);
+
+	if (!ui->compositeOriginalOnlyToggle->icon().isNull())
+		ui->compositeOriginalOnlyToggle->setText({});
+	if (!ui->compositeRcOnlyToggle->icon().isNull())
+		ui->compositeRcOnlyToggle->setText({});
+
+	ui->previewComposite->setDisplayRatio(1.0);
+	ui->compositeRcOnlyToggle->setChecked(true);
+
+	// Hide the shortcuts panel manually since setViewMode() below won't do
+	// anything if viewMode == viewMode_ (yes we could fix that but it's kinda
+	// unnecessary to do the layout dance for everything else).
+	if (viewMode == MosConfig::ImageViewVSplit || viewMode == MosConfig::ImageViewHSplit)
+		ui->compositeShortcutsPanel->setVisible(false);
 
 	//
 	// Finalise initial workarea setup
@@ -1013,6 +1034,7 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 										: CompositeImageLabel::CompositeDisplayOnionSkin;
 			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
 			ui->previewComposite->setDisplayMode(compositeDisplayMode);
+			ui->compositeShortcutsPanel->setVisible(true);
 			break;
 		}
 		default: {
@@ -1033,6 +1055,8 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 			newLayout->addWidget(ui->previewRcContainer);
 
 			ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
+
+			ui->compositeShortcutsPanel->setVisible(false);
 			break;
 		}
 	}
@@ -1088,6 +1112,7 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->listRanges,
 		ui->zoomSlider,
 		ui->menu_Zoom,
+		ui->compositeShortcutsPanel,
 		ui->lblViewMode,
 		ui->cbxViewMode,
 		ui->buttonBox->button(QDialogButtonBox::Save));
@@ -1372,6 +1397,22 @@ void MainWindow::on_cbxViewMode_currentIndexChanged(int index)
 void MainWindow::on_viewSlider_valueChanged(int value)
 {
 	ui->previewComposite->setDisplayRatio(qreal(value) / qreal(ui->viewSlider->maximum()));
+
+	// We handle the toggles' checked property ourselves rather than using a
+	// group because otherwise we can't uncheck them when the slider is not on
+	// one of the bound values.
+
+	if (value == ui->viewSlider->maximum()) {
+		compositeShortcutsGroup_->setExclusive(true);
+		ui->compositeRcOnlyToggle->setChecked(true);
+	} else if (value == ui->viewSlider->minimum()) {
+		compositeShortcutsGroup_->setExclusive(true);
+		ui->compositeOriginalOnlyToggle->setChecked(true);
+	} else {
+		compositeShortcutsGroup_->setExclusive(false);
+		ui->compositeRcOnlyToggle->setChecked(false);
+		ui->compositeOriginalOnlyToggle->setChecked(false);
+	}
 }
 
 void MainWindow::on_actionZoomIn_triggered()
@@ -1407,4 +1448,19 @@ void MainWindow::on_actionAppSettings_triggered()
 	}
 
 	refreshPreviews();
+}
+
+
+void MainWindow::on_compositeOriginalOnlyToggle_toggled(bool checked)
+{
+	if (checked) {
+		ui->viewSlider->setValue(ui->viewSlider->minimum());
+	}
+}
+
+void MainWindow::on_compositeRcOnlyToggle_toggled(bool checked)
+{
+	if (checked) {
+		ui->viewSlider->setValue(ui->viewSlider->maximum());
+	}
 }
