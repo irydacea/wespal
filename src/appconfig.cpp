@@ -26,6 +26,14 @@
 
 namespace MosConfig {
 
+namespace {
+
+// This is supposed to be a color value that will never be used (we never
+// write alpha values other than 0x00 or 0xFF for the relevant config).
+constexpr unsigned COMPAT_NO_COLOR_RANGE_ICON = 0xDEADCAFEU;
+
+} // end unnamed namespace
+
 Manager::Manager()
 	: imageFilesMru_()
 	, customColorRanges_()
@@ -69,8 +77,14 @@ Manager::Manager()
 		auto mid = qs.value("avg").toUInt();
 		auto max = qs.value("max").toUInt();
 		auto min = qs.value("min").toUInt();
+		auto rep = qs.value("rep", COMPAT_NO_COLOR_RANGE_ICON).toUInt();
 
-		ColorRange colorRange{mid, max, min};
+		// Compatibility with color ranges created before v0.5
+		if (rep == COMPAT_NO_COLOR_RANGE_ICON) {
+			rep = mid;
+		}
+
+		ColorRange colorRange{mid, max, min, rep};
 
 		customColorRanges_.insert(id, colorRange);
 	}
@@ -193,6 +207,7 @@ void Manager::setCustomColorRanges(const QMap<QString, ColorRange>& colorRanges)
 		qs.setValue("avg", colorRange.mid());
 		qs.setValue("max", colorRange.max());
 		qs.setValue("min", colorRange.min());
+		qs.setValue("rep", colorRange.rep());
 
 		++i;
 	}
