@@ -775,11 +775,8 @@ void SettingsDialog::updatePaletteIcon(QListWidgetItem* listItem)
 	Q_ASSERT(listItem);
 
 	const auto& palette = palettes_.value(itemData(listItem));
-	const auto& icon = palette.empty()
-					   ? createColorIcon(Qt::white, ui->paletteList)
-					   : createColorIcon(palette.front(), ui->paletteList);
 
-	listItem->setIcon(icon);
+	listItem->setIcon(createPaletteIcon(palette, ui->paletteList));
 }
 
 void SettingsDialog::appendToCurrentPalette(const ColorList& colors)

@@ -460,10 +460,7 @@ void MainWindow::processRcDefinitions()
 	{
 		const auto& palName = wesnoth::builtinPalettes.orderedNames()[k];
 		const auto& uiName = wesnoth::builtinPalettes.orderedTranslatableNames()[k];
-		auto color = wesnoth::builtinPalettes[palName].empty()
-					 ? 0U
-					 : wesnoth::builtinPalettes[palName].front();
-		auto colorIcon = createColorIcon(color, defaultColorIconSize, cbOldPals);
+		auto colorIcon = createPaletteIcon(wesnoth::builtinPalettes[palName], defaultColorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, uiName, palName);
 		cbNewPals->addItem(colorIcon, uiName, palName);
 	}
@@ -479,10 +476,7 @@ void MainWindow::processRcDefinitions()
 			// ids and names at this point.
 			continue;
 		}
-		auto color = palette.empty()
-					 ? 0U
-					 : palette.front();
-		auto colorIcon = createColorIcon(color, defaultColorIconSize, cbOldPals);
+		auto colorIcon = createPaletteIcon(palette, defaultColorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, capitalize(palName), palName);
 		cbNewPals->addItem(colorIcon, capitalize(palName), palName);
 	}
