@@ -55,8 +55,8 @@ public slots:
 
 private:
 	static constexpr int border_size_ = 2;
-	static constexpr int width_ = 16;
-	static constexpr int height_ = 17;
+	static constexpr int width_ = 20;
+	static constexpr int height_ = 20;
 };
 
 /**
