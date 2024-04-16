@@ -24,6 +24,8 @@
 
 #include <QStyledItemDelegate>
 
+constexpr QSize defaultColorIconSize{16, 16};
+
 class PaletteItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
@@ -99,8 +101,8 @@ QIcon createColorIcon(const QColor& color,
  *         outline, padded all around by one transparent pixel.
  */
 inline QIcon createColorIcon(const QColor& color,
-							 int width = 16,
-							 int height = 16,
+							 int width = defaultColorIconSize.width(),
+							 int height = defaultColorIconSize.height(),
 							 const QWidget* target = nullptr)
 {
 	return createColorIcon(color, QSize{width, height}, target);
@@ -147,7 +149,7 @@ inline QIcon createColorIcon(const QRgb color,
 inline QIcon createColorIcon(const QColor& color,
 							 const QWidget* target = nullptr)
 {
-	return createColorIcon(color, QSize{16, 16}, target);
+	return createColorIcon(color, defaultColorIconSize, target);
 }
 
 /**
@@ -169,5 +171,5 @@ inline QIcon createColorIcon(const QColor& color,
 inline QIcon createColorIcon(const ColorRange& colorRange,
 							 const QWidget* target = nullptr)
 {
-	return createColorIcon(colorRange.rep(), QSize{16, 16}, target);
+	return createColorIcon(colorRange.rep(), defaultColorIconSize, target);
 }

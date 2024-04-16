@@ -58,8 +58,6 @@ enum WorkAreaPage {
 	WorkAreaCompositeRc,
 };
 
-static const QSize colorIconSize{16, 16};
-
 } // end unnamed namespace
 
 MainWindow::MainWindow(QWidget* parent)
@@ -123,9 +121,9 @@ MainWindow::MainWindow(QWidget* parent)
 	generateMergedRcDefinitions();
 
 	// Set icon sizes before generating entries in processRcDefinitions()
-	ui->cbxKeyPal->setIconSize(colorIconSize);
-	ui->cbxNewPal->setIconSize(colorIconSize);
-	ui->listRanges->setIconSize(colorIconSize);
+	ui->cbxKeyPal->setIconSize(defaultColorIconSize);
+	ui->cbxNewPal->setIconSize(defaultColorIconSize);
+	ui->listRanges->setIconSize(defaultColorIconSize);
 
 	processRcDefinitions();
 
@@ -465,7 +463,7 @@ void MainWindow::processRcDefinitions()
 		auto color = wesnoth::builtinPalettes[palName].empty()
 					 ? 0U
 					 : wesnoth::builtinPalettes[palName].front();
-		auto colorIcon = createColorIcon(color, colorIconSize, cbOldPals);
+		auto colorIcon = createColorIcon(color, defaultColorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, uiName, palName);
 		cbNewPals->addItem(colorIcon, uiName, palName);
 	}
@@ -484,7 +482,7 @@ void MainWindow::processRcDefinitions()
 		auto color = palette.empty()
 					 ? 0U
 					 : palette.front();
-		auto colorIcon = createColorIcon(color, colorIconSize, cbOldPals);
+		auto colorIcon = createColorIcon(color, defaultColorIconSize, cbOldPals);
 		cbOldPals->addItem(colorIcon, capitalize(palName), palName);
 		cbNewPals->addItem(colorIcon, capitalize(palName), palName);
 	}
