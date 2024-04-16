@@ -49,18 +49,21 @@ class ColorRange
 {
 public:
 	/**
-	 * Constructor, which expects three reference RGB colors.
+	 * Constructor, which expects four reference RGB colors.
 	 *
 	 * @param mid Average color shade.
 	 * @param max Maximum (highlight) color shade
 	 * @param min Minimum color shade
+	 * @param rep High-contrast icon color
 	 */
 	ColorRange(QRgb mid = 0x808080,
 			   QRgb max = 0xFFFFFF,
-			   QRgb min = 0x000000)
+			   QRgb min = 0x000000,
+			   QRgb rep = 0x808080)
 		: mid_(mid)
 		, max_(max)
 		, min_(min)
+		, rep_(rep)
 	{
 	}
 
@@ -113,6 +116,22 @@ public:
 	}
 
 	/**
+	 * High-contrast icon color.
+	 */
+	QRgb rep() const
+	{
+		return rep_;
+	}
+
+	/**
+	 * Sets the high-contrast icon color.
+	 */
+	void setRep(QRgb rep)
+	{
+		rep_ = rep;
+	}
+
+	/**
 	 * Transforms a source palette using this color_range object.
 	 *
 	 * @param palette Source palette.
@@ -124,7 +143,7 @@ public:
 	ColorMap applyToPalette(const ColorList& palette) const;
 
 private:
-	QRgb mid_ , max_ , min_;
+	QRgb mid_ , max_ , min_, rep_;
 };
 
 inline bool operator<(const ColorRange& a, const ColorRange& b)
