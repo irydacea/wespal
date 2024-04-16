@@ -1167,15 +1167,15 @@
   <tabstop>previewRcContainer</tabstop>
   <tabstop>previewCompositeContainer</tabstop>
   <tabstop>viewSlider</tabstop>
+  <tabstop>zoomSlider</tabstop>
+  <tabstop>compositeOriginalOnlyToggle</tabstop>
+  <tabstop>compositeRcOnlyToggle</tabstop>
+  <tabstop>cbxViewMode</tabstop>
   <tabstop>cbxKeyPal</tabstop>
   <tabstop>radRc</tabstop>
   <tabstop>radPal</tabstop>
   <tabstop>listRanges</tabstop>
   <tabstop>cbxNewPal</tabstop>
-  <tabstop>zoomSlider</tabstop>
-  <tabstop>compositeOriginalOnlyToggle</tabstop>
-  <tabstop>compositeRcOnlyToggle</tabstop>
-  <tabstop>cbxViewMode</tabstop>
  </tabstops>
  <resources/>
  <connections/>
