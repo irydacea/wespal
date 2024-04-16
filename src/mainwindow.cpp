@@ -101,6 +101,12 @@ MainWindow::MainWindow(QWidget* parent)
 
 	ui->setupUi(this);
 
+#ifdef Q_OS_MACOS
+	// smol sliders c:
+	ui->viewSlider->setAttribute(Qt::WA_MacMiniSize);
+	ui->zoomSlider->setAttribute(Qt::WA_MacMiniSize);
+#endif
+
 	if (MosCurrentConfig().rememberMainWindowSize()) {
 		const auto& lastWindowSize = MosCurrentConfig().mainWindowSize();
 
