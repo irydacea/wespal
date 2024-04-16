@@ -105,28 +105,6 @@ inline QIcon createColorIcon(const QColor& color,
 }
 
 /**
- * Creates a 16x16 icon for a color range for use in lists and dropdown menus.
- *
- * Ideally, you want to make use of @a target to get an icon that's correctly
- * rendered for a widget's display device, especially for mixed display setups
- * that could have different pixel densities. It is up to you to request a new
- * icon if the widget gets moved to a different display.
- *
- * @param color                Color value.
- * @param target               Target widget or window, used for DPI scaling.
- *                             If not specified, the default pixel ratio for
- *                             the app is used instead.
- *
- * @return An icon consisting of the color range's marker color with a solid
- *         black outline, padded all around by one transparent pixel.
- */
-inline QIcon createColorIcon(const ColorRange& colorRange,
-							 const QWidget* target = nullptr)
-{
-	return createColorIcon(colorRange.rep(), defaultColorIconSize, target);
-}
-
-/**
  * Creates an empty color icon for use in lists and dropdown menus.
  *
  * Ideally, you want to make use of @a target to get an icon that's correctly
@@ -175,8 +153,8 @@ inline QIcon createEmptyColorIcon(const QWidget* target = nullptr)
  * that could have different pixel densities. It is up to you to request a new
  * icon if the widget gets moved to a different display.
  *
- * @param size                 Icon size.
  * @param palette              Color palette.
+ * @param size                 Icon size.
  * @param target               Target widget or window, used for DPI scaling.
  *                             If not specified, the default pixel ratio for
  *                             the app is used instead.
@@ -217,4 +195,50 @@ inline QIcon createPaletteIcon(const ColorList& palette,
 							   const QWidget* target = nullptr)
 {
 	return createPaletteIcon(palette, defaultColorIconSize, target);
+}
+
+/**
+ * Creates a color range icon for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param color                Color value.
+ * @param size                 Icon size.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of the color range's marker color with a solid
+ *         black outline, padded all around by one transparent pixel.
+ */
+inline QIcon createColorRangeIcon(const ColorRange& colorRange,
+								  const QSize& size = defaultColorIconSize,
+								  const QWidget* target = nullptr)
+{
+	return createColorIcon(colorRange.rep(), size, target);
+}
+
+/**
+ * Creates a 16x16 color range icon for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param color                Color value.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of the color range's marker color with a solid
+ *         black outline, padded all around by one transparent pixel.
+ */
+inline QIcon createColorRangeIcon(const ColorRange& colorRange,
+								  const QWidget* target = nullptr)
+{
+	return createColorRangeIcon(colorRange, defaultColorIconSize, target);
 }

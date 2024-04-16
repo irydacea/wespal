@@ -413,7 +413,7 @@ void SettingsDialog::addRangeListEntry(const QString& name)
 
 	listItem->setData(Qt::UserRole, name);
 	listItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-	listItem->setIcon(createColorIcon(colorRange, ui->colorRangeList));
+	listItem->setIcon(createColorRangeIcon(colorRange, ui->colorRangeList));
 
 	Q_ASSERT(ranges_.contains(name));
 
@@ -429,7 +429,7 @@ void SettingsDialog::updateColorRangeIcon(QListWidgetItem* listItem)
 	const auto& colorRange = currentArtifact<ColorRange>();
 	const auto& name = itemData(listItem);
 
-	listItem->setIcon(createColorIcon(colorRange, ui->colorRangeList));
+	listItem->setIcon(createColorRangeIcon(colorRange, ui->colorRangeList));
 
 	addPaletteRecolorMenuEntry(name, colorRange, capitalize(name));
 }
@@ -542,7 +542,7 @@ void SettingsDialog::onColorRangeFromList()
 		}
 		if (colors.size() >= 4) {
 			current.setRep(colors[3]);
-			listItem->setIcon(createColorIcon(current, ui->colorRangeList));
+			listItem->setIcon(createColorRangeIcon(current, ui->colorRangeList));
 		}
 
 		updateRangeEditControls();
@@ -653,7 +653,7 @@ void SettingsDialog::addPaletteRecolorMenuEntry(const QString& id,
 		auto* action = paletteRecolorMenu_->addAction(label);
 
 		action->setData(id);
-		action->setIcon(createColorIcon(colorRange, paletteRecolorMenu_));
+		action->setIcon(createColorRangeIcon(colorRange, paletteRecolorMenu_));
 		action->setIconVisibleInMenu(true);
 
 		connect(action, SIGNAL(triggered()), this, SLOT(onPaletteRecolor()));
@@ -661,7 +661,7 @@ void SettingsDialog::addPaletteRecolorMenuEntry(const QString& id,
 		paletteRecolorActions_.insert(id, action);
 	} else {
 		// Update an existing entry
-		paletteRecolorActions_[id]->setIcon(createColorIcon(colorRange, paletteRecolorMenu_));
+		paletteRecolorActions_[id]->setIcon(createColorRangeIcon(colorRange, paletteRecolorMenu_));
 	}
 }
 
@@ -676,7 +676,7 @@ void SettingsDialog::deletePaletteRecolorMenuEntry(const QString& name)
 		// Revert color of affected recolor menu items to Wesnoth built-ins if
 		// they are overrides of those.
 		const auto& builtin = wesnoth::builtinColorRanges[name];
-		recolorAction->setIcon(createColorIcon(builtin, paletteRecolorMenu_));
+		recolorAction->setIcon(createColorRangeIcon(builtin, paletteRecolorMenu_));
 	} else {
 		paletteRecolorMenu_->removeAction(recolorAction);
 		paletteRecolorActions_.remove(name);

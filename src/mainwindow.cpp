@@ -420,7 +420,7 @@ void MainWindow::generateMergedRcDefinitions()
 void MainWindow::insertRangeListItem(const QString &id, const QString &display_name, const ColorRange& colorRange)
 {
 	auto* lwi = new QListWidgetItem(ui->listRanges);
-	auto colorIcon = createColorIcon(colorRange, ui->listRanges);
+	auto colorIcon = createColorRangeIcon(colorRange, ui->listRanges);
 
 	lwi->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 	lwi->setCheckState(Qt::Checked);
