@@ -533,7 +533,6 @@ void SettingsDialog::onColorRangeFromList()
 
 		if (colors.size() >= 1) {
 			current.setMid(colors[0]);
-			listItem->setIcon(createColorIcon(colors[0], ui->colorRangeList));
 		}
 		if (colors.size() >= 2) {
 			current.setMax(colors[1]);
@@ -543,6 +542,7 @@ void SettingsDialog::onColorRangeFromList()
 		}
 		if (colors.size() >= 4) {
 			current.setRep(colors[3]);
+			listItem->setIcon(createColorIcon(current, ui->colorRangeList));
 		}
 
 		updateRangeEditControls();
