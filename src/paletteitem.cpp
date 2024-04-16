@@ -51,9 +51,10 @@ inline qreal pixelRatioFallback(const QWidget* target)
 
 } // end unnamed namespace
 
-QIcon createColorIcon(const QColor& color,
-					  const QSize& size,
-					  const QWidget* target)
+QIcon createColorIconPrivate(const QColor& color,
+							 const QSize& size,
+							 const QWidget* target,
+							 bool drawSlash)
 {
 	static constexpr qreal borderWidth = 1.0;
 	static constexpr qreal outerMargin = 2.0;
@@ -77,9 +78,28 @@ QIcon createColorIcon(const QColor& color,
 
 	painter.setBrush(brush);
 	painter.setPen(pen);
+
+	if (drawSlash) {
+		QLineF slash{borderRect.topRight(), borderRect.bottomLeft()};
+		painter.drawLine(slash);
+	}
+
 	painter.drawRect(borderRect);
 
 	return base;
+}
+
+QIcon createColorIcon(const QColor& color,
+					  const QSize& size,
+					  const QWidget* target)
+{
+	return createColorIconPrivate(color, size, target, false);
+}
+
+QIcon createEmptyColorIcon(const QSize& size,
+						   const QWidget* target)
+{
+	return createColorIconPrivate(Qt::transparent, size, target, true);
 }
 
 void PaletteItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const

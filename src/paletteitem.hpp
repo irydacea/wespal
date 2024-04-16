@@ -173,3 +173,44 @@ inline QIcon createColorIcon(const ColorRange& colorRange,
 {
 	return createColorIcon(colorRange.rep(), defaultColorIconSize, target);
 }
+
+/**
+ * Creates an empty color icon for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param size                 Icon size.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of a transparent rectangle with a black outline
+ *         and a black diagonal line, padded all around by one transparent
+ *         pixel.
+ */
+QIcon createEmptyColorIcon(const QSize& size = defaultColorIconSize,
+						   const QWidget* target = nullptr);
+
+/**
+ * Creates an empty 16x16 color icon for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of a transparent rectangle with a black outline
+ *         and a black diagonal line, padded all around by one transparent
+ *         pixel.
+ */
+inline QIcon createEmptyColorIcon(const QWidget* target = nullptr)
+{
+	return createEmptyColorIcon(defaultColorIconSize, target);
+}
