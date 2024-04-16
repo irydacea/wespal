@@ -32,6 +32,8 @@ ColorListInputDialog::ColorListInputDialog(QWidget* parent)
 
 	const auto& monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 	ui->teColors->setFont(monoFont);
+
+	ui->teColors->setFocus();
 }
 
 ColorListInputDialog::~ColorListInputDialog()
