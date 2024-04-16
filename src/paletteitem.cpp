@@ -121,4 +121,3 @@ bool PaletteItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model, 
 
 	return true;
 }
-
