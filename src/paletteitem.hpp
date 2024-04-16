@@ -214,3 +214,55 @@ inline QIcon createEmptyColorIcon(const QWidget* target = nullptr)
 {
 	return createEmptyColorIcon(defaultColorIconSize, target);
 }
+
+/**
+ * Creates a palette icon for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param size                 Icon size.
+ * @param palette              Color palette.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of the palette's first color with a solid black
+ *         outline, padded all around by one transparent pixel. If the palette
+ *         is empty, the rectangle will contain a black diagonal line instead.
+ */
+inline QIcon createPaletteIcon(const ColorList& palette,
+							   const QSize& size = defaultColorIconSize,
+							   const QWidget* target = nullptr)
+{
+	if (palette.empty()) {
+		return createEmptyColorIcon(size, target);
+	} else {
+		return createColorIcon(palette.front(), size, target);
+	}
+}
+
+/**
+ * Creates a 16x16 palette icon for use in lists and dropdown menus.
+ *
+ * Ideally, you want to make use of @a target to get an icon that's correctly
+ * rendered for a widget's display device, especially for mixed display setups
+ * that could have different pixel densities. It is up to you to request a new
+ * icon if the widget gets moved to a different display.
+ *
+ * @param palette              Color palette.
+ * @param target               Target widget or window, used for DPI scaling.
+ *                             If not specified, the default pixel ratio for
+ *                             the app is used instead.
+ *
+ * @return An icon consisting of the palette's first color with a solid black
+ *         outline, padded all around by one transparent pixel. If the palette
+ *         is empty, the rectangle will contain a black diagonal line instead.
+ */
+inline QIcon createPaletteIcon(const ColorList& palette,
+							   const QWidget* target = nullptr)
+{
+	return createPaletteIcon(palette, defaultColorIconSize, target);
+}
