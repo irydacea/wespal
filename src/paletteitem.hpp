@@ -47,8 +47,8 @@ public:
 	virtual QSize sizeHint(const QStyleOptionViewItem& option,
 						   const QModelIndex& index) const override
 	{
-		const auto& base_size = QStyledItemDelegate::sizeHint(option, index);
-		return {qMax(width_, base_size.width()), qMax(height_, base_size.height())};
+		const auto& baseSize = QStyledItemDelegate::sizeHint(option, index);
+		return {qMax(width_, baseSize.width()), qMax(height_, baseSize.height())};
 	}
 
 signals:
@@ -56,7 +56,7 @@ signals:
 public slots:
 
 private:
-	static constexpr int border_size_ = 2;
+	static constexpr int borderSize_ = 2;
 	static constexpr int width_ = 20;
 	static constexpr int height_ = 20;
 };

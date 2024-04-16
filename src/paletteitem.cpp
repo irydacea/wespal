@@ -41,7 +41,7 @@ struct PainterRestorer
 	}
 
 private:
-	QPainter *painter_;
+	QPainter* painter_;
 };
 
 inline qreal pixelRatioFallback(const QWidget* target)
@@ -115,10 +115,10 @@ void PaletteItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 		pen.setStyle(Qt::SolidLine);
 		pen.setCapStyle(Qt::SquareCap);
 		pen.setJoinStyle(Qt::MiterJoin);
-		pen.setWidth(border_size_);
+		pen.setWidth(borderSize_);
 		pen.setColor(option.palette.color(QPalette::Highlight));
 		// Shrink the rectangle so the borders can fit.
-		area.adjust(border_size_/2, border_size_/2, -border_size_/2, -border_size_/2);
+		area.adjust(borderSize_/2, borderSize_/2, -borderSize_/2, -borderSize_/2);
 	} else {
 		pen.setStyle(Qt::NoPen);
 	}
