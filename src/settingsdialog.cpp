@@ -351,6 +351,7 @@ void SettingsDialog::initColorRangesPage()
 
 	setupSingleColorEditSlots(ui->repColorEdit, ui->repColorPick, [&](const QColor& color) {
 		currentArtifact<ColorRange>().setRep(color.rgb());
+		updateColorRangeIcon();
 	});
 }
 
@@ -417,6 +418,19 @@ void SettingsDialog::addRangeListEntry(const QString& name)
 	Q_ASSERT(ranges_.contains(name));
 
 	// Take care of custom ranges for initPalettesPage().
+	addPaletteRecolorMenuEntry(name, colorRange, capitalize(name));
+}
+
+void SettingsDialog::updateColorRangeIcon(QListWidgetItem* listItem)
+{
+	if (!listItem)
+		listItem = ui->colorRangeList->item(ui->colorRangeList->currentRow());
+
+	const auto& colorRange = currentArtifact<ColorRange>();
+	const auto& name = itemData(listItem);
+
+	listItem->setIcon(createColorIcon(colorRange, ui->colorRangeList));
+
 	addPaletteRecolorMenuEntry(name, colorRange, capitalize(name));
 }
 

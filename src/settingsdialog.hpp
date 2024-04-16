@@ -179,6 +179,8 @@ private:
 
 	void addRangeListEntry(const QString& name);
 
+	void updateColorRangeIcon(QListWidgetItem* listItem = nullptr);
+
 private slots:
 	void onColorRangeRowChanged(int row);
 	void onColorRangeItemChanged(QListWidgetItem* item);
