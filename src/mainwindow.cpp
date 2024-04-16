@@ -419,10 +419,10 @@ void MainWindow::generateMergedRcDefinitions()
 	palettes_.insert(userPalettes_);
 }
 
-void MainWindow::insertRangeListItem(const QString &id, const QString &display_name, const QColor& color)
+void MainWindow::insertRangeListItem(const QString &id, const QString &display_name, const ColorRange& colorRange)
 {
 	auto* lwi = new QListWidgetItem(ui->listRanges);
-	auto colorIcon = createColorIcon(color, colorIconSize, ui->listRanges);
+	auto colorIcon = createColorIcon(colorRange, ui->listRanges);
 
 	lwi->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 	lwi->setCheckState(Qt::Checked);
@@ -501,8 +501,7 @@ void MainWindow::processRcDefinitions()
 	{
 		auto& rangeName = wesnoth::builtinColorRanges.orderedNames()[k];
 		auto& uiName = wesnoth::builtinColorRanges.orderedTranslatableNames()[k];
-		auto color = wesnoth::builtinColorRanges[rangeName].mid();
-		insertRangeListItem(rangeName, uiName, color);
+		insertRangeListItem(rangeName, uiName, wesnoth::builtinColorRanges[rangeName]);
 	}
 
 	//
@@ -516,8 +515,7 @@ void MainWindow::processRcDefinitions()
 			// ids and names at this point.
 			continue;
 		}
-		auto color = colorRange.mid();
-		insertRangeListItem(id, capitalize(id), color);
+		insertRangeListItem(id, capitalize(id), colorRange);
 	}
 
 	ui->listRanges->setCurrentRow(0);

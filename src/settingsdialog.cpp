@@ -323,11 +323,6 @@ void SettingsDialog::initColorRangesPage()
 
 	updateRangeEditControls();
 
-	// TODO: Map marker color support
-	ui->repColorLabel->setVisible(false);
-	ui->repColorEdit->setVisible(false);
-	ui->repColorPick->setVisible(false);
-
 	// Set up slots
 
 	connect(ui->colorRangeList, SIGNAL(currentRowChanged(int)), this, SLOT(onColorRangeRowChanged(int)));
@@ -354,12 +349,9 @@ void SettingsDialog::initColorRangesPage()
 		currentArtifact<ColorRange>().setMax(color.rgb());
 	});
 
-	// TODO: Map marker color support
-#if 0
 	setupSingleColorEditSlots(ui->repColorEdit, ui->repColorPick, [&](const QColor& color) {
 		currentArtifact<ColorRange>().setRep(color.rgb());
 	});
-#endif
 }
 
 void SettingsDialog::updateRangeEditControls()
@@ -392,12 +384,9 @@ void SettingsDialog::updateRangeEditControls()
 		ui->maxColorEdit->setText(max.name());
 		updateColorButton(ui->maxColorPick, max);
 
-		// TODO: Map marker color support
-#if 0
 		const QColor rep = range.rep();
 		ui->repColorEdit->setText(rep.name());
 		updateColorButton(ui->repColorPick, rep);
-#endif
 	} else {
 		const QColor& blank = palette().color(QPalette::Button);
 
@@ -410,11 +399,8 @@ void SettingsDialog::updateRangeEditControls()
 		ui->maxColorEdit->clear();
 		updateColorButton(ui->maxColorPick, blank);
 
-		// TODO: Map marker color support
-#if 0
 		ui->repColorEdit->clear();
 		updateColorButton(ui->repColorPick, blank);
-#endif
 	}
 }
 
@@ -426,8 +412,7 @@ void SettingsDialog::addRangeListEntry(const QString& name)
 
 	listItem->setData(Qt::UserRole, name);
 	listItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
-	// TODO: Map marker color support
-	listItem->setIcon(createColorIcon(colorRange.mid(), ui->colorRangeList));
+	listItem->setIcon(createColorIcon(colorRange, ui->colorRangeList));
 
 	Q_ASSERT(ranges_.contains(name));
 
@@ -542,12 +527,9 @@ void SettingsDialog::onColorRangeFromList()
 		if (colors.size() >= 3) {
 			current.setMin(colors[2]);
 		}
-		// TODO: Map marker color support
-#if 0
 		if (colors.size() >= 4) {
 			current.setRep(colors[3]);
 		}
-#endif
 
 		updateRangeEditControls();
 	}
@@ -657,8 +639,7 @@ void SettingsDialog::addPaletteRecolorMenuEntry(const QString& id,
 		auto* action = paletteRecolorMenu_->addAction(label);
 
 		action->setData(id);
-		// TODO: Map marker color support
-		action->setIcon(createColorIcon(colorRange.mid(), paletteRecolorMenu_));
+		action->setIcon(createColorIcon(colorRange, paletteRecolorMenu_));
 		action->setIconVisibleInMenu(true);
 
 		connect(action, SIGNAL(triggered()), this, SLOT(onPaletteRecolor()));
@@ -666,7 +647,7 @@ void SettingsDialog::addPaletteRecolorMenuEntry(const QString& id,
 		paletteRecolorActions_.insert(id, action);
 	} else {
 		// Update an existing entry
-		paletteRecolorActions_[id]->setIcon(createColorIcon(colorRange.mid(), paletteRecolorMenu_));
+		paletteRecolorActions_[id]->setIcon(createColorIcon(colorRange, paletteRecolorMenu_));
 	}
 }
 
@@ -681,7 +662,7 @@ void SettingsDialog::deletePaletteRecolorMenuEntry(const QString& name)
 		// Revert color of affected recolor menu items to Wesnoth built-ins if
 		// they are overrides of those.
 		const auto& builtin = wesnoth::builtinColorRanges[name];
-		recolorAction->setIcon(createColorIcon(builtin.mid(), paletteRecolorMenu_));
+		recolorAction->setIcon(createColorIcon(builtin, paletteRecolorMenu_));
 	} else {
 		paletteRecolorMenu_->removeAction(recolorAction);
 		paletteRecolorActions_.remove(name);
