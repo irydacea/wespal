@@ -185,7 +185,7 @@ private slots:
 	void onColorRangeRowChanged(int row);
 	void onColorRangeItemChanged(QListWidgetItem* item);
 
-	void onColorRangeAdd();
+	void onColorRangeAdd(const ColorRange* templateColorRange = nullptr);
 	void onColorRangeDelete();
 
 	void onColorRangeRename();
@@ -225,7 +225,7 @@ private slots:
 	void onPaletteRowChanged(int row);
 	void onPaletteItemChanged(QListWidgetItem* item);
 
-	void onPaletteAdd();
+	void onPaletteAdd(const ColorList* templatePalette = nullptr);
 	void onPaletteDelete();
 
 	void onPaletteRename();

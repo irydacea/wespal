@@ -306,6 +306,28 @@ void SettingsDialog::initColorRangesPage()
 {
 	auto* colorRangeMenu = new QMenu(this);
 
+	auto* colorRangeTemplatesMenu = colorRangeMenu->addMenu(tr("&New from Built-in"));
+
+	for (qsizetype k = 0; k < wesnoth::builtinColorRanges.objectCount(); ++k)
+	{
+		const auto& name = wesnoth::builtinColorRanges.orderedTranslatableNames()[k];
+		const auto* colorRange = wesnoth::builtinColorRanges.orderedObjects()[k];
+
+		auto* templateAct = new QAction(this);
+
+		templateAct->setText(name);
+		templateAct->setIcon(createColorRangeIcon(*colorRange, colorRangeTemplatesMenu));
+		templateAct->setIconVisibleInMenu(true);
+
+		connect(templateAct, &QAction::triggered, this, [this, colorRange]() {
+			onColorRangeAdd(colorRange);
+		});
+
+		colorRangeTemplatesMenu->addAction(templateAct);
+	}
+
+	colorRangeMenu->addSeparator();
+
 	colorRangeMenu->addAction(ui->actionDuplicateColorRange);
 	colorRangeMenu->addAction(ui->actionRenameColorRange);
 
@@ -457,10 +479,12 @@ void SettingsDialog::onColorRangeItemChanged(QListWidgetItem* item)
 	addPaletteRecolorMenuEntry(newName, colorRange, capitalize(newName));
 }
 
-void SettingsDialog::onColorRangeAdd()
+void SettingsDialog::onColorRangeAdd(const ColorRange* templateColorRange)
 {
 	const auto& name = generateColorRangeName();
-	ranges_.insert(name, {});
+
+	ranges_.insert(name, templateColorRange ? *templateColorRange : ColorRange{});
+
 	addRangeListEntry(name);
 
 	ui->colorRangeList->setCurrentRow(ui->colorRangeList->count() - 1);
@@ -572,14 +596,37 @@ void SettingsDialog::onColorRangeToWml()
 
 void SettingsDialog::initPalettesPage()
 {
-
 	ui->paletteColorsList->setItemDelegate(new PaletteItemDelegate(ui->paletteList));
 
 	auto* paletteMenu = new QMenu(this);
 
+	auto* paletteTemplatesMenu = paletteMenu->addMenu(tr("&New from Built-in"));
+
+	for (qsizetype k = 0; k < wesnoth::builtinPalettes.objectCount(); ++k)
+	{
+		const auto& name = wesnoth::builtinPalettes.orderedTranslatableNames()[k];
+		const auto* palette = wesnoth::builtinPalettes.orderedObjects()[k];
+
+		auto* templateAct = new QAction(this);
+
+		templateAct->setText(name);
+		templateAct->setIcon(createPaletteIcon(*palette, paletteTemplatesMenu));
+		templateAct->setIconVisibleInMenu(true);
+
+		connect(templateAct, &QAction::triggered, this, [this, palette]() {
+			onPaletteAdd(palette);
+		});
+
+		paletteTemplatesMenu->addAction(templateAct);
+	}
+
+	paletteMenu->addSeparator();
+
 	paletteMenu->addAction(ui->actionDuplicatePalette);
 	paletteMenu->addAction(ui->actionRenamePalette);
+
 	paletteMenu->addSeparator();
+
 	paletteMenu->addAction(ui->actionPaletteGpl);
 
 	ui->paletteMenuButton->setMenu(paletteMenu);
@@ -833,13 +880,15 @@ void SettingsDialog::onPaletteItemChanged(QListWidgetItem* item)
 	artifactItemRenameInteractive<ColorList>(item);
 }
 
-void SettingsDialog::onPaletteAdd()
+void SettingsDialog::onPaletteAdd(const ColorList* templatePalette)
 {
 	{
 		ObjectLock lockPals{ui->paletteList};
 
 		const QString& palName = generatePaletteName();
-		palettes_[palName].append(qRgb(0, 0, 0));
+
+		palettes_[palName] = templatePalette ? *templatePalette : ColorList{qRgb(0, 0, 0)};
+
 		addPaletteListEntry(palName);
 	}
 
