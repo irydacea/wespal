@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Version 0.4.1
+Version 0.5.0
 -------------
 
 * Added alternative view modes to the original Split mode: Swipe, Onion Skin.
