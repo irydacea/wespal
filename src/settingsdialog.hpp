@@ -235,6 +235,7 @@ private slots:
 	void onPaletteFromList();
 	void onPaletteFromImage();
 	void onPaletteToWml();
+	void onPaletteToGpl();
 
 	void onColorRowChanged(int row);
 	void onColorItemChanged(QListWidgetItem* item);

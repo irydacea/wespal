@@ -261,4 +261,14 @@ namespace MosIO {
  */
 bool writePng(QImage& input, const QString& fileName);
 
+/**
+ * Writes a palette to disk in GIMP palette (.gpl) format.
+ *
+ * @param palette      Input palette.
+ * @param fileName     Palette file name.
+ */
+bool writeGimpPalette(const ColorList& palette,
+					  const QString& fileName,
+					  const QString& paletteName);
+
 } // end namespace MosIO

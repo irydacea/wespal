@@ -711,6 +711,14 @@
     <enum>QAction::NoRole</enum>
    </property>
   </action>
+  <action name="actionPaletteGpl">
+   <property name="text">
+    <string>Export &amp;GIMP Palette...</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>

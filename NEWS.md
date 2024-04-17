@@ -11,6 +11,7 @@ Version 0.4.1
 * Redesigned main window.
 * Merged Color Range Editor and Palette Editor into a single Settings window with additional global settings.
 * Changed storage for the main window size and preview background settings - this will cause these settings from previous versions to be forgotten.
+* Added GIMP Palette (.gpl) export option to the Palette Editor.
 * Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Color ranges now take a high-contrast fourth parameter, used in Wespal for displaying color range icons and in Wesnoth for unit/village markers on the minimap (#12).
 * Added unit tests to ensure the recoloring algorithm never breaks silently before a release.

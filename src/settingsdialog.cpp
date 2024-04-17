@@ -30,8 +30,10 @@
 
 #include <QCloseEvent>
 #include <QColorDialog>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QMenu>
+#include <QStandardPaths>
 
 SettingsDialog::SettingsDialog(const QList<qreal>& zoomValues,
 							   const QImage& referenceImage,
@@ -577,6 +579,8 @@ void SettingsDialog::initPalettesPage()
 
 	paletteMenu->addAction(ui->actionDuplicatePalette);
 	paletteMenu->addAction(ui->actionRenamePalette);
+	paletteMenu->addSeparator();
+	paletteMenu->addAction(ui->actionPaletteGpl);
 
 	ui->paletteMenuButton->setMenu(paletteMenu);
 
@@ -619,6 +623,7 @@ void SettingsDialog::initPalettesPage()
 	connect(ui->paletteColorsFromList, SIGNAL(clicked()), this, SLOT(onPaletteFromList()));
 	connect(ui->paletteColorsFromImage, SIGNAL(clicked()), this, SLOT(onPaletteFromImage()));
 	connect(ui->paletteWml, SIGNAL(clicked()), this, SLOT(onPaletteToWml()));
+	connect(ui->actionPaletteGpl, SIGNAL(triggered()), this, SLOT(onPaletteToGpl()));
 
 	connect(ui->paletteColorsList, SIGNAL(currentRowChanged(int)), this, SLOT(onColorRowChanged(int)));
 	connect(ui->paletteColorsList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(onColorItemChanged(QListWidgetItem*)));
@@ -973,6 +978,34 @@ void SettingsDialog::onPaletteToWml()
 
 	showCodeSnippet(tr("Color Palette WML"),
 					wmlFromColorList(paletteName, pal));
+}
+
+void SettingsDialog::onPaletteToGpl()
+{	auto* listItem = ui->paletteList->currentItem();
+
+	if (!listItem)
+		return;
+
+	const auto& palette = currentArtifact<ColorList>();
+	const auto& name = itemData(listItem);
+
+	const auto& shellPicturesPath = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+
+	const auto& saveName = QFileDialog::getSaveFileName(
+							   this,
+							   tr("Export GIMP Palette"),
+							   shellPicturesPath,
+							   tr("GIMP Palette (*.gpl)"));
+
+	if (saveName.isEmpty())
+		return;
+
+	if (!MosIO::writeGimpPalette(palette, saveName, name)) {
+		QMessageBox::critical(
+					this,
+					tr("Wespal"),
+					tr("An error occurred while trying to write the palette file to disk."));
+	}
 }
 
 void SettingsDialog::onColorRowChanged(int row)

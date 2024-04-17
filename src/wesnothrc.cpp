@@ -29,6 +29,7 @@
 #include "version.hpp"
 
 #include <QColorSpace>
+#include <QFile>
 #include <QImageWriter>
 #include <QRegularExpression>
 #include <QStringBuilder>
@@ -283,6 +284,31 @@ bool writePng(QImage& input, const QString& fileName)
 	input.setColorSpace({});
 
 	return out.write(input);
+}
+
+bool writeGimpPalette(const ColorList& palette,
+					  const QString& fileName,
+					  const QString& paletteName)
+{
+	QFile file{fileName};
+	// Intentionally use LF instead of the native newline sequence
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		QTextStream out{&file};
+
+		out << "GIMP Palette\n"
+			<< "Name: " << paletteName << "\n#\n";
+
+		for (const auto& entry : palette)
+		{
+			out << qSetFieldWidth(3) << qRed(entry) << Qt::reset << ' '
+				<< qSetFieldWidth(3) << qGreen(entry) << Qt::reset << ' '
+				<< qSetFieldWidth(3) << qBlue(entry) << Qt::reset << '\n';
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 } // end namespace MosIO
