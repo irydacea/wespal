@@ -304,9 +304,7 @@ void SettingsDialog::initGeneralPage()
 
 void SettingsDialog::initColorRangesPage()
 {
-	auto* colorRangeMenu = new QMenu(this);
-
-	auto* colorRangeTemplatesMenu = colorRangeMenu->addMenu(tr("&New from Built-in"));
+	auto* colorRangeTemplatesMenu = new QMenu(this);
 
 	for (qsizetype k = 0; k < wesnoth::builtinColorRanges.objectCount(); ++k)
 	{
@@ -326,7 +324,9 @@ void SettingsDialog::initColorRangesPage()
 		colorRangeTemplatesMenu->addAction(templateAct);
 	}
 
-	colorRangeMenu->addSeparator();
+	ui->colorRangeAdd->setMenu(colorRangeTemplatesMenu);
+
+	auto* colorRangeMenu = new QMenu(this);
 
 	colorRangeMenu->addAction(ui->actionDuplicateColorRange);
 	colorRangeMenu->addAction(ui->actionRenameColorRange);
@@ -598,9 +598,7 @@ void SettingsDialog::initPalettesPage()
 {
 	ui->paletteColorsList->setItemDelegate(new PaletteItemDelegate(ui->paletteList));
 
-	auto* paletteMenu = new QMenu(this);
-
-	auto* paletteTemplatesMenu = paletteMenu->addMenu(tr("&New from Built-in"));
+	auto* paletteTemplatesMenu = new QMenu(this);
 
 	for (qsizetype k = 0; k < wesnoth::builtinPalettes.objectCount(); ++k)
 	{
@@ -620,7 +618,9 @@ void SettingsDialog::initPalettesPage()
 		paletteTemplatesMenu->addAction(templateAct);
 	}
 
-	paletteMenu->addSeparator();
+	ui->paletteAdd->setMenu(paletteTemplatesMenu);
+
+	auto* paletteMenu = new QMenu(this);
 
 	paletteMenu->addAction(ui->actionDuplicatePalette);
 	paletteMenu->addAction(ui->actionRenamePalette);
