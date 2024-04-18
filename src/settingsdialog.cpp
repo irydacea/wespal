@@ -872,7 +872,7 @@ void SettingsDialog::onPaletteRowChanged(int row)
 
 	populatePaletteView(it.value());
 
-	setPaletteEditControlsEnabled(true);
+	setPaletteViewEnabled(true);
 }
 
 void SettingsDialog::onPaletteItemChanged(QListWidgetItem* item)
