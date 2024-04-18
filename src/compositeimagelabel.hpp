@@ -150,6 +150,11 @@ public:
 	void setRightImage(const QImage& rightImage);
 
 	/**
+	 * Sets the left and right images simultaneously.
+	 */
+	void setImages(const QImage& leftImage, const QImage& rightImage);
+
+	/**
 	 * Removes the left and right images.
 	 */
 	void clear();
