@@ -23,6 +23,7 @@
 #include "version.hpp"
 
 #include <QDesktopServices>
+#include <QFileInfo>
 #include <QImageReader>
 #include <QMessageBox>
 #include <QStringBuilder>
@@ -198,3 +199,10 @@ QString supportedImageFileFormats()
 }
 
 } // end namespace MosPlatform
+
+QString cleanFileName(const QString& fileName)
+{
+	QFileInfo qfi{fileName};
+
+	return qfi.baseName() + '.' + qfi.completeSuffix();
+}

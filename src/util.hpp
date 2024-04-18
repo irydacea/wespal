@@ -20,7 +20,6 @@
 
 #pragma once
 
-#include <QFileInfo>
 #include <QPointer>
 #include <QWidget>
 
@@ -110,12 +109,7 @@ inline QString capitalize(const QString& str)
 	return res;
 }
 
-inline QString cleanFileName(const QString& fileName)
-{
-	QFileInfo qfi{fileName};
-
-	return qfi.baseName() + '.' + qfi.completeSuffix();
-}
+QString cleanFileName(const QString& fileName);
 
 namespace MosPlatform {
 
