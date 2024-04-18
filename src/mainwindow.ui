@@ -69,7 +69,7 @@
           <number>0</number>
          </property>
          <widget class="QWidget" name="pageNoFile">
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QVBoxLayout" name="pageNoFileLayout">
            <item>
             <spacer name="verticalSpacer">
              <property name="orientation">
@@ -204,7 +204,7 @@
           </layout>
          </widget>
          <widget class="QWidget" name="pageWorkAreaSplit">
-          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <layout class="QVBoxLayout" name="pageWorkAreaSplitLayout">
            <property name="spacing">
             <number>2</number>
            </property>
@@ -240,28 +240,17 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents_2">
-              <property name="geometry">
-               <rect>
-                <x>103</x>
-                <y>33</y>
-                <width>270</width>
-                <height>162</height>
-               </rect>
+             <widget class="QWidget" name="previewOriginalContents">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="whatsThis">
                <string/>
               </property>
-              <widget class="ImageLabel" name="previewOriginal" native="true">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>72</width>
-                 <height>72</height>
-                </rect>
-               </property>
-              </widget>
+              <widget class="ImageLabel" name="previewOriginal" native="true"/>
              </widget>
             </widget>
            </item>
@@ -285,32 +274,24 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents_3">
-              <property name="geometry">
-               <rect>
-                <x>103</x>
-                <y>32</y>
-                <width>271</width>
-                <height>162</height>
-               </rect>
+             <widget class="QWidget" name="previewRcContents">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <widget class="ImageLabel" name="previewRc" native="true">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>72</width>
-                 <height>72</height>
-                </rect>
-               </property>
-              </widget>
+              <widget class="ImageLabel" name="previewRc" native="true"/>
              </widget>
             </widget>
            </item>
           </layout>
          </widget>
          <widget class="QWidget" name="pageWorkAreaComposite">
-          <layout class="QGridLayout" name="gridLayout_4">
+          <layout class="QVBoxLayout" name="pageWorkAreaCompositeLayout">
+           <property name="spacing">
+            <number>2</number>
+           </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -323,10 +304,47 @@
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <property name="verticalSpacing">
-            <number>2</number>
-           </property>
-           <item row="1" column="0">
+           <item>
+            <widget class="QScrollArea" name="previewCompositeContainer">
+             <property name="whatsThis">
+              <string>This is a composite preview of the image. Use the View selector to choose the display mode.</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="verticalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOn</enum>
+             </property>
+             <property name="horizontalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOn</enum>
+             </property>
+             <property name="widgetResizable">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <widget class="QWidget" name="previewCompositeContents">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <widget class="CompositeImageLabel" name="previewComposite" native="true">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>72</width>
+                 <height>72</height>
+                </rect>
+               </property>
+              </widget>
+             </widget>
+            </widget>
+           </item>
+           <item>
             <widget class="QSlider" name="viewSlider">
              <property name="maximum">
               <number>1000</number>
@@ -349,45 +367,6 @@
              <property name="tickInterval">
               <number>250</number>
              </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QScrollArea" name="previewCompositeContainer">
-             <property name="whatsThis">
-              <string>This is a composite preview of the image. Use the View selector to choose the display mode.</string>
-             </property>
-             <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarAlwaysOn</enum>
-             </property>
-             <property name="horizontalScrollBarPolicy">
-              <enum>Qt::ScrollBarAlwaysOn</enum>
-             </property>
-             <property name="widgetResizable">
-              <bool>false</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <widget class="QWidget" name="previewCompositeContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>132</y>
-                <width>495</width>
-                <height>181</height>
-               </rect>
-              </property>
-              <widget class="CompositeImageLabel" name="previewComposite" native="true">
-               <property name="geometry">
-                <rect>
-                 <x>210</x>
-                 <y>50</y>
-                 <width>120</width>
-                 <height>80</height>
-                </rect>
-               </property>
-              </widget>
-             </widget>
             </widget>
            </item>
           </layout>

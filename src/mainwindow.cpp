@@ -922,56 +922,63 @@ void MainWindow::doReloadFile()
 	refreshPreviews();
 }
 
-void MainWindow::refreshPreviews()
+void MainWindow::refreshPreviews(bool skipRerender)
 {
 	if (!hasImage() || signalsBlocked())
 		return;
 
-	ColorMap cvtMap;
-	const auto& palData = currentPalette();
+	if (!skipRerender) {
+		const auto& keyPalette = currentPalette();
+		ColorMap conversionMap;
 
-	if (ui->staFunctionOpts->currentIndex()) {
-		const auto& targetPalData = currentPalette(true);
-		cvtMap = generateColorMap(palData, targetPalData);
-	} else {
-		const auto& colorRange = colorRanges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
-		cvtMap = colorRange.applyToPalette(palData);
+		if (rcMode_ == RcPaletteSwap) {
+			const auto& newPalette = currentPalette(true);
+			conversionMap = generateColorMap(keyPalette, newPalette);
+		} else {
+			const auto& colorRange = colorRanges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
+			conversionMap = colorRange.applyToPalette(keyPalette);
+		}
+
+		transformedImage_ = recolorImage(originalImage_, conversionMap);
 	}
 
-	transformedImage_ = recolorImage(originalImage_, cvtMap);
+	switch (viewMode_)
+	{
+		case MosConfig::ImageViewSwipe:
+		case MosConfig::ImageViewOnionSkin:
+			ui->previewComposite->setImages(originalImage_, transformedImage_);
+			resetPreviewLayout(ui->previewCompositeContainer, ui->previewComposite);
 
-	const QSize& scaled_size = originalImage_.size() * zoom_;
+			ui->previewOriginal->clear();
+			ui->previewRc->clear();
+			break;
 
-	ui->previewOriginal->setImage(originalImage_);
-	ui->previewRc->setImage(transformedImage_);
-	ui->previewComposite->setLeftImage(originalImage_);
-	ui->previewComposite->setRightImage(transformedImage_);
+		default:
+			ui->previewComposite->clear();
 
-	ui->previewOriginal->resize(scaled_size);
-	ui->previewRc->resize(scaled_size);
-	ui->previewComposite->resize(scaled_size);
-
-	ui->previewOriginal->parentWidget()->adjustSize();
-	ui->previewRc->parentWidget()->adjustSize();
-	ui->previewComposite->parentWidget()->adjustSize();
-
-	centerScrollArea(ui->previewOriginalContainer);
-	centerScrollArea(ui->previewRcContainer);
-	centerScrollArea(ui->previewCompositeContainer);
+			ui->previewOriginal->setImage(originalImage_);
+			ui->previewRc->setImage(transformedImage_);
+			resetPreviewLayout(ui->previewOriginalContainer, ui->previewOriginal);
+			resetPreviewLayout(ui->previewRcContainer, ui->previewRc);
+	}
 }
 
-void MainWindow::centerScrollArea(QScrollArea* scrollArea)
+void MainWindow::resetPreviewLayout(QAbstractScrollArea* scrollArea,
+									QWidget* previewWidget)
 {
-	if (!scrollArea || !scrollArea->widget())
+	if (!scrollArea || !previewWidget)
 		return;
 
-	const QSize& childSize = scrollArea->widget()->size();
-	const QSize& viewSize = scrollArea->viewport()->size();
+	const QSize& scaledSize = originalImage_.size() * zoom_;
 
-	scrollArea->ensureVisible(childSize.width() / 2,
-							  childSize.height() / 2,
-							  viewSize.width() / 2,
-							  viewSize.height() / 2);
+	previewWidget->resize(scaledSize);
+	previewWidget->parentWidget()->adjustSize();
+
+	auto* hScroll = scrollArea->horizontalScrollBar();
+	auto* vScroll = scrollArea->verticalScrollBar();
+
+	hScroll->setValue(hScroll->maximum() / 2);
+	vScroll->setValue(vScroll->maximum() / 2);
 }
 
 void MainWindow::doSaveFile()
@@ -1068,6 +1075,9 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 	// Ensure the combobox selection is correct if we came from the class ctor
 	// (it will call us again but since the values are identical it's a no-op)
 	ui->cbxViewMode->setCurrentIndex(viewMode_);
+
+	// Update preview widgets if applicable
+	refreshPreviews(true);
 }
 
 void MainWindow::setRcMode(MainWindow::RcMode newRcMode)

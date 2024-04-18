@@ -160,7 +160,7 @@ private:
 	QStringList doSaveColorRanges(QString& base);
 	QStringList doSaveSingleRecolor(QString& base);
 
-	void refreshPreviews();
+	void refreshPreviews(bool skipRerender = false);
 
 	QString currentPaletteName(bool paletteSwitchMode = false) const;
 	ColorList currentPalette(bool paletteSwitchMode = false) const;
@@ -169,7 +169,8 @@ private:
 
 	void setPreviewBackgroundColor(const QString& colorName);
 
-	void centerScrollArea(QScrollArea* scrollArea);
+	void resetPreviewLayout(QAbstractScrollArea* scrollArea,
+							QWidget* previewWidget);
 
 	void doCustomPreviewBgSelect();
 	void updateCustomPreviewBgIcon();
