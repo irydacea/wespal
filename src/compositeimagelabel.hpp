@@ -20,10 +20,7 @@
 
 #pragma once
 
-#include <QScrollArea>
-
-class QPainter;
-class QRectF;
+#include <QWidget>
 
 /**
  * Widget used for rendering an image with a "left side" and a "right side".

@@ -31,17 +31,15 @@
 #include <QColorDialog>
 #include <QDesktopServices>
 #include <QDrag>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QFileDialog>
-#include <QIcon>
 #include <QMessageBox>
 #include <QMimeData>
-#include <QPushButton>
 #include <QScrollBar>
 #include <QSplitter>
 #include <QStandardPaths>
 #include <QStringBuilder>
-#include <QStyle>
-#include <QUrl>
 #include <QWhatsThis>
 
 namespace {

@@ -22,7 +22,6 @@
 
 #include <QFileInfo>
 #include <QPointer>
-#include <QStringList>
 #include <QWidget>
 
 /**

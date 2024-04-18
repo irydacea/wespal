@@ -24,19 +24,17 @@
 
 #include "appconfig.hpp"
 
-#include <QAbstractButton>
-#include <QDropEvent>
-#include <QDragEnterEvent>
-#include <QFileInfo>
 #include <QMainWindow>
-#include <QScrollArea>
-#include <QStringList>
 
 namespace Ui {
     class MainWindow;
 }
 
+class QAbstractButton;
+class QAbstractScrollArea;
 class QButtonGroup;
+class QDragEnterEvent;
+class QDropEvent;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

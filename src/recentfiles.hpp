@@ -21,7 +21,6 @@
 #pragma once
 
 #include <QImage>
-#include <QString>
 
 namespace MosConfig {
 

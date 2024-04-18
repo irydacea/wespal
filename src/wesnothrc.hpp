@@ -23,8 +23,9 @@
 
 #include "colortypes.hpp"
 
-#include <QImage>
 #include <QString>
+
+class QImage;
 
 /**
  * A color range definition is made of four reference RGB colors, used

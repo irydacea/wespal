@@ -23,7 +23,6 @@
 #include "version.hpp"
 
 #include <QDesktopServices>
-#include <QIcon>
 #include <QImageReader>
 #include <QMessageBox>
 #include <QStringBuilder>
