@@ -26,6 +26,11 @@
 
 int main(int argc, char *argv[])
 {
+#if defined(Q_OS_WINDOWS) && QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+	// Avoid the icky Windows 11 style being enabled by default
+	QApplication::setStyle("WindowsVista");
+#endif
+
 	QApplication a{argc, argv};
 	QString initialFile;
 	QStringList argvq = a.arguments();
@@ -42,6 +47,7 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_MACOS
 	QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
+
 	a.setWindowIcon(QIcon{":/wespal-icon-512.png"});
 
 	MainWindow w;
