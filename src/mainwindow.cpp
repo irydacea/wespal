@@ -1182,31 +1182,31 @@ bool MainWindow::confirmFileOverwrite(const QStringList& paths)
 	return MosUi::prompt(this, tr("The chosen directory already contains files with the same names required for output. Do you wish to overwrite them and continue?"), paths);
 }
 
-QStringList MainWindow::doSaveSingleRecolor(QString &base)
+QStringList MainWindow::doSaveCurrentTransform(const QString& dirPath, const QString& suffix)
 {
-	QMap<QString, ColorMap> jobs;
+	const auto& nameStem = QFileInfo(imagePath_).completeBaseName();
 
-	const auto& palId = currentPaletteName();
-	const auto& palData = currentPalette();
+	QString fileName = nameStem % '-' % suffix % ".png";
+	QString filePath = dirPath % '/' % fileName;
 
-	const auto& targetPalId = currentPaletteName(true);
-	const auto& targetPalData = currentPalette(true);
-
-	const QString& filePath = base + "/" + QFileInfo(imagePath_).completeBaseName() +
-			"-PAL-" + palId + "-" + targetPalId + ".png";
-
-	jobs[filePath] = generateColorMap(palData, targetPalData);
-
-	if (QFileInfo::exists(filePath) &&
-		!confirmFileOverwrite({cleanFileName(filePath)}))
-	{
+	if (QFileInfo::exists(filePath) && !confirmFileOverwrite({filePath})) {
 		throw canceled_job();
 	}
 
-	return doRunJobs(jobs);
+	ScopedCursor sc{*this, {Qt::WaitCursor}};
+
+	setEnabled(false);
+
+	if (!MosIO::writePng(transformedImage_, filePath)) {
+		throw QStringList{fileName};
+	}
+
+	setEnabled(true);
+
+	return QStringList{fileName};
 }
 
-QStringList MainWindow::doSaveColorRanges(QString &base)
+QStringList MainWindow::doSaveColorRanges(const QString &base)
 {
 	QMap<QString, ColorMap> jobs;
 
@@ -1241,6 +1241,17 @@ QStringList MainWindow::doSaveColorRanges(QString &base)
 	}
 
 	return doRunJobs(jobs);
+}
+
+QStringList MainWindow::doSaveSingleRecolor(const QString& dirPath)
+{
+	const auto& palId = currentPaletteName();
+	const auto& targetPalId = currentPaletteName(true);
+
+	QString suffix = QString{"PAL-%1-%2"}
+					 .arg(palId, targetPalId);
+
+	return doSaveCurrentTransform(dirPath, suffix);
 }
 
 QStringList MainWindow::doRunJobs(const QMap<QString, ColorMap>& jobs)

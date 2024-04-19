@@ -155,8 +155,10 @@ private:
 
 	bool confirmFileOverwrite(const QStringList& paths);
 
-	QStringList doSaveColorRanges(QString& base);
-	QStringList doSaveSingleRecolor(QString& base);
+	QStringList doSaveCurrentTransform(const QString& dirPath, const QString& suffix);
+
+	QStringList doSaveColorRanges(const QString& base);
+	QStringList doSaveSingleRecolor(const QString& dirPath);
 
 	void refreshPreviews(bool skipRerender = false);
 
