@@ -328,3 +328,21 @@ void TestMorningStar::testUniqueColorsFromImage()
 
 	QCOMPARE(result, reference);
 }
+
+void TestMorningStar::testWriteBase64()
+{
+	using namespace wesnoth;
+
+	auto pathMagentaSwatch = QFINDTESTDATA("../tests/magenta-palette.png");
+	QImage imgMagentaSwatch{pathMagentaSwatch, "PNG"};
+
+	const auto& base64 = MosIO::writeBase64Png(imgMagentaSwatch);
+
+	QImage imgDecoded;
+	imgDecoded.loadFromData(QByteArray::fromBase64(base64.toUtf8()), "PNG");
+
+	QVERIFY(imgMagentaSwatch.isNull() == false);
+	QVERIFY(imgDecoded.isNull() == false);
+
+	QCOMPARE(imgMagentaSwatch, imgDecoded);
+}

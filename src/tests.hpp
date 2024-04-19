@@ -33,4 +33,5 @@ private slots:
 	void testWesnothRcImage();
 	void testPaletteSwapImage();
 	void testUniqueColorsFromImage();
+	void testWriteBase64();
 };

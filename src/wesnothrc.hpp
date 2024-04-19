@@ -263,6 +263,20 @@ namespace MosIO {
 bool writePng(QImage& input, const QString& fileName);
 
 /**
+ * Writes a QImage to a string as Base64 data containing a valid PNG file.
+ *
+ * @param input        Input image (see notes).
+ * @param dataUri      Formats the buffer as an RFC 2397 data URI. If false
+ *                     (the default) a naked PNG file will be written instead.
+ *
+ * @note @a input is assumed to be in ARGB32 format, although this is not
+ *       a particularly significant assumption anyway. More importantly, this
+ *       function may MODIFY its input to ensure that its color space
+ *       configuration is correct for the intended output format.
+ */
+QString writeBase64Png(QImage& input, bool dataUri = false);
+
+/**
  * Writes a palette to disk in GIMP palette (.gpl) format.
  *
  * @param palette      Input palette.
