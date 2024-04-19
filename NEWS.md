@@ -15,6 +15,7 @@ Version 0.5.0
 * Added GIMP Palette (.gpl) export option to the Palette Editor.
 * Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Color ranges now take a high-contrast fourth parameter, used in Wespal for displaying color range icons and in Wesnoth for unit/village markers on the minimap (#12).
+* Added Generate Base64 option to the Tools menu.
 * Added unit tests to ensure the recoloring algorithm never breaks silently before a release.
 
 Version 0.4.0

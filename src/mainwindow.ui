@@ -819,6 +819,8 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
+    <addaction name="actionBase64"/>
+    <addaction name="separator"/>
     <addaction name="actionAppSettings"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -1138,6 +1140,11 @@
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="actionBase64">
+   <property name="text">
+    <string>Generate &amp;Base64...</string>
    </property>
   </action>
  </widget>

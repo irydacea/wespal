@@ -19,6 +19,7 @@
  */
 
 #include "appconfig.hpp"
+#include "codesnippetdialog.hpp"
 #include "defs.hpp"
 #include "mainwindow.hpp"
 #include "paletteitem.hpp"
@@ -1114,6 +1115,7 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->action_Reload,
 		ui->action_Close,
 		ui->action_Save,
+		ui->actionBase64,
 		ui->radPal, ui->radRc,
 		ui->lblKeyPal, ui->cbxKeyPal,
 		ui->lblNewPal, ui->cbxNewPal,
@@ -1471,4 +1473,24 @@ void MainWindow::on_compositeRcOnlyToggle_toggled(bool checked)
 	if (checked) {
 		ui->viewSlider->setValue(ui->viewSlider->maximum());
 	}
+}
+
+void MainWindow::on_actionBase64_triggered()
+{
+	if (originalImage_.isNull())
+		return;
+
+	const auto& ogBase64 = MosIO::writeBase64Png(originalImage_, true);
+	const auto& rcBase64 = MosIO::writeBase64Png(transformedImage_, true);
+
+	CodeSnippetDialog dlg{this};
+
+	dlg.setAllowWmlSave(false);
+	dlg.setRawDataMode(true);
+	dlg.setWindowTitle(tr("Generate Base64"));
+
+	dlg.addSnippet(tr("Recolored Image"), rcBase64);
+	dlg.addSnippet(tr("Original Image"), ogBase64);
+
+	dlg.exec();
 }

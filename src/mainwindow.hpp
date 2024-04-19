@@ -199,4 +199,5 @@ private slots:
 	void on_actionAppSettings_triggered();
 	void on_compositeOriginalOnlyToggle_toggled(bool checked);
 	void on_compositeRcOnlyToggle_toggled(bool checked);
+	void on_actionBase64_triggered();
 };
