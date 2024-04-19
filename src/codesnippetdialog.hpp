@@ -31,9 +31,17 @@ class CodeSnippetDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit CodeSnippetDialog(const QString& contents,
+	explicit CodeSnippetDialog(const QString& contents = {},
 							   QWidget* parent = nullptr);
+
+	CodeSnippetDialog(QWidget* parent = nullptr)
+		: CodeSnippetDialog({}, parent)
+	{
+	}
+
 	~CodeSnippetDialog();
+
+	void addSnippet(const QString& title, const QString& contents);
 	
 protected:
 	virtual void changeEvent(QEvent* event) override;
@@ -42,6 +50,8 @@ private:
 	Ui::CodeSnippetDialog* ui;
 
 private slots:
+	void onCodeSelectionChanged(int index);
+
 	void handleCopy();
 	void handleSave();
 };

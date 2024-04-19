@@ -38,7 +38,6 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents,
 	ui->setupUi(this);
 
 	setWindowFlags(Qt::Sheet);
-	ui->teContents->setPlainText(contents);
 
 	auto* const closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
 	auto* const saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
@@ -65,6 +64,12 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents,
 
 	const auto& monoFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
 	ui->teContents->setFont(monoFont);
+
+	connect(ui->codeSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onCodeSelectionChanged(int)));
+
+	if (!contents.isEmpty()) {
+		addSnippet(tr("Default"), contents);
+	}
 }
 
 CodeSnippetDialog::~CodeSnippetDialog()
@@ -83,6 +88,25 @@ void CodeSnippetDialog::changeEvent(QEvent* event)
 		default:
 			break;
 	}
+}
+
+void CodeSnippetDialog::addSnippet(const QString& title, const QString& contents)
+{
+	ui->codeSelector->addItem(title, contents);
+
+	ui->codeSelector->setVisible(ui->codeSelector->count() > 1);
+}
+
+void CodeSnippetDialog::onCodeSelectionChanged(int index)
+{
+	if (index == -1) {
+		ui->teContents->clear();
+		return;
+	}
+
+	const auto& contents = ui->codeSelector->itemData(index).toString();
+
+	ui->teContents->setPlainText(contents);
 }
 
 void CodeSnippetDialog::handleCopy()

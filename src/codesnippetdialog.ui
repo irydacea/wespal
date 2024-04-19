@@ -21,14 +21,27 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>You can save the following code snippet to a file or copy its contents to the system clipboard for use in your own project.</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="topLayout">
+     <item>
+      <widget class="QLabel" name="messageLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>You can save the following code snippet to a file or copy its contents to the system clipboard for use in your own project.</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignTop">
+      <widget class="QComboBox" name="codeSelector"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QPlainTextEdit" name="teContents">
@@ -75,6 +88,10 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>codeSelector</tabstop>
+  <tabstop>teContents</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
