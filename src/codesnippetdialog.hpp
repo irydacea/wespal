@@ -43,6 +43,8 @@ public:
 
 	void addSnippet(const QString& title, const QString& contents);
 
+	void setAllowWmlSave(bool value);
+
 	void setRawDataMode(bool value);
 	
 protected:

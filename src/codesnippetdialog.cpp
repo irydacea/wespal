@@ -97,6 +97,12 @@ void CodeSnippetDialog::addSnippet(const QString& title, const QString& contents
 	ui->codeSelector->setVisible(ui->codeSelector->count() > 1);
 }
 
+void CodeSnippetDialog::setAllowWmlSave(bool value)
+{
+	auto* saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
+	saveButton->setVisible(value);
+}
+
 void CodeSnippetDialog::setRawDataMode(bool value)
 {
 	ui->teContents->setWordWrapMode(value ? QTextOption::WrapAnywhere : QTextOption::WrapAtWordBoundaryOrAnywhere);
