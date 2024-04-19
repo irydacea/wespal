@@ -42,6 +42,8 @@ public:
 	~CodeSnippetDialog();
 
 	void addSnippet(const QString& title, const QString& contents);
+
+	void setRawDataMode(bool value);
 	
 protected:
 	virtual void changeEvent(QEvent* event) override;
