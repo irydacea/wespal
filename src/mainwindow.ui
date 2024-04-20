@@ -1219,6 +1219,9 @@
    </property>
   </action>
   <action name="actionAbout_Morning_Star">
+   <property name="icon">
+    <iconset theme="help-about"/>
+   </property>
    <property name="text">
     <string>About &amp;Wespal...</string>
    </property>
@@ -1447,11 +1450,17 @@
    </property>
   </action>
   <action name="actionReportBugs">
+   <property name="icon">
+    <iconset theme="tools-report-bug"/>
+   </property>
    <property name="text">
     <string>Report &amp;Issues</string>
    </property>
   </action>
   <action name="actionChangeLog">
+   <property name="icon">
+    <iconset theme="help-contents"/>
+   </property>
    <property name="text">
     <string>Release &amp;Notes</string>
    </property>
