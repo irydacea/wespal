@@ -462,16 +462,6 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="lblViewMode">
-           <property name="text">
-            <string>&amp;View:</string>
-           </property>
-           <property name="buddy">
-            <cstring>cbxViewMode</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QFrame" name="compositeShortcutsPanel">
            <layout class="QHBoxLayout" name="compositeShortcutsPanelLayout">
             <property name="spacing">

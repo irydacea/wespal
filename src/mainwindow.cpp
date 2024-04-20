@@ -1226,7 +1226,6 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->zoomSlider,
 		ui->menu_Zoom,
 		ui->compositeShortcutsPanel,
-		ui->lblViewMode,
 		ui->cbxViewMode,
 		ui->buttonBox->button(QDialogButtonBox::Save));
 
