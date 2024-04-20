@@ -53,6 +53,18 @@ SettingsDialog::SettingsDialog(const QList<qreal>& zoomValues,
 
 	ui->setupUi(this);
 
+	// Set hex color input mask
+
+	auto colorInputs = std::make_tuple(
+		ui->avgColorEdit,
+		ui->minColorEdit,
+		ui->maxColorEdit,
+		ui->repColorEdit,
+		ui->paletteColorEdit);
+	std::apply([](auto&&... widget) {
+		(widget->setInputMask(R"(\#HHHHHH)"), ...);
+	}, colorInputs);
+
 	// Set theme icons
 
 	auto listAddIcon = QIcon::fromTheme("list-add", QIcon{":/list-add-16.png"});
