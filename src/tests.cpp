@@ -26,6 +26,8 @@
 #include "recentfiles.hpp"
 #include "wesnothrc.hpp"
 
+#include <QColorSpace>
+
 QTEST_MAIN(TestMorningStar)
 ;
 
@@ -234,6 +236,26 @@ void TestMorningStar::testPaletteSwapImage()
 	// By this point we've guaranteed alpha information is never lost
 	QCOMPARE(idempotentRcOutput, imgAlphaMagentaSwatch);
 	QCOMPARE_NE(idempotentRcOutput, imgMagentaSwatch);
+}
+
+void TestMorningStar::testColorBlendImage()
+{
+	auto pathTestInput = QFINDTESTDATA("../tests/blend-test-input.png");
+	QImage imgTestInput{pathTestInput, "PNG"};
+
+	imgTestInput.convertTo(QImage::Format_ARGB32);
+
+	auto pathTestReference = QFINDTESTDATA("../tests/blend-test-reference.png");
+	QImage imgTestReference{pathTestReference, "PNG"};
+
+	// Strip color space information prior to transform/comparison
+	// (see also MosIO::writeImageDeviceAgnostic())
+	imgTestInput.setColorSpace({});
+	imgTestReference.setColorSpace({});
+
+	QImage imgTestOutput = colorBlendImage(imgTestInput, QColor{127, 89, 32}, 0.54);
+
+	QCOMPARE(imgTestOutput, imgTestReference);
 }
 
 void TestMorningStar::testMru()

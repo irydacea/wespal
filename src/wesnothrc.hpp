@@ -247,6 +247,24 @@ ColorSet uniqueColorsFromImage(const QImage& input);
 QImage recolorImage(const QImage& input,
 					const ColorMap& colorMap);
 
+/**
+ * Tints a QImage with the specified color.
+ *
+ * @param input        Input image.
+ *
+ * @param color        Blending color. The alpha channel is ignored.
+ *
+ * @param blendFactor  Blending factor, ranging from 0.0 to 1.0. Values
+ *                     outside the range will be bound to the closest legal
+ *                     value.
+ *
+ * @return A recolored image, always in ARGB32 format regardless of the input
+ *         format.
+ */
+QImage colorBlendImage(const QImage& input,
+					   const QColor& color,
+					   qreal blendFactor);
+
 namespace MosIO {
 
 /**

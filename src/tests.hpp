@@ -32,6 +32,7 @@ private slots:
 	void testRecolorAlgorithm();
 	void testWesnothRcImage();
 	void testPaletteSwapImage();
+	void testColorBlendImage();
 	void testUniqueColorsFromImage();
 	void testWriteBase64();
 };

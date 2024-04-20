@@ -257,6 +257,56 @@ QImage recolorImage(const QImage& input,
 	return output;
 }
 
+QImage colorBlendImage(const QImage& input,
+					   const QColor& color,
+					   qreal blendFactor)
+{
+	QImage output;
+
+	// Copy input to output first. We force ARGB32 since that's the only
+	// format we (and Wesnoth) currently understand.
+	output = input.convertToFormat(QImage::Format_ARGB32);
+
+	blendFactor = qBound(0.0, blendFactor, 1.0);
+
+	if (blendFactor == 0.0)
+		return output;
+
+	// Formula from Wesnoth src/sdl/utils.cpp blend_surface()
+
+	quint16 ratio = blendFactor * 256;
+
+	quint16 redShift = ratio * color.red();
+	quint16 greenShift = ratio * color.green();
+	quint16 blueShift = ratio * color.blue();
+
+	ratio = 256 - ratio;
+
+	auto maxY = output.height(), maxX = output.width();
+
+	for (int y = 0; y < maxY; ++y)
+	{
+		auto* line = reinterpret_cast<QRgb*>(output.scanLine(y));
+
+		for (int x = 0; x < maxX; ++x)
+		{
+			if (blendFactor == 1.0) {
+				line[x] = (line[x] & 0xFF000000U) +
+						  (color.rgb() & 0xFFFFFFU);
+				continue;
+			}
+
+			quint8 r = (ratio * static_cast<quint8>(line[x] >> 16) + redShift) >> 8;
+			quint8 g = (ratio * static_cast<quint8>(line[x] >> 8) + greenShift) >> 8;
+			quint8 b = (ratio * static_cast<quint8>(line[x]) + blueShift) >> 8;
+
+			line[x] = (line[x] & 0xFF000000U) | (r << 16) | (g << 8) | b;
+		}
+	}
+
+	return output;
+}
+
 namespace MosIO {
 
 static bool writeImageDeviceAgnostic(QImageWriter& out,
