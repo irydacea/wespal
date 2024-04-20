@@ -225,6 +225,7 @@ private slots:
 	void on_compositeOriginalOnlyToggle_toggled(bool checked);
 	void on_compositeRcOnlyToggle_toggled(bool checked);
 	void on_actionBase64_triggered();
+	void on_cmdGenerateWml_clicked();
 
 	void onColorBlendFactorChanged(int value);
 	void onColorBlendLineEditChanged(const QString& value);

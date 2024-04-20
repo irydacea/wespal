@@ -129,6 +129,15 @@ MainWindow::MainWindow(QWidget* parent)
 	workAreaSplitter->addWidget(ui->workAreaImagePanel);
 	workAreaSplitter->addWidget(ui->workAreaOptionsPanel);
 
+	// Attempt to use the Left format icon as a fallback for the Code button
+	// (mainly for macOS and Windows, although its original theme icon isn't
+	// technically standard anyway).
+	if (ui->cmdGenerateWml->icon().isNull())
+		ui->cmdGenerateWml->setIcon(QIcon::fromTheme("format-justify-left"));
+
+	if (!ui->cmdGenerateWml->icon().isNull())
+		ui->cmdGenerateWml->setText({});
+
 	//
 	// Wesnoth recoloring system data
 	//
@@ -1247,6 +1256,7 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->menu_Zoom,
 		ui->compositeShortcutsPanel,
 		ui->cbxViewMode,
+		ui->cmdGenerateWml,
 		ui->buttonBox->button(QDialogButtonBox::Save));
 
 	std::apply([enable](auto&&... widget) {
@@ -1657,6 +1667,61 @@ void MainWindow::on_actionBase64_triggered()
 
 	dlg.addSnippet(tr("Recolored Image"), rcBase64);
 	dlg.addSnippet(tr("Original Image"), ogBase64);
+
+	dlg.exec();
+}
+
+void MainWindow::on_cmdGenerateWml_clicked()
+{
+	QString str;
+	QTextStream out{&str};
+
+	const auto& baseName = cleanFileName(imagePath_);
+	const auto& paletteName = currentPaletteName();
+
+	switch (rcMode_)
+	{
+		case RcColorRange:
+			for (int k = 0; k < ui->listRanges->count(); ++k)
+			{
+				auto* listItem = ui->listRanges->item(k);
+
+				if (listItem->checkState() == Qt::Unchecked)
+					continue;
+
+				if (!str.isEmpty())
+					out << '\n';
+
+				const auto& rangeName = listItem->data(Qt::UserRole).toString();
+
+				out << baseName << "~RC(" << paletteName << '>' << rangeName << ')';
+			}
+			break;
+		case RcPaletteSwap: {
+			const auto& targetPaletteName = currentPaletteName(true);
+			out << baseName << "~PAL(" << paletteName << '>' << targetPaletteName << ')';
+			break;
+		}
+		case RcColorBlend:
+			out << baseName << "~BLEND("
+				<< blendColor_.red() << ','
+				<< blendColor_.green() << ','
+				<< blendColor_.blue() << ','
+				<< blendFactor_ << ')';
+			break;
+		case RcColorShift:
+			out << baseName << "~CS("
+				<< colorShiftRed_ << ','
+				<< colorShiftGreen_ << ','
+				<< colorShiftBlue_ << ')';
+			break;
+	}
+
+	CodeSnippetDialog dlg{str, this};
+
+	dlg.setAllowWmlSave(false);
+	dlg.setRawDataMode(true);
+	dlg.setWindowTitle(tr("Generate WML"));
 
 	dlg.exec();
 }

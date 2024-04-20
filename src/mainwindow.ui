@@ -655,13 +655,6 @@
          </layout>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QDialogButtonBox" name="buttonBox">
-         <property name="standardButtons">
-          <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="0">
         <spacer name="verticalSpacer_3">
          <property name="orientation">
@@ -677,6 +670,27 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="5" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QPushButton" name="cmdGenerateWml">
+           <property name="text">
+            <string>Co&amp;de</string>
+           </property>
+           <property name="icon">
+            <iconset theme="format-text-code"/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDialogButtonBox" name="buttonBox">
+           <property name="standardButtons">
+            <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="2" column="0">
         <widget class="QGroupBox" name="groupFunctionOptions">
@@ -774,6 +788,37 @@
                  <bool>true</bool>
                 </property>
                </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="rcRangesToolsLayout">
+                <item>
+                 <spacer name="horizontalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdRcSelectAll">
+                  <property name="text">
+                   <string>A&amp;ll</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdRcSelectNone">
+                  <property name="text">
+                   <string>&amp;None</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </widget>
@@ -1516,6 +1561,8 @@
   <tabstop>radShift</tabstop>
   <tabstop>cbxKeyPal</tabstop>
   <tabstop>listRanges</tabstop>
+  <tabstop>cmdRcSelectAll</tabstop>
+  <tabstop>cmdRcSelectNone</tabstop>
   <tabstop>cbxNewPal</tabstop>
   <tabstop>leBlendColor</tabstop>
   <tabstop>tbBlendColor</tabstop>
@@ -1527,6 +1574,7 @@
   <tabstop>spinGreenShift</tabstop>
   <tabstop>sliderBlueShift</tabstop>
   <tabstop>spinBlueShift</tabstop>
+  <tabstop>cmdGenerateWml</tabstop>
  </tabstops>
  <resources/>
  <connections/>
