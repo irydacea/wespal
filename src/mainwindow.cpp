@@ -227,6 +227,26 @@ MainWindow::MainWindow(QWidget* parent)
 	updateRecentFilesMenu();
 
 	//
+	// Color range options page
+	//
+
+	auto selectAllIcon = QIcon::fromTheme("edit-select-all");
+	auto selectNoneIcon = QIcon::fromTheme("edit-select-none");
+
+	if (!selectAllIcon.isNull() && !selectNoneIcon.isNull()) {
+		ui->cmdRcSelectAll->setIcon(selectAllIcon);
+		ui->cmdRcSelectNone->setIcon(selectNoneIcon);
+
+		ui->cmdRcSelectAll->setText({});
+		ui->cmdRcSelectNone->setText({});
+	}
+
+	connect(ui->cmdRcSelectAll, &QAbstractButton::clicked, this,
+			[this]() { onRcSelectButtonClicked(true); });
+	connect(ui->cmdRcSelectNone, &QAbstractButton::clicked, this,
+			[this]() { onRcSelectButtonClicked(false); });
+
+	//
 	// Color blend options page
 	//
 
@@ -1689,4 +1709,11 @@ void MainWindow::onColorShiftValueChanged(MainWindow::ColorShiftChannel ch, int 
 	}
 
 	refreshPreviews();
+}
+
+void MainWindow::onRcSelectButtonClicked(bool check)
+{
+	for (int i = 0; i < ui->listRanges->count(); ++i) {
+		ui->listRanges->item(i)->setCheckState(check ? Qt::Checked : Qt::Unchecked);
+	}
 }

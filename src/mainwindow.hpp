@@ -231,4 +231,6 @@ private slots:
 	void onColorBlendButtonClicked();
 
 	void onColorShiftValueChanged(ColorShiftChannel ch, int value);
+
+	void onRcSelectButtonClicked(bool check);
 };
