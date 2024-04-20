@@ -50,6 +50,8 @@ struct canceled_job    {};
 enum RcModePage {
 	RcModeColorRangePage = 0,
 	RcModePaletteSwapPage,
+	RcModeColorBlendPage,
+	RcModeColorShiftPage,
 };
 
 enum WorkAreaPage {
@@ -80,6 +82,13 @@ MainWindow::MainWindow(QWidget* parent)
 	, rcMode_()
 
 	, zoom_(MosCurrentConfig().defaultZoom())
+
+	, blendColor_(Qt::green)
+	, blendFactor_(0.5)
+
+	, colorShiftRed_(64)
+	, colorShiftGreen_(64)
+	, colorShiftBlue_(64)
 
 	, ignoreDrops_(false)
 	, dragUseRecolored_(false)
@@ -216,6 +225,45 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(ui->listMru, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(handleRecent()));
 
 	updateRecentFilesMenu();
+
+	//
+	// Color blend options page
+	//
+
+	connect(ui->sliderBlendFactor, SIGNAL(valueChanged(int)), ui->spinBlendFactor, SLOT(setValue(int)));
+	connect(ui->spinBlendFactor, SIGNAL(valueChanged(int)), ui->sliderBlendFactor, SLOT(setValue(int)));
+
+	connect(ui->spinBlendFactor, SIGNAL(valueChanged(int)), this, SLOT(onColorBlendFactorChanged(int)));
+
+	connect(ui->leBlendColor, SIGNAL(textChanged(QString)), this, SLOT(onColorBlendLineEditChanged(QString)));
+	connect(ui->tbBlendColor, SIGNAL(clicked()), this, SLOT(onColorBlendButtonClicked()));
+
+	ui->spinBlendFactor->setValue(blendFactor_ * 100);
+	ui->leBlendColor->setText(blendColor_.name()); // Sets the icon too
+
+	//
+	// Color shift options page
+	//
+
+	connect(ui->sliderRedShift, SIGNAL(valueChanged(int)), ui->spinRedShift, SLOT(setValue(int)));
+	connect(ui->spinRedShift, SIGNAL(valueChanged(int)), ui->sliderRedShift, SLOT(setValue(int)));
+
+	connect(ui->sliderGreenShift, SIGNAL(valueChanged(int)), ui->spinGreenShift, SLOT(setValue(int)));
+	connect(ui->spinGreenShift, SIGNAL(valueChanged(int)), ui->sliderGreenShift, SLOT(setValue(int)));
+
+	connect(ui->sliderBlueShift, SIGNAL(valueChanged(int)), ui->spinBlueShift, SLOT(setValue(int)));
+	connect(ui->spinBlueShift, SIGNAL(valueChanged(int)), ui->sliderBlueShift, SLOT(setValue(int)));
+
+	connect(ui->spinRedShift, &QSpinBox::valueChanged, this,
+			std::bind(&MainWindow::onColorShiftValueChanged, this, ColorShiftRed, std::placeholders::_1));
+	connect(ui->spinGreenShift, &QSpinBox::valueChanged, this,
+			std::bind(&MainWindow::onColorShiftValueChanged, this, ColorShiftGreen, std::placeholders::_1));
+	connect(ui->spinBlueShift, &QSpinBox::valueChanged, this,
+			std::bind(&MainWindow::onColorShiftValueChanged, this, ColorShiftBlue, std::placeholders::_1));
+
+	ui->spinRedShift->setValue(colorShiftRed_);
+	ui->spinGreenShift->setValue(colorShiftGreen_);
+	ui->spinBlueShift->setValue(colorShiftBlue_);
 
 	//
 	// Zoom slider & menu items
@@ -806,6 +854,16 @@ void MainWindow::on_radPal_clicked()
 	setRcMode(RcPaletteSwap);
 }
 
+void MainWindow::on_radBlend_clicked()
+{
+	setRcMode(RcColorBlend);
+}
+
+void MainWindow::on_radShift_clicked()
+{
+	setRcMode(RcColorShift);
+}
+
 void MainWindow::on_actionAbout_Morning_Star_triggered()
 {
 	doAboutDialog();
@@ -927,18 +985,36 @@ void MainWindow::refreshPreviews(bool skipRerender)
 		return;
 
 	if (!skipRerender) {
-		const auto& keyPalette = currentPalette();
-		ColorMap conversionMap;
+		switch (rcMode_)
+		{
+			case RcPaletteSwap:
+			case RcColorRange: {
+				const auto& keyPalette = currentPalette();
+				ColorMap conversionMap;
 
-		if (rcMode_ == RcPaletteSwap) {
-			const auto& newPalette = currentPalette(true);
-			conversionMap = generateColorMap(keyPalette, newPalette);
-		} else {
-			const auto& colorRange = colorRanges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
-			conversionMap = colorRange.applyToPalette(keyPalette);
+				if (rcMode_ == RcPaletteSwap) {
+					const auto& newPalette = currentPalette(true);
+					conversionMap = generateColorMap(keyPalette, newPalette);
+				} else {
+					const auto& colorRange = colorRanges_.value(ui->listRanges->currentIndex().data(Qt::UserRole).toString());
+					conversionMap = colorRange.applyToPalette(keyPalette);
+				}
+
+				transformedImage_ = recolorImage(originalImage_, conversionMap);
+
+				break;
+			}
+			case RcColorBlend: {
+				transformedImage_ = colorBlendImage(originalImage_, blendColor_, blendFactor_);
+
+				break;
+			}
+			case RcColorShift: {
+				transformedImage_ = colorShiftImage(originalImage_, colorShiftRed_, colorShiftGreen_, colorShiftBlue_);
+
+				break;
+			}
 		}
-
-		transformedImage_ = recolorImage(originalImage_, conversionMap);
 	}
 
 	switch (viewMode_)
@@ -994,11 +1070,19 @@ void MainWindow::doSaveFile()
 	QStringList succeeded;
 
 	try {
-		if (ui->staFunctionOpts->currentIndex()) {
-			succeeded = doSaveSingleRecolor(base);
-		}
-		else {
-			succeeded = doSaveColorRanges(base);
+		switch (rcMode_) {
+			case RcColorBlend:
+				succeeded = doSaveColorBlend(base);
+				break;
+			case RcColorShift:
+				succeeded = doSaveColorShift(base);
+				break;
+			case RcPaletteSwap:
+				succeeded = doSaveSingleRecolor(base);
+				break;
+			default:
+				succeeded = doSaveColorRanges(base);
+				break;
 		}
 
 		MosUi::message(this, tr("The output files have been saved successfully."), succeeded);
@@ -1088,14 +1172,32 @@ void MainWindow::setRcMode(MainWindow::RcMode newRcMode)
 
 	switch (rcMode_)
 	{
+		case RcColorBlend:
+			ui->groupRcKey->setVisible(false);
+			ui->staFunctionOpts->setCurrentIndex(RcModeColorBlendPage);
+			ui->cbxKeyPal->setEnabled(false);
+			ui->lblKeyPal->setEnabled(false);
+			break;
+		case RcColorShift:
+			ui->groupRcKey->setVisible(false);
+			ui->staFunctionOpts->setCurrentIndex(RcModeColorShiftPage);
+			ui->cbxKeyPal->setEnabled(false);
+			ui->lblKeyPal->setEnabled(false);
+			break;
 		case RcPaletteSwap:
+			ui->groupRcKey->setVisible(true);
 			ui->staFunctionOpts->setCurrentIndex(RcModePaletteSwapPage);
+			ui->cbxKeyPal->setEnabled(true);
+			ui->lblKeyPal->setEnabled(true);
 			ui->listRanges->setEnabled(false);
 			ui->cbxNewPal->setEnabled(true);
 			ui->lblNewPal->setEnabled(true);
 			break;
 		default:
+			ui->groupRcKey->setVisible(true);
 			ui->staFunctionOpts->setCurrentIndex(RcModeColorRangePage);
+			ui->cbxKeyPal->setEnabled(true);
+			ui->lblKeyPal->setEnabled(true);
 			ui->listRanges->setEnabled(true);
 			ui->cbxNewPal->setEnabled(false);
 			ui->lblNewPal->setEnabled(false);
@@ -1116,8 +1218,9 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->action_Close,
 		ui->action_Save,
 		ui->actionBase64,
-		ui->radPal, ui->radRc,
+		ui->radPal, ui->radRc, ui->radBlend, ui->radShift,
 		ui->lblKeyPal, ui->cbxKeyPal,
+		ui->staFunctionOpts,
 		ui->lblNewPal, ui->cbxNewPal,
 		ui->listRanges,
 		ui->zoomSlider,
@@ -1254,6 +1357,28 @@ QStringList MainWindow::doSaveSingleRecolor(const QString& dirPath)
 	return doSaveCurrentTransform(dirPath, suffix);
 }
 
+QStringList MainWindow::doSaveColorBlend(const QString& dirPath)
+{
+	auto colorName = blendColor_.name();
+	colorName.remove(0, 1);
+
+	QString suffix = QString{"BLEND-%1-%2"}
+					 .arg(colorName)
+					 .arg(blendFactor_ * 100);
+
+	return doSaveCurrentTransform(dirPath, suffix);
+}
+
+QStringList MainWindow::doSaveColorShift(const QString& dirPath)
+{
+	QString suffix = QString{"CS-%1-%2-%3"}
+					   .arg(colorShiftRed_)
+					   .arg(colorShiftGreen_)
+					   .arg(colorShiftBlue_);
+
+	return doSaveCurrentTransform(dirPath, suffix);
+}
+
 QStringList MainWindow::doRunJobs(const QMap<QString, ColorMap>& jobs)
 {
 	QStringList failed, succeeded;
@@ -1383,6 +1508,17 @@ void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 	MosCurrentConfig().setPreviewBackgroundColor(colorName);
 }
 
+void MainWindow::updateColorButton(QAbstractButton* button, const QColor& color)
+{
+	if (!button)
+		return;
+
+	static const QSize colorIconSize(48, 16);
+
+	button->setIconSize(colorIconSize);
+	button->setIcon(createColorIcon(color, colorIconSize, button));
+}
+
 void MainWindow::on_cmdOpen_clicked()
 {
 	openFile();
@@ -1504,4 +1640,54 @@ void MainWindow::on_actionBase64_triggered()
 	dlg.addSnippet(tr("Original Image"), ogBase64);
 
 	dlg.exec();
+}
+
+void MainWindow::onColorBlendFactorChanged(int value)
+{
+	blendFactor_ = qreal(qBound(0, value, 100)) / 100.0;
+
+	refreshPreviews();
+}
+
+void MainWindow::onColorBlendLineEditChanged(const QString& value)
+{
+	QColor color{value};
+
+	if (!color.isValid())
+		return;
+
+	updateColorButton(ui->tbBlendColor, color);
+
+	blendColor_ = color;
+
+	refreshPreviews();
+}
+
+void MainWindow::onColorBlendButtonClicked()
+{
+	QColor color{blendColor_};
+
+	color = QColorDialog::getColor(blendColor_, this);
+
+	if (color.isValid()) {
+		ui->leBlendColor->setText(color.name());
+	}
+}
+
+void MainWindow::onColorShiftValueChanged(MainWindow::ColorShiftChannel ch, int value)
+{
+	switch (ch)
+	{
+		case ColorShiftRed:
+			colorShiftRed_ = qBound(-255, value, 255);
+			break;
+		case ColorShiftGreen:
+			colorShiftGreen_ = qBound(-255, value, 255);
+			break;
+		case ColorShiftBlue:
+			colorShiftBlue_ = qBound(-255, value, 255);
+			break;
+	}
+
+	refreshPreviews();
 }

@@ -241,6 +241,14 @@
               <set>Qt::AlignCenter</set>
              </property>
              <widget class="QWidget" name="previewOriginalContents">
+              <property name="geometry">
+               <rect>
+                <x>41</x>
+                <y>0</y>
+                <width>0</width>
+                <height>0</height>
+               </rect>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -250,7 +258,16 @@
               <property name="whatsThis">
                <string/>
               </property>
-              <widget class="ImageLabel" name="previewOriginal" native="true"/>
+              <widget class="ImageLabel" name="previewOriginal" native="true">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>100</width>
+                 <height>30</height>
+                </rect>
+               </property>
+              </widget>
              </widget>
             </widget>
            </item>
@@ -275,13 +292,30 @@
               <set>Qt::AlignCenter</set>
              </property>
              <widget class="QWidget" name="previewRcContents">
+              <property name="geometry">
+               <rect>
+                <x>41</x>
+                <y>0</y>
+                <width>0</width>
+                <height>0</height>
+               </rect>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <widget class="ImageLabel" name="previewRc" native="true"/>
+              <widget class="ImageLabel" name="previewRc" native="true">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>100</width>
+                 <height>30</height>
+                </rect>
+               </property>
+              </widget>
              </widget>
             </widget>
            </item>
@@ -325,6 +359,14 @@
               <set>Qt::AlignCenter</set>
              </property>
              <widget class="QWidget" name="previewCompositeContents">
+              <property name="geometry">
+               <rect>
+                <x>41</x>
+                <y>0</y>
+                <width>0</width>
+                <height>0</height>
+               </rect>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -569,36 +611,6 @@
         <widget class="QGroupBox" name="groupFunctionSelection">
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <layout class="QFormLayout" name="flKeyPal">
-            <item row="0" column="0">
-             <widget class="QLabel" name="lblKeyPal">
-              <property name="text">
-               <string>&amp;Key palette:</string>
-              </property>
-              <property name="buddy">
-               <cstring>cbxKeyPal</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="cbxKeyPal">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="whatsThis">
-               <string>Selects the original palette for transformation.</string>
-              </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToContents</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
            <widget class="QRadioButton" name="radRc">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -610,7 +622,7 @@
              <string>Selects color range-based (a.k.a. &quot;team color&quot;) recoloring.</string>
             </property>
             <property name="text">
-             <string>Color &amp;range/Team color</string>
+             <string>Color &amp;range/team color</string>
             </property>
            </widget>
           </item>
@@ -630,22 +642,102 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QRadioButton" name="radBlend">
+            <property name="whatsThis">
+             <string>Selects color blending mode, which blends a single color into all pixels in the image at a given percentage (equivalent to Wesnoth's ~BLEND() function)</string>
+            </property>
+            <property name="text">
+             <string>Color &amp;blend</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radShift">
+            <property name="whatsThis">
+             <string>Selects color shifting mode, which transforms colors in an image by adding or substracting to their values for each channel (equivalent to Wesnoth's ~CS() function)</string>
+            </property>
+            <property name="text">
+             <string>Color s&amp;hift</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QDialogButtonBox" name="buttonBox">
          <property name="standardButtons">
           <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="3" column="0">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Maximum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>6</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="0">
         <widget class="QGroupBox" name="groupFunctionOptions">
          <property name="title">
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QFrame" name="groupRcKey">
+            <layout class="QFormLayout" name="formLayout_4">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="lblKeyPal">
+               <property name="text">
+                <string>&amp;Key palette:</string>
+               </property>
+               <property name="buddy">
+                <cstring>cbxKeyPal</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="cbxKeyPal">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="whatsThis">
+                <string>Selects the original palette for transformation.</string>
+               </property>
+               <property name="sizeAdjustPolicy">
+                <enum>QComboBox::AdjustToContents</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item>
            <widget class="QStackedWidget" name="staFunctionOpts">
             <property name="sizePolicy">
@@ -743,26 +835,269 @@
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="pageBlendParams">
+             <layout class="QFormLayout" name="formLayout_2">
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::ExpandingFieldsGrow</enum>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="lblBlendColor">
+                <property name="whatsThis">
+                 <string>Sets the color to blend into the image</string>
+                </property>
+                <property name="text">
+                 <string>&amp;Color:</string>
+                </property>
+                <property name="buddy">
+                 <cstring>leBlendColor</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <item>
+                 <widget class="QLineEdit" name="leBlendColor">
+                  <property name="whatsThis">
+                   <string>Sets the color to blend into the image</string>
+                  </property>
+                  <property name="inputMask">
+                   <string>\#HHHHHH</string>
+                  </property>
+                  <property name="text">
+                   <string>#333333</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="tbBlendColor">
+                  <property name="whatsThis">
+                   <string>Sets the color to blend into the image</string>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="lblBlendFactor">
+                <property name="whatsThis">
+                 <string>Sets the color blend rate as a percentage, with the color fully replacing existing colors at 100% and having no effect at 0%</string>
+                </property>
+                <property name="text">
+                 <string>&amp;Percentage:</string>
+                </property>
+                <property name="buddy">
+                 <cstring>spinBlendFactor</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_6">
+                <item>
+                 <widget class="QSlider" name="sliderBlendFactor">
+                  <property name="whatsThis">
+                   <string>Sets the color blend rate as a percentage, with the color fully replacing existing colors at 100% and having no effect at 0%</string>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="spinBlendFactor">
+                  <property name="whatsThis">
+                   <string>Sets the color blend rate as a percentage, with the color fully replacing existing colors at 100% and having no effect at 0%</string>
+                  </property>
+                  <property name="suffix">
+                   <string>%</string>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="pageShiftParams">
+             <layout class="QFormLayout" name="formLayout_3">
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::ExpandingFieldsGrow</enum>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="lblRedShift">
+                <property name="whatsThis">
+                 <string>Sets the red channel shift amount</string>
+                </property>
+                <property name="text">
+                 <string>&amp;Red:</string>
+                </property>
+                <property name="buddy">
+                 <cstring>spinRedShift</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QSlider" name="sliderRedShift">
+                  <property name="whatsThis">
+                   <string>Sets the red channel shift amount</string>
+                  </property>
+                  <property name="minimum">
+                   <number>-255</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="spinRedShift">
+                  <property name="whatsThis">
+                   <string>Sets the red channel shift amount</string>
+                  </property>
+                  <property name="minimum">
+                   <number>-255</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="lblGreenShift">
+                <property name="whatsThis">
+                 <string>Sets the green channel shift amount</string>
+                </property>
+                <property name="text">
+                 <string>&amp;Green:</string>
+                </property>
+                <property name="buddy">
+                 <cstring>spinGreenShift</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QSlider" name="sliderGreenShift">
+                  <property name="whatsThis">
+                   <string>Sets the green channel shift amount</string>
+                  </property>
+                  <property name="minimum">
+                   <number>-255</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="spinGreenShift">
+                  <property name="whatsThis">
+                   <string>Sets the green channel shift amount</string>
+                  </property>
+                  <property name="minimum">
+                   <number>-255</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="lblBlueShift">
+                <property name="whatsThis">
+                 <string>Sets the blue channel shift amount</string>
+                </property>
+                <property name="text">
+                 <string>&amp;Blue:</string>
+                </property>
+                <property name="buddy">
+                 <cstring>spinBlueShift</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <item>
+                 <widget class="QSlider" name="sliderBlueShift">
+                  <property name="whatsThis">
+                   <string>Sets the blue channel shift amount</string>
+                  </property>
+                  <property name="minimum">
+                   <number>-255</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="spinBlueShift">
+                  <property name="whatsThis">
+                   <string>Sets the blue channel shift amount</string>
+                  </property>
+                  <property name="minimum">
+                   <number>-255</number>
+                  </property>
+                  <property name="maximum">
+                   <number>255</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
         </widget>
-       </item>
-       <item row="2" column="0">
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>6</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -1173,11 +1508,23 @@
   <tabstop>compositeOriginalOnlyToggle</tabstop>
   <tabstop>compositeRcOnlyToggle</tabstop>
   <tabstop>cbxViewMode</tabstop>
-  <tabstop>cbxKeyPal</tabstop>
   <tabstop>radRc</tabstop>
   <tabstop>radPal</tabstop>
+  <tabstop>radBlend</tabstop>
+  <tabstop>radShift</tabstop>
+  <tabstop>cbxKeyPal</tabstop>
   <tabstop>listRanges</tabstop>
   <tabstop>cbxNewPal</tabstop>
+  <tabstop>leBlendColor</tabstop>
+  <tabstop>tbBlendColor</tabstop>
+  <tabstop>sliderBlendFactor</tabstop>
+  <tabstop>spinBlendFactor</tabstop>
+  <tabstop>sliderRedShift</tabstop>
+  <tabstop>spinRedShift</tabstop>
+  <tabstop>sliderGreenShift</tabstop>
+  <tabstop>spinGreenShift</tabstop>
+  <tabstop>sliderBlueShift</tabstop>
+  <tabstop>spinBlueShift</tabstop>
  </tabstops>
  <resources/>
  <connections/>

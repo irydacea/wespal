@@ -66,10 +66,19 @@ protected:
 private:
 	using ViewMode = MosConfig::ImageViewMode;
 
+	enum ColorShiftChannel
+	{
+		ColorShiftRed,
+		ColorShiftGreen,
+		ColorShiftBlue,
+	};
+
 	enum RcMode
 	{
 		RcColorRange,
 		RcPaletteSwap,
+		RcColorBlend,
+		RcColorShift,
 	};
 
 	enum ZoomDirection
@@ -105,6 +114,13 @@ private:
 	RcMode   rcMode_;
 
 	qreal zoom_;
+
+	QColor blendColor_;
+	qreal blendFactor_;
+
+	int colorShiftRed_;
+	int colorShiftGreen_;
+	int colorShiftBlue_;
 
 	bool ignoreDrops_;
 	bool dragUseRecolored_;
@@ -160,6 +176,9 @@ private:
 	QStringList doSaveColorRanges(const QString& base);
 	QStringList doSaveSingleRecolor(const QString& dirPath);
 
+	QStringList doSaveColorBlend(const QString& dirPath);
+	QStringList doSaveColorShift(const QString& dirPath);
+
 	void refreshPreviews(bool skipRerender = false);
 
 	QString currentPaletteName(bool paletteSwitchMode = false) const;
@@ -175,6 +194,8 @@ private:
 	void doCustomPreviewBgSelect();
 	void updateCustomPreviewBgIcon();
 
+	void updateColorButton(QAbstractButton* button, const QColor& color);
+
 private slots:
 	void on_action_Reload_triggered();
 	void on_listRanges_currentRowChanged(int currentRow);
@@ -187,6 +208,8 @@ private slots:
 	void on_actionAbout_Morning_Star_triggered();
 	void on_radPal_clicked();
 	void on_radRc_clicked();
+	void on_radBlend_clicked();
+	void on_radShift_clicked();
 	void handleRecent();
 	void on_zoomSlider_valueChanged(int value);
 
@@ -202,4 +225,10 @@ private slots:
 	void on_compositeOriginalOnlyToggle_toggled(bool checked);
 	void on_compositeRcOnlyToggle_toggled(bool checked);
 	void on_actionBase64_triggered();
+
+	void onColorBlendFactorChanged(int value);
+	void onColorBlendLineEditChanged(const QString& value);
+	void onColorBlendButtonClicked();
+
+	void onColorShiftValueChanged(ColorShiftChannel ch, int value);
 };
