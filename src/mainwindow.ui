@@ -222,9 +222,6 @@
            </property>
            <item>
             <widget class="QScrollArea" name="previewOriginalContainer">
-             <property name="whatsThis">
-              <string>This is the original image's preview.</string>
-             </property>
              <property name="frameShadow">
               <enum>QFrame::Sunken</enum>
              </property>
@@ -243,8 +240,8 @@
              <widget class="QWidget" name="previewOriginalContents">
               <property name="geometry">
                <rect>
-                <x>41</x>
-                <y>0</y>
+                <x>229</x>
+                <y>114</y>
                 <width>0</width>
                 <height>0</height>
                </rect>
@@ -273,9 +270,6 @@
            </item>
            <item>
             <widget class="QScrollArea" name="previewRcContainer">
-             <property name="whatsThis">
-              <string>This is a preview of a single transformation of the original image.</string>
-             </property>
              <property name="frameShadow">
               <enum>QFrame::Sunken</enum>
              </property>
@@ -294,8 +288,8 @@
              <widget class="QWidget" name="previewRcContents">
               <property name="geometry">
                <rect>
-                <x>41</x>
-                <y>0</y>
+                <x>229</x>
+                <y>113</y>
                 <width>0</width>
                 <height>0</height>
                </rect>
@@ -340,9 +334,6 @@
            </property>
            <item>
             <widget class="QScrollArea" name="previewCompositeContainer">
-             <property name="whatsThis">
-              <string>This is a composite preview of the image. Use the View selector to choose the display mode.</string>
-             </property>
              <property name="frameShadow">
               <enum>QFrame::Sunken</enum>
              </property>
@@ -361,8 +352,8 @@
              <widget class="QWidget" name="previewCompositeContents">
               <property name="geometry">
                <rect>
-                <x>41</x>
-                <y>0</y>
+                <x>229</x>
+                <y>222</y>
                 <width>0</width>
                 <height>0</height>
                </rect>
@@ -388,6 +379,9 @@
            </item>
            <item>
             <widget class="QSlider" name="viewSlider">
+             <property name="whatsThis">
+              <string>Selects the amount of the recolored image that should be shown, from none (left) to full (right).</string>
+             </property>
              <property name="maximum">
               <number>1000</number>
              </property>
@@ -432,7 +426,7 @@
             <string>Zoom</string>
            </property>
            <property name="whatsThis">
-            <string>Allows to choose the view's zoom level.</string>
+            <string>Changes the zoom level for the image previews.</string>
            </property>
            <property name="maximum">
             <number>5</number>
@@ -488,7 +482,10 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Shows the original image only</string>
+               <string>Original image</string>
+              </property>
+              <property name="whatsThis">
+               <string>Selects the original image to be displayed fully in Swipe/Onion Skin previews.</string>
               </property>
               <property name="text">
                <string>O</string>
@@ -513,7 +510,10 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Shows the recolored image only</string>
+               <string>Recolored image</string>
+              </property>
+              <property name="whatsThis">
+               <string>Selects the recolored image to be displayed fully in Swipe/Onion Skin previews.</string>
               </property>
               <property name="text">
                <string>R</string>
@@ -609,7 +609,9 @@
              </sizepolicy>
             </property>
             <property name="whatsThis">
-             <string>Selects color range-based (a.k.a. &quot;team color&quot;) recoloring.</string>
+             <string>Selects color range-based recoloring, also known as &quot;team color&quot;.
+
+(Equivalent to Wesnoth's ~RC() and ~TC() functions.)</string>
             </property>
             <property name="text">
              <string>Color &amp;range/team color</string>
@@ -625,7 +627,9 @@
              </sizepolicy>
             </property>
             <property name="whatsThis">
-             <string>Selects palette switching mode, to replace original colors with new ones using a color values list instead of ranges.</string>
+             <string>Selects palette swap mode, which replaces colors in the image using two reference palettes.
+
+(Equivalent to Wesnoth's ~PAL() function.)</string>
             </property>
             <property name="text">
              <string>Palette &amp;swap</string>
@@ -635,7 +639,9 @@
           <item>
            <widget class="QRadioButton" name="radBlend">
             <property name="whatsThis">
-             <string>Selects color blending mode, which blends a single color into all pixels in the image at a given percentage (equivalent to Wesnoth's ~BLEND() function)</string>
+             <string>Selects color blending mode, which blends a single color into all pixels in the image at a given percentage.
+
+(Equivalent to Wesnoth's ~BLEND() function.)</string>
             </property>
             <property name="text">
              <string>Color &amp;blend</string>
@@ -645,7 +651,9 @@
           <item>
            <widget class="QRadioButton" name="radShift">
             <property name="whatsThis">
-             <string>Selects color shifting mode, which transforms colors in an image by adding or substracting to their values for each channel (equivalent to Wesnoth's ~CS() function)</string>
+             <string>Selects color shifting mode, which transforms colors in an image by adding or substracting to their values for each channel.
+
+(Equivalent to Wesnoth's ~CS() function.)</string>
             </property>
             <property name="text">
              <string>Color s&amp;hift</string>
@@ -675,6 +683,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <widget class="QPushButton" name="cmdGenerateWml">
+           <property name="whatsThis">
+            <string>Generates Wesnoth Image Path Functions for displaying the transformed image in-game.</string>
+           </property>
            <property name="text">
             <string>Co&amp;de</string>
            </property>
@@ -715,6 +726,9 @@
              </property>
              <item row="0" column="0">
               <widget class="QLabel" name="lblKeyPal">
+               <property name="whatsThis">
+                <string>Selects the source palette used for color range and palette swap transforms.</string>
+               </property>
                <property name="text">
                 <string>&amp;Key palette:</string>
                </property>
@@ -732,7 +746,7 @@
                 </sizepolicy>
                </property>
                <property name="whatsThis">
-                <string>Selects the original palette for transformation.</string>
+                <string>Selects the source palette used for color range and palette swap transforms.</string>
                </property>
                <property name="sizeAdjustPolicy">
                 <enum>QComboBox::AdjustToContents</enum>
@@ -782,7 +796,7 @@
               <item>
                <widget class="QListWidget" name="listRanges">
                 <property name="whatsThis">
-                 <string>Allows to select color ranges to apply. Click on an item to preview the transformation to the right.</string>
+                 <string>Allows selecting which color range to preview. Items with a checkmark will also be saved to disk when using the Save action.</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -806,6 +820,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="cmdRcSelectAll">
+                  <property name="whatsThis">
+                   <string>Marks all color ranges for saving to disk.</string>
+                  </property>
                   <property name="text">
                    <string>A&amp;ll</string>
                   </property>
@@ -813,6 +830,9 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="cmdRcSelectNone">
+                  <property name="whatsThis">
+                   <string>Unmarks all color ranges for saving to disk.</string>
+                  </property>
                   <property name="text">
                    <string>&amp;None</string>
                   </property>
@@ -844,6 +864,9 @@
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
+                <property name="whatsThis">
+                 <string>Selects the replacement palette for palette swapping.</string>
+                </property>
                 <property name="text">
                  <string>New &amp;palette:</string>
                 </property>
@@ -861,7 +884,7 @@
                  </sizepolicy>
                 </property>
                 <property name="whatsThis">
-                 <string>You an choose the replacement palette in this box.</string>
+                 <string>Selects the replacement palette for palette swapping.</string>
                 </property>
                 <property name="sizeAdjustPolicy">
                  <enum>QComboBox::AdjustToContents</enum>

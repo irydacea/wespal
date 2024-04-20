@@ -135,8 +135,10 @@ MainWindow::MainWindow(QWidget* parent)
 	if (ui->cmdGenerateWml->icon().isNull())
 		ui->cmdGenerateWml->setIcon(QIcon::fromTheme("format-justify-left"));
 
-	if (!ui->cmdGenerateWml->icon().isNull())
+	if (!ui->cmdGenerateWml->icon().isNull()) {
+		ui->cmdGenerateWml->setToolTip(tr("Code"));
 		ui->cmdGenerateWml->setText({});
+	}
 
 	//
 	// Wesnoth recoloring system data
@@ -245,6 +247,9 @@ MainWindow::MainWindow(QWidget* parent)
 	if (!selectAllIcon.isNull() && !selectNoneIcon.isNull()) {
 		ui->cmdRcSelectAll->setIcon(selectAllIcon);
 		ui->cmdRcSelectNone->setIcon(selectNoneIcon);
+
+		ui->cmdRcSelectAll->setToolTip(tr("All"));
+		ui->cmdRcSelectNone->setToolTip(tr("None"));
 
 		ui->cmdRcSelectAll->setText({});
 		ui->cmdRcSelectNone->setText({});

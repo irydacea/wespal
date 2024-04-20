@@ -33,7 +33,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mainTab">
       <attribute name="title">
@@ -42,6 +42,9 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QCheckBox" name="rememberWindowSizeCheckbox">
+         <property name="whatsThis">
+          <string>Allows Wespal to remember its main window size between sessions.</string>
+         </property>
          <property name="text">
           <string>Remember &amp;window size on exit</string>
          </property>
@@ -49,6 +52,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="rememberImageViewModeCheckbox">
+         <property name="whatsThis">
+          <string>Allows Wespal to remember the last selected view mode after each session.</string>
+         </property>
          <property name="text">
           <string>Remember last &amp;view mode</string>
          </property>
@@ -58,6 +64,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QLabel" name="defaultZoomLabel">
+           <property name="whatsThis">
+            <string>Allows selecting a default zoom level other than 100% to be used for new sessions.</string>
+           </property>
            <property name="text">
             <string>Default &amp;zoom:</string>
            </property>
@@ -67,7 +76,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="defaultZoomList"/>
+          <widget class="QComboBox" name="defaultZoomList">
+           <property name="whatsThis">
+            <string>Allows selecting a default zoom level other than 100% to be used for new sessions.</string>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer">
@@ -197,9 +210,6 @@
        </item>
        <item>
         <widget class="QGroupBox" name="colorRangeEditor">
-         <property name="whatsThis">
-          <string>The average shade of the image's recolored portions.</string>
-         </property>
          <property name="title">
           <string/>
          </property>
@@ -284,7 +294,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_5">
             <property name="whatsThis">
-             <string>The minimum shadow shade of an image's recolored portions.</string>
+             <string>The minimum shade of an image's recolored portions.</string>
             </property>
             <property name="text">
              <string>&amp;Shadow:</string>
@@ -299,7 +309,7 @@
             <item>
              <widget class="QLineEdit" name="minColorEdit">
               <property name="whatsThis">
-               <string>The minimum shadow shade of an image's recolored portions.</string>
+               <string>The minimum shade of an image's recolored portions.</string>
               </property>
               <property name="text">
                <string>#000000</string>
@@ -309,7 +319,7 @@
             <item>
              <widget class="QToolButton" name="minColorPick">
               <property name="whatsThis">
-               <string>The minimum shadow shade of an image's recolored portions.</string>
+               <string>The minimum shade of an image's recolored portions.</string>
               </property>
               <property name="text">
                <string>...</string>
@@ -335,6 +345,9 @@
             </item>
             <item>
              <widget class="QPushButton" name="colorRangeFromList">
+              <property name="whatsThis">
+               <string>Sets the color range parameters from a plain text list of colors that could be obtained from e.g. WML.</string>
+              </property>
               <property name="text">
                <string>From &amp;List</string>
               </property>
@@ -343,7 +356,7 @@
             <item>
              <widget class="QPushButton" name="colorRangeWml">
               <property name="whatsThis">
-               <string>Generates a sample Wesnoth Markup Language snippet containing a single color range definition, which you can save to a file or clipboard for later inclusion in your own project.</string>
+               <string>Generates sample WML containing a color range definition, that can be copied to clipboard or saved to disk for later use in Wesnoth content.</string>
               </property>
               <property name="text">
                <string>Generate &amp;WML</string>
@@ -354,6 +367,9 @@
           </item>
           <item row="3" column="0">
            <widget class="QLabel" name="repColorLabel">
+            <property name="whatsThis">
+             <string>The color used for color range icons in Wespal and map markers in Wesnoth</string>
+            </property>
             <property name="text">
              <string>&amp;Icon:</string>
             </property>
@@ -366,6 +382,9 @@
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
              <widget class="QLineEdit" name="repColorEdit">
+              <property name="whatsThis">
+               <string>The color used for color range icons in Wespal and map markers in Wesnoth</string>
+              </property>
               <property name="text">
                <string>#333333</string>
               </property>
@@ -373,6 +392,9 @@
             </item>
             <item>
              <widget class="QToolButton" name="repColorPick">
+              <property name="whatsThis">
+               <string>The color used for color range icons in Wespal and map markers in Wesnoth</string>
+              </property>
               <property name="text">
                <string>...</string>
               </property>
@@ -529,7 +551,7 @@
                <item>
                 <widget class="QLabel" name="paletteColorEditLabel">
                  <property name="whatsThis">
-                  <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+                  <string>Hex color code for the current palette entry.</string>
                  </property>
                  <property name="text">
                   <string>He&amp;x:</string>
@@ -542,14 +564,14 @@
                <item>
                 <widget class="QLineEdit" name="paletteColorEdit">
                  <property name="whatsThis">
-                  <string>Allows you to edit the selection by typing a new color in hexadecimal #RRGGBB notation.</string>
+                  <string>Hex color code for the current palette entry.</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QToolButton" name="paletteColorPick">
                  <property name="whatsThis">
-                  <string>Displays controls to allow you to choose a new color.</string>
+                  <string>Hex color code for the current palette entry.</string>
                  </property>
                  <property name="text">
                   <string>...</string>
@@ -578,6 +600,9 @@
              </property>
              <item>
               <widget class="QPushButton" name="paletteColorAdd">
+               <property name="whatsThis">
+                <string>Adds a new color to the palette.</string>
+               </property>
                <property name="text">
                 <string>&amp;Add Color</string>
                </property>
@@ -585,6 +610,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="paletteColorDel">
+               <property name="whatsThis">
+                <string>Removes the selected color from the palette.</string>
+               </property>
                <property name="text">
                 <string>Re&amp;move Color</string>
                </property>
@@ -606,7 +634,7 @@
              <item>
               <widget class="QPushButton" name="paletteColorsFromList">
                <property name="whatsThis">
-                <string>Adds multiple colors from a comma-separated lists.</string>
+                <string>Adds multiple colors from a plain text list of colors.</string>
                </property>
                <property name="text">
                 <string>From &amp;List</string>
@@ -626,7 +654,7 @@
              <item>
               <widget class="QPushButton" name="paletteWml">
                <property name="whatsThis">
-                <string>Generates a sample Wesnoth Markup Language snippet containing a single color palette definition, which you can save to a file or clipboard for later inclusion in your own project.</string>
+                <string>Generates sample WML containing a color palette definition, that can be copied to clipboard or saved to disk for later use in Wesnoth content.</string>
                </property>
                <property name="text">
                 <string>Generate &amp;WML</string>
@@ -649,7 +677,7 @@
              <item>
               <widget class="QPushButton" name="paletteRecolor">
                <property name="whatsThis">
-                <string>Recolors the palette using a given color range.</string>
+                <string>Recolors all palette entries by applying a color range to them.</string>
                </property>
                <property name="text">
                 <string>&amp;Recolor</string>
