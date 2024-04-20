@@ -1467,6 +1467,9 @@
    </property>
   </action>
   <action name="actionAppSettings">
+   <property name="icon">
+    <iconset theme="configure"/>
+   </property>
    <property name="text">
     <string>&amp;Settings...</string>
    </property>
