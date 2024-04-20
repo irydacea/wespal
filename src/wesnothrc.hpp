@@ -265,6 +265,25 @@ QImage colorBlendImage(const QImage& input,
 					   const QColor& color,
 					   qreal blendFactor);
 
+/**
+ * Applies a color shift effect on a QImage.
+ *
+ * @param input        Input image.
+ *
+ * @param redShift     Shift value for the red channel between -255 and 255.
+ *
+ * @param greenShift   Shift value for the green channel between -255 and 255.
+ *
+ * @param blueShift    Shift value for the blue channel between -255 and 255.
+ *
+ * @return A recolored image, always in ARGB32 format regardless of the input
+ *         format.
+ */
+QImage colorShiftImage(const QImage& input,
+					   int redShift,
+					   int greenShift,
+					   int blueShift);
+
 namespace MosIO {
 
 /**

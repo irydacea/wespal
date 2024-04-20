@@ -307,6 +307,46 @@ QImage colorBlendImage(const QImage& input,
 	return output;
 }
 
+QImage colorShiftImage(const QImage& input,
+					   int redShift,
+					   int greenShift,
+					   int blueShift)
+{
+	QImage output;
+
+	// Copy input to output first. We force ARGB32 since that's the only
+	// format we (and Wesnoth) currently understand.
+	output = input.convertToFormat(QImage::Format_ARGB32);
+
+	if (redShift == 0 && greenShift == 0 && blueShift == 0)
+		return output;
+
+	// Formula from Wesnoth src/sdl/utils.cpp adjust_surface_color()
+
+	auto maxY = output.height(), maxX = output.width();
+
+	for (int y = 0; y < maxY; ++y)
+	{
+		auto* line = reinterpret_cast<QRgb*>(output.scanLine(y));
+
+		for (int x = 0; x < maxX; ++x)
+		{
+			auto alpha = line[x] & 0xFF000000U;
+
+			if (alpha) {
+
+				auto r = qBound(0, qRed(line[x]) + redShift, 255);
+				auto g = qBound(0, qGreen(line[x]) + greenShift, 255);
+				auto b = qBound(0, qBlue(line[x]) + blueShift, 255);
+
+				line[x] = (line[x] & 0xFF000000U) | (r << 16) | (g << 8) | b;
+			}
+		}
+	}
+
+	return output;
+}
+
 namespace MosIO {
 
 static bool writeImageDeviceAgnostic(QImageWriter& out,

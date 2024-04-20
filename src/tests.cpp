@@ -238,6 +238,64 @@ void TestMorningStar::testPaletteSwapImage()
 	QCOMPARE_NE(idempotentRcOutput, imgMagentaSwatch);
 }
 
+void TestMorningStar::testColorShiftImage()
+{
+	auto pathTestInput = QFINDTESTDATA("../tests/shift-test-input.png");
+	QImage imgTestInput{pathTestInput, "PNG"};
+
+	imgTestInput.convertTo(QImage::Format_ARGB32);
+
+	auto pathTestReference = QFINDTESTDATA("../tests/shift-test-reference.png");
+	QImage imgTestReference{pathTestReference, "PNG"};
+
+	// Strip color space information prior to transform/comparison
+	// (see also MosIO::writeImageDeviceAgnostic())
+	imgTestInput.setColorSpace({});
+	imgTestReference.setColorSpace({});
+
+	QImage imgTestOutput = colorShiftImage(imgTestInput, -228, 90, 164);
+
+	// We cannot use QImage::operator== here because our reference image is
+	// produced by Wesnoth's --render option and, surprise surprise, the
+	// Wesnoth 1.18 version has a funny quirk where it deliberately ignores
+	// any pixels with an alpha value of 0, leaving them untouched. This means
+	// Wespal's output, while technically correct, is actually *incorrect*
+	// within the specific context of Wesnoth's engine.
+	//
+	// Qt uses memcmp for operator==, which means that all bits must match. We
+	// want to make an explicit exception for alpha 0 pixels, which means we
+	// have to compare both sides byte by byte. Yay.
+
+	QCOMPARE(imgTestOutput.format(), imgTestReference.format());
+	QCOMPARE(imgTestOutput.format(), imgTestInput.format());
+
+	QCOMPARE(imgTestOutput.size(), imgTestReference.size());
+	QCOMPARE(imgTestOutput.size(), imgTestInput.size());
+
+	for (int y = 0; y < imgTestOutput.height(); ++y)
+	{
+		auto* inRow  = reinterpret_cast<QRgb*>(imgTestInput.scanLine(y));
+		auto* outRow = reinterpret_cast<QRgb*>(imgTestOutput.scanLine(y));
+		auto* refRow = reinterpret_cast<QRgb*>(imgTestReference.scanLine(y));
+
+		for (int x = 0; x < imgTestOutput.width(); ++x)
+		{
+			auto inRgba = inRow[x], outRgba = outRow[x], refRgba = refRow[x];
+
+			if (outRgba == refRgba)
+				continue;
+
+			// Ensure this is an alpha 0 pixel and that the input and
+			// reference pixels are identical. Otherwise something must've
+			// gone wrong somewhere, potentially in the test input data.
+			QVERIFY2((qAlpha(outRgba) == 0 && qAlpha(refRgba) == 0) &&
+					 (inRgba & 0xFFFFFFU) == (refRgba & 0xFFFFFFU),
+					 "Output and reference images differ in a way inconsistent with the "
+					 "Wesnoth adjust_surface_color() quirk, verify test data!");
+		}
+	}
+}
+
 void TestMorningStar::testColorBlendImage()
 {
 	auto pathTestInput = QFINDTESTDATA("../tests/blend-test-input.png");
