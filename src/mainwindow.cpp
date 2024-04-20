@@ -864,8 +864,8 @@ void MainWindow::dropEvent(QDropEvent* event)
 	if (newpath.isEmpty() != true) {
 		imagePath_ = newpath;
 		updateWindowTitle(true, imagePath_);
-	}
-	else {
+	} else {
+		imagePath_ = tr("Dropped file") % ".png";
 		updateWindowTitle(true, {});
 	}
 
