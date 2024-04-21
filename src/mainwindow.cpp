@@ -29,6 +29,7 @@
 
 #include <QActionGroup>
 #include <QButtonGroup>
+#include <QClipboard>
 #include <QColorDialog>
 #include <QDesktopServices>
 #include <QDrag>
@@ -487,6 +488,10 @@ MainWindow::MainWindow(QWidget* parent)
 	// Finalise initial workarea setup
 	//
 
+	connect(QGuiApplication::clipboard(), SIGNAL(changed(QClipboard::Mode)),
+			this, SLOT(onClipboardChanged(QClipboard::Mode)));
+	onClipboardChanged(QClipboard::Clipboard); // Need to do an initial poll
+
 	ui->radRc->setChecked(true);
 	setRcMode(RcColorRange);
 	setViewMode(viewMode);
@@ -498,7 +503,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::updateWindowTitle(bool hasImage, const QString& filename)
+void MainWindow::updateWindowTitle(bool hasImage,
+								   const QString& filename,
+								   ImageOrigin origin)
 {
 	QString appTitle = tr("Wespal");
 	QString displayString;
@@ -506,7 +513,18 @@ void MainWindow::updateWindowTitle(bool hasImage, const QString& filename)
 	if (hasImage) {
 		if (filename.isEmpty()) {
 			setWindowFilePath({});
-			displayString = tr("Dropped file");
+			switch (origin)
+			{
+				case ImageOriginDrop:
+					displayString = tr("Dropped image");
+					break;
+				case ImageOriginClipboard:
+					displayString = tr("Clipboard image");
+					break;
+				default:
+					displayString = tr("Unknown image");
+					break;
+			}
 		} else {
 			setWindowFilePath(filename);
 			displayString = QFileInfo(filename).fileName();
@@ -870,10 +888,10 @@ void MainWindow::dropEvent(QDropEvent* event)
 	// Refresh UI
 	if (newpath.isEmpty() != true) {
 		imagePath_ = newpath;
-		updateWindowTitle(true, imagePath_);
+		updateWindowTitle(true, imagePath_, ImageOriginDrop);
 	} else {
-		imagePath_ = tr("Dropped file") % ".png";
-		updateWindowTitle(true, {});
+		imagePath_ = tr("Dropped image") % ".png";
+		updateWindowTitle(true, {}, ImageOriginDrop);
 	}
 
 	refreshPreviews();
@@ -1253,6 +1271,8 @@ void MainWindow::enableWorkArea(bool enable)
 		ui->action_Reload,
 		ui->action_Close,
 		ui->action_Save,
+		ui->actionCopy,
+		ui->actionCopyOriginal,
 		ui->actionBase64,
 		ui->radPal, ui->radRc, ui->radBlend, ui->radShift,
 		ui->lblKeyPal, ui->cbxKeyPal,
@@ -1788,4 +1808,52 @@ void MainWindow::onRcSelectButtonClicked(bool check)
 	for (int i = 0; i < ui->listRanges->count(); ++i) {
 		ui->listRanges->item(i)->setCheckState(check ? Qt::Checked : Qt::Unchecked);
 	}
+}
+
+void MainWindow::on_actionCopy_triggered()
+{
+	auto* clipboard = QGuiApplication::clipboard();
+
+	if (!clipboard || transformedImage_.isNull())
+		return;
+
+	clipboard->setImage(transformedImage_);
+}
+
+void MainWindow::on_actionCopyOriginal_triggered()
+{
+	auto* clipboard = QGuiApplication::clipboard();
+
+	if (!clipboard || originalImage_.isNull())
+		return;
+
+	clipboard->setImage(originalImage_);
+}
+
+void MainWindow::on_actionPaste_triggered()
+{
+	auto* clipboard = QGuiApplication::clipboard();
+
+	if (!clipboard || clipboard->image().isNull())
+		return;
+
+	// Normalize image format from unknown source
+	originalImage_ = clipboard->image().convertToFormat(QImage::Format_ARGB32);
+
+	// Refresh UI
+	imagePath_ = tr("Clipboard image") % ".png";
+	updateWindowTitle(true, {}, ImageOriginClipboard);
+
+	refreshPreviews();
+	enableWorkArea(true);
+}
+
+void MainWindow::onClipboardChanged(QClipboard::Mode mode)
+{
+	if (mode != QClipboard::Clipboard)
+		return;
+
+	auto* clipboard = QGuiApplication::clipboard();
+
+	ui->actionPaste->setEnabled(clipboard && !clipboard->image().isNull());
 }

@@ -24,6 +24,7 @@
 
 #include "appconfig.hpp"
 
+#include <QClipboard>
 #include <QMainWindow>
 
 namespace Ui {
@@ -65,6 +66,13 @@ protected:
 
 private:
 	using ViewMode = MosConfig::ImageViewMode;
+
+	enum ImageOrigin
+	{
+		ImageOriginFile,
+		ImageOriginDrop,
+		ImageOriginClipboard,
+	};
 
 	enum ColorShiftChannel
 	{
@@ -158,7 +166,9 @@ private:
 
 	void updateRecentFilesMenu();
 
-	void updateWindowTitle(bool hasImage, const QString& filename = {});
+	void updateWindowTitle(bool hasImage,
+						   const QString& filename = {},
+						   ImageOrigin origin = ImageOriginFile);
 
 	void doSaveFile();
 	void doCloseFile();
@@ -234,4 +244,9 @@ private slots:
 	void onColorShiftValueChanged(ColorShiftChannel ch, int value);
 
 	void onRcSelectButtonClicked(bool check);
+	void on_actionCopy_triggered();
+	void on_actionCopyOriginal_triggered();
+	void on_actionPaste_triggered();
+
+	void onClipboardChanged(QClipboard::Mode mode);
 };

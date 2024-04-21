@@ -11,6 +11,7 @@ Version 0.5.0
 * Redesigned main window.
   * Added buttons to quickly select or deselect all color ranges.
   * Added a button to generate image path functions for the open image.
+  * Added an Edit menu and keyboard shortcuts for easy clipboard access.
 * Merged Color Range Editor and Palette Editor into a single Settings window with additional global settings.
 * Changed storage for the main window size and preview background settings - this will cause these settings from previous versions to be forgotten.
 * Added options to the Color Range and Palette Editor to create new items using Wesnoth built-ins as starting templates. This should allow for easier experimentation without having to manually copy the WML color lists into the From List dialog.
