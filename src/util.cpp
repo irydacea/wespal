@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QImageReader>
 #include <QMessageBox>
+#include <QStandardPaths>
 #include <QStringBuilder>
 
 namespace {
@@ -196,6 +197,17 @@ QString supportedImageFileFormats()
 	res = entries.join(QStringLiteral(";;"));
 
 	return res;
+}
+
+QString desktopPicturesFolderPath()
+{
+	const auto& pictureLocs = QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
+
+	// Use pwd as a fallback if somehow the desktop platform has
+	// no idea where pictures are usually stored
+	return !pictureLocs.empty()
+			? pictureLocs.first()
+			: QFileInfo{"."}.absolutePath();
 }
 
 } // end namespace MosPlatform

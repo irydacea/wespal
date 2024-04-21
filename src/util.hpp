@@ -120,6 +120,11 @@ namespace MosPlatform {
  */
 QString supportedImageFileFormats();
 
+/**
+ * Retrieves the path to the desktop environment's Pictures folder.
+ */
+QString desktopPicturesFolderPath();
+
 } // end namespace MosPlatform
 
 namespace MosUi {
