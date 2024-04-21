@@ -114,6 +114,7 @@ private:
 	QMap<QString, ColorList> userPalettes_;
 
 	QString imagePath_;
+	QString searchDirPath_;
 
 	QImage originalImage_;
 	QImage transformedImage_;

@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget* parent)
 	, userPalettes_(MosCurrentConfig().customPalettes())
 
 	, imagePath_()
+	, searchDirPath_()
 
 	, originalImage_()
 	, transformedImage_()
@@ -962,28 +963,26 @@ void MainWindow::on_action_Reload_triggered()
 void MainWindow::openFile(const QString& fileName)
 {
 	QString selectedPath;
-	QString startingDir;
-
-	QStringList pictureLocations =
-			QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
+	QString initialDirPath = searchDirPath_;
 
 	if (!fileName.isEmpty()) {
 		selectedPath = fileName;
 	} else {
-		if (imagePath_.isEmpty()) {
-			if (!pictureLocations.empty()) {
-				startingDir = pictureLocations.first();
+		if (initialDirPath.isEmpty()) {
+			if (imagePath_.isEmpty()) {
+				initialDirPath = MosPlatform::desktopPicturesFolderPath();
 			} else {
-				startingDir = ".";
+				// This shouldn't normally happen since we set searchDirPath_
+				// after successfully opening the image and it persists
+				// between file/drop/paste operations...
+				initialDirPath = QFileInfo{imagePath_}.absolutePath();
 			}
-		} else {
-			startingDir = QFileInfo(imagePath_).absolutePath();
 		}
 
 		selectedPath = QFileDialog::getOpenFileName(
 			this,
 			tr("Choose source image"),
-			startingDir,
+			searchDirPath_,
 			supportedImageFileFormats_
 		);
 	}
@@ -1007,6 +1006,11 @@ void MainWindow::openFile(const QString& fileName)
 	}
 
 	imagePath_ = selectedPath;
+
+	// Persist the parent dir path as the search path for future file
+	// operations
+	searchDirPath_ = QFileInfo{selectedPath}.absolutePath();
+
 	// We want to work on actual ARGB data
 	originalImage_ = selectedImage.convertToFormat(QImage::Format_ARGB32);
 
