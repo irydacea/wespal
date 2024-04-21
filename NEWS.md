@@ -20,6 +20,7 @@ Version 0.5.0
 * Added Wesnoth color blend (`~BLEND`) and color shift (`~CS`) functionality.
 * Added Generate Base64 option to the Tools menu.
 * Added unit tests to ensure the recoloring algorithm never breaks silently before a release.
+* Fixed saved PNGs not including a tEXt chunk with the Wespal version used to generate them as intended.
 
 Version 0.4.0
 -------------
