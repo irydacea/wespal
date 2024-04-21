@@ -291,13 +291,16 @@ namespace MosIO {
  *
  * @param input        Input image (see notes).
  * @param fileName     Image file name.
+ * @param vanityPlate  Whether to include a tEXt chunk for a Software comment
+ *                     including the software name and version used to save
+ *                     the PNG file.
  *
  * @note @a input is assumed to be in ARGB32 format, although this is not
  *       a particularly significant assumption anyway. More importantly, this
  *       function may MODIFY its input to ensure that its color space
  *       configuration is correct for the intended output format.
  */
-bool writePng(QImage& input, const QString& fileName);
+bool writePng(QImage& input, const QString& fileName, bool vanityPlate = true);
 
 /**
  * Writes a QImage to a string as Base64 data containing a valid PNG file.
