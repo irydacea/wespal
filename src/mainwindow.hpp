@@ -115,6 +115,7 @@ private:
 
 	QString imagePath_;
 	QString searchDirPath_;
+	QString saveDirPath_;
 
 	QImage originalImage_;
 	QImage transformedImage_;

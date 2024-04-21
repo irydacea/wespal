@@ -40,7 +40,6 @@
 #include <QMimeData>
 #include <QScrollBar>
 #include <QSplitter>
-#include <QStandardPaths>
 #include <QStringBuilder>
 #include <QWhatsThis>
 
@@ -76,6 +75,7 @@ MainWindow::MainWindow(QWidget* parent)
 
 	, imagePath_()
 	, searchDirPath_()
+	, saveDirPath_()
 
 	, originalImage_()
 	, transformedImage_()
@@ -1116,10 +1116,17 @@ void MainWindow::resetPreviewLayout(QAbstractScrollArea* scrollArea,
 
 void MainWindow::doSaveFile()
 {
+	QString initialDirPath = saveDirPath_;
+
+	if (initialDirPath.isEmpty())
+		initialDirPath = !imagePath_.isEmpty()
+						 ? QFileInfo{imagePath_}.absolutePath()
+						 : MosPlatform::desktopPicturesFolderPath();
+
 	QString base = QFileDialog::getExistingDirectory(
 					   this,
 					   tr("Choose an output directory"),
-					   QFileInfo(imagePath_).absolutePath(),
+					   initialDirPath,
 					   QFileDialog::ShowDirsOnly);
 
 	if (base.isEmpty())
@@ -1142,6 +1149,8 @@ void MainWindow::doSaveFile()
 				succeeded = doSaveColorRanges(base);
 				break;
 		}
+
+		saveDirPath_ = base;
 
 		MosUi::message(this, tr("The output files have been saved successfully."), succeeded);
 	} catch (const canceled_job&) {
