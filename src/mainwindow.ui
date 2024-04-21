@@ -1277,9 +1277,6 @@
    <property name="text">
     <string>&amp;Open...</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
   </action>
   <action name="action_Quit">
    <property name="icon">
@@ -1287,9 +1284,6 @@
    </property>
    <property name="text">
     <string>&amp;Quit</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Q</string>
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>
@@ -1312,9 +1306,6 @@
    </property>
    <property name="text">
     <string>&amp;Save...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="action_Reload">
@@ -1449,9 +1440,6 @@
    <property name="text">
     <string>Zoom &amp;In</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl++</string>
-   </property>
   </action>
   <action name="actionZoomOut">
    <property name="icon">
@@ -1459,9 +1447,6 @@
    </property>
    <property name="text">
     <string>Zoom &amp;Out</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+-</string>
    </property>
   </action>
   <action name="actionPreviewBgCustom">
@@ -1568,9 +1553,6 @@
    <property name="text">
     <string>&amp;Copy Recolored</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+C</string>
-   </property>
   </action>
   <action name="actionCopyOriginal">
    <property name="icon">
@@ -1589,9 +1571,6 @@
    </property>
    <property name="text">
     <string>&amp;Paste</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+V</string>
    </property>
   </action>
  </widget>

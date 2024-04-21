@@ -178,8 +178,21 @@ MainWindow::MainWindow(QWidget* parent)
 		MosUi::openIssueTracker();
 	});
 
-	ui->action_Close->setShortcut(QKeySequence::Close);
+	ui->action_Open->setShortcut(QKeySequence::Open);
+	ui->action_Save->setShortcut(QKeySequence::Save);
 	ui->action_Reload->setShortcut(QKeySequence::Refresh);
+	ui->action_Close->setShortcut(QKeySequence::Close);
+	ui->action_Quit->setShortcut(QKeySequence::Quit);
+
+	ui->actionCopy->setShortcut(QKeySequence::Copy);
+	ui->actionPaste->setShortcut(QKeySequence::Paste);
+	// Intentionally skip this. Qt automatically sets the appropriate shortcut
+	// on macOS, and on other platforms it seems unaware of the standard one
+	// (at least according to the QKeySequence enum's documentation).
+	//ui->actionAppSettings->setShortcut(QKeySequence::Preferences);
+
+	ui->actionZoomIn->setShortcut(QKeySequence::ZoomIn);
+	ui->actionZoomOut->setShortcut(QKeySequence::ZoomOut);
 
 	// Set native icons
 	if (auto qStyle = style(); qStyle) {
