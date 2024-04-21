@@ -102,6 +102,8 @@ MainWindow::MainWindow(QWidget* parent)
 	, zoomActions_()
 	, viewModeActions_()
 
+	, compositeShortcutsGroup_(nullptr)
+
 	, supportedImageFileFormats_(MosPlatform::supportedImageFileFormats())
 {
 	//
