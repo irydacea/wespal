@@ -130,6 +130,7 @@ void SettingsDialog::onDialogAccepted()
 	config.setRememberMainWindowSize(ui->rememberWindowSizeCheckbox->isChecked());
 	config.setRememberImageViewMode(ui->rememberImageViewModeCheckbox->isChecked());
 	config.setDefaultZoom(defaultZoom);
+	config.setPngVanityPlate(ui->vanityPlateCheckbox->isChecked());
 	config.setCustomColorRanges(ranges_);
 	config.setCustomPalettes(palettes_);
 }
@@ -308,6 +309,8 @@ void SettingsDialog::initGeneralPage()
 			ui->defaultZoomList->setCurrentIndex(ui->defaultZoomList->count() - 1);
 		}
 	}
+
+	ui->vanityPlateCheckbox->setChecked(config.pngVanityPlate());
 }
 
 //

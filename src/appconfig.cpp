@@ -44,6 +44,7 @@ Manager::Manager()
 	, previewBackgroundColor_()
 	, rememberImageViewMode_()
 	, imageViewMode_()
+	, pngVanityPlate_()
 {
 	QSettings qs;
 
@@ -62,6 +63,12 @@ Manager::Manager()
 	rememberImageViewMode_ = qs.value("preview/rememberMode", true).toBool();
 
 	imageViewMode_ = qs.value("preview/mode", ImageViewVSplit).value<ImageViewMode>();
+
+	//
+	// Backend configuration
+	//
+
+	pngVanityPlate_ = qs.value("fileOptions/pngVanityPlate", true).toBool();
 
 	//
 	// User-defined color ranges
@@ -188,6 +195,15 @@ void Manager::setImageViewMode(ImageViewMode imageViewMode)
 	imageViewMode_ = imageViewMode;
 
 	qs.setValue("preview/mode", imageViewMode);
+}
+
+void Manager::setPngVanityPlate(bool enable)
+{
+	QSettings qs;
+
+	pngVanityPlate_ = enable;
+
+	qs.setValue("fileOptions/pngVanityPlate", enable);
 }
 
 void Manager::setCustomColorRanges(const QMap<QString, ColorRange>& colorRanges)

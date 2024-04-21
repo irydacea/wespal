@@ -201,6 +201,22 @@ public:
 	 */
 	void setImageViewMode(ImageViewMode imageViewMode);
 
+	/**
+	 * Returns whether PNG writer functions should include the Software comment.
+	 */
+	bool pngVanityPlate() const
+	{
+		return pngVanityPlate_;
+	}
+
+	/**
+	 * Sets whether PNG writer functions should include the Software comment.
+	 *
+	 * If @a true, a PNG tEXt chunk is included in PNG files created by Wespal
+	 * stating the software name and version used to generate them.
+	 */
+	void setPngVanityPlate(bool enable);
+
 private:
 	Manager();
 
@@ -213,6 +229,7 @@ private:
 	QString previewBackgroundColor_;
 	bool rememberImageViewMode_;
 	ImageViewMode imageViewMode_;
+	bool pngVanityPlate_;
 };
 
 inline Manager& current()

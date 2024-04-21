@@ -33,7 +33,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mainTab">
       <attribute name="title">
@@ -41,61 +41,91 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QCheckBox" name="rememberWindowSizeCheckbox">
-         <property name="whatsThis">
-          <string>Allows Wespal to remember its main window size between sessions.</string>
+        <widget class="QGroupBox" name="viewOptionsGroup">
+         <property name="title">
+          <string>&amp;View</string>
          </property>
-         <property name="text">
-          <string>Remember &amp;window size on exit</string>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="rememberWindowSizeCheckbox">
+            <property name="whatsThis">
+             <string>Allows Wespal to remember its main window size between sessions.</string>
+            </property>
+            <property name="text">
+             <string>Remember &amp;window size on exit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="rememberImageViewModeCheckbox">
+            <property name="whatsThis">
+             <string>Allows Wespal to remember the last selected view mode after each session.</string>
+            </property>
+            <property name="text">
+             <string>Remember last &amp;view mode</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="defaultZoomLabel">
+              <property name="whatsThis">
+               <string>Allows selecting a default zoom level other than 100% to be used for new sessions.</string>
+              </property>
+              <property name="text">
+               <string>Default &amp;zoom:</string>
+              </property>
+              <property name="buddy">
+               <cstring>defaultZoomList</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="defaultZoomList">
+              <property name="whatsThis">
+               <string>Allows selecting a default zoom level other than 100% to be used for new sessions.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="rememberImageViewModeCheckbox">
-         <property name="whatsThis">
-          <string>Allows Wespal to remember the last selected view mode after each session.</string>
+        <widget class="QGroupBox" name="saveOptionsGroup">
+         <property name="title">
+          <string>&amp;Files</string>
          </property>
-         <property name="text">
-          <string>Remember last &amp;view mode</string>
-         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="vanityPlateCheckbox">
+            <property name="whatsThis">
+             <string>Includes the Wespal version used to generate images under the &quot;Software&quot; comment in saved PNG files.
+
+(This adds approximately 40 bytes to the file size.)</string>
+            </property>
+            <property name="text">
+             <string>Include Wespal &amp;version in saved PNG files</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QLabel" name="defaultZoomLabel">
-           <property name="whatsThis">
-            <string>Allows selecting a default zoom level other than 100% to be used for new sessions.</string>
-           </property>
-           <property name="text">
-            <string>Default &amp;zoom:</string>
-           </property>
-           <property name="buddy">
-            <cstring>defaultZoomList</cstring>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="defaultZoomList">
-           <property name="whatsThis">
-            <string>Allows selecting a default zoom level other than 100% to be used for new sessions.</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
        </item>
        <item>
         <spacer name="verticalSpacer_3">
@@ -753,6 +783,7 @@
   <tabstop>rememberWindowSizeCheckbox</tabstop>
   <tabstop>rememberImageViewModeCheckbox</tabstop>
   <tabstop>defaultZoomList</tabstop>
+  <tabstop>vanityPlateCheckbox</tabstop>
   <tabstop>colorRangeList</tabstop>
   <tabstop>colorRangeAdd</tabstop>
   <tabstop>colorRangeDel</tabstop>
@@ -790,8 +821,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>260</x>
+     <y>395</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -806,8 +837,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>328</x>
+     <y>395</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

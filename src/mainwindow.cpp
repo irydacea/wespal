@@ -1334,7 +1334,7 @@ QStringList MainWindow::doSaveCurrentTransform(const QString& dirPath, const QSt
 
 	setEnabled(false);
 
-	if (!MosIO::writePng(transformedImage_, filePath)) {
+	if (!MosIO::writePng(transformedImage_, filePath, MosCurrentConfig().pngVanityPlate())) {
 		throw QStringList{fileName};
 	}
 
@@ -1426,7 +1426,7 @@ QStringList MainWindow::doRunJobs(const QMap<QString, ColorMap>& jobs)
 		const auto& plainName = cleanFileName(fileName);
 		auto rc = recolorImage(originalImage_, colorMap);
 
-		if (MosIO::writePng(rc, fileName)) {
+		if (MosIO::writePng(rc, fileName, MosCurrentConfig().pngVanityPlate())) {
 			succeeded.push_back(plainName);
 		} else {
 			failed.push_back(plainName);
