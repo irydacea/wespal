@@ -41,21 +41,17 @@ CodeSnippetDialog::CodeSnippetDialog(const QString& contents,
 
 	auto* const closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
 	auto* const saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
-	auto* const copyButton = ui->buttonBox->button(QDialogButtonBox::Apply);
 
-	Q_ASSERT(closeButton && saveButton && copyButton);
-
-	copyButton->setText(tr("Copy"));
-	copyButton->setDefault(true);
+	Q_ASSERT(closeButton && saveButton);
 
 	// Primitive check to see whether the current style likes assigning icons
 	// to dialog buttons.
 	if (!closeButton->icon().isNull()) {
 		auto copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/edit-copy-16.png"));
-		copyButton->setIcon(copyIcon);
+		ui->copyButton->setIcon(copyIcon);
 	}
 
-	connect(copyButton, SIGNAL(clicked()), this, SLOT(handleCopy()));
+	connect(ui->copyButton, SIGNAL(clicked()), this, SLOT(handleCopy()));
 	connect(saveButton, SIGNAL(clicked()), this, SLOT(handleSave()));
 
 	auto okIcon = style()->standardIcon(QStyle::SP_MessageBoxInformation);
