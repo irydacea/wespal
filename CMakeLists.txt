@@ -30,35 +30,79 @@ endif()
 # Dependency/Qt and compiler setup
 #
 
-find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Gui Widgets OPTIONAL_COMPONENTS Test)
 
 qt_standard_project_setup()
 
+function(kif_add_static_plugin plugin)
+	set(options)
+	set(oneValueArgs CLASS_NAME)
+	set(multiValueArgs SOURCES)
+
+	cmake_parse_arguments(KIF_ADD_PLUGIN "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+	if(NOT KIF_ADD_PLUGIN_CLASS_NAME)
+		message(FATAL_ERROR "kif_add_static_plugin called without CLASS_NAME parameter")
+	endif()
+
+	if(NOT KIF_ADD_PLUGIN_SOURCES)
+		message(FATAL_ERROR "kif_add_static_plugin called without SOURCES parameter")
+	endif()
+
+	qt_add_plugin(${plugin} STATIC PLUGIN_TYPE imageformats CLASS_NAME ${KIF_ADD_PLUGIN_CLASS_NAME})
+
+	target_sources(${plugin} PRIVATE
+		${KIF_ADD_PLUGIN_SOURCES}
+	)
+
+    target_include_directories(${plugin} SYSTEM PRIVATE
+		src/3rdparty/quazip
+	)
+
+    target_link_libraries(${plugin} PRIVATE
+		Qt::Gui
+	)
+endfunction()
+
 #
-# xcfplugin
+# QuaZip
 #
 
-qt_add_plugin(xcfplugin STATIC CLASS_NAME XCFPlugin)
+set(BUILD_SHARED_LIBS OFF)
+set(QUAZIP_QT_MAJOR_VERSION 6)
+set(QUAZIP_BZIP2 OFF)
+set(QUAZIP_INSTALL OFF)
 
-target_sources(xcfplugin PRIVATE
-	src/kimageformats/gimp_p.h
-	src/kimageformats/util_p.h
-	src/kimageformats/xcf.cpp src/kimageformats/xcf_p.h
+add_subdirectory(src/3rdparty/quazip)
+
+#
+# KImageFormats (kimg_xcf, kimg_kra, kimg_ora)
+#
+
+kif_add_static_plugin(kimg_xcf CLASS_NAME XCFPlugin SOURCES
+	src/3rdparty/kimageformats/gimp_p.h
+	src/3rdparty/kimageformats/util_p.h
+	src/3rdparty/kimageformats/xcf.cpp
+	src/3rdparty/kimageformats/xcf_p.h
 )
 
-target_link_libraries(xcfplugin PRIVATE
-	Qt::Core
-	Qt::Gui
+kif_add_static_plugin(kimg_kra CLASS_NAME KraPlugin SOURCES
+	src/3rdparty/kimageformats/kra.cpp
+	src/3rdparty/kimageformats/kra.h
 )
 
-# No warning flags because it's not our code
-target_compile_options(xcfplugin PRIVATE
-	${cxx_sanitizer_flags}
+target_link_libraries(kimg_kra PRIVATE
+	QuaZip::QuaZip
 )
 
-target_link_options(xcfplugin PRIVATE
-	${cxx_sanitizer_flags}
+kif_add_static_plugin(kimg_ora CLASS_NAME OraPlugin SOURCES
+	src/3rdparty/kimageformats/ora.cpp
+	src/3rdparty/kimageformats/ora.h
+)
+
+target_link_libraries(kimg_ora PRIVATE
+	QuaZip::QuaZip
 )
 
 #
@@ -157,7 +201,11 @@ set_target_properties(wespal PROPERTIES
 	MACOSX_BUNDLE_ICON_FILE Wespal.icns
 )
 
-qt_import_plugins(wespal INCLUDE xcfplugin)
+qt_import_plugins(wespal INCLUDE
+	kimg_xcf
+	kimg_kra
+	kimg_ora
+)
 
 target_compile_definitions(wespal PRIVATE
 	QT_NO_FOREACH
@@ -176,7 +224,9 @@ target_link_libraries(wespal PRIVATE
 	Qt::Core
 	Qt::Gui
 	Qt::Widgets
-	xcfplugin
+	kimg_xcf
+	kimg_kra
+	kimg_ora
 	morningstar
 )
 
