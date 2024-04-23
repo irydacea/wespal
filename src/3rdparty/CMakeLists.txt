@@ -18,6 +18,7 @@ if(ENABLE_BUILTIN_IMAGE_PLUGINS)
 
 	set(wespal_builtin_image_plugins
 		kimg_xcf
+		kimg_psd
 		kimg_kra
 		kimg_ora
 		PARENT_SCOPE
