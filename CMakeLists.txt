@@ -10,6 +10,7 @@ set(CMAKE_AUTOUIC ON)
 
 set(SANITIZE "" CACHE STRING "Comma-separated list of compiler -fsanitize instrumentation to enable")
 option(ENABLE_TESTS "Build unit tests")
+option(ENABLE_BUILTIN_IMAGE_PLUGINS "Builds and enables bundled versions of KDE Frameworks plugins for image format support" OFF)
 
 set(cxx_sanitizer_flags "")
 if(SANITIZE)
@@ -26,6 +27,8 @@ if(NOT MSVC)
 	)
 endif()
 
+set(wespal_builtin_image_plugins "")
+
 #
 # Dependency/Qt and compiler setup
 #
@@ -35,75 +38,11 @@ find_package(Qt6 REQUIRED COMPONENTS Gui Widgets OPTIONAL_COMPONENTS Test)
 
 qt_standard_project_setup()
 
-function(kif_add_static_plugin plugin)
-	set(options)
-	set(oneValueArgs CLASS_NAME)
-	set(multiValueArgs SOURCES)
-
-	cmake_parse_arguments(KIF_ADD_PLUGIN "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-
-	if(NOT KIF_ADD_PLUGIN_CLASS_NAME)
-		message(FATAL_ERROR "kif_add_static_plugin called without CLASS_NAME parameter")
-	endif()
-
-	if(NOT KIF_ADD_PLUGIN_SOURCES)
-		message(FATAL_ERROR "kif_add_static_plugin called without SOURCES parameter")
-	endif()
-
-	qt_add_plugin(${plugin} STATIC PLUGIN_TYPE imageformats CLASS_NAME ${KIF_ADD_PLUGIN_CLASS_NAME})
-
-	target_sources(${plugin} PRIVATE
-		${KIF_ADD_PLUGIN_SOURCES}
-	)
-
-    target_include_directories(${plugin} SYSTEM PRIVATE
-		src/3rdparty/quazip
-	)
-
-    target_link_libraries(${plugin} PRIVATE
-		Qt::Gui
-	)
-endfunction()
-
 #
-# QuaZip
+# Third-party support libraries
 #
 
-set(BUILD_SHARED_LIBS OFF)
-set(QUAZIP_QT_MAJOR_VERSION 6)
-set(QUAZIP_BZIP2 OFF)
-set(QUAZIP_INSTALL OFF)
-
-add_subdirectory(src/3rdparty/quazip)
-
-#
-# KImageFormats (kimg_xcf, kimg_kra, kimg_ora)
-#
-
-kif_add_static_plugin(kimg_xcf CLASS_NAME XCFPlugin SOURCES
-	src/3rdparty/kimageformats/gimp_p.h
-	src/3rdparty/kimageformats/util_p.h
-	src/3rdparty/kimageformats/xcf.cpp
-	src/3rdparty/kimageformats/xcf_p.h
-)
-
-kif_add_static_plugin(kimg_kra CLASS_NAME KraPlugin SOURCES
-	src/3rdparty/kimageformats/kra.cpp
-	src/3rdparty/kimageformats/kra.h
-)
-
-target_link_libraries(kimg_kra PRIVATE
-	QuaZip::QuaZip
-)
-
-kif_add_static_plugin(kimg_ora CLASS_NAME OraPlugin SOURCES
-	src/3rdparty/kimageformats/ora.cpp
-	src/3rdparty/kimageformats/ora.h
-)
-
-target_link_libraries(kimg_ora PRIVATE
-	QuaZip::QuaZip
-)
+add_subdirectory(src/3rdparty)
 
 #
 # libmorningstar
@@ -202,9 +141,7 @@ set_target_properties(wespal PROPERTIES
 )
 
 qt_import_plugins(wespal INCLUDE
-	kimg_xcf
-	kimg_kra
-	kimg_ora
+	${wespal_builtin_image_plugins}
 )
 
 target_compile_definitions(wespal PRIVATE
@@ -224,9 +161,7 @@ target_link_libraries(wespal PRIVATE
 	Qt::Core
 	Qt::Gui
 	Qt::Widgets
-	kimg_xcf
-	kimg_kra
-	kimg_ora
+	${wespal_builtin_image_plugins}
 	morningstar
 )
 
