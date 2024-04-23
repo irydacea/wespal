@@ -12,7 +12,7 @@ bundle=wespal.app
 image=wespal.dmg
 image_final=Wespal-$version.dmg
 
-qtdir="$HOME/Local/Qt/6.6.3"
+qtdir="$HOME/Local/Qt/6.7.0"
 qtcmakedir="$HOME/Local/Qt/Tools/CMake"
 
 cmake="$qtdir/macos/bin/qt-cmake"
@@ -40,7 +40,7 @@ cd $builddir
 # Configure and build the app
 #
 
-$cmake -S .. -B . -G Ninja -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=Release
+$cmake -S .. -B . -G Ninja -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=Release -DENABLE_BUILTIN_IMAGE_PLUGINS=ON
 ninja
 
 #

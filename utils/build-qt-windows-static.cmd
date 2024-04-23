@@ -8,14 +8,14 @@ rem
 
 setlocal
 
-set qtsrcdir=C:\Qt\6.6.3\Src
+set qtsrcdir=C:\Qt\6.7.0\Src
 set mingwpath=C:\Qt\Tools\mingw1120_64\bin
 
 set cmakepath=C:\Qt\Tools\CMake_64\bin
 set ninjapath=C:\Qt\Tools\Ninja
 
-set distdir=..\dist\windows-qt-6.6.3-static
-set builddir=.\qt-build-windows-6.6.3-static
+set distdir=..\dist\windows-qt-6.7.0-static
+set builddir=.\qt-build-windows-6.7.0-static
 
 rem
 rem Set up development environment
@@ -35,7 +35,7 @@ rem
 rem Configure Qt
 rem
 
-call %qtsrcdir%\configure -prefix %distdir% -release -optimize-size -static -static-runtime -submodules qtbase,qtimageformats -no-feature-network -no-feature-sql -no-feature-printer -no-feature-printsupport -no-feature-androiddeployqt -no-feature-qdbus -no-feature-concurrent -no-feature-testlib -no-feature-xml -no-feature-qmake -gui -widgets -no-opengl -no-gif -no-tiff -no-dbus
+call %qtsrcdir%\configure -prefix %distdir% -release -optimize-size -static -static-runtime -submodules qtbase,qtimageformats,qt5compat -no-feature-network -no-feature-sql -no-feature-printer -no-feature-printsupport -no-feature-androiddeployqt -no-feature-qdbus -no-feature-concurrent -no-feature-testlib -no-feature-xml -no-feature-qmake -gui -widgets -no-opengl -no-gif -no-tiff -no-dbus -no-openssl -no-ssl -qt-zlib
 
 if not %errorlevel% equ 0 goto configfail
 

@@ -22,16 +22,16 @@ goto baddevenv
 
 :vs
 rem Visual Studio 2022 host
-set qtprefix=C:\Qt\6.6.3\msvc2019_64
+set qtprefix=C:\Qt\6.7.0\msvc2019_64
 set devenvcmd="C:\Program Files\Microsoft Visual Studio\2022\Community"\VC\Auxiliary\Build\vcvars64.bat
 goto common
 
 :static
 :mingw
 rem Mingw host
-set qtprefix=C:\Qt\6.6.3\mingw_64
+set qtprefix=C:\Qt\6.7.0\mingw_64
 rem Static-linked version
-if .%devenv%==.static set qtprefix=..\dist\windows-qt-6.6.3-static
+if .%devenv%==.static set qtprefix=..\dist\windows-qt-6.7.0-static
 set PATH=C:\Qt\Tools\mingw1120_64\bin;%PATH%
 goto common
 
@@ -62,7 +62,7 @@ rem
 rem Configure and build the app
 rem
 
-cmake -S .. -B . -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake -S .. -B . -G Ninja -DCMAKE_BUILD_TYPE=Release -DENABLE_BUILTIN_IMAGE_PLUGINS=ON -DQUAZIP_USE_QT_ZLIB=ON
 ninja
 
 rem
