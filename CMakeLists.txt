@@ -108,8 +108,8 @@ endif()
 #
 
 if(WIN32)
-	# Windows resource file, including native icon
-	set(wespal_platform_files win32/wespal.rc)
+	# vcpkg manifest + Windows resource file including native icon
+	set(wespal_platform_files win32/wespal.rc vcpkg.json)
 elseif(APPLE)
 	# macOS native icon
 	set(wespal_platform_files macos/Wespal.icns)
