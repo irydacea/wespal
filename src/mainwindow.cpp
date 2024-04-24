@@ -321,7 +321,7 @@ MainWindow::MainWindow(QWidget* parent)
 	//
 
 	ui->zoomSlider->setMinimum(0);
-	ui->zoomSlider->setMaximum(zoomFactors_.size() - 1);
+	ui->zoomSlider->setMaximum(int(zoomFactors_.size()) - 1);
 	ui->zoomSlider->setValue(1);
 
 	auto* zoomMenuActs = new QActionGroup(this);
