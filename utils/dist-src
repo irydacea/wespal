@@ -2,12 +2,29 @@
 #
 # Builds the source code distribution tarball
 #
+# (Requires bsdtar. GNU tar will not work without modifications.)
+#
 
 set -e
 set -o nounset
 
-distdir=$HOME/Projects/dist/wespal
+die() { echo "`basename $0`: $*" 1>&2; exit 1; }
 
-git archive --format=tar --prefix=wespal-$1/ $1 | bzip2 > $distdir/wespal-$1.tar.bz2
+distdir=$HOME/Projects/dist/wespal
+prefix=wespal-$1/
+output_namestem=$distdir/wespal-$1
+
+submodule=src/3rdparty/quazip/
+
+[ "$(tar --version | cut -f 1 -d ' ' -)" = "bsdtar" ] || die 'This script requires bsdtar'
+
+git archive --format=tar -o ${output_namestem}.tar --prefix=$prefix $1
+
+( cd $submodule && git archive --format=tar --prefix=${prefix}${submodule} $1 ) \
+	| tar -cf - @${output_namestem}.tar @- \
+	| xz > ${output_namestem}.tar.xz
+
+# Cleanup
+rm ${output_namestem}.tar
 
 shasum -a 256 $distdir/*-$1.*
