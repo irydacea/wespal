@@ -11,9 +11,12 @@ Dependencies
  * GCC 7 or later / Clang 5 or later / another C++17-compatible compiler
  * Qt 6.4 or later
 
-KDE Frameworks is not required to build or run Wespal, but if installed and properly configured, the KImageFormats component may provide additional image format plugins to handle Krita (`.kra`), OpenRaster (`.ora`) and Adobe Photoshop (`.psd`) files.
+KDE Frameworks is not required to build or run Wespal, but if installed and properly configured, the KImageFormats component provides additional image format plugins to handle GIMP (`.xcf`), Krita (`.kra`), OpenRaster (`.ora`) and Adobe Photoshop (`.psd`) files.
 
-*(Tip: If you have KDE Plasma or KDE applications installed you will probably already have KImageFormats installed as well.)*
+> [!TIP]
+> If you are running Linux and have KDE Plasma or KDE applications installed you will probably already have KImageFormats installed as well.
+
+Alternatively, Wespal can use its own stripped-down version of KImageFormats if configured by CMake with `-DENABLE_BUILTIN_IMAGE_PLUGINS=ON`. In order for this to work, you will need to have the zlib development files installed as well.
 
 
 Building from source
