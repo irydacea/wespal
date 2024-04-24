@@ -769,15 +769,32 @@ void MainWindow::wheelEvent(QWheelEvent* event)
 
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
+	const auto& globalPos = event->globalPosition();
+
+	const auto& compositeRelPos = ui->previewCompositeContainer->mapFromGlobal(globalPos).toPoint();
+	const auto& ogRelPos = ui->previewOriginalContainer->mapFromGlobal(globalPos).toPoint();
+	const auto& rcRelPos = ui->previewRcContainer->mapFromGlobal(globalPos).toPoint();
+
 	if (event->button() == Qt::LeftButton && hasImage())
 	{
 		//
 		// Drag-to-copy action
 		//
 
-		dragStartPos_ = event->pos();
-		dragUseRecolored_ = ui->previewRcContainer->geometry().contains(event->pos());
-		dragStart_ = dragUseRecolored_ || ui->previewOriginalContainer->geometry().contains(event->pos());
+		dragStartPos_ = event->position();
+
+		switch (viewMode_)
+		{
+			case MosConfig::ImageViewSwipe:
+			case MosConfig::ImageViewOnionSkin:
+				dragUseRecolored_ = true;
+				dragStart_ = ui->previewCompositeContainer->rect().contains(compositeRelPos);
+				break;
+			default:
+				dragUseRecolored_ = ui->previewRcContainer->rect().contains(rcRelPos);
+				dragStart_ = dragUseRecolored_ || ui->previewOriginalContainer->rect().contains(ogRelPos);
+				break;
+		}
 	}
 	else if (event->button() == Qt::MiddleButton && hasImage())
 	{
@@ -785,21 +802,19 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 		// Image preview panning
 		//
 
+		panStartPos_ = event->position();
+
 		switch (viewMode_)
 		{
 			case MosConfig::ImageViewSwipe:
-			case MosConfig::ImageViewOnionSkin: {
-				panStart_ = ui->previewCompositeContainer->geometry().contains(event->pos());
+			case MosConfig::ImageViewOnionSkin:
+				panStart_ = ui->previewCompositeContainer->rect().contains(compositeRelPos);
 				break;
-			}
-			default: {
-				panStart_ = ui->previewOriginalContainer->geometry().contains(event->pos()) ||
-							ui->previewRcContainer->geometry().contains(event->pos());
+			default:
+				panStart_ = ui->previewOriginalContainer->rect().contains(ogRelPos) ||
+							ui->previewRcContainer->rect().contains(rcRelPos);;
 				break;
-			}
 		}
-
-		panStartPos_ = event->pos();
 	}
 }
 
@@ -811,7 +826,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event)
 		// Drag-to-copy action
 		//
 
-		auto delta = event->pos() - dragStartPos_;
+		auto delta = event->position() - dragStartPos_;
 
 		if (delta.manhattanLength() < QApplication::startDragDistance())
 			return;
@@ -852,12 +867,12 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event)
 		auto* vScroll = target->verticalScrollBar();
 		auto* hScroll = target->horizontalScrollBar();
 
-		auto delta = panStartPos_ - event->pos();
+		auto delta = panStartPos_ - event->position();
 
 		vScroll->setValue(vScroll->value() + delta.y());
 		hScroll->setValue(hScroll->value() + delta.x());
 
-		panStartPos_ = event->pos();
+		panStartPos_ = event->position();
 	}
 }
 

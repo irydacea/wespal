@@ -135,10 +135,10 @@ private:
 	bool ignoreDrops_;
 	bool dragUseRecolored_;
 	bool dragStart_;
-	QPoint dragStartPos_;
+	QPointF dragStartPos_;
 
 	bool panStart_;
-	QPoint panStartPos_;
+	QPointF panStartPos_;
 
 	QList<QAction*> recentFileActions_;
 	QList<QAction*> zoomActions_;
