@@ -52,7 +52,7 @@
         <number>0</number>
        </property>
        <property name="rightMargin">
-        <number>0</number>
+        <number>4</number>
        </property>
        <property name="bottomMargin">
         <number>0</number>
@@ -240,8 +240,8 @@
              <widget class="QWidget" name="previewOriginalContents">
               <property name="geometry">
                <rect>
-                <x>229</x>
-                <y>114</y>
+                <x>41</x>
+                <y>0</y>
                 <width>0</width>
                 <height>0</height>
                </rect>
@@ -288,8 +288,8 @@
              <widget class="QWidget" name="previewRcContents">
               <property name="geometry">
                <rect>
-                <x>229</x>
-                <y>113</y>
+                <x>41</x>
+                <y>0</y>
                 <width>0</width>
                 <height>0</height>
                </rect>
@@ -352,8 +352,8 @@
              <widget class="QWidget" name="previewCompositeContents">
               <property name="geometry">
                <rect>
-                <x>229</x>
-                <y>222</y>
+                <x>41</x>
+                <y>0</y>
                 <width>0</width>
                 <height>0</height>
                </rect>
@@ -586,7 +586,7 @@
       </property>
       <layout class="QGridLayout" name="workAreaOptionsPanelLayout">
        <property name="leftMargin">
-        <number>0</number>
+        <number>4</number>
        </property>
        <property name="topMargin">
         <number>0</number>
