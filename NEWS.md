@@ -21,7 +21,7 @@ Version 0.5.0
   * Added an option to the Palette Editor to generate palette colors from the currently open image.
   * Color ranges now take a high-contrast fourth parameter, used in Wespal for displaying color range icons and in Wesnoth for unit/village markers on the minimap (#12).
   * Added options to the Color Range and Palette editors to create new items using Wesnoth built-ins as starting templates. This should allow for easier experimentation without having to manually copy the WML color lists into the From List dialog.
-  * Added GIMP Palette (.gpl) export option to the Palette Editor.
+  * Added GIMP Palette (`.gpl`) export option to the Palette Editor.
 * Added Wesnoth color blend (`~BLEND`) and color shift (`~CS`) functionality.
 * Added Generate Base64 option to the Tools menu.
 
@@ -32,11 +32,14 @@ Version 0.5.0
 * Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Fixed saved PNGs not including a tEXt chunk with the Wespal version used to generate them as intended.
 * Fixed Wespal application icon not being used even after installing on Wayland platforms.
+* Avoid a potential crash related to drop operations on Wayland.
 
 ### Other changes
 
 * Changed keys for the main window size and preview background settings. Note that this will cause these settings from version 0.4.0 and earlier to be forgotten.
 * Made the code/WML snippet dialog a bit less cramped.
+* Added CMake `ENABLE_BUILTIN_IMAGE_PLUGINS` option to enable building the built-in KImageFormats plugins and their QuaZip dependency. Users of platforms where KDE Frameworks 6 is readily available/already installed are discouraged from using this, so it's off by default.
+* Fixed CMake `SANITIZE` option causing link-time errors (meaning yes, I actually tested and used it this time around).
 * Implemented unit tests for backend functionality to ensure the recoloring algorithm never breaks silently before a release.
 
 
