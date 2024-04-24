@@ -22,7 +22,14 @@ Alternatively, Wespal can use its own stripped-down version of KImageFormats if 
 Building from source
 --------------------
 
-First, after unpacking the source code you need to set up the CMake build directory:
+> [!IMPORTANT]
+> If you are checking out the source code from Git and wish to use the internal version of KImageFormats, you **must** make sure all Git submodules are checked out first by using the following commands. Failure to do so **will** result in build-time errors.
+> ```
+> $ git submodule init
+> $ git submodule update
+> ```
+
+After unpacking the source code you need to set up the CMake build directory:
 
 ```
 $ cd wespal-X.Y.Z/
@@ -44,3 +51,25 @@ $ sudo make install
 ```
 
 Installing Wespal system-wide has the added benefit of generating a desktop application menu entry for you. If you choose to run Wespal from its build directory you may want to grab a copy of the template in `x11/wespal.desktop` and edit it to point to the Wespal binary to make it easier to launch.
+
+
+CMake options
+-------------
+
+The following options can be defined when configuring Wespal for building with CMake by specifying `-D<option>=<value>` in the command line (without the angle brackets):
+
+* `CMAKE_BUILD_TYPE=<build type>`
+
+  Selects the build type and optimization level, which is one of: `Debug` (default), `MinSizeRel`, `Release`, `RelWithDebInfo`. Most people want to use `Release`.
+
+* `ENABLE_TESTS`
+
+  Enables a test suite to be built for development purposes.
+
+* `ENABLE_BUILTIN_IMAGE_PLUGINS`
+
+  Enables an internal stripped-down version of KImageFormats to be built in order to support additional image formats. If you have KDE Frameworks 6 installed, it is highly recommended you leave this option disabled.
+
+* `SANITIZE=<compiler specific>`
+
+  Enables compiler `-fsanitize` instrumentation. Example: `cmake -DCMAKE_BUILD_TYPE=Debug -DSANITIZE=address,leak`
