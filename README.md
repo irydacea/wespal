@@ -15,27 +15,22 @@ It provides a simple image preview functionality, as well as the option to save 
 License
 -------
 
-Wespal as a whole is licensed under the GNU General Public License version 2, or (at your option) any later version — a copy of the GNU GPL version 2 is included in `COPYING`. Some parts include code licensed under other licenses which may be found under `licenses/`.
+Wespal as a whole is licensed under the GNU General Public License version 2, or (at your option) any later version — a copy of the GNU GPL version 2 is included in `COPYING`.
 
-Code from [KDE KImageFormats][2] licensed under the GNU Library General Public License version 2 or later:
+[QuaZip][2] is licensed under the GNU Lesser General Public License version 2.1 with a static linking exception. See `src/3rdparty/quazip/COPYING` for details.
 
- * `src/kimageformats/util_p.h`
+[KImageFormats][3] includes code provided under a number of compatible licenses. See `src/3rdparty/kimageformats/licenses/` for the individual licenses.
 
-Code from [KDE KImageFormats][2] licensed under the GNU Lesser General Public License version 2.1 or later:
-
- * `src/kimageformats/gimp_p.h`
- * `src/kimageformats/xcf.cpp`
- * `src/kimageformats/xcf_p.h`
-
-[2]: <https://api.kde.org/frameworks/kimageformats/html/index.html>
+[2]: <https://github.com/stachenov/quazip>
+[3]: <https://api.kde.org/frameworks/kimageformats/html/index.html>
 
 
 Installing
 ----------
 
-Windows and macOS users should use the binary packages provided on the [Wespal web page][3] — these support Windows 10 and later, and macOS 11 Big Sur and later. Users on Linux and other platforms should see the `INSTALL.md` file for instructions on building from source.
+Windows and macOS users should use the binary packages provided on the [Wespal web page][4] — these support Windows 10 and later, and macOS 11 Big Sur and later. Users on Linux and other platforms should see the `INSTALL.md` file for instructions on building from source.
 
-[3]: <https://irydacea.me/projects/wespal>
+[4]: <https://irydacea.me/projects/wespal>
 
 ### Windows
 
@@ -77,17 +72,19 @@ The Tools menu allows access to the color range and palette editors, which allow
 
 Wespal’s configuration, including any created custom palettes and ranges, is stored in a platform-dependent location:
 
-* Linux: `$HOME/.config/Irydacea/Wespal.conf`
-* Windows: `HKEY_CURRENT_USER\Software\Irydacea\Wespal` (in the Registry)
-* macOS: `$HOME/Library/Preferences/me.irydacea.Wespal.plist`
+| Platform | Location                                                       |
+| -------- | -------------------------------------------------------------- |
+| Windows  | `HKEY_CURRENT_USER\Software\Irydacea\Wespal` (in the Registry) |
+| macOS    | `$HOME/Library/Preferences/me.irydacea.Wespal.plist`           |
+| Linux    | `$HOME/.config/Irydacea/Wespal.conf`                           |
 
 
 Reporting bugs
 --------------
 
-There is an issue tracker on [GitHub][4]. Alternatively, you may post in the [Wesnoth.org forum topic][5].
+There is an issue tracker on [GitHub][5]. Alternatively, you may post in the [Wesnoth.org forum topic][6].
 
-[4]: https://github.com/irydacea/wespal/issues
-[5]: https://r.wesnoth.org/t31965
+[5]: https://github.com/irydacea/wespal/issues
+[6]: https://r.wesnoth.org/t31965
 
 When reporting a bug, make sure to provide as much relevant information as possible, including your operating system version (e.g. Windows 10 1903) and Wespal version. If you experience issues with a specific image or palette/color range, be sure to provide those as well.
