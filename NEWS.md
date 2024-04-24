@@ -25,6 +25,7 @@ Version 0.5.0
 * Added unit tests to ensure the recoloring algorithm never breaks silently before a release.
 * Added option to disable saving the Wespal version number to created PNG files.
 * Fixed saved PNGs not including a tEXt chunk with the Wespal version used to generate them as intended.
+* Fixed Wespal application icon not being used even after installing on Wayland platforms.
 
 Version 0.4.0
 -------------

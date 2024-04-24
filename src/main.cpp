@@ -48,7 +48,10 @@ int main(int argc, char *argv[])
 	QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
 
+	// Doesn't do anything on Wayland but it's needed elsewhere.
 	a.setWindowIcon(QIcon{":/wespal-icon-512.png"});
+	// Required on Wayland
+	QGuiApplication::setDesktopFileName("me.irydacea.Wespal");
 
 	MainWindow w;
 
