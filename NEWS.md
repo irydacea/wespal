@@ -4,28 +4,41 @@ Changelog
 Version 0.5.0
 -------------
 
-* Added alternative view modes to the original Split mode: Swipe, Onion Skin.
-* Added an option to generate palette colors from the currently open image.
-* Added middle-mouse panning to image previews.
-* Added 1600% zoom factor.
-* Redesigned main window.
+### New features
+
+* Out-of-the-box support for Krita (`.kra`), OpenRaster (`.ora`), and Adobe Photoshop (`.psd`) files on Windows and macOS via KImageFormats from KDE Frameworks 6.1.
+* Redesigned main window:
   * Added buttons to quickly select or deselect all color ranges.
   * Added a button to generate image path functions for the open image.
   * Added an Edit menu and keyboard shortcuts for easy clipboard access.
-* Opening and closing a file persists the file's parent dir as the starting point of a new file Open operation (same session only).
-* Saving recolored images persists the chosen dir as the starting point of a new file Save operation (same session only).
-* Merged Color Range Editor and Palette Editor into a single Settings window with additional global settings.
-* Changed storage for the main window size and preview background settings - this will cause these settings from previous versions to be forgotten.
-* Added options to the Color Range and Palette Editor to create new items using Wesnoth built-ins as starting templates. This should allow for easier experimentation without having to manually copy the WML color lists into the From List dialog.
-* Added GIMP Palette (.gpl) export option to the Palette Editor.
-* Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
-* Color ranges now take a high-contrast fourth parameter, used in Wespal for displaying color range icons and in Wesnoth for unit/village markers on the minimap (#12).
+  * Added alternative view modes to the original Split mode: Swipe, Onion Skin.
+  * Added middle-mouse panning.
+  * Added 1600% zoom factor.
+* New settings dialog:
+  * Added a General settings tab with display-related options.
+  * Added option to disable saving the Wespal version number to created PNG files.
+  * Merged Color Range and Palette editors into this dialog as separate tab pages.
+  * Added an option to the Palette Editor to generate palette colors from the currently open image.
+  * Color ranges now take a high-contrast fourth parameter, used in Wespal for displaying color range icons and in Wesnoth for unit/village markers on the minimap (#12).
+  * Added options to the Color Range and Palette editors to create new items using Wesnoth built-ins as starting templates. This should allow for easier experimentation without having to manually copy the WML color lists into the From List dialog.
+  * Added GIMP Palette (.gpl) export option to the Palette Editor.
 * Added Wesnoth color blend (`~BLEND`) and color shift (`~CS`) functionality.
 * Added Generate Base64 option to the Tools menu.
-* Added unit tests to ensure the recoloring algorithm never breaks silently before a release.
-* Added option to disable saving the Wespal version number to created PNG files.
+
+### Bug fixes
+
+* Opening and closing a file persists the file's parent dir as the starting point of a new file Open operation (same session only).
+* Saving recolored images persists the chosen dir as the starting point of a new file Save operation (same session only).
+* Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Fixed saved PNGs not including a tEXt chunk with the Wespal version used to generate them as intended.
 * Fixed Wespal application icon not being used even after installing on Wayland platforms.
+
+### Other changes
+
+* Changed keys for the main window size and preview background settings. Note that this will cause these settings from version 0.4.0 and earlier to be forgotten.
+* Made the code/WML snippet dialog a bit less cramped.
+* Implemented unit tests for backend functionality to ensure the recoloring algorithm never breaks silently before a release.
+
 
 Version 0.4.0
 -------------
@@ -46,6 +59,7 @@ Version 0.4.0
 * New start screen workflow including a more visible display of recently-opened
   files.
 
+
 Version 0.3.0
 -------------
 
@@ -57,6 +71,7 @@ Version 0.3.0
 * Main: Zoom view in/out using Ctrl+<vertical scrollwheel>.
 * Main: Made it possible for the user to choose any custom color for the
   preview background.
+
 
 Version 0.2.1
 -------------
@@ -72,6 +87,7 @@ Version 0.2.1
 * Palette Editor: Added option to apply a color range (team coloring) to
   the current selected palette.
 
+
 Version 0.2.0
 -------------
 
@@ -85,11 +101,13 @@ Version 0.2.0
 * Implemented Recent Files list in the File menu.
 * Redesigned the main window.
 
+
 Version 0.1.4
 -------------
 
 * Complete drag-and-drop support.
 * Implemented basic zoom support.
+
 
 Version 0.1.3
 -------------
@@ -116,6 +134,7 @@ Version 0.1.1
 * Fixed some glitches with selection changes in the color ranges listbox.
 * Minor UI improvements or revisions.
 
+
 Version 0.1.0.1
 ---------------
 
@@ -123,6 +142,7 @@ Version 0.1.0.1
 * Made the window non-resizable since widgets don’t adjust to it yet.
 * Previews are now centered.
 * Correctly remember the path to the currently opened file.
+
 
 Version 0.1.0
 -------------
