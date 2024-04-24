@@ -25,6 +25,10 @@ if(NOT MSVC)
 		-Werror=non-virtual-dtor
 		-Wold-style-cast
 	)
+else()
+	set(cxx_warning_flags
+		/W3
+	)
 endif()
 
 set(wespal_builtin_image_plugins "")
