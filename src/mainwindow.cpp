@@ -36,6 +36,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
+#include <QPainter>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QScrollBar>
@@ -831,11 +832,34 @@ void MainWindow::mouseMoveEvent(QMouseEvent* event)
 		if (delta.manhattanLength() < QApplication::startDragDistance())
 			return;
 
+		QImage& source = dragUseRecolored_ ? transformedImage_ : originalImage_;
+
+		static constexpr QSize maxDragPixmapSize{128, 128};
+		auto dragPixmapSize = source.size();
+
+		if (dragPixmapSize.width() > maxDragPixmapSize.width() ||
+			dragPixmapSize.height() > maxDragPixmapSize.height())
+		{
+			dragPixmapSize.scale(maxDragPixmapSize, Qt::KeepAspectRatio);
+		}
+
+		QPixmap dragPixmap{dragPixmapSize};
+
+		dragPixmap.fill(Qt::transparent);
+
+		{
+			QPainter painter{&dragPixmap};
+			painter.setOpacity(0.80);
+			painter.drawImage(QRect{{0, 0}, dragPixmapSize}, source);
+		}
+
 		auto* drag = new QDrag(this);
 		auto* mime = new QMimeData();
 
-		mime->setImageData(dragUseRecolored_ ? transformedImage_ : originalImage_);
+		mime->setImageData(source);
 		drag->setMimeData(mime);
+		drag->setPixmap(dragPixmap);
+		drag->setHotSpot({dragPixmapSize.width() / 2, dragPixmapSize.height()});
 
 		ignoreDrops_ = true;
 		drag->exec(Qt::CopyAction);
