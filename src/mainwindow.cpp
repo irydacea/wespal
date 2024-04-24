@@ -870,14 +870,14 @@ void MainWindow::mouseReleaseEvent(QMouseEvent*)
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
 {
-	if (event->mimeData()->hasImage() || event->mimeData()->hasUrls()) {
+	if (event->mimeData() && (event->mimeData()->hasImage() || event->mimeData()->hasUrls())) {
 		event->acceptProposedAction();
 	}
 }
 
 void MainWindow::dropEvent(QDropEvent* event)
 {
-	if (ignoreDrops_)
+	if (ignoreDrops_ || !event->mimeData())
 		return;
 
 	QImage newimg;
@@ -887,8 +887,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 
 	if (event->mimeData()->hasImage()) {
 		newimg = qvariant_cast<QImage>(event->mimeData()->imageData());
-	}
-	else if (event->mimeData()->hasUrls()) {
+	} else if (event->mimeData()->hasUrls()) {
 		newpath = event->mimeData()->urls().front().path();
 		newimg.load(newpath);
 	}
