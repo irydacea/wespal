@@ -22,12 +22,14 @@
 
 #include "version.hpp"
 
+#include <QAbstractSlider>
 #include <QDesktopServices>
 #include <QFileInfo>
 #include <QImageReader>
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QStringBuilder>
+#include <QToolTip>
 
 namespace {
 
@@ -145,6 +147,26 @@ void openReleaseNotes()
 void openIssueTracker()
 {
 	QDesktopServices::openUrl({BUG_REPORTS_URL});
+}
+
+void displaySliderTextToolTip(QAbstractSlider* slider, int newValue, const QString& text)
+{
+	if (!slider)
+		return;
+
+	auto percentageFactor = double(newValue - slider->minimum()) / double(slider->maximum() - slider->minimum());
+	const QString& toolTipText = !text.isEmpty() ? text : QString{"%1%"}.arg(qRound(100.0 * percentageFactor));
+
+	auto toolTipPos = slider->mapToGlobal(QPoint{0, 0});
+
+	if (slider->orientation() == Qt::Horizontal)
+		toolTipPos += QPoint{qRound(slider->width() * percentageFactor), 0};
+	else
+		toolTipPos += QPoint{slider->width(), qRound(slider->height() * percentageFactor)};
+
+	//qDebug() << toolTipPos << percentageFactor;
+
+	QToolTip::showText(toolTipPos, toolTipText, slider);
 }
 
 } // end namespace MosUi

@@ -224,6 +224,7 @@ private slots:
 	void on_radShift_clicked();
 	void handleRecent();
 	void on_zoomSlider_valueChanged(int value);
+	void on_zoomSlider_sliderMoved(int value);
 
 	void handlePreviewBgOption(bool checked);
 	void on_cmdOpen_clicked();
@@ -231,6 +232,7 @@ private slots:
 	void on_action_Close_triggered();
 	void on_cbxViewMode_currentIndexChanged(int index);
 	void on_viewSlider_valueChanged(int value);
+	void on_viewSlider_sliderMoved(int value);
 	void on_actionZoomIn_triggered();
 	void on_actionZoomOut_triggered();
 	void on_actionAppSettings_triggered();

@@ -1568,6 +1568,13 @@ void MainWindow::on_zoomSlider_valueChanged(int value)
 	}
 }
 
+void MainWindow::on_zoomSlider_sliderMoved(int value)
+{
+	qreal newZoom = zoomFactors_[qBound(0, value, int(zoomFactors_.size() - 1))];
+
+	MosUi::displaySliderTextToolTip(ui->zoomSlider, value, QString{"%1%"}.arg(qRound(newZoom * 100.0)));
+}
+
 void MainWindow::adjustZoom(ZoomDirection direction)
 {
 	switch (direction)
@@ -1693,6 +1700,11 @@ void MainWindow::on_viewSlider_valueChanged(int value)
 		ui->compositeRcOnlyToggle->setChecked(false);
 		ui->compositeOriginalOnlyToggle->setChecked(false);
 	}
+}
+
+void MainWindow::on_viewSlider_sliderMoved(int value)
+{
+	MosUi::displaySliderTextToolTip(ui->viewSlider, value);
 }
 
 void MainWindow::on_actionZoomIn_triggered()

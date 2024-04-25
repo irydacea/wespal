@@ -23,6 +23,8 @@
 #include <QPointer>
 #include <QWidget>
 
+class QAbstractSlider;
+
 /**
  * Helper class used to block signals from objects for a certain scope.
  *
@@ -143,5 +145,21 @@ void about(QWidget* parent = nullptr);
 void openReleaseNotes();
 
 void openIssueTracker();
+
+/**
+ * Displays text as a tooltip underneath/beside a slider's grabbable portion.
+ *
+ * @param slider   A slider widget under which the tooltip will be shown.
+ *
+ * @param newValue The new value of the slider. This is required because if
+ *                 the function is called from the sliderMoved signal, the
+ *                 slider's own value() will be outdated, resulting in an
+ *                 inaccurate tooltip text.
+ *
+ * @param text     The tooltip text that will be shown. If this is an empty
+ *                 string, the value of the slider as a percentage (compared
+ *                 to its minimum and maximum range) will be shown instead.
+ */
+void displaySliderTextToolTip(QAbstractSlider* slider, int newValue, const QString& text = {});
 
 } // end namespace JobUi
