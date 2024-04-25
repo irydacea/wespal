@@ -457,13 +457,16 @@ MainWindow::MainWindow(QWidget* parent)
 	//
 	// <https://marc.info/?l=kde-devel&m=130530904703913&w=2>
 	//
+	// (As of KDE Frameworks 6, Breeze is especially aggressive about this and
+	// we can't work around it by setting the property on the individual
+	// widgets anymore -- although it may also be a Wayland-specific thing.)
+	//
 	// We should probably figure out a better way to do this later, as well
 	// as the preview panels themselves; the proper way according to the
 	// Oxygen dev is to prevent (at the widget level) propagation of the event
 	// to the window widget.
-	ui->previewOriginalContainer->setProperty("_kde_no_window_grab", true);
-	ui->previewRcContainer->setProperty("_kde_no_window_grab", true);
-	ui->previewComposite->setProperty("_kde_no_window_grab", true);
+
+	setProperty("_kde_no_window_grab", true);
 
 	// Ensure split view scrollbars are in sync on both sides
 

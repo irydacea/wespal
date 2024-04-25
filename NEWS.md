@@ -32,6 +32,7 @@ Version 0.5.0
 * Fixed Palette Editor not displaying any color range icons in the Recolor dropdown on macOS.
 * Fixed saved PNGs not including a tEXt chunk with the Wespal version used to generate them as intended.
 * Fixed Wespal application icon not being used even after installing on Wayland platforms.
+* Added a workaround for increased issues with the KDE Plasma 6 Breeze style when dragging windows from any empty areas is enabled, by disabling dragging from "all" (actually most) areas of the main window instead. A proper fix will come eventually.
 * Avoid a potential crash related to drop operations on Wayland.
 
 ### Other changes
