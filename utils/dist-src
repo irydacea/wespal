@@ -20,7 +20,7 @@ submodule=src/3rdparty/quazip/
 
 git archive --format=tar -o ${output_namestem}.tar --prefix=$prefix $1
 
-( cd $submodule && git archive --format=tar --prefix=${prefix}${submodule} $1 ) \
+( cd $submodule && git archive --format=tar --prefix=${prefix}${submodule} HEAD ) \
 	| tar -cf - @${output_namestem}.tar @- \
 	| xz > ${output_namestem}.tar.xz
 
