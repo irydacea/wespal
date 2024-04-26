@@ -47,6 +47,7 @@ Version 0.5.0
 
 ### Other changes
 
+* Windows and macOS versions built against Qt 6.7.0.
 * Changed keys for the main window size and preview background settings. Note that this will cause these settings from version 0.4.0 and earlier to be forgotten.
 * Made the code/WML snippet dialog a bit less cramped.
 * Added CMake `ENABLE_BUILTIN_IMAGE_PLUGINS` option to enable building the built-in KImageFormats plugins and their QuaZip dependency. Users of platforms where KDE Frameworks 6 is readily available/already installed are discouraged from using this, so it's off by default.
