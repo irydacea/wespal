@@ -10,7 +10,7 @@ version="$(sed -En 's/^[[:space:]]*project[[:space:]]*\([[:space:]]*wespal[[:spa
 
 bundle=wespal.app
 image=wespal.dmg
-image_final=Wespal-$version.dmg
+image_final=Wespal-$version-macos-universal.dmg
 
 qtdir="$HOME/Local/Qt/6.7.0"
 qtcmakedir="$HOME/Local/Qt/Tools/CMake"

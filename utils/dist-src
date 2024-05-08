@@ -12,7 +12,7 @@ die() { echo "`basename $0`: $*" 1>&2; exit 1; }
 
 distdir=$HOME/Projects/dist/wespal
 prefix=wespal-$1/
-output_namestem=$distdir/wespal-$1
+output_namestem=$distdir/wespal-$1-src
 
 submodule=src/3rdparty/quazip/
 

@@ -12,7 +12,7 @@ if .%version%==. goto badversion
 
 set appdir=Wespal-%version%
 set appexe=wespal.exe
-set archive=Wespal-%version%.zip
+set archive=Wespal-%version%-windows-x64.zip
 
 set devenvcmd=
 if .%devenv%==.vs     goto vs
