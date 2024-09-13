@@ -6,6 +6,8 @@ Version 0.5.1
 
 ### New features
 
+* Reworked the functionality to deselect all color ranges so instead it deselects all items other than the active color range, as well as ensures the active color range is selected if it isn't already.
+
 ### Bug fixes
 
 * Fixed QuaZip-related build errors with Qt 6.7.2 and later when using `ENABLE_BUILTIN_IMAGE_PLUGINS`.

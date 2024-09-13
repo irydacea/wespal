@@ -829,12 +829,12 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="cmdRcSelectNone">
+                 <widget class="QPushButton" name="cmdRcSelectSingle">
                   <property name="whatsThis">
                    <string>Unmarks all color ranges for saving to disk.</string>
                   </property>
                   <property name="text">
-                   <string>&amp;None</string>
+                   <string>Si&amp;ngle</string>
                   </property>
                  </widget>
                 </item>
@@ -1606,7 +1606,7 @@
   <tabstop>cbxKeyPal</tabstop>
   <tabstop>listRanges</tabstop>
   <tabstop>cmdRcSelectAll</tabstop>
-  <tabstop>cmdRcSelectNone</tabstop>
+  <tabstop>cmdRcSelectSingle</tabstop>
   <tabstop>cbxNewPal</tabstop>
   <tabstop>leBlendColor</tabstop>
   <tabstop>tbBlendColor</tabstop>

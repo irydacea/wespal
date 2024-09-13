@@ -260,22 +260,22 @@ MainWindow::MainWindow(QWidget* parent)
 	//
 
 	auto selectAllIcon = QIcon::fromTheme("edit-select-all");
-	auto selectNoneIcon = QIcon::fromTheme("edit-select-none");
+	auto selectSingleIcon = QIcon::fromTheme("edit-select-none");
 
-	if (!selectAllIcon.isNull() && !selectNoneIcon.isNull()) {
+	if (!selectAllIcon.isNull() && !selectSingleIcon.isNull()) {
 		ui->cmdRcSelectAll->setIcon(selectAllIcon);
-		ui->cmdRcSelectNone->setIcon(selectNoneIcon);
+		ui->cmdRcSelectSingle->setIcon(selectSingleIcon);
 
 		ui->cmdRcSelectAll->setToolTip(tr("All"));
-		ui->cmdRcSelectNone->setToolTip(tr("None"));
+		ui->cmdRcSelectSingle->setToolTip(tr("Single"));
 
 		ui->cmdRcSelectAll->setText({});
-		ui->cmdRcSelectNone->setText({});
+		ui->cmdRcSelectSingle->setText({});
 	}
 
 	connect(ui->cmdRcSelectAll, &QAbstractButton::clicked, this,
 			[this]() { onRcSelectButtonClicked(true); });
-	connect(ui->cmdRcSelectNone, &QAbstractButton::clicked, this,
+	connect(ui->cmdRcSelectSingle, &QAbstractButton::clicked, this,
 			[this]() { onRcSelectButtonClicked(false); });
 
 	//
@@ -1885,7 +1885,7 @@ void MainWindow::onColorShiftValueChanged(MainWindow::ColorShiftChannel ch, int 
 void MainWindow::onRcSelectButtonClicked(bool check)
 {
 	for (int i = 0; i < ui->listRanges->count(); ++i) {
-		ui->listRanges->item(i)->setCheckState(check ? Qt::Checked : Qt::Unchecked);
+		ui->listRanges->item(i)->setCheckState(check || ui->listRanges->item(i)->isSelected() ? Qt::Checked : Qt::Unchecked);
 	}
 }
 
