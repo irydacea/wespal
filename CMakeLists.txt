@@ -37,8 +37,14 @@ set(wespal_builtin_image_plugins "")
 # Dependency/Qt and compiler setup
 #
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Gui Widgets OPTIONAL_COMPONENTS Test)
+
+if(ENABLE_BUILTIN_IMAGE_PLUGINS)
+	find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core Core5Compat)
+	find_package(Qt6 REQUIRED COMPONENTS Gui Widgets Core5Compat OPTIONAL_COMPONENTS Test)
+else()
+	find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core)
+	find_package(Qt6 REQUIRED COMPONENTS Gui Widgets OPTIONAL_COMPONENTS Test)
+endif()
 
 qt_standard_project_setup()
 

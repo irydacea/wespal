@@ -8,6 +8,8 @@ Version 0.5.1
 
 ### Bug fixes
 
+* Fixed QuaZip-related build errors with Qt 6.7.2 and later when using `ENABLE_BUILTIN_IMAGE_PLUGINS`.
+
 ### Other changes
 
 
