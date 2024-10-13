@@ -36,6 +36,7 @@ ui_*
 #
 
 build/
+qt-build-*/
 dist/
 *.o
 *.obj
