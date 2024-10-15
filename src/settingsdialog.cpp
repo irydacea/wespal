@@ -127,6 +127,15 @@ void SettingsDialog::onDialogAccepted()
 
 	qreal defaultZoom = ui->defaultZoomList->currentData().toReal();
 
+#ifdef WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME
+	if (ui->appearanceDefaultRadio->isChecked())
+		config.setAppColorScheme(MosConfig::AppColorSchemeOSDefault);
+	else if (ui->appearanceLightRadio->isChecked())
+		config.setAppColorScheme(MosConfig::AppColorSchemeOSLight);
+	else if (ui->appearanceDarkRadio->isChecked())
+		config.setAppColorScheme(MosConfig::AppColorSchemeOSDark);
+#endif
+
 	config.setRememberMainWindowSize(ui->rememberWindowSizeCheckbox->isChecked());
 	config.setRememberImageViewMode(ui->rememberImageViewModeCheckbox->isChecked());
 	config.setDefaultZoom(defaultZoom);
@@ -296,6 +305,22 @@ void SettingsDialog::initGeneralPage()
 
 	ui->rememberWindowSizeCheckbox->setChecked(config.rememberMainWindowSize());
 	ui->rememberImageViewModeCheckbox->setChecked(config.rememberImageViewMode());
+
+#ifdef WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME
+	switch (config.appColorScheme()) {
+		case MosConfig::AppColorSchemeOSDark:
+			ui->appearanceDarkRadio->setChecked(true);
+			break;
+		case MosConfig::AppColorSchemeOSLight:
+			ui->appearanceLightRadio->setChecked(true);
+			break;
+		default:
+			ui->appearanceDefaultRadio->setChecked(true);
+			break;
+	}
+#else
+	ui->appearanceGroup->setVisible(false);
+#endif
 
 	auto defaultZoom = config.defaultZoom();
 
