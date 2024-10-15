@@ -25,6 +25,18 @@
 
 #include <QSize>
 
+// We currently do not support setting the app color scheme on platforms other
+// than macOS due to lack of support on other platforms. In particular, on
+// Windows, app color scheme hint support requires using the icky Windows 11
+// style engine, which we INTENTIONALLY do not use.
+//
+// TODO: Potentially work around these limitations by using Fusion whenever
+// the color scheme hint is unsupported and the app color scheme is not set to
+// the OS default, then set our own color theme.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0) && defined(Q_OS_MACOS)
+#	define WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME
+#endif
+
 namespace MosConfig {
 
 Q_NAMESPACE
@@ -39,6 +51,15 @@ enum ImageViewMode
 };
 
 Q_ENUM_NS(ImageViewMode)
+
+enum AppColorScheme
+{
+	AppColorSchemeOSDefault,
+	AppColorSchemeOSDark = -1,
+	AppColorSchemeOSLight = -2,
+};
+
+Q_ENUM_NS(AppColorScheme)
 
 class Manager
 {
@@ -202,6 +223,19 @@ public:
 	void setImageViewMode(ImageViewMode imageViewMode);
 
 	/**
+	 * Returns which OS color scheme should be used for the UI.
+	 */
+	AppColorScheme appColorScheme() const
+	{
+		return appColorScheme_;
+	}
+
+	/**
+	 * Sets the OS color scheme that should be used for the UI.
+	 */
+	void setAppColorScheme(AppColorScheme scheme);
+
+	/**
 	 * Returns whether PNG writer functions should include the Software comment.
 	 */
 	bool pngVanityPlate() const
@@ -220,6 +254,14 @@ public:
 private:
 	Manager();
 
+	/**
+	 * Applies changes to the UI color scheme.
+	 *
+	 * This function does nothing if changing the UI color scheme is
+	 * unsupported by the target platform.
+	 */
+	void applyAppColorScheme();
+
 	MruList imageFilesMru_;
 	QMap<QString, ColorRange> customColorRanges_;
 	QMap<QString, ColorList> customPalettes_;
@@ -229,6 +271,7 @@ private:
 	QString previewBackgroundColor_;
 	bool rememberImageViewMode_;
 	ImageViewMode imageViewMode_;
+	AppColorScheme appColorScheme_;
 	bool pngVanityPlate_;
 };
 

@@ -20,9 +20,11 @@
 
 #include "appconfig.hpp"
 
+#include <QApplication>
 #include <QBuffer>
 #include <QSettings>
 #include <QMessageBox>
+#include <QStyleHints>
 
 namespace MosConfig {
 
@@ -44,6 +46,7 @@ Manager::Manager()
 	, previewBackgroundColor_()
 	, rememberImageViewMode_()
 	, imageViewMode_()
+	, appColorScheme_()
 	, pngVanityPlate_()
 {
 	QSettings qs;
@@ -63,6 +66,10 @@ Manager::Manager()
 	rememberImageViewMode_ = qs.value("preview/rememberMode", true).toBool();
 
 	imageViewMode_ = qs.value("preview/mode", ImageViewVSplit).value<ImageViewMode>();
+
+	appColorScheme_ = qs.value("preview/colorScheme", AppColorSchemeOSDefault).value<AppColorScheme>();
+
+	applyAppColorScheme();
 
 	//
 	// Backend configuration
@@ -195,6 +202,33 @@ void Manager::setImageViewMode(ImageViewMode imageViewMode)
 	imageViewMode_ = imageViewMode;
 
 	qs.setValue("preview/mode", imageViewMode);
+}
+
+void Manager::setAppColorScheme(AppColorScheme scheme)
+{
+	QSettings qs;
+
+	appColorScheme_ = scheme;
+
+	qs.setValue("preview/colorScheme", scheme);
+
+	applyAppColorScheme();
+}
+
+void Manager::applyAppColorScheme()
+{
+#ifdef WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME
+	switch (appColorScheme_) {
+		case AppColorSchemeOSLight:
+			QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Light);
+			break;
+		case AppColorSchemeOSDark:
+			QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Dark);
+			break;
+		default:
+			QGuiApplication::styleHints()->unsetColorScheme();
+	}
+#endif
 }
 
 void Manager::setPngVanityPlate(bool enable)
