@@ -54,7 +54,7 @@ For macOS users, after double-clicking the downloaded `.dmg` file, you can drag 
 >
 > This software needs to be updated. Contact the developer for more information.
 
-To add an exception for the app, you need to use Finder to browse to the folder where Wespal is installed, and attempt to open it **twice** using right-click + Open. The second time you do this, there will be an Open button underneath the warning, which you can then click on to allow Wespal to launch.
+To add an exception for the app, you need to open **System Settings**, select **Privacy & Security**, scroll down to **Security**, then click on **Open Anyway** next to the entry for Wespal.
 
 
 Usage
