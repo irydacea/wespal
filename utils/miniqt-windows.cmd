@@ -8,14 +8,16 @@ rem
 
 setlocal
 
-set qtsrcdir=C:\Qt\6.8.0\Src
+set qtversion=6.8.2
+
+set qtsrcdir=C:\Qt\%qtversion%\Src
 set mingwpath=C:\Qt\Tools\mingw1310_64\bin
 
 set cmakepath=C:\Qt\Tools\CMake_64\bin
 set ninjapath=C:\Qt\Tools\Ninja
 
-set distdir=..\dist\windows-qt-6.8.0-static
-set builddir=.\qt-build-windows-6.8.0-static
+set distdir=..\dist\windows-qt-%qtversion%-static
+set builddir=.\qt-build-windows-%qtversion%-static
 
 rem
 rem Set up development environment

@@ -10,6 +10,8 @@ set version=%2
 
 if .%version%==. goto badversion
 
+set qtversion=6.8.2
+
 set appdir=Wespal-%version%
 set appexe=wespal.exe
 set archive=Wespal-%version%-windows-x64.zip
@@ -22,17 +24,17 @@ goto baddevenv
 
 :vs
 rem Visual Studio 2022 host
-set qtprefix=C:\Qt\6.7.0\msvc2019_64
+set qtprefix=C:\Qt\%qtversion%\msvc2019_64
 set devenvcmd="C:\Program Files\Microsoft Visual Studio\2022\Community"\VC\Auxiliary\Build\vcvars64.bat
 goto common
 
 :static
 :mingw
 rem Mingw host
-set qtprefix=C:\Qt\6.7.0\mingw_64
+set qtprefix=C:\Qt\%qtversion%\mingw_64
 rem Static-linked version
-if .%devenv%==.static set qtprefix=..\dist\windows-qt-6.7.0-static
-set PATH=C:\Qt\Tools\mingw1120_64\bin;%PATH%
+if .%devenv%==.static set qtprefix=..\dist\windows-qt-%qtversion%-static
+set PATH=C:\Qt\Tools\mingw1310_64\bin;%PATH%
 goto common
 
 :common
