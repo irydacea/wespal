@@ -1,7 +1,7 @@
 /*
  * Wespal (codename Morning Star) - Wesnoth assets recoloring tool
  *
- * Copyright (C) 2010 - 2024 by Iris Morelle <iris@irydacea.me>
+ * Copyright (C) 2010 - 2025 by Iris Morelle <iris@irydacea.me>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,7 +115,7 @@ void about(QWidget* parent)
 		tr("<h3>Wespal %1</h3>").arg(MOS_VERSION) %
 		"<p>" %
 		tr(
-			"Copyright &copy; 2008 &#8211; 2024 by "
+			"Copyright &copy; 2008 &#8211; 2025 by "
 			"<a href='%1'>Iris Morelle</a>").arg(ABOUT_AUTHOR_URL) %
 		"</p><p>" %
 		tr("Built with Qt %1").arg(QT_VERSION_STR) %

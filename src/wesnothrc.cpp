@@ -2,7 +2,7 @@
  * Wespal (codename Morning Star) - Wesnoth assets recoloring tool
  *
  * Copyright (C) 2003 - 2024 by The Battle for Wesnoth Project <www.wesnoth.org>
- * Copyright (C) 2010 - 2024 by Iris Morelle <iris@irydacea.me>
+ * Copyright (C) 2010 - 2025 by Iris Morelle <iris@irydacea.me>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
