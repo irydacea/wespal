@@ -15,6 +15,8 @@ Version 0.5.1
 
 ### Other changes
 
+* Updated bundled KImageFormats plugins to version from KDE Frameworks 6.10.
+
 
 Version 0.5.0
 -------------

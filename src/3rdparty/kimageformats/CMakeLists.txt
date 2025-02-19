@@ -47,6 +47,8 @@ kif_add_static_plugin(kimg_psd CLASS_NAME PSDPlugin SOURCES
 	fastmath_p.h
 	psd.cpp
 	psd_p.h
+	scanlineconverter.cpp
+	scanlineconverter_p.h
 	util_p.h
 )
 
