@@ -61,7 +61,7 @@ jobs:
         true
 
     - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       # NOTE: We intentionally stick to our MINIMUM required version here
       with:
         version: 6.4.3
