@@ -8,7 +8,7 @@ rem
 
 setlocal
 
-set qtversion=6.8.2
+set qtversion=6.9.3
 
 set qtsrcdir=C:\Qt\%qtversion%\Src
 set mingwpath=C:\Qt\Tools\mingw1310_64\bin
