@@ -4,6 +4,6 @@
     "zlib"
   ],
   "name": "wespal",
-  "version-string": "0.5.1",
+  "version-string": "0.5.2",
   "builtin-baseline": "8150939b69720adc475461978e07c2d2bf5fb76e"
 }
