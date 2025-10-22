@@ -11,6 +11,7 @@ Version 0.5.1
 
 ### Bug fixes
 
+* The image view no longer scrolls back to the center of the image when zooming in/out, selecting a different color range/palette/transform type, or closing Preferences (#14).
 * Fixed QuaZip-related build errors with Qt 6.7.2 and later when using `ENABLE_BUILTIN_IMAGE_PLUGINS`.
 
 ### Other changes

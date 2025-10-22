@@ -949,7 +949,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 		updateWindowTitle(true, {}, ImageOriginDrop);
 	}
 
-	refreshPreviews();
+	refreshPreviews(false, false);
 	enableWorkArea(true);
 }
 
@@ -1072,7 +1072,7 @@ void MainWindow::openFile(const QString& fileName)
 	MosCurrentConfig().addRecentFile(imagePath_, originalImage_);
 	updateRecentFilesMenu();
 	updateWindowTitle(true, imagePath_);
-	refreshPreviews();
+	refreshPreviews(false, false);
 
 	enableWorkArea(true);
 }
@@ -1091,10 +1091,27 @@ void MainWindow::doReloadFile()
 	refreshPreviews();
 }
 
-void MainWindow::refreshPreviews(bool skipRerender)
+void MainWindow::refreshPreviews(bool skipRerender, bool keepPos)
 {
 	if (!hasImage() || signalsBlocked())
 		return;
+
+	QPointF previewPos{50.0, 50.0};
+
+	if (keepPos) {
+		switch (viewMode_)
+		{
+			case MosConfig::ImageViewSwipe:
+			case MosConfig::ImageViewOnionSkin:
+				previewPos = currentScrollPercent(ui->previewCompositeContainer);
+				break;
+			default:
+				// In reality we only need one container's position, as the other
+				// one will be automatically adjusted in tandem with whichever we
+				// choose to modify next
+				previewPos = currentScrollPercent(ui->previewOriginalContainer);
+		}
+	}
 
 	if (!skipRerender) {
 		switch (rcMode_)
@@ -1134,7 +1151,7 @@ void MainWindow::refreshPreviews(bool skipRerender)
 		case MosConfig::ImageViewSwipe:
 		case MosConfig::ImageViewOnionSkin:
 			ui->previewComposite->setImages(originalImage_, transformedImage_);
-			resetPreviewLayout(ui->previewCompositeContainer, ui->previewComposite);
+			resetPreviewLayout(ui->previewCompositeContainer, ui->previewComposite, previewPos);
 
 			ui->previewOriginal->clear();
 			ui->previewRc->clear();
@@ -1145,13 +1162,37 @@ void MainWindow::refreshPreviews(bool skipRerender)
 
 			ui->previewOriginal->setImage(originalImage_);
 			ui->previewRc->setImage(transformedImage_);
-			resetPreviewLayout(ui->previewOriginalContainer, ui->previewOriginal);
-			resetPreviewLayout(ui->previewRcContainer, ui->previewRc);
+			resetPreviewLayout(ui->previewOriginalContainer, ui->previewOriginal, previewPos);
+			resetPreviewLayout(ui->previewRcContainer, ui->previewRc, previewPos);
 	}
 }
 
+QPointF MainWindow::currentScrollPercent(QAbstractScrollArea* scrollArea) const
+{
+	QPointF res{50.0, 50.0};
+
+	if (!scrollArea)
+		return res;
+
+	auto* hScroll = scrollArea->horizontalScrollBar();
+	auto* vScroll = scrollArea->verticalScrollBar();
+
+	// If the scrollbars are locked because the image hasn't been zoomed in
+	// enough to allow scrolling, pretend that they are set to the halfway
+	// point on the relevant axis. This prevents zooming in from scrolling the
+	// view to the top left corner of the image every time.
+
+	if (hScroll && hScroll->minimum() != hScroll->maximum())
+		res.setX(100.0 * hScroll->value() / hScroll->maximum());
+	if (vScroll && vScroll->minimum() != vScroll->maximum())
+		res.setY(100.0 * vScroll->value() / vScroll->maximum());
+
+	return res;
+}
+
 void MainWindow::resetPreviewLayout(QAbstractScrollArea* scrollArea,
-									QWidget* previewWidget)
+									QWidget* previewWidget,
+									QPointF scrollPercent)
 {
 	if (!scrollArea || !previewWidget)
 		return;
@@ -1164,8 +1205,11 @@ void MainWindow::resetPreviewLayout(QAbstractScrollArea* scrollArea,
 	auto* hScroll = scrollArea->horizontalScrollBar();
 	auto* vScroll = scrollArea->verticalScrollBar();
 
-	hScroll->setValue(hScroll->maximum() / 2);
-	vScroll->setValue(vScroll->maximum() / 2);
+	auto hPerc = qBound(0.0, scrollPercent.x(), 100.0);
+	auto vPerc = qBound(0.0, scrollPercent.y(), 100.0);
+
+	hScroll->setValue(hScroll->maximum() * hPerc / 100.0);
+	vScroll->setValue(vScroll->maximum() * vPerc / 100.0);
 }
 
 void MainWindow::doSaveFile()
@@ -1281,7 +1325,7 @@ void MainWindow::setViewMode(MainWindow::ViewMode newViewMode)
 	ui->cbxViewMode->setCurrentIndex(viewMode_);
 
 	// Update preview widgets if applicable
-	refreshPreviews(true);
+	refreshPreviews(true, false);
 }
 
 void MainWindow::setRcMode(MainWindow::RcMode newRcMode)
@@ -1923,7 +1967,7 @@ void MainWindow::on_actionPaste_triggered()
 	imagePath_ = tr("Clipboard image") % ".png";
 	updateWindowTitle(true, {}, ImageOriginClipboard);
 
-	refreshPreviews();
+	refreshPreviews(false, false);
 	enableWorkArea(true);
 }
 

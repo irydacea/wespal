@@ -191,7 +191,7 @@ private:
 	QStringList doSaveColorBlend(const QString& dirPath);
 	QStringList doSaveColorShift(const QString& dirPath);
 
-	void refreshPreviews(bool skipRerender = false);
+	void refreshPreviews(bool skipRerender = false, bool keepPos = true);
 
 	QString currentPaletteName(bool paletteSwitchMode = false) const;
 	ColorList currentPalette(bool paletteSwitchMode = false) const;
@@ -200,8 +200,11 @@ private:
 
 	void setPreviewBackgroundColor(const QString& colorName);
 
+	QPointF currentScrollPercent(QAbstractScrollArea* scrollArea) const;
+
 	void resetPreviewLayout(QAbstractScrollArea* scrollArea,
-							QWidget* previewWidget);
+							QWidget* previewWidget,
+							QPointF scrollPercent);
 
 	void doCustomPreviewBgSelect();
 	void updateCustomPreviewBgIcon();
