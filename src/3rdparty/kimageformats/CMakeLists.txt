@@ -45,6 +45,9 @@ kif_add_static_plugin(kimg_xcf CLASS_NAME XCFPlugin SOURCES
 
 kif_add_static_plugin(kimg_psd CLASS_NAME PSDPlugin SOURCES
 	fastmath_p.h
+	microexif.cpp
+	microexif_p.h
+	packbits_p.h
 	psd.cpp
 	psd_p.h
 	scanlineconverter.cpp

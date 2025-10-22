@@ -10,7 +10,6 @@
 #include "xcf_p.h"
 
 #include <QColorSpace>
-#include <QDebug>
 #include <QIODevice>
 #include <QImage>
 #include <QImageReader>
@@ -26,12 +25,16 @@
 #define USE_FLOAT_IMAGES // default uncommented
 
 // Let's set a "reasonable" maximum size
-#define MAX_IMAGE_WIDTH 300000
-#define MAX_IMAGE_HEIGHT 300000
+#ifndef XCF_MAX_IMAGE_WIDTH
+#define XCF_MAX_IMAGE_WIDTH KIF_LARGE_IMAGE_PIXEL_LIMIT
+#endif
+#ifndef XCF_MAX_IMAGE_HEIGHT
+#define XCF_MAX_IMAGE_HEIGHT XCF_MAX_IMAGE_WIDTH
+#endif
 #else
 // While it is possible to have images larger than 32767 pixels, QPainter seems unable to go beyond this threshold using Qt 5.
-#define MAX_IMAGE_WIDTH 32767
-#define MAX_IMAGE_HEIGHT 32767
+#define XCF_MAX_IMAGE_WIDTH 32767
+#define XCF_MAX_IMAGE_HEIGHT 32767
 #endif
 
 #ifdef USE_FLOAT_IMAGES
@@ -50,8 +53,6 @@ Q_LOGGING_CATEGORY(XCFPLUGIN, "kf.imageformats.plugins.xcf", QtWarningMsg)
 #define DISABLE_IMAGE_PROFILE // default uncommented (comment to use the conversion as intended by Martin)
 #define DISABLE_TILE_PROFILE_CONV // default uncommented (comment to use the conversion as intended by Martin)
 #define DISABLE_IMAGE_PROFILE_CONV // default uncommented (comment to use the conversion as intended by Martin)
-
-const float INCHESPERMETER = (100.0f / 2.54f);
 
 namespace
 {
@@ -844,8 +845,8 @@ bool XCFImageFormat::readXCFHeader(QDataStream &xcf_io, XCFImage::Header *header
         return false;
     }
 
-    if (header->width > MAX_IMAGE_WIDTH || header->height > MAX_IMAGE_HEIGHT) {
-        qCWarning(XCFPLUGIN) << "The maximum image size is limited to" << MAX_IMAGE_WIDTH << "x" << MAX_IMAGE_HEIGHT << "px";
+    if (header->width > XCF_MAX_IMAGE_WIDTH || header->height > XCF_MAX_IMAGE_HEIGHT) {
+        qCWarning(XCFPLUGIN) << "The maximum image size is limited to" << XCF_MAX_IMAGE_WIDTH << "x" << XCF_MAX_IMAGE_HEIGHT << "px";
         return false;
     }
 
@@ -900,7 +901,9 @@ bool XCFImageFormat::readXCF(QIODevice *device, QImage *outImage)
     while (!layer_offsets.isEmpty()) {
         qint64 layer_offset = layer_offsets.pop();
 
-        xcf_io.device()->seek(layer_offset);
+        if (!xcf_io.device()->seek(layer_offset)) {
+            return false;
+        }
 
         if (!loadLayer(xcf_io, xcf_image)) {
             return false;
@@ -960,11 +963,7 @@ bool XCFImageFormat::loadImageProperties(QDataStream &xcf_io, XCFImage &xcf_imag
         case PROP_PARASITES:
             while (!property.atEnd()) {
                 char *tag;
-#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
-                quint32 size;
-#else
                 qint64 size;
-#endif
 
                 property.readBytes(tag, size);
 
@@ -1168,7 +1167,9 @@ bool XCFImageFormat::loadLayer(QDataStream &xcf_io, XCFImage &xcf_image)
     if (!composeTiles(xcf_image)) {
         return false;
     }
-    xcf_io.device()->seek(layer.hierarchy_offset);
+    if (!xcf_io.device()->seek(layer.hierarchy_offset)) {
+        return false;
+    }
 
     // As tiles are loaded, they are copied into the layers tiles by
     // this routine. (loadMask(), below, uses a slightly different
@@ -1186,7 +1187,9 @@ bool XCFImageFormat::loadLayer(QDataStream &xcf_io, XCFImage &xcf_image)
             layer.apply_mask = 1;
         }
 
-        xcf_io.device()->seek(layer.mask_offset);
+        if (!xcf_io.device()->seek(layer.mask_offset)) {
+            return false;
+        }
 
         if (!loadMask(xcf_io, layer, xcf_image.header.precision)) {
             return false;
@@ -1366,8 +1369,8 @@ bool XCFImageFormat::composeTiles(XCFImage &xcf_image)
         qCWarning(XCFPLUGIN) << "On 32-bits programs the maximum layer size is limited to" << 16384 << "x" << 16384 << "px";
         return false;
     }
-    if (layer.width > MAX_IMAGE_WIDTH || layer.height > MAX_IMAGE_HEIGHT) {
-        qCWarning(XCFPLUGIN) << "The maximum layer size is limited to" << MAX_IMAGE_WIDTH << "x" << MAX_IMAGE_HEIGHT << "px";
+    if (layer.width > XCF_MAX_IMAGE_WIDTH || layer.height > XCF_MAX_IMAGE_HEIGHT) {
+        qCWarning(XCFPLUGIN) << "The maximum layer size is limited to" << XCF_MAX_IMAGE_WIDTH << "x" << XCF_MAX_IMAGE_HEIGHT << "px";
         return false;
     }
 
@@ -1798,6 +1801,9 @@ bool XCFImageFormat::assignImageBytes(Layer &layer, uint i, uint j, const GimpPr
                 dataPtr[x + 1] = qFromBigEndian(src[x + 1]);
                 dataPtr[x + 2] = qFromBigEndian(src[x + 2]);
                 dataPtr[x + 3] = qfloat16(1);
+                if (dataPtr[x + 0].isNaN() || dataPtr[x + 1].isNaN() || dataPtr[x + 2].isNaN()) {
+                    return false;
+                }
             }
         }
         break;
@@ -1826,6 +1832,9 @@ bool XCFImageFormat::assignImageBytes(Layer &layer, uint i, uint j, const GimpPr
                 dataPtr[x + 1] = qFromBigEndian(src[x + 1]);
                 dataPtr[x + 2] = qFromBigEndian(src[x + 2]);
                 dataPtr[x + 3] = 1.f;
+                if (std::isnan(dataPtr[x + 0]) || std::isnan(dataPtr[x + 1]) || std::isnan(dataPtr[x + 2])) {
+                    return false;
+                }
             }
         }
         break;
@@ -1946,12 +1955,15 @@ bool XCFImageFormat::loadHierarchy(QDataStream &xcf_io, Layer &layer, const Gimp
 
     qint64 saved_pos = xcf_io.device()->pos();
 
-    xcf_io.device()->seek(offset);
+    if (!xcf_io.device()->seek(offset)) {
+        return false;
+    }
     if (!loadLevel(xcf_io, layer, bpp, precision)) {
         return false;
     }
-
-    xcf_io.device()->seek(saved_pos);
+    if (!xcf_io.device()->seek(saved_pos)) {
+        return false;
+    }
     return true;
 }
 
@@ -2054,7 +2066,9 @@ bool XCFImageFormat::loadLevel(QDataStream &xcf_io, Layer &layer, qint32 bpp, co
                 offset2 = offset + blockSize;
             }
 
-            xcf_io.device()->seek(offset);
+            if (!xcf_io.device()->seek(offset)) {
+                return false;
+            }
             qint64 bytesParsed = 0;
 
             switch (layer.compression) {
@@ -2161,7 +2175,9 @@ bool XCFImageFormat::loadLevel(QDataStream &xcf_io, Layer &layer, qint32 bpp, co
                 return false;
             }
 
-            xcf_io.device()->seek(saved_pos);
+            if (!xcf_io.device()->seek(saved_pos)) {
+                return false;
+            }
             offset = readOffsetPtr(xcf_io);
 
             if (offset < 0) {
@@ -2201,7 +2217,9 @@ bool XCFImageFormat::loadMask(QDataStream &xcf_io, Layer &layer, const GimpPreci
         return false;
     }
 
-    xcf_io.device()->seek(hierarchy_offset);
+    if (!xcf_io.device()->seek(hierarchy_offset)) {
+        return false;
+    }
     layer.assignBytes = assignMaskBytes;
 
     if (!loadHierarchy(xcf_io, layer, precision)) {
@@ -2707,17 +2725,13 @@ bool XCFImageFormat::initializeImage(XCFImage &xcf_image)
     }
 #endif
 
-    if (xcf_image.x_resolution > 0 && xcf_image.y_resolution > 0) {
-        const float dpmx = xcf_image.x_resolution * INCHESPERMETER;
-        if (dpmx > float(std::numeric_limits<int>::max())) {
-            return false;
-        }
-        const float dpmy = xcf_image.y_resolution * INCHESPERMETER;
-        if (dpmy > float(std::numeric_limits<int>::max())) {
-            return false;
-        }
-        image.setDotsPerMeterX((int)dpmx);
-        image.setDotsPerMeterY((int)dpmy);
+    const qint32 dpmx = dpi2ppm(xcf_image.x_resolution);
+    if (dpmx > 0) {
+        image.setDotsPerMeterX(dpmx);
+    }
+    const qint32 dpmy = dpi2ppm(xcf_image.y_resolution);
+    if (dpmy > 0) {
+        image.setDotsPerMeterY(dpmy);
     }
     return true;
 }
@@ -2795,8 +2809,7 @@ void XCFImageFormat::copyLayerToImage(XCFImage &xcf_image)
                 QPainter painter(&image);
                 painter.setOpacity(layer.opacity / 255.0);
                 painter.setCompositionMode(QPainter::CompositionMode_Source);
-                if (x + layer.x_offset < MAX_IMAGE_WIDTH &&
-                    y + layer.y_offset < MAX_IMAGE_HEIGHT) {
+                if (x + layer.x_offset < XCF_MAX_IMAGE_WIDTH && y + layer.y_offset < XCF_MAX_IMAGE_HEIGHT) {
                     painter.drawImage(x + layer.x_offset, y + layer.y_offset, layer.image_tiles[j][i]);
                 }
                 continue;
@@ -3197,9 +3210,8 @@ void XCFImageFormat::mergeLayerIntoImage(XCFImage &xcf_image)
                 for (uint i = 0; i < layer.ncols; i++) {
                     qint32 x = qint32(i * TILE_WIDTH);
 
-                    QImage &tile = layer.image_tiles[j][i];
-                    if (x + layer.x_offset < MAX_IMAGE_WIDTH &&
-                        y + layer.y_offset < MAX_IMAGE_HEIGHT) {
+                    const QImage &tile = layer.image_tiles[j][i];
+                    if (x + layer.x_offset < XCF_MAX_IMAGE_WIDTH && y + layer.y_offset < XCF_MAX_IMAGE_HEIGHT) {
                         painter.drawImage(x + layer.x_offset, y + layer.y_offset, tile);
                     }
                 }
@@ -3250,8 +3262,7 @@ void XCFImageFormat::mergeLayerIntoImage(XCFImage &xcf_image)
                 QPainter painter(&image);
                 painter.setOpacity(layer.opacity / 255.0);
                 painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-                if (x + layer.x_offset < MAX_IMAGE_WIDTH &&
-                    y + layer.y_offset < MAX_IMAGE_HEIGHT) {
+                if (x + layer.x_offset < XCF_MAX_IMAGE_WIDTH && y + layer.y_offset < XCF_MAX_IMAGE_HEIGHT) {
                     painter.drawImage(x + layer.x_offset, y + layer.y_offset, layer.image_tiles[j][i]);
                 }
                 continue;
@@ -4236,7 +4247,9 @@ bool XCFHandler::canRead(QIODevice *device)
     bool failed = !XCFImageFormat::readXCFHeader(ds, &header);
     ds.setDevice(nullptr);
 
-    device->seek(oldPos);
+    if (!device->seek(oldPos)) {
+        return false;
+    }
     if (failed) {
         return false;
     }
