@@ -3,7 +3,7 @@
 
     SPDX-FileCopyrightText: 2003 Ignacio Castaño <castano@ludicon.com>
     SPDX-FileCopyrightText: 2015 Alex Merry <alex.merry@kde.org>
-    SPDX-FileCopyrightText: 2022-2025 Mirco Miranda <mircomir@outlook.com>
+    SPDX-FileCopyrightText: 2022-2024 Mirco Miranda <mircomir@outlook.com>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -27,25 +27,17 @@
  */
 
 #include "fastmath_p.h"
-#include "microexif_p.h"
-#include "packbits_p.h"
 #include "psd_p.h"
 #include "scanlineconverter_p.h"
 #include "util_p.h"
 
-#include <QColorSpace>
 #include <QDataStream>
+#include <QDebug>
 #include <QImage>
-#include <QLoggingCategory>
+#include <QColorSpace>
 
 #include <cmath>
 #include <cstring>
-
-#ifdef QT_DEBUG
-Q_LOGGING_CATEGORY(LOG_PSDPLUGIN, "kf.imageformats.plugins.psd", QtDebugMsg)
-#else
-Q_LOGGING_CATEGORY(LOG_PSDPLUGIN, "kf.imageformats.plugins.psd", QtWarningMsg)
-#endif
 
 typedef quint32 uint;
 typedef quint16 ushort;
@@ -63,30 +55,12 @@ typedef quint8 uchar;
  */
 // #define PSD_FAST_LAB_CONVERSION
 
-/* Since Qt version 6.8, the 8-bit CMYK format is natively supported.
+/*
+ * Since Qt version 6.8, the 8-bit CMYK format is natively supported.
  * If you encounter problems with native CMYK support you can continue to force the plugin to convert
  * to RGB as in previous versions by defining PSD_NATIVE_CMYK_SUPPORT_DISABLED.
  */
 // #define PSD_NATIVE_CMYK_SUPPORT_DISABLED
-
-/* The detection of the nature of the extra channel (alpha or not) passes through the reading of
- * the PSD sections.
- * By default, any extra channel is assumed to be non-alpha. If enabled, for RGB images only,
- * any extra channel is assumed as alpha unless refuted by the data in the various sections.
- *
- * Note: this parameter is for debugging only and should not be enabled in releases.
- */
-// #define PSD_FORCE_RGBA
-
-/* *** PSD_MAX_IMAGE_WIDTH and PSD_MAX_IMAGE_HEIGHT ***
- * The maximum size in pixel allowed by the plugin.
- */
-#ifndef PSD_MAX_IMAGE_WIDTH
-#define PSD_MAX_IMAGE_WIDTH KIF_LARGE_IMAGE_PIXEL_LIMIT
-#endif
-#ifndef PSD_MAX_IMAGE_HEIGHT
-#define PSD_MAX_IMAGE_HEIGHT PSD_MAX_IMAGE_WIDTH
-#endif
 
 namespace // Private.
 {
@@ -121,10 +95,7 @@ enum ImageResourceId : quint16 {
     IRI_RESOLUTIONINFO = 0x03ED,
     IRI_ICCPROFILE = 0x040F,
     IRI_TRANSPARENCYINDEX = 0x0417,
-    IRI_ALPHAIDENTIFIERS = 0x041D,
     IRI_VERSIONINFO = 0x0421,
-    IRI_EXIFDATA1 = 0x0422,
-    IRI_EXIFDATA3 = 0x0423, // never seen
     IRI_XMPMETADATA = 0x0424
 };
 
@@ -349,7 +320,7 @@ static PSDImageResourceSection readImageResourceSection(QDataStream &s, bool *ok
         size -= sizeof(signature);
         // NOTE: MeSa signature is not documented but found in some old PSD take from Photoshop 7.0 CD.
         if (signature != S_8BIM && signature != S_MeSa) { // 8BIM and MeSa
-            qCDebug(LOG_PSDPLUGIN) << "Invalid Image Resource Block Signature!";
+            qDebug() << "Invalid Image Resource Block Signature!";
             *ok = false;
             break;
         }
@@ -379,7 +350,7 @@ static PSDImageResourceSection readImageResourceSection(QDataStream &s, bool *ok
         if (read > 0)
             size -= read;
         if (quint32(read) != dataSize) {
-            qCDebug(LOG_PSDPLUGIN) << "Image Resource Block Read Error!";
+            qDebug() << "Image Resource Block Read Error!";
             *ok = false;
             break;
         }
@@ -499,9 +470,9 @@ PSDColorModeDataSection readColorModeDataSection(QDataStream &s, bool *ok = null
         if (cms.duotone.data.size() != size)
             *ok = false;
     } else { // read the palette (768 bytes)
-        auto &&palette = cms.palette;
+        auto&& palette = cms.palette;
         QList<quint8> vect(size);
-        for (auto &&v : vect)
+        for (auto&& v : vect)
             s >> v;
         for (qsizetype i = 0, n = vect.size()/3; i < n; ++i)
             palette.append(qRgb(vect.at(i), vect.at(n+i), vect.at(n+n+i)));
@@ -517,7 +488,7 @@ PSDColorModeDataSection readColorModeDataSection(QDataStream &s, bool *ok = null
  * \param irs The image resource section.
  * \return True on success, otherwise false.
  */
-static bool setColorSpace(QImage &img, const PSDImageResourceSection &irs)
+static bool setColorSpace(QImage& img, const PSDImageResourceSection& irs)
 {
     if (!irs.contains(IRI_ICCPROFILE) || img.isNull())
         return false;
@@ -536,7 +507,7 @@ static bool setColorSpace(QImage &img, const PSDImageResourceSection &irs)
  * \param irs The image resource section.
  * \return True on success, otherwise false.
  */
-static bool setXmpData(QImage &img, const PSDImageResourceSection &irs)
+static bool setXmpData(QImage& img, const PSDImageResourceSection& irs)
 {
     if (!irs.contains(IRI_XMPMETADATA))
         return false;
@@ -552,27 +523,12 @@ static bool setXmpData(QImage &img, const PSDImageResourceSection &irs)
 }
 
 /*!
- * \brief setExifData
- * Adds EXIF metadata to QImage.
- * \param img The image.
- * \param exif The decoded EXIF data.
- * \return True on success, otherwise false.
- */
-static bool setExifData(QImage &img, const MicroExif &exif)
-{
-    if (exif.isEmpty())
-        return false;
-    exif.updateImageMetadata(img);
-    return true;
-}
-
-/*!
- * \brief HasMergedData
+ * \brief hasMergedData
  * Checks if merged image data are available.
  * \param irs The image resource section.
  * \return True on success or if the block does not exist, otherwise false.
  */
-static bool HasMergedData(const PSDImageResourceSection &irs)
+static bool hasMergedData(const PSDImageResourceSection& irs)
 {
     if (!irs.contains(IRI_VERSIONINFO))
         return true;
@@ -589,7 +545,7 @@ static bool HasMergedData(const PSDImageResourceSection &irs)
  * \param irs The image resource section.
  * \return True on success, otherwise false.
  */
-static bool setResolution(QImage &img, const PSDImageResourceSection &irs)
+static bool setResolution(QImage& img, const PSDImageResourceSection& irs)
 {
     if (!irs.contains(IRI_RESOLUTIONINFO))
         return false;
@@ -602,21 +558,17 @@ static bool setResolution(QImage &img, const PSDImageResourceSection &irs)
     s >> i32;                               // Horizontal resolution in pixels per inch.
     if (i32 <= 0)
         return false;
-    auto hres = dpi2ppm(fixedPointToDouble(i32));
+    auto hres = fixedPointToDouble(i32);
 
     s.skipRawData(4);                       // Display data (not used here)
 
     s >> i32;                               // Vertial resolution in pixels per inch.
     if (i32 <= 0)
         return false;
-    auto vres = dpi2ppm(fixedPointToDouble(i32));
+    auto vres = fixedPointToDouble(i32);
 
-    if (hres > 0) {
-        img.setDotsPerMeterX(hres);
-    }
-    if (vres > 0) {
-        img.setDotsPerMeterY(vres);
-    }
+    img.setDotsPerMeterX(hres * 1000 / 25.4);
+    img.setDotsPerMeterY(vres * 1000 / 25.4);
     return true;
 }
 
@@ -627,7 +579,7 @@ static bool setResolution(QImage &img, const PSDImageResourceSection &irs)
  * \param irs The image resource section.
  * \return True on success, otherwise false.
  */
-static bool setTransparencyIndex(QImage &img, const PSDImageResourceSection &irs)
+static bool setTransparencyIndex(QImage& img, const PSDImageResourceSection& irs)
 {
     if (!irs.contains(IRI_TRANSPARENCYINDEX))
         return false;
@@ -639,7 +591,7 @@ static bool setTransparencyIndex(QImage &img, const PSDImageResourceSection &irs
 
     auto palette = img.colorTable();
     if (idx < palette.size()) {
-        auto &&v = palette[idx];
+        auto&& v = palette[idx];
         v = QRgb(v & ~0xFF000000);
         img.setColorTable(palette);
         return true;
@@ -667,18 +619,18 @@ static QDataStream &operator>>(QDataStream &s, PSDHeader &header)
 static bool IsValid(const PSDHeader &header)
 {
     if (header.signature != 0x38425053) { // '8BPS'
-        // qCDebug(LOG_PSDPLUGIN) << "PSD header: invalid signature" << header.signature;
+        // qDebug() << "PSD header: invalid signature" << header.signature;
         return false;
     }
     if (header.version != 1 && header.version != 2) {
-        qCDebug(LOG_PSDPLUGIN) << "PSD header: invalid version" << header.version;
+        qDebug() << "PSD header: invalid version" << header.version;
         return false;
     }
     if (header.depth != 8 &&
         header.depth != 16 &&
         header.depth != 32 &&
         header.depth != 1) {
-        qCDebug(LOG_PSDPLUGIN) << "PSD header: invalid depth" << header.depth;
+        qDebug() << "PSD header: invalid depth" << header.depth;
         return false;
     }
     if (header.color_mode != CM_RGB &&
@@ -689,17 +641,17 @@ static bool IsValid(const PSDHeader &header)
         header.color_mode != CM_LABCOLOR &&
         header.color_mode != CM_MULTICHANNEL &&
         header.color_mode != CM_BITMAP) {
-        qCDebug(LOG_PSDPLUGIN) << "PSD header: invalid color mode" << header.color_mode;
+        qDebug() << "PSD header: invalid color mode" << header.color_mode;
         return false;
     }
     // Specs tells: "Supported range is 1 to 56" but when the alpha channel is present the limit is 57:
     // Photoshop does not make you add more (see also 53alphas.psd test case).
     if (header.channel_count < 1 || header.channel_count > 57) {
-        qCDebug(LOG_PSDPLUGIN) << "PSD header: invalid number of channels" << header.channel_count;
+        qDebug() << "PSD header: invalid number of channels" << header.channel_count;
         return false;
     }
-    if (header.width > std::min(300000, PSD_MAX_IMAGE_WIDTH) || header.height > std::min(300000, PSD_MAX_IMAGE_HEIGHT)) {
-        qCDebug(LOG_PSDPLUGIN) << "PSD header: invalid image size" << header.width << "x" << header.height;
+    if (header.width > 300000 || header.height > 300000) {
+        qDebug() << "PSD header: invalid image size" << header.width << "x" << header.height;
         return false;
     }
     return true;
@@ -731,6 +683,48 @@ static bool IsSupported(const PSDHeader &header)
         return false;
     }
     return true;
+}
+
+/*!
+ * \brief decompress
+ * Fast PackBits decompression.
+ * \param input The compressed input buffer.
+ * \param ilen The input buffer size.
+ * \param output The uncompressed target buffer.
+ * \param olen The target buffer size.
+ * \return The number of valid bytes in the target buffer.
+ */
+qint64 decompress(const char *input, qint64 ilen, char *output, qint64 olen)
+{
+    qint64  j = 0;
+    for (qint64 ip = 0, rr = 0, available = olen; j < olen && ip < ilen; available = olen - j) {
+        signed char n = static_cast<signed char>(input[ip++]);
+        if (n == -128)
+            continue;
+
+        if (n >= 0) {
+            rr = qint64(n) + 1;
+            if (available < rr) {
+                --ip;
+                break;
+            }
+
+            if (ip + rr > ilen)
+                return -1;
+            memcpy(output + j, input + ip, size_t(rr));
+            ip += rr;
+        } else if (ip < ilen) {
+            rr = qint64(1-n);
+            if (available < rr) {
+                --ip;
+                break;
+            }
+            memset(output + j, input[ip++], size_t(rr));
+        }
+
+        j += rr;
+    }
+    return j;
 }
 
 /*!
@@ -797,7 +791,7 @@ static QImage::Format imageFormat(const PSDHeader &header, bool alpha)
  * \param format The Qt image format.
  * \return The number of channels of the image format.
  */
-static qint32 imageChannels(const QImage::Format &format)
+static qint32 imageChannels(const QImage::Format& format)
 {
     qint32 c = 4;
     switch(format) {
@@ -983,7 +977,7 @@ inline void cmykToRgb(uchar *target, qint32 targetChannels, const char *source, 
     auto invmax = 1.0 / max; // speed improvements by ~10%
 
     if (sourceChannels < 2) {
-        qCDebug(LOG_PSDPLUGIN) << "cmykToRgb: image is not a valid MCH/CMYK!";
+        qDebug() << "cmykToRgb: image is not a valid MCH/CMYK!";
         return;
     }
 
@@ -1032,7 +1026,7 @@ inline void labToRgb(uchar *target, qint32 targetChannels, const char *source, q
     auto invmax = 1.0 / max;
 
     if (sourceChannels < 3) {
-        qCDebug(LOG_PSDPLUGIN) << "labToRgb: image is not a valid LAB!";
+        qDebug() << "labToRgb: image is not a valid LAB!";
         return;
     }
 
@@ -1070,7 +1064,7 @@ inline void labToRgb(uchar *target, qint32 targetChannels, const char *source, q
     }
 }
 
-bool readChannel(QByteArray &target, QDataStream &stream, quint32 compressedSize, quint16 compression)
+bool readChannel(QByteArray& target, QDataStream &stream, quint32 compressedSize, quint16 compression)
 {
     if (compression) {
         if (compressedSize > kMaxQVectorSize) {
@@ -1081,7 +1075,7 @@ bool readChannel(QByteArray &target, QDataStream &stream, quint32 compressedSize
         if (stream.readRawData(tmp.data(), tmp.size()) != tmp.size()) {
             return false;
         }
-        if (packbitsDecompress(tmp.data(), tmp.size(), target.data(), target.size()) < 0) {
+        if (decompress(tmp.data(), tmp.size(), target.data(), target.size()) < 0) {
             return false;
         }
     } else if (stream.readRawData(target.data(), target.size()) != target.size()) {
@@ -1091,174 +1085,39 @@ bool readChannel(QByteArray &target, QDataStream &stream, quint32 compressedSize
     return stream.status() == QDataStream::Ok;
 }
 
-} // Private
-
-class PSDHandlerPrivate
+// Load the PSD image.
+static bool LoadPSD(QDataStream &stream, const PSDHeader &header, QImage &img)
 {
-public:
-    PSDHandlerPrivate()
-    {
-    }
-    ~PSDHandlerPrivate()
-    {
-    }
+    // Checking for PSB
+    auto isPsb = header.version == 2;
+    bool ok = false;
 
-    bool isPsb() const
-    {
-        return m_header.version == 2;
+    // Color Mode Data section
+    auto cmds = readColorModeDataSection(stream, &ok);
+    if (!ok) {
+        qDebug() << "Error while skipping Color Mode Data section";
+        return false;
     }
 
-    bool isValid() const
-    {
-        return IsValid(m_header);
+    // Image Resources Section
+    auto irs = readImageResourceSection(stream, &ok);
+    if (!ok) {
+        qDebug() << "Error while reading Image Resources Section";
+        return false;
+    }
+    // Checking for merged image (Photoshop compatibility data)
+    if (!hasMergedData(irs)) {
+        qDebug() << "No merged data found";
+        return false;
     }
 
-    bool isSupported() const
-    {
-        return IsSupported(m_header);
+    // Layer and Mask section
+    auto lms = readLayerAndMaskSection(stream, isPsb, &ok);
+    if (!ok) {
+        qDebug() << "Error while skipping Layer and Mask section";
+        return false;
     }
 
-    bool hasAlpha() const
-    {
-        // Try to identify the nature of spots: note that this is just one of many ways to identify the presence
-        // of alpha channels: should work in most cases where colorspaces != RGB/Gray
-#ifdef PSD_FORCE_RGBA
-        auto alpha = m_header.color_mode == CM_RGB;
-#else
-        auto alpha = false;
-#endif
-        if (m_irs.contains(IRI_ALPHAIDENTIFIERS)) {
-            auto irb = m_irs.value(IRI_ALPHAIDENTIFIERS);
-            if (irb.data.size() >= 4) {
-                QDataStream s(irb.data);
-                s.setByteOrder(QDataStream::BigEndian);
-                qint32 v;
-                s >> v;
-                alpha = v == 0;
-            }
-        } else if (!m_lms.isNull()) {
-            alpha = m_lms.hasAlpha();
-        }
-        return alpha;
-    }
-
-    bool hasMergedData() const
-    {
-        return HasMergedData(m_irs);
-    }
-
-    QSize size() const
-    {
-        if (isValid())
-            return QSize(m_header.width, m_header.height);
-        return {};
-    }
-
-    QImage::Format format() const
-    {
-        return imageFormat(m_header, hasAlpha());
-    }
-
-    QImageIOHandler::Transformations transformation() const
-    {
-        return m_exif.transformation();
-    }
-
-    bool readInfo(QDataStream &stream)
-    {
-        auto ok = false;
-
-        // Header
-        stream >> m_header;
-
-        // Check image file format.
-        if (stream.atEnd() || !IsValid(m_header)) {
-            // qCDebug(LOG_PSDPLUGIN) << "This PSD file is not valid.";
-            return false;
-        }
-
-        // Check if it's a supported format.
-        if (!IsSupported(m_header)) {
-            // qCDebug(LOG_PSDPLUGIN) << "This PSD file is not supported.";
-            return false;
-        }
-
-        // Color Mode Data section
-        m_cmds = readColorModeDataSection(stream, &ok);
-        if (!ok) {
-            qCDebug(LOG_PSDPLUGIN) << "Error while skipping Color Mode Data section";
-            return false;
-        }
-
-        // Image Resources Section
-        m_irs = readImageResourceSection(stream, &ok);
-        if (!ok) {
-            qCDebug(LOG_PSDPLUGIN) << "Error while reading Image Resources Section";
-            return false;
-        }
-        // Checking for merged image (Photoshop compatibility data)
-        if (!hasMergedData()) {
-            qCDebug(LOG_PSDPLUGIN) << "No merged data found";
-            return false;
-        }
-
-        // Layer and Mask section
-        m_lms = readLayerAndMaskSection(stream, isPsb(), &ok);
-        if (!ok) {
-            qCDebug(LOG_PSDPLUGIN) << "Error while skipping Layer and Mask section";
-            return false;
-        }
-
-        // storing decoded EXIF
-        if (m_irs.contains(IRI_EXIFDATA1)) {
-            m_exif = MicroExif::fromByteArray(m_irs.value(IRI_EXIFDATA1).data);
-        }
-
-        return ok;
-    }
-
-    PSDHeader m_header;
-    PSDColorModeDataSection m_cmds;
-    PSDImageResourceSection m_irs;
-    PSDLayerAndMaskSection m_lms;
-
-    // cache to avoid decoding exif multiple times
-    MicroExif m_exif;
-};
-
-PSDHandler::PSDHandler()
-    : QImageIOHandler()
-    , d(new PSDHandlerPrivate)
-{
-}
-
-bool PSDHandler::canRead() const
-{
-    if (canRead(device())) {
-        setFormat("psd");
-        return true;
-    }
-    return false;
-}
-
-bool PSDHandler::read(QImage *image)
-{
-    QDataStream stream(device());
-    stream.setByteOrder(QDataStream::BigEndian);
-
-    if (!d->isValid()) {
-        if (!d->readInfo(stream))
-            return false;
-    }
-
-    auto &&header = d->m_header;
-    auto &&cmds = d->m_cmds;
-    auto &&irs = d->m_irs;
-    // auto &&lms = d->m_lms;
-    auto isPsb = d->isPsb();
-    auto alpha = d->hasAlpha();
-
-    QImage img;
     // Find out if the data is compressed.
     // Known values:
     //   0: no compression
@@ -1266,19 +1125,25 @@ bool PSDHandler::read(QImage *image)
     quint16 compression;
     stream >> compression;
     if (compression > 1) {
-        qCDebug(LOG_PSDPLUGIN) << "Unknown compression type";
+        qDebug() << "Unknown compression type";
         return false;
     }
 
-    const QImage::Format format = d->format();
+    // Try to identify the nature of spots: note that this is just one of many ways to identify the presence
+    // of alpha channels: should work in most cases where colorspaces != RGB/Gray
+    auto alpha = header.color_mode == CM_RGB;
+    if (!lms.isNull())
+        alpha = lms.hasAlpha();
+
+    const QImage::Format format = imageFormat(header, alpha);
     if (format == QImage::Format_Invalid) {
-        qCWarning(LOG_PSDPLUGIN) << "Unsupported image format. color_mode:" << header.color_mode << "depth:" << header.depth << "channel_count:" << header.channel_count;
+        qWarning() << "Unsupported image format. color_mode:" << header.color_mode << "depth:" << header.depth << "channel_count:" << header.channel_count;
         return false;
     }
 
-    img = imageAlloc(d->size(), format);
+    img = imageAlloc(header.width, header.height, format);
     if (img.isNull()) {
-        qCWarning(LOG_PSDPLUGIN) << "Failed to allocate image, invalid dimensions?" << QSize(header.width, header.height);
+        qWarning() << "Failed to allocate image, invalid dimensions?" << QSize(header.width, header.height);
         return false;
     }
     img.fill(qRgb(0, 0, 0));
@@ -1293,14 +1158,14 @@ bool PSDHandler::read(QImage *image)
     auto native_cmyk = img.format() == CMYK_FORMAT;
 
     if (header.height > kMaxQVectorSize / header.channel_count / sizeof(quint32)) {
-        qCWarning(LOG_PSDPLUGIN) << "LoadPSD() header height/channel_count too big" << header.height << header.channel_count;
+        qWarning() << "LoadPSD() header height/channel_count too big" << header.height << header.channel_count;
         return false;
     }
 
     QList<quint32> strides(header.height * header.channel_count, raw_count);
     // Read the compressed stride sizes
     if (compression) {
-        for (auto &&v : strides) {
+        for (auto&& v : strides) {
             if (isPsb) {
                 stream >> v;
                 continue;
@@ -1352,12 +1217,12 @@ bool PSDHandler::read(QImage *image)
             for (qint32 c = 0; c < header.channel_count; ++c) {
                 auto strideNumber = c * qsizetype(h) + y;
                 if (!device->seek(stridePositions.at(strideNumber))) {
-                    qCDebug(LOG_PSDPLUGIN) << "Error while seeking the stream of channel" << c << "line" << y;
+                    qDebug() << "Error while seeking the stream of channel" << c << "line" << y;
                     return false;
                 }
-                auto &&strideSize = strides.at(strideNumber);
+                auto&& strideSize = strides.at(strideNumber);
                 if (!readChannel(rawStride, stream, strideSize, compression)) {
-                    qCDebug(LOG_PSDPLUGIN) << "Error while reading the stream of channel" << c << "line" << y;
+                    qDebug() << "Error while reading the stream of channel" << c << "line" << y;
                     return false;
                 }
 
@@ -1438,7 +1303,7 @@ bool PSDHandler::read(QImage *image)
             for (qint32 y = 0, h = header.height; y < h; ++y) {
                 auto&& strideSize = strides.at(c * qsizetype(h) + y);
                 if (!readChannel(rawStride, stream, strideSize, compression)) {
-                    qCDebug(LOG_PSDPLUGIN) << "Error while reading the stream of channel" << c << "line" << y;
+                    qDebug() << "Error while reading the stream of channel" << c << "line" << y;
                     return false;
                 }
 
@@ -1471,7 +1336,7 @@ bool PSDHandler::read(QImage *image)
 
     // Resolution info
     if (!setResolution(img, irs)) {
-        // qCDebug(LOG_PSDPLUGIN) << "No resolution info found!";
+        // qDebug() << "No resolution info found!";
     }
 
     // ICC profile
@@ -1483,28 +1348,12 @@ bool PSDHandler::read(QImage *image)
         img.setColorSpace(QColorSpace(QColorSpace::SRgb));
 #endif
     } else if (!setColorSpace(img, irs)) {
-        // Float images are used by Photoshop as linear: if no color space
-        // is present, a linear one should be chosen.
-        if (header.color_mode == CM_RGB && header.depth == 32) {
-            img.setColorSpace(QColorSpace(QColorSpace::SRgbLinear));
-        }
-#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
-        if (header.color_mode == CM_GRAYSCALE && header.depth == 32) {
-            auto qs = QColorSpace(QPointF(0.3127, 0.3291), QColorSpace::TransferFunction::Linear);
-            qs.setDescription(QStringLiteral("Linear grayscale"));
-            img.setColorSpace(qs);
-        }
-#endif
+        // qDebug() << "No colorspace info set!";
     }
 
     // XMP data
     if (!setXmpData(img, irs)) {
-        // qCDebug(LOG_PSDPLUGIN) << "No XMP data found!";
-    }
-
-    // EXIF data
-    if (!setExifData(img, d->m_exif)) {
-        // qCDebug(LOG_PSDPLUGIN) << "No EXIF data found!";
+        // qDebug() << "No XMP data found!";
     }
 
     // Duotone images: color data contains the duotone specification (not documented).
@@ -1512,6 +1361,60 @@ bool PSDHandler::read(QImage *image)
     // and just preserve the contents of the duotone information when reading and writing the file.
     if (!cmds.duotone.data.isEmpty()) {
         img.setText(QStringLiteral("PSDDuotoneOptions"), QString::fromUtf8(cmds.duotone.data.toHex()));
+    }
+
+    return true;
+}
+
+} // Private
+
+class PSDHandlerPrivate
+{
+public:
+    PSDHandlerPrivate() {}
+    ~PSDHandlerPrivate() {}
+    PSDHeader m_header;
+};
+
+PSDHandler::PSDHandler()
+    : QImageIOHandler()
+    , d(new PSDHandlerPrivate)
+{
+}
+
+bool PSDHandler::canRead() const
+{
+    if (canRead(device())) {
+        setFormat("psd");
+        return true;
+    }
+    return false;
+}
+
+bool PSDHandler::read(QImage *image)
+{
+    QDataStream s(device());
+    s.setByteOrder(QDataStream::BigEndian);
+
+    auto&& header = d->m_header;
+    s >> header;
+
+    // Check image file format.
+    if (s.atEnd() || !IsValid(header)) {
+        // qDebug() << "This PSD file is not valid.";
+        return false;
+    }
+
+    // Check if it's a supported format.
+    if (!IsSupported(header)) {
+        // qDebug() << "This PSD file is not supported.";
+        return false;
+    }
+
+    QImage img;
+    if (!LoadPSD(s, header, img)) {
+        // qDebug() << "Error loading PSD file.";
+        return false;
     }
 
     *image = img;
@@ -1522,12 +1425,6 @@ bool PSDHandler::supportsOption(ImageOption option) const
 {
     if (option == QImageIOHandler::Size)
         return true;
-    if (option == QImageIOHandler::ImageFormat)
-        return true;
-    if (option == QImageIOHandler::ImageTransformation)
-        return true;
-    if (option == QImageIOHandler::Description)
-        return true;
     return false;
 }
 
@@ -1535,37 +1432,18 @@ QVariant PSDHandler::option(ImageOption option) const
 {
     QVariant v;
 
-    if (auto dev = device()) {
-        if (!d->isValid()) {
-            QDataStream s(dev);
-            s.setByteOrder(QDataStream::BigEndian);
-            d->readInfo(s);
-        }
-    }
-
     if (option == QImageIOHandler::Size) {
-        if (d->isValid()) {
-            v = QVariant::fromValue(d->size());
-        }
-    }
+        auto&& header = d->m_header;
+        if (IsValid(header)) {
+            v = QVariant::fromValue(QSize(header.width, header.height));
+        } else if (auto dev = device()) {
+            auto ba = dev->peek(sizeof(PSDHeader));
+            QDataStream s(ba);
+            s.setByteOrder(QDataStream::BigEndian);
 
-    if (option == QImageIOHandler::ImageFormat) {
-        if (d->isValid()) {
-            v = QVariant::fromValue(d->format());
-        }
-    }
-
-    if (option == QImageIOHandler::ImageTransformation) {
-        if (d->isValid()) {
-            v = QVariant::fromValue(int(d->transformation()));
-        }
-    }
-
-    if (option == QImageIOHandler::Description) {
-        if (d->isValid()) {
-            auto descr = d->m_exif.description();
-            if (!descr.isEmpty())
-                v = QVariant::fromValue(descr);
+            s >> header;
+            if (s.status() == QDataStream::Ok && IsValid(header))
+                v = QVariant::fromValue(QSize(header.width, header.height));
         }
     }
 
@@ -1575,7 +1453,7 @@ QVariant PSDHandler::option(ImageOption option) const
 bool PSDHandler::canRead(QIODevice *device)
 {
     if (!device) {
-        qCWarning(LOG_PSDPLUGIN) << "PSDHandler::canRead() called with no device";
+        qWarning("PSDHandler::canRead() called with no device");
         return false;
     }
 

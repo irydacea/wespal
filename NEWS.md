@@ -17,7 +17,6 @@ Version 0.5.1
 ### Other changes
 
 * Windows and macOS versions built against Qt 6.9.3.
-* Updated bundled KImageFormats plugins to version from KDE Frameworks 6.19.
 
 
 Version 0.5.0
