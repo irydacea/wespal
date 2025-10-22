@@ -20,7 +20,7 @@
 
 #pragma once
 
-#define MOS_VERSION_STRING      "0.5.1-dev"
+#define MOS_VERSION_STRING      "0.5.1"
 
 #define MOS_VERSION_MAJOR       0
 #define MOS_VERSION_MINOR       5
