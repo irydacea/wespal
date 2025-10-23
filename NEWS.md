@@ -6,6 +6,8 @@ Version 0.5.2
 
 ### New features
 
+* Added automatic reloading of files that have been changed on disk, as well as a File menu option controlling this behavior (enabled by default).
+
 ### Bug fixes
 
 ### Other changes
