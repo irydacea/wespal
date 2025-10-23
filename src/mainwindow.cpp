@@ -36,6 +36,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
+#include <QFileSystemWatcher>
 #include <QPainter>
 #include <QMessageBox>
 #include <QMimeData>
@@ -80,6 +81,8 @@ MainWindow::MainWindow(QWidget* parent)
 
 	, originalImage_()
 	, transformedImage_()
+
+	, watcher_(new QFileSystemWatcher(this))
 
 	, viewMode_()
 	, rcMode_()
@@ -223,6 +226,12 @@ MainWindow::MainWindow(QWidget* parent)
 	auto* saveButton = ui->buttonBox->button(QDialogButtonBox::Save);
 
 	saveButton->setWhatsThis(tr("Saves the current recolor job."));
+
+	//
+	// Reload option
+	//
+
+	ui->actionAutomaticallyReload->setChecked(MosCurrentConfig().autoReload());
 
 	//
 	// MRU menu & list widget
@@ -509,6 +518,9 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(QGuiApplication::clipboard(), SIGNAL(changed(QClipboard::Mode)),
 			this, SLOT(onClipboardChanged(QClipboard::Mode)));
 	onClipboardChanged(QClipboard::Clipboard); // Need to do an initial poll
+
+	connect(watcher_, SIGNAL(fileChanged(const QString&)), this, SLOT(onWatchedFileChanged(const QString&)));
+	connect(watcher_, SIGNAL(directoryChanged(const QString&)), this, SLOT(onWatchedFileChanged(const QString&)));
 
 	ui->radRc->setChecked(true);
 	setRcMode(RcColorRange);
@@ -1059,6 +1071,10 @@ void MainWindow::openFile(const QString& fileName)
 		return;
 	}
 
+	// Stop monitoring anything we were monitoring before while we set things
+	// up again
+	stopWatchingFiles();
+
 	imagePath_ = selectedPath;
 
 	// Persist the parent dir path as the search path for future file
@@ -1075,13 +1091,18 @@ void MainWindow::openFile(const QString& fileName)
 	refreshPreviews(false, false);
 
 	enableWorkArea(true);
+
+	// Set up file monitoring again
+	refreshWatcher();
 }
 
-void MainWindow::doReloadFile()
+void MainWindow::doReloadFile(bool silent)
 {
 	QImage img{imagePath_};
 	if (img.isNull()) {
-		MosUi::error(this, tr("Could not reload %1.").arg(imagePath_));
+		if (!silent) {
+			MosUi::error(this, tr("Could not reload %1.").arg(imagePath_));
+		}
 		return;
 	}
 
@@ -1426,6 +1447,34 @@ void MainWindow::enableWorkArea(bool enable)
 		closeButton->setText(tr("Quit"));
 		closeButton->setWhatsThis(tr("Quits Wespal."));
 	}
+}
+
+void MainWindow::refreshWatcher()
+{
+	stopWatchingFiles();
+
+	if (!MosCurrentConfig().autoReload()) {
+		return;
+	}
+
+	// Don't change the watchlist unnecessarily
+	const auto& watchList = watcher_->files();
+	if (watchList.length() == 1 && watchList.first() == imagePath_)
+		return;
+
+	watcher_->addPath(imagePath_);
+}
+
+void MainWindow::stopWatchingFiles()
+{
+	const auto& watchedDirs = watcher_->directories();
+	const auto& watchedFiles = watcher_->files();
+	// These checks are annoying but otherwise Qt pollutes stderr by whining
+	// "QFileSystemWatcher::removePaths: list is empty".
+	if (!watchedDirs.isEmpty())
+		watcher_->removePaths(watchedDirs);
+	if (!watchedFiles.isEmpty())
+		watcher_->removePaths(watchedFiles);
 }
 
 QString MainWindow::currentPaletteName(bool paletteSwitchMode) const
@@ -1979,4 +2028,44 @@ void MainWindow::onClipboardChanged(QClipboard::Mode mode)
 	auto* clipboard = QGuiApplication::clipboard();
 
 	ui->actionPaste->setEnabled(clipboard && !clipboard->image().isNull());
+}
+
+void MainWindow::onWatchedFileChanged(const QString& path)
+{
+	// NOTE: we always assume path is equivalent to imageFile_. This should
+	// always be the case since we only ever add the path of the current file
+	// to the watcher at the moment.
+
+	QFileInfo info{path};
+	bool isExtant = watcher_->files().contains(path) || watcher_->directories().contains(path);
+
+	if (!isExtant) {
+		// File was deleted, may have been replaced with a new inode by a
+		// different process in order to perform an atomic write
+		if (info.exists(path)) {
+			// If the file got clobbered with a dir we should still continue looking
+			// at it until it stops being a dir.
+			watcher_->addPath(path);
+			// If a dir got clobbered with a file, reload the file.
+			if (!info.isDir()) {
+				isExtant = true;
+			}
+		}
+	}
+
+	// At this point we are 100% sure the path exists and is not a dir (or
+	// ceased to be a dir). Still, avoid complaining loudly if the reload fails
+	// just in case. (TODO: we should gently notify the user of errors)
+	if (isExtant) {
+		doReloadFile(true);
+	}
+}
+
+void MainWindow::on_actionAutomaticallyReload_triggered(bool checked)
+{
+	MosCurrentConfig().setAutoReload(checked);
+	refreshWatcher();
+	if (checked) {
+		doReloadFile(true); // Catch up on what we missed
+	}
 }

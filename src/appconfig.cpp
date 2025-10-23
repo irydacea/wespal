@@ -40,6 +40,7 @@ Manager::Manager()
 	: imageFilesMru_()
 	, customColorRanges_()
 	, customPalettes_()
+	, autoReload_()
 	, rememberMainWindowSize_()
 	, mainWindowSize_()
 	, defaultZoom_()
@@ -54,6 +55,8 @@ Manager::Manager()
 	//
 	// Workspace configuation
 	//
+
+	autoReload_ = qs.value("preview/autoReload", true).toBool();
 
 	rememberMainWindowSize_ = qs.value("preview/rememberWindowSize", true).toBool();
 
@@ -148,6 +151,15 @@ Manager::Manager()
 	}
 
 	qs.endArray();
+}
+
+void Manager::setAutoReload(bool autoReload)
+{
+	QSettings qs;
+
+	autoReload_ = autoReload;
+
+	qs.setValue("preview/autoReload", autoReload);
 }
 
 void Manager::setRememberMainWindowSize(bool remember)

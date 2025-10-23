@@ -139,6 +139,19 @@ public:
 	//void deleteCustomPalette(const QString& palette);
 
 	/**
+	 * Retrieves whether files should be automatically reloaded if modified on disk.
+	 */
+	bool autoReload() const
+	{
+		return autoReload_;
+	}
+
+	/**
+	 * Sets whether to automatically reload modified files on disk.
+	 */
+	void setAutoReload(bool autoReload);
+
+	/**
 	 * Retrieves whether the main window size should be remembered.
 	 */
 	bool rememberMainWindowSize() const
@@ -265,6 +278,7 @@ private:
 	MruList imageFilesMru_;
 	QMap<QString, ColorRange> customColorRanges_;
 	QMap<QString, ColorList> customPalettes_;
+	bool autoReload_;
 	bool rememberMainWindowSize_;
 	QSize mainWindowSize_;
 	qreal defaultZoom_;

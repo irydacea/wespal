@@ -1191,6 +1191,7 @@
     <addaction name="action_Save"/>
     <addaction name="separator"/>
     <addaction name="action_Reload"/>
+    <addaction name="actionAutomaticallyReload"/>
     <addaction name="separator"/>
     <addaction name="action_Close"/>
     <addaction name="separator"/>
@@ -1571,6 +1572,17 @@
    </property>
    <property name="text">
     <string>&amp;Paste</string>
+   </property>
+  </action>
+  <action name="actionAutomaticallyReload">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto&amp;matically Reload</string>
    </property>
   </action>
  </widget>

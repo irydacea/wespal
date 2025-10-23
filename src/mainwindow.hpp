@@ -36,6 +36,7 @@ class QAbstractScrollArea;
 class QButtonGroup;
 class QDragEnterEvent;
 class QDropEvent;
+class QFileSystemWatcher;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -120,6 +121,8 @@ private:
 	QImage originalImage_;
 	QImage transformedImage_;
 
+	QFileSystemWatcher* watcher_;
+
 	ViewMode viewMode_;
 	RcMode   rcMode_;
 
@@ -174,12 +177,14 @@ private:
 
 	void doSaveFile();
 	void doCloseFile();
-	void doReloadFile();
+	void doReloadFile(bool silent = false);
 	void doAboutDialog();
 
 	void setViewMode(ViewMode newViewMode);
 	void setRcMode(RcMode rcMode);
 	void enableWorkArea(bool enable);
+	void refreshWatcher();
+	void stopWatchingFiles();
 
 	bool confirmFileOverwrite(const QStringList& paths);
 
@@ -256,4 +261,6 @@ private slots:
 	void on_actionPaste_triggered();
 
 	void onClipboardChanged(QClipboard::Mode mode);
+	void onWatchedFileChanged(const QString& path);
+	void on_actionAutomaticallyReload_triggered(bool checked);
 };
