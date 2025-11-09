@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
 {
 #if defined(Q_OS_WINDOWS) && QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
 	// Avoid the icky Windows 11 style being enabled by default
+	// NOTE: applyAppColorScheme() may override this again if needed for dark
+	// mode support on Windows.
 	QApplication::setStyle("WindowsVista");
 #endif
 

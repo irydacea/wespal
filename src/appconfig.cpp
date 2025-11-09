@@ -233,12 +233,21 @@ void Manager::applyAppColorScheme()
 	switch (appColorScheme_) {
 		case AppColorSchemeOSLight:
 			QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Light);
+#ifdef Q_OS_WINDOWS
+			QApplication::setStyle("WindowsVista");
+#endif
 			break;
 		case AppColorSchemeOSDark:
 			QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Dark);
+#ifdef Q_OS_WINDOWS
+			QApplication::setStyle("Fusion");
+#endif
 			break;
 		default:
 			QGuiApplication::styleHints()->unsetColorScheme();
+#ifdef Q_OS_WINDOWS
+			QApplication::setStyle("WindowsVista");
+#endif
 	}
 #endif
 }

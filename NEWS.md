@@ -7,6 +7,7 @@ Version 0.5.2
 ### New features
 
 * Added automatic reloading of files that have been changed on disk, as well as a File menu option controlling this behavior (enabled by default).
+* Dark mode UI is now supported on Windows; however, automatic UI mode selection is not.
 
 ### Bug fixes
 

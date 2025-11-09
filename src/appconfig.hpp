@@ -33,7 +33,7 @@
 // TODO: Potentially work around these limitations by using Fusion whenever
 // the color scheme hint is unsupported and the app color scheme is not set to
 // the OS default, then set our own color theme.
-#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0) && defined(Q_OS_MACOS)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0) && (defined(Q_OS_MACOS) || defined(Q_OS_WINDOWS))
 #	define WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME
 #endif
 
