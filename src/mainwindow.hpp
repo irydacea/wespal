@@ -257,7 +257,7 @@ private slots:
 	void onColorBlendLineEditChanged(const QString& value);
 	void onColorBlendButtonClicked();
 
-	void onColorShiftValueChanged(ColorShiftChannel ch, int value);
+	void onColorShiftValueChanged(MainWindow::ColorShiftChannel ch, int value);
 
 	void onRcSelectButtonClicked(bool check);
 	void on_actionCopy_triggered();
