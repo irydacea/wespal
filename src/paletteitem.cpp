@@ -77,7 +77,10 @@ QIcon createColorIconPrivate(const QColor& color,
 					  QSizeF{size}.shrunkBy(innerMargin)};
 
 	if (target) {
-		pen.setColor(target->palette().color(target->foregroundRole()));
+		// NOTE: We use the global palette instead of the target widget's own
+		// because Fusion yields the wrong color values on Windows in dark mode
+		// (at least as of Qt 6.9.3).
+		pen.setColor(QGuiApplication::palette().color(target->foregroundRole()));
 	}
 
 	painter.setBrush(brush);
