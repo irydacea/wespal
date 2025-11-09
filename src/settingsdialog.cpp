@@ -307,12 +307,6 @@ void SettingsDialog::initGeneralPage()
 	ui->rememberImageViewModeCheckbox->setChecked(config.rememberImageViewMode());
 
 #ifdef WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME
-#ifdef Q_OS_WINDOWS
-	// FIXME we do not support automatic color scheme selection on Windows yet
-	// due to not wanting to use Fusion unless we really have to in order to
-	// select dark mode
-	ui->appearanceDefaultRadio->setEnabled(false);
-#endif
 	switch (config.appColorScheme()) {
 		case MosConfig::AppColorSchemeOSDark:
 			ui->appearanceDarkRadio->setChecked(true);

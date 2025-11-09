@@ -264,16 +264,21 @@ public:
 	 */
 	void setPngVanityPlate(bool enable);
 
-private:
-	Manager();
-
 	/**
 	 * Applies changes to the UI color scheme.
 	 *
 	 * This function does nothing if changing the UI color scheme is
 	 * unsupported by the target platform.
+	 *
+	 * @note You do not ever need to call this yourself unless you need to
+	 * handle PaletteChange events, in which case this guarantees that the
+	 * correct style engine is selected if a particular one is needed for
+	 * platform support.
 	 */
 	void applyAppColorScheme();
+
+private:
+	Manager();
 
 	MruList imageFilesMru_;
 	QMap<QString, ColorRange> customColorRanges_;

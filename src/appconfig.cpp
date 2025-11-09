@@ -26,6 +26,31 @@
 #include <QMessageBox>
 #include <QStyleHints>
 
+#if defined (WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME) && defined(Q_OS_WINDOWS)
+#	define WIN32_LEAN_AND_MEAN
+#	define NOUSER
+#	define NOGDI
+#	define NOMINMAX
+#	include <windows.h>
+// HACK to find out whether Windows app dark mode is on whenever the system
+// settings change. Based on <https://stackoverflow.com/a/70753913>
+static bool windowsAppDarkThemeOn()
+{
+	DWORD regValue = 0;
+	DWORD regValueSize = sizeof(regValue);
+	auto status = RegGetValueA(
+		HKEY_CURRENT_USER,
+		"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+		"AppsUseLightTheme",
+		RRF_RT_REG_DWORD,
+		nullptr,
+		&regValue,
+		&regValueSize);
+	// Assume light theme on error/if the value does not exist
+	return status == ERROR_SUCCESS && regValue == 0;
+}
+#endif
+
 namespace MosConfig {
 
 namespace {
@@ -246,7 +271,7 @@ void Manager::applyAppColorScheme()
 		default:
 			QGuiApplication::styleHints()->unsetColorScheme();
 #ifdef Q_OS_WINDOWS
-			QApplication::setStyle("WindowsVista");
+			QApplication::setStyle(windowsAppDarkThemeOn() ? "Fusion" : "WindowsVista");
 #endif
 	}
 #endif

@@ -45,6 +45,13 @@
 #include <QStringBuilder>
 #include <QWhatsThis>
 
+#if defined(WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME) && defined(Q_OS_WINDOWS)
+#	define WIN32_LEAN_AND_MEAN
+#	define NOMINMAX
+#	define NOGDI
+#	include <windows.h>
+#endif
+
 namespace {
 
 struct canceled_job    {};
@@ -964,6 +971,29 @@ void MainWindow::dropEvent(QDropEvent* event)
 	refreshPreviews(false, false);
 	enableWorkArea(true);
 }
+
+#if defined(WESPAL_UI_SUPPORTS_APP_COLOR_SCHEME) && defined(Q_OS_WINDOWS)
+bool MainWindow::nativeEvent(const QByteArray& eventType, void* message, qintptr* result)
+{
+	Q_UNUSED(eventType);
+	Q_UNUSED(result);
+
+	// Nothing to do here if not using automatic color scheme selection
+	if (MosCurrentConfig().appColorScheme() != MosConfig::AppColorSchemeOSDefault)
+		return false;
+
+	auto winMsg = static_cast<MSG*>(message);
+	if (winMsg->message == WM_SETTINGCHANGE &&
+		lstrcmp(L"ImmersiveColorSet", reinterpret_cast<LPCWSTR>(winMsg->lParam)) == 0)
+	{
+		// Ensure the correct style engine is selected as required to support
+		// the new color scheme if it has changed
+		MosCurrentConfig().applyAppColorScheme();
+	}
+
+	return false;
+}
+#endif
 
 void MainWindow::on_radRc_clicked()
 {
