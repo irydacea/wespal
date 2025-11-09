@@ -1452,7 +1452,7 @@ void MainWindow::enableWorkArea(bool enable)
 		(widget->setEnabled(enable), ...);
 	}, elements);
 
-	for (auto* action : viewModeActions_) {
+	for (auto* action : std::as_const(viewModeActions_)) {
 		action->setEnabled(enable);
 	}
 
@@ -1683,7 +1683,7 @@ void MainWindow::on_zoomSlider_valueChanged(int value)
 	zoom_ = newZoom;
 	refreshPreviews();
 
-	for (auto* action : zoomActions_)
+	for (auto* action : std::as_const(zoomActions_))
 	{
 		if (action->data() == value && !action->isChecked()) {
 			action->setChecked(true);
@@ -1796,7 +1796,7 @@ void MainWindow::on_cbxViewMode_currentIndexChanged(int index)
 
 	setViewMode(newMode);
 
-	for (auto* action : viewModeActions_)
+	for (auto* action : std::as_const(viewModeActions_))
 	{
 		if (action->data() == newMode && !action->isChecked()) {
 			action->setChecked(true);

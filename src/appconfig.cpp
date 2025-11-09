@@ -151,7 +151,7 @@ Manager::Manager()
 		ColorList palette;
 		palette.reserve(values.count());
 
-		for (const auto& value : values)
+		for (const auto& value : std::as_const(values))
 			palette.emplaceBack(value.toUInt());
 
 		customPalettes_.insert(id, palette);
@@ -328,7 +328,7 @@ void Manager::setCustomPalettes(const QMap<QString, ColorList>& palettes)
 
 		QString colorList;
 
-		for (auto color : palette)
+		for (auto color : std::as_const(palette))
 		{
 			if (!colorList.isEmpty())
 				colorList += ',';

@@ -326,7 +326,7 @@ void SettingsDialog::initGeneralPage()
 
 	QString zoomLabelFmt{"%1%"};
 
-	for (auto zoom : zoomValues_)
+	for (auto zoom : std::as_const(zoomValues_))
 	{
 		ui->defaultZoomList->addItem(zoomLabelFmt.arg(qRound(zoom * 100)), zoom);
 
