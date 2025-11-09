@@ -76,6 +76,10 @@ QIcon createColorIconPrivate(const QColor& color,
 	QRectF borderRect{QPointF{outerMargin, outerMargin},
 					  QSizeF{size}.shrunkBy(innerMargin)};
 
+	if (target) {
+		pen.setColor(target->palette().color(target->foregroundRole()));
+	}
+
 	painter.setBrush(brush);
 	painter.setPen(pen);
 

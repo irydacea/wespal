@@ -12,6 +12,8 @@ Version 0.5.2
 
 ### Other changes
 
+* Color square icons in lists now use a more suitable border color depending on the UI color scheme.
+
 
 Version 0.5.1
 -------------
