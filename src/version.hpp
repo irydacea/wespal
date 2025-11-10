@@ -20,11 +20,11 @@
 
 #pragma once
 
-#define MOS_VERSION_STRING      "0.5.3"
+#define MOS_VERSION_STRING      "0.5.4-dev"
 
 #define MOS_VERSION_MAJOR       0
 #define MOS_VERSION_MINOR       5
-#define MOS_VERSION_RELEASE     3
+#define MOS_VERSION_RELEASE     4
 
 #ifndef RC_INVOKED
 
