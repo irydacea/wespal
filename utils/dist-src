@@ -27,4 +27,4 @@ git archive --format=tar -o ${output_namestem}.tar --prefix=$prefix $1
 # Cleanup
 rm ${output_namestem}.tar
 
-shasum -a 256 $distdir/*-$1.*
+shasum -a 256 $distdir/*-$1*
