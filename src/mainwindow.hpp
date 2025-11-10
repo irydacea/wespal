@@ -37,6 +37,7 @@ class QButtonGroup;
 class QDragEnterEvent;
 class QDropEvent;
 class QFileSystemWatcher;
+class QListWidgetItem;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -187,6 +188,7 @@ private:
 	void setViewMode(ViewMode newViewMode);
 	void setRcMode(RcMode rcMode);
 	void enableWorkArea(bool enable);
+	void updateSaveActions();
 	void refreshWatcher();
 	void stopWatchingFiles();
 
@@ -223,6 +225,7 @@ private:
 private slots:
 	void on_action_Reload_triggered();
 	void on_listRanges_currentRowChanged(int currentRow);
+	void on_listRanges_itemChanged(QListWidgetItem* item);
 	void on_cbxNewPal_currentIndexChanged(int index);
 	void on_cbxKeyPal_currentIndexChanged(int index);
 	void on_action_Save_triggered();

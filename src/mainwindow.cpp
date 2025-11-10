@@ -1421,6 +1421,7 @@ void MainWindow::setRcMode(MainWindow::RcMode newRcMode)
 	}
 
 	refreshPreviews();
+	updateSaveActions();
 }
 
 void MainWindow::enableWorkArea(bool enable)
@@ -1458,14 +1459,19 @@ void MainWindow::enableWorkArea(bool enable)
 
 	if (!enable) {
 		ui->staWorkAreaParent->setCurrentIndex(WorkAreaStartPage);
-	} else switch (viewMode_) {
-		case MosConfig::ImageViewSwipe:
-		case MosConfig::ImageViewOnionSkin:
-			ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
-			break;
-		default:
-			ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
-			break;
+	} else {
+		switch (viewMode_)
+		{
+			case MosConfig::ImageViewSwipe:
+			case MosConfig::ImageViewOnionSkin:
+				ui->staWorkAreaParent->setCurrentIndex(WorkAreaCompositeRc);
+				break;
+			default:
+				ui->staWorkAreaParent->setCurrentIndex(WorkAreaSplitRc);
+				break;
+		}
+
+		updateSaveActions();
 	}
 
 	auto* closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
@@ -1477,6 +1483,26 @@ void MainWindow::enableWorkArea(bool enable)
 		closeButton->setText(tr("Quit"));
 		closeButton->setWhatsThis(tr("Quits Wespal."));
 	}
+}
+
+void MainWindow::updateSaveActions()
+{
+	bool saveStatus = rcMode_ != RcColorRange;
+	// We need a selection if in RcColorRange mode
+	if (!saveStatus) {
+		for (int k = 0; k < ui->listRanges->count(); ++k)
+		{
+			QListWidgetItem* item = ui->listRanges->item(k);
+			Q_ASSERT(item);
+			if (item->checkState() == Qt::Checked) {
+				saveStatus = true;
+				break;
+			}
+		}
+	}
+
+	ui->action_Save->setEnabled(saveStatus);
+	ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(saveStatus);
 }
 
 void MainWindow::refreshWatcher()
@@ -1672,6 +1698,11 @@ void MainWindow::on_cbxNewPal_currentIndexChanged(int /*index*/)
 void MainWindow::on_listRanges_currentRowChanged(int /*currentRow*/)
 {
 	refreshPreviews();
+}
+
+void MainWindow::on_listRanges_itemChanged(QListWidgetItem* /*item*/)
+{
+	updateSaveActions();
 }
 
 void MainWindow::on_zoomSlider_valueChanged(int value)

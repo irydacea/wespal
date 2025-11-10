@@ -11,6 +11,8 @@ Version 0.5.2
 
 ### Bug fixes
 
+* Prevent using the Save action when in color range mode with no color ranges checked.
+
 ### Other changes
 
 * Color square icons in lists now use a more suitable border color depending on the UI color scheme.
