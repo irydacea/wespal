@@ -4,13 +4,9 @@ Changelog
 Version 0.5.3
 -------------
 
-### New features
-
 ### Bug fixes
 
 * Fixed an existing bug with dark mode or dark system color schemes on all platforms causing scrollbars to be forcibly rendered in a light color whenever a non-default preview background color is set.
-
-### Other changes
 
 
 Version 0.5.2
