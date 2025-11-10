@@ -1778,19 +1778,59 @@ void MainWindow::updateCustomPreviewBgIcon()
 
 void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 {
-	QPalette pal;
-	if (!colorName.isEmpty())
-		pal.setColor(QPalette::Dark, QColor{colorName});
-
 	auto containers = std::make_tuple(
 		ui->previewOriginalContainer,
 		ui->previewRcContainer,
 		ui->previewCompositeContainer
 	);
 
+	// This is a complete MESS. Supporting this in a cross-platform fashion
+	// right now is next to impossible due to the way we abuse QScrollArea.
+	// We really need to use our own custom widget with separate scrollbars so
+	// we can style it independently without any kluges. As it stands though,
+	// we require combining two approaches:
+	//
+	//  - QPalette, because it's the most reliable with non-KDE style engines
+	//    (including macOS but most notably excluding WindowsVista)
+	//
+	//  - Stylesheet, because Breeze in particular does not want to use
+	//    QPalette at all
+	//
+	// In particular, we make sure to provide the QPalette as a fallback for
+	// engines that *do* support QPalette, and enforce the stylesheet only if
+	// we aren't running on a known-good engine so we don't cause the
+	// scrollbars to be colored wrong on e.g. Fusion against a system-defined
+	// dark color scheme.
+	//
+	// This sucks but it'll do until Wespal v0.6.0 replaces the QScrollArea
+	// approach with something more adaptable to our needs.
+
+	QPalette pal;
+	if (!colorName.isEmpty())
+		pal.setColor(QPalette::Dark, QColor{colorName});
+
 	std::apply([&pal](auto&&... widget) {
 		(widget->viewport()->setPalette(pal), ...);
 	}, containers);
+
+	QString currentEngine = style() ? style()->name() : "";
+	static const QStringList safeEngines{
+		"windowsvista", "windows11", "windows", "macos", "fusion"
+	};
+
+	if (!safeEngines.contains(currentEngine)) {
+		if (!colorName.isEmpty()) {
+			const QString colorStyle = "* { background-color: " % colorName % "; }";
+
+			std::apply([&colorStyle](auto&&... widget) {
+				(widget->viewport()->setStyleSheet(colorStyle), ...);
+			}, containers);
+		} else {
+			std::apply([](auto&&... widget) {
+				(widget->viewport()->setStyleSheet({}), ...);
+			}, containers);
+		}
+	}
 
 	MosCurrentConfig().setPreviewBackgroundColor(colorName);
 }
