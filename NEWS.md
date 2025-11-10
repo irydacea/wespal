@@ -8,6 +8,8 @@ Version 0.5.3
 
 ### Bug fixes
 
+* Fixed an existing bug with dark mode on macOS and Windows causing scrollbars to be forcibly rendered in a light color whenever a non-default preview background color is set.
+
 ### Other changes
 
 

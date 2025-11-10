@@ -537,7 +537,7 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+	delete ui;
 }
 
 void MainWindow::updateWindowTitle(bool hasImage,
@@ -762,7 +762,7 @@ void MainWindow::changeEvent(QEvent* event)
 			break;
 		default:
 			break;
-    }
+	}
 }
 
 void MainWindow::closeEvent(QCloseEvent*)
@@ -1778,16 +1778,19 @@ void MainWindow::updateCustomPreviewBgIcon()
 
 void MainWindow::setPreviewBackgroundColor(const QString& colorName)
 {
-	if (!colorName.isEmpty()) {
-		const QString ss = "* { background-color: " % colorName % "; }";
-		ui->previewOriginalContainer->viewport()->setStyleSheet(ss);
-		ui->previewRcContainer->viewport()->setStyleSheet(ss);
-		ui->previewCompositeContainer->viewport()->setStyleSheet(ss);
-	} else {
-		ui->previewOriginalContainer->viewport()->setStyleSheet({});
-		ui->previewRcContainer->viewport()->setStyleSheet({});
-		ui->previewCompositeContainer->viewport()->setStyleSheet({});
-	}
+	QPalette pal;
+	if (!colorName.isEmpty())
+		pal.setColor(QPalette::Dark, QColor{colorName});
+
+	auto containers = std::make_tuple(
+		ui->previewOriginalContainer,
+		ui->previewRcContainer,
+		ui->previewCompositeContainer
+	);
+
+	std::apply([&pal](auto&&... widget) {
+		(widget->viewport()->setPalette(pal), ...);
+	}, containers);
 
 	MosCurrentConfig().setPreviewBackgroundColor(colorName);
 }
